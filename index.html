@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>IRIS H · Dashboard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Fraunces:opsz,wght@9..144,300;9..144,700&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07080a; --s1:#0f1114; --s2:#141618; --s3:#1a1d22;
+  --border:#22262e; --border2:#2d3340;
+  --gold:#c8a455; --goldf:#c8a45518;
+  --blue:#5b9cf6; --bluef:#5b9cf618;
+  --green:#41c98e; --greenf:#41c98e18;
+  --violet:#a78bfa; --violetf:#a78bfa18;
+  --orange:#fb923c; --orangef:#fb923c18;
+  --red:#f87171; --redf:#f8717118;
+  --cyan:#22d3ee; --cyanf:#22d3ee18;
+  --text:#ccc5b8; --dim:#666; --dim2:#333;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-serif:'Fraunces',serif;
+}
+html{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--font-mono);font-size:13px;height:100%;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── SETUP SCREEN ── */
+#setup{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;padding:2rem}
+#setup.hidden{display:none}
+.setup-box{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:2.5rem;max-width:480px;width:100%}
+.setup-logo{font-family:var(--font-serif);font-size:2rem;color:var(--gold);margin-bottom:.3rem}
+.setup-sub{font-size:10px;letter-spacing:4px;color:var(--dim);margin-bottom:2rem;text-transform:uppercase}
+.setup-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;margin-top:1.2rem}
+.setup-input{width:100%;background:var(--s2);border:1px solid var(--border2);border-radius:8px;padding:.75rem 1rem;font-family:var(--font-mono);font-size:12px;color:var(--text);outline:none}
+.setup-input:focus{border-color:var(--gold)}
+.setup-btn{margin-top:1.5rem;width:100%;background:var(--gold);border:none;border-radius:8px;padding:.85rem;font-family:var(--font-mono);font-size:13px;font-weight:600;color:#07080a;cursor:pointer;transition:.2s}
+.setup-btn:hover{background:var(--goldl,#e8c47a)}
+.setup-note{font-size:10px;color:var(--dim);margin-top:1rem;line-height:1.6}
+
+/* ── HEADER ── */
+header{
+  display:flex;align-items:center;gap:1rem;
+  padding:.75rem 1.25rem;
+  border-bottom:1px solid var(--border);
+  background:var(--s1);
+  flex-shrink:0;
+  position:relative;z-index:10
+}
+.logo{font-family:var(--font-serif);font-size:1.35rem;color:var(--gold);font-weight:700;flex-shrink:0}
+.logo span{font-size:.75rem;font-family:var(--font-mono);color:var(--dim);font-weight:400;letter-spacing:2px;vertical-align:middle;margin-left:.4rem}
+
+/* Tab nav in header */
+.tabs-nav{display:flex;gap:0;flex:1;overflow-x:auto;scrollbar-width:none}
+.tabs-nav::-webkit-scrollbar{display:none}
+.tab-btn{
+  padding:.5rem 1.1rem;font-family:var(--font-mono);font-size:11px;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);
+  background:transparent;border:none;border-bottom:2px solid transparent;
+  cursor:pointer;white-space:nowrap;transition:.15s;
+}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+.refresh-area{display:flex;align-items:center;gap:.6rem;flex-shrink:0}
+.refresh-time{font-size:10px;color:var(--dim);white-space:nowrap}
+.refresh-btn{
+  background:var(--goldf);border:1px solid var(--gold);border-radius:6px;
+  padding:.4rem .8rem;font-family:var(--font-mono);font-size:11px;
+  color:var(--gold);cursor:pointer;transition:.2s;white-space:nowrap
+}
+.refresh-btn:hover{background:var(--gold);color:#07080a}
+.refresh-btn.loading{opacity:.5;pointer-events:none}
+.refresh-btn.loading::after{content:' ⟳'}
+
+/* ── KPI BAR ── */
+.kpi-bar{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;background:var(--s2)
+}
+.kpi{
+  padding:.7rem 1.1rem;border-right:1px solid var(--border);
+  display:flex;flex-direction:column;gap:2px
+}
+.kpi:last-child{border-right:none}
+.kpi-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+.kpi-value{font-family:var(--font-serif);font-size:1.5rem;color:var(--text);line-height:1}
+.kpi-value.urgent{color:var(--red)}
+.kpi-value.ok{color:var(--green)}
+.kpi-value.memo{color:var(--cyan)}
+.kpi-sub{font-size:10px;color:var(--dim)}
+
+/* ── MAIN CONTENT ── */
+main{flex:1;overflow:hidden;position:relative}
+.tab-content{
+  position:absolute;inset:0;overflow-y:auto;
+  padding:1.25rem;
+  display:none;
+  scrollbar-width:thin;scrollbar-color:var(--border2) transparent
+}
+.tab-content.active{display:block}
+
+/* ── SECTION HEADERS ── */
+.sec-hdr{
+  font-size:9px;letter-spacing:5px;text-transform:uppercase;
+  color:var(--dim);margin-bottom:1rem;
+  display:flex;align-items:center;gap:.75rem
+}
+.sec-hdr::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── CRM TABLE ── */
+.filter-bar{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.filter-btn{
+  padding:.35rem .85rem;border:1px solid var(--border2);border-radius:20px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--dim);background:var(--s2);cursor:pointer;transition:.2s
+}
+.filter-btn:hover,.filter-btn.active{border-color:var(--gold);color:var(--gold);background:var(--goldf)}
+
+.crm-table{width:100%;border-collapse:collapse;font-size:12px}
+.crm-table thead th{
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);
+  padding:.6rem .9rem;text-align:left;border-bottom:1px solid var(--border);
+  background:var(--s2);white-space:nowrap
+}
+.crm-table tbody tr{cursor:default;transition:.1s}
+.crm-table tbody tr:hover td{background:var(--s2)}
+.crm-table tbody td{padding:.6rem .9rem;border-bottom:1px solid var(--dim2);color:#888;vertical-align:middle}
+.crm-table .td-name{color:var(--text);font-weight:500}
+.crm-table .td-contact a{color:var(--blue);text-decoration:none}
+.crm-table .td-contact a:hover{text-decoration:underline}
+.ago{font-size:10px;color:var(--dim)}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;font-size:10px;padding:1px 7px;border-radius:3px;border:1px solid;white-space:nowrap}
+.badge-bym{background:var(--bluef);border-color:#5b9cf640;color:var(--blue)}
+.badge-ur{background:var(--violetf);border-color:#a78bfa40;color:var(--violet)}
+.badge-iris{background:var(--goldf);border-color:#c8a45540;color:var(--gold)}
+.badge-perso{background:var(--s3);border-color:var(--border2);color:var(--dim)}
+.badge-urgente{background:var(--redf);border-color:#f8717140;color:var(--red)}
+.badge-haute{background:var(--orangef);border-color:#fb923c40;color:var(--orange)}
+.badge-normale{background:var(--s3);border-color:var(--border2);color:var(--dim)}
+.badge-basse{background:var(--s3);border-color:var(--border2);color:var(--dim2)}
+.badge-a_faire{background:var(--s3);border-color:var(--border2);color:var(--dim)}
+.badge-en_cours{background:var(--bluef);border-color:#5b9cf640;color:var(--blue)}
+.badge-fait{background:var(--greenf);border-color:#41c98e40;color:var(--green)}
+
+/* Agent badges */
+.badge-claude{background:#c8a45518;border-color:#c8a45540;color:var(--gold)}
+.badge-tom{background:#22d3ee18;border-color:#22d3ee40;color:var(--cyan)}
+.badge-neo{background:#a78bfa18;border-color:#a78bfa40;color:var(--violet)}
+
+/* ── TODO ── */
+.todo-group{margin-bottom:1.5rem}
+.todo-group-hdr{font-size:9px;letter-spacing:4px;text-transform:uppercase;padding:.4rem 0;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.todo-group-hdr .count{font-size:10px;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:1px 7px}
+.todo-item{
+  display:grid;grid-template-columns:1fr auto;gap:.5rem;align-items:center;
+  padding:.65rem .9rem;background:var(--s1);border:1px solid var(--border);
+  border-radius:8px;margin-bottom:.4rem;transition:.15s
+}
+.todo-item:hover{border-color:var(--border2);background:var(--s2)}
+.todo-left{}
+.todo-title{font-size:13px;color:var(--text);margin-bottom:3px}
+.todo-meta{font-size:10px;color:var(--dim);display:flex;gap:.6rem;flex-wrap:wrap}
+.todo-right{display:flex;gap:.4rem;align-items:center;flex-shrink:0}
+.deadline{font-size:10px}
+.deadline.late{color:var(--red)}
+.deadline.soon{color:var(--orange)}
+.deadline.ok{color:var(--dim)}
+
+/* ── DEALS KANBAN ── */
+.kanban{display:flex;gap:.75rem;overflow-x:auto;padding-bottom:.5rem;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+.kanban-col{flex:0 0 220px;display:flex;flex-direction:column;gap:.5rem}
+.kanban-col-hdr{
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:.5rem .75rem;
+  border-radius:6px;display:flex;align-items:center;justify-content:space-between;
+  border:1px solid var(--border);background:var(--s2);color:var(--dim)
+}
+.kanban-col-hdr .kcnt{font-size:11px;background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:0 7px}
+.deal-card{
+  background:var(--s1);border:1px solid var(--border);border-radius:8px;
+  padding:.75rem .85rem;transition:.15s;cursor:default
+}
+.deal-card:hover{border-color:var(--border2);background:var(--s2)}
+.deal-name{font-size:13px;color:var(--text);margin-bottom:.35rem;font-weight:500}
+.deal-type-ico{font-size:.9rem;margin-right:.2rem}
+.deal-meta{font-size:10px;color:var(--dim);line-height:1.7}
+.deal-montant{font-size:12px;color:var(--green);margin-top:.3rem;font-weight:500}
+
+/* Column accent colours */
+.kcol-prospect .kanban-col-hdr{border-color:#5b9cf630;color:var(--blue)}
+.kcol-negociation .kanban-col-hdr{border-color:#fb923c30;color:var(--orange)}
+.kcol-due_diligence .kanban-col-hdr{border-color:#a78bfa30;color:var(--violet)}
+.kcol-signe .kanban-col-hdr{border-color:#41c98e30;color:var(--green)}
+.kcol-perdu .kanban-col-hdr{border-color:#f8717130;color:var(--red)}
+
+/* ── FINANCE ── */
+.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.finance-card{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem}
+.finance-card-title{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--dim);margin-bottom:.9rem}
+
+/* Budget progress */
+.budget-row{margin-bottom:.85rem}
+.budget-row:last-child{margin-bottom:0}
+.budget-label{display:flex;justify-content:space-between;margin-bottom:.3rem;font-size:12px}
+.budget-label .bname{color:var(--text)}
+.budget-label .bpct{font-size:11px}
+.budget-bar{height:6px;background:var(--dim2);border-radius:3px;overflow:hidden}
+.budget-fill{height:100%;border-radius:3px;transition:.3s}
+.bfill-ok{background:var(--green)}
+.bfill-warn{background:var(--orange)}
+.bfill-danger{background:var(--red)}
+.budget-nums{display:flex;justify-content:space-between;margin-top:.2rem;font-size:10px;color:var(--dim)}
+
+/* Trésorerie */
+.treso-row{display:grid;grid-template-columns:80px 1fr 1fr 1fr;gap:.5rem;align-items:center;margin-bottom:.5rem;font-size:12px}
+.treso-row:last-child{margin-bottom:0}
+.treso-entite{color:var(--dim);font-size:10px;letter-spacing:1px;text-transform:uppercase}
+.treso-in{color:var(--green)}
+.treso-out{color:var(--red)}
+.treso-net{}
+
+/* Synthèse groupe */
+.synth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.synth-item{background:var(--s2);border:1px solid var(--border2);border-radius:8px;padding:.75rem .9rem}
+.synth-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:.3rem}
+.synth-value{font-family:var(--font-serif);font-size:1.4rem;color:var(--text)}
+.synth-value.pos{color:var(--green)}
+.synth-value.neg{color:var(--red)}
+
+/* ── MEMOIRE ── */
+.memo-nav{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.memo-nav-btn{
+  padding:.4rem .9rem;border:1px solid var(--border2);border-radius:20px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--dim);background:var(--s2);cursor:pointer;transition:.2s
+}
+.memo-nav-btn:hover,.memo-nav-btn.active{border-color:var(--cyan);color:var(--cyan);background:var(--cyanf)}
+
+.bible-chapter{display:none}
+.bible-chapter.active{display:block}
+
+.bible-content{
+  background:var(--s1);border:1px solid var(--border);border-radius:10px;
+  padding:1.5rem 1.75rem;line-height:1.85;font-size:13px;color:var(--text);
+  min-height:200px;white-space:pre-wrap;word-wrap:break-word
+}
+.bible-content:empty::after{
+  content:'Aucune donnée pour ce chapitre. Tom et Neo alimenteront cette section au fil des échanges.';
+  color:var(--dim);font-style:italic
+}
+
+.bible-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:.75rem;font-size:10px;color:var(--dim)
+}
+
+.memo-fragments{margin-top:1.5rem}
+.fragment-item{
+  background:var(--s1);border:1px solid var(--border);border-radius:8px;
+  padding:.75rem 1rem;margin-bottom:.5rem;transition:.15s
+}
+.fragment-item:hover{border-color:var(--border2);background:var(--s2)}
+.fragment-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem}
+.fragment-agent{font-size:10px}
+.fragment-date{font-size:10px;color:var(--dim)}
+.fragment-text{font-size:12px;color:var(--text);line-height:1.7}
+.fragment-tags{display:flex;gap:.3rem;margin-top:.4rem;flex-wrap:wrap}
+.fragment-tag{font-size:9px;padding:1px 6px;border-radius:3px;background:var(--s3);border:1px solid var(--border2);color:var(--dim)}
+
+.memo-toggle{
+  display:flex;gap:.5rem;margin-bottom:1rem
+}
+.memo-toggle-btn{
+  padding:.35rem .75rem;border:1px solid var(--border2);border-radius:6px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--dim);background:var(--s2);cursor:pointer;transition:.2s
+}
+.memo-toggle-btn:hover,.memo-toggle-btn.active{border-color:var(--gold);color:var(--gold);background:var(--goldf)}
+
+/* ── SEARCH BAR ── */
+.search-bar{
+  display:flex;gap:.5rem;margin-bottom:1rem;align-items:center
+}
+.search-input{
+  flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:8px;
+  padding:.55rem .9rem;font-family:var(--font-mono);font-size:12px;color:var(--text);outline:none
+}
+.search-input:focus{border-color:var(--gold)}
+.search-input::placeholder{color:var(--dim)}
+.search-count{font-size:10px;color:var(--dim);white-space:nowrap}
+
+/* ── FINANCE CATEGORIES ── */
+.fin-nav{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.fin-nav-btn{
+  padding:.4rem .9rem;border:1px solid var(--border2);border-radius:20px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--dim);background:var(--s2);cursor:pointer;transition:.2s
+}
+.fin-nav-btn:hover,.fin-nav-btn.active{border-color:var(--green);color:var(--green);background:var(--greenf)}
+
+.fin-section{display:none}
+.fin-section.active{display:block}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:3rem 1rem;color:var(--dim)}
+.empty-ico{font-size:2rem;margin-bottom:.5rem}
+.empty-text{font-size:12px}
+
+/* ── LOADING ── */
+.skeleton{background:linear-gradient(90deg,var(--s2) 25%,var(--s3) 50%,var(--s2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px;height:14px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── ERROR TOAST ── */
+#toast{
+  position:fixed;bottom:1.5rem;right:1.5rem;
+  background:var(--red);color:#fff;
+  padding:.7rem 1.2rem;border-radius:8px;font-size:12px;
+  transform:translateY(100px);opacity:0;transition:.3s;z-index:9999
+}
+#toast.show{transform:translateY(0);opacity:1}
+
+/* ── RESPONSIVE MOBILE ── */
+@media(max-width:640px){
+  .kpi-bar{grid-template-columns:repeat(2,1fr)}
+  .kpi:nth-child(2){border-right:none}
+  .kpi:nth-child(3){border-top:1px solid var(--border)}
+  .kpi:nth-child(4){border-top:1px solid var(--border);border-right:none}
+  .kpi:nth-child(5){border-top:1px solid var(--border);grid-column:1/-1}
+  .finance-grid{grid-template-columns:1fr}
+  .kanban-col{flex:0 0 185px}
+  .logo span{display:none}
+  .refresh-time{display:none}
+  header{padding:.6rem 1rem}
+  .tab-btn{font-size:10px;padding:.5rem .8rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ SETUP SCREEN ══ -->
+<div id="setup">
+  <div class="setup-box">
+    <div class="setup-logo">IRIS H</div>
+    <div class="setup-sub">Dashboard · Configuration</div>
+    <div class="setup-label">URL Supabase</div>
+    <input class="setup-input" id="inp-url" type="text" placeholder="https://xxxxxxxxx.supabase.co" autocomplete="off" spellcheck="false">
+    <div class="setup-label">Clé anon (anon public key)</div>
+    <input class="setup-input" id="inp-key" type="password" placeholder="eyJhbGci..." autocomplete="off" spellcheck="false">
+    <button class="setup-btn" onclick="saveConfig()">Connecter →</button>
+    <div class="setup-note">
+      Supabase → Settings → API → Project URL + anon public key.<br>
+      Ces informations sont stockées localement dans votre navigateur.
+    </div>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
+<div id="app" style="display:none;height:100%;flex-direction:column;display:none">
+
+  <!-- Header -->
+  <header>
+    <div class="logo">IRIS H <span>DASHBOARD</span></div>
+    <nav class="tabs-nav">
+      <button class="tab-btn active" data-tab="crm">CRM</button>
+      <button class="tab-btn" data-tab="todo">Todo</button>
+      <button class="tab-btn" data-tab="deals">Deal Flow</button>
+      <button class="tab-btn" data-tab="finance">Finance</button>
+      <button class="tab-btn" data-tab="memoire">Mémoire</button>
+    </nav>
+    <div class="refresh-area">
+      <span class="refresh-time" id="refresh-time">—</span>
+      <button class="refresh-btn" id="refresh-btn" onclick="loadAll()">↻ Actualiser</button>
+      <button style="background:transparent;border:none;color:var(--dim);cursor:pointer;font-size:16px;padding:.3rem" onclick="clearConfig()" title="Déconnecter">⚙</button>
+    </div>
+  </header>
+
+  <!-- KPIs -->
+  <div class="kpi-bar">
+    <div class="kpi">
+      <div class="kpi-label">Deals actifs</div>
+      <div class="kpi-value" id="kpi-deals">—</div>
+      <div class="kpi-sub" id="kpi-deals-sub">en cours</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Tâches urgentes</div>
+      <div class="kpi-value urgent" id="kpi-urgent">—</div>
+      <div class="kpi-sub" id="kpi-urgent-sub">à traiter</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Budget moyen</div>
+      <div class="kpi-value" id="kpi-budget">—</div>
+      <div class="kpi-sub" id="kpi-budget-sub">chantiers actifs</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Contacts</div>
+      <div class="kpi-value ok" id="kpi-contacts">—</div>
+      <div class="kpi-sub" id="kpi-contacts-sub">dans le CRM</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Mémoire IA</div>
+      <div class="kpi-value memo" id="kpi-memo">—</div>
+      <div class="kpi-sub" id="kpi-memo-sub">fragments</div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <main>
+
+    <!-- ── CRM ── -->
+    <div class="tab-content active" id="tab-crm">
+      <div class="search-bar">
+        <input class="search-input" id="crm-search" type="text" placeholder="Rechercher (nom, email, société, métier, localisation...)" oninput="renderCRM()" autocomplete="off" spellcheck="false">
+        <span class="search-count" id="crm-count"></span>
+      </div>
+      <div class="filter-bar" id="crm-filter-entite">
+        <button class="filter-btn active" onclick="filterCRM(this,'entite','all')">Toutes entités</button>
+        <button class="filter-btn" onclick="filterCRM(this,'entite','BYM')">BYM</button>
+        <button class="filter-btn" onclick="filterCRM(this,'entite','Urban Rise')">Urban Rise</button>
+        <button class="filter-btn" onclick="filterCRM(this,'entite','IRIS REP')">IRIS REP</button>
+        <button class="filter-btn" onclick="filterCRM(this,'entite','ARRISTO')">ARRISTO</button>
+        <button class="filter-btn" onclick="filterCRM(this,'entite','Galerie Carrez')">Galerie Carrez</button>
+      </div>
+      <div class="filter-bar" id="crm-filter-statut">
+        <button class="filter-btn active" onclick="filterCRM(this,'statut','all')">Tous statuts</button>
+        <button class="filter-btn" onclick="filterCRM(this,'statut','prospect')">Prospect</button>
+        <button class="filter-btn" onclick="filterCRM(this,'statut','contacté')">Contacté</button>
+        <button class="filter-btn" onclick="filterCRM(this,'statut','qualifié')">Qualifié</button>
+        <button class="filter-btn" onclick="filterCRM(this,'statut','actif')">Actif</button>
+        <button class="filter-btn" onclick="filterCRM(this,'statut','inactif')">Inactif</button>
+      </div>
+      <div class="filter-bar" id="crm-filter-metier">
+        <button class="filter-btn active" onclick="filterCRM(this,'metier','all')">Tous métiers</button>
+        <button class="filter-btn" onclick="filterCRM(this,'metier','Investisseur')">Investisseur</button>
+        <button class="filter-btn" onclick="filterCRM(this,'metier','Broker')">Broker</button>
+        <button class="filter-btn" onclick="filterCRM(this,'metier','Agent immobilier')">Agent immo</button>
+        <button class="filter-btn" onclick="filterCRM(this,'metier','Promoteur')">Promoteur</button>
+        <button class="filter-btn" onclick="filterCRM(this,'metier','Architecte')">Architecte</button>
+        <button class="filter-btn" onclick="filterCRM(this,'metier','Notaire')">Notaire</button>
+        <button class="filter-btn" onclick="filterCRM(this,'metier','Avocat')">Avocat</button>
+        <button class="filter-btn" onclick="filterCRM(this,'metier','Conseil')">Conseil</button>
+      </div>
+      <div class="filter-bar" id="crm-filter-loc">
+        <button class="filter-btn active" onclick="filterCRM(this,'loc','all')">Toutes villes</button>
+        <button class="filter-btn" onclick="filterCRM(this,'loc','Paris')">Paris</button>
+        <button class="filter-btn" onclick="filterCRM(this,'loc','Tours')">Tours</button>
+        <button class="filter-btn" onclick="filterCRM(this,'loc','Orléans')">Orléans</button>
+      </div>
+      <div id="crm-body"></div>
+    </div>
+
+    <!-- ── TODO ── -->
+    <div class="tab-content" id="tab-todo">
+      <div id="todo-body"></div>
+    </div>
+
+    <!-- ── DEALS ── -->
+    <div class="tab-content" id="tab-deals">
+      <div class="kanban" id="deals-body"></div>
+    </div>
+
+    <!-- ── FINANCE ── -->
+    <div class="tab-content" id="tab-finance">
+      <div class="fin-nav" id="fin-nav">
+        <button class="fin-nav-btn active" onclick="selectFinSection(this,'budget')">🏗️ Budget Chantiers</button>
+        <button class="fin-nav-btn" onclick="selectFinSection(this,'treso')">💶 Trésorerie</button>
+        <button class="fin-nav-btn" onclick="selectFinSection(this,'synth')">📊 Synthèse Groupe</button>
+        <button class="fin-nav-btn" onclick="selectFinSection(this,'suivi1')">📋 Suivi financier 1</button>
+        <button class="fin-nav-btn" onclick="selectFinSection(this,'suivi2')">📋 Suivi financier 2</button>
+        <button class="fin-nav-btn" onclick="selectFinSection(this,'suivi3')">📋 Suivi financier 3</button>
+        <button class="fin-nav-btn" onclick="selectFinSection(this,'suivi4')">📋 Suivi financier 4</button>
+        <button class="fin-nav-btn" onclick="selectFinSection(this,'vilmar')">👤 Vilmar</button>
+      </div>
+
+      <div class="fin-section active" id="fin-budget">
+        <div class="sec-hdr">Chantiers · Budget vs Réalisé</div>
+        <div id="budget-body"></div>
+      </div>
+
+      <div class="fin-section" id="fin-treso">
+        <div class="finance-grid">
+          <div class="finance-card">
+            <div class="finance-card-title">Trésorerie par entité</div>
+            <div id="treso-body"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fin-section" id="fin-synth">
+        <div class="finance-card" style="margin-bottom:1rem">
+          <div class="finance-card-title">Synthèse groupe consolidée</div>
+          <div class="synth-grid" id="synth-body"></div>
+        </div>
+      </div>
+
+      <div class="fin-section" id="fin-suivi1">
+        <div class="sec-hdr">Suivi financier 1</div>
+        <div class="bible-content" id="fin-suivi1-body"></div>
+      </div>
+
+      <div class="fin-section" id="fin-suivi2">
+        <div class="sec-hdr">Suivi financier 2</div>
+        <div class="bible-content" id="fin-suivi2-body"></div>
+      </div>
+
+      <div class="fin-section" id="fin-suivi3">
+        <div class="sec-hdr">Suivi financier 3</div>
+        <div class="bible-content" id="fin-suivi3-body"></div>
+      </div>
+
+      <div class="fin-section" id="fin-suivi4">
+        <div class="sec-hdr">Suivi financier 4</div>
+        <div class="bible-content" id="fin-suivi4-body"></div>
+      </div>
+
+      <div class="fin-section" id="fin-vilmar">
+        <div class="sec-hdr">Vilmar</div>
+        <div class="bible-content" id="fin-vilmar-body"></div>
+      </div>
+    </div>
+
+    <!-- ── MEMOIRE IA ── -->
+    <div class="tab-content" id="tab-memoire">
+
+      <div class="memo-toggle">
+        <button class="memo-toggle-btn active" onclick="setMemoView(this,'bible')">Bible consolidée</button>
+        <button class="memo-toggle-btn" onclick="setMemoView(this,'fragments')">Fragments bruts</button>
+      </div>
+
+      <!-- VUE BIBLE -->
+      <div id="memo-bible-view">
+        <div class="memo-nav" id="bible-nav"></div>
+        <div id="bible-chapters"></div>
+      </div>
+
+      <!-- VUE FRAGMENTS -->
+      <div id="memo-fragments-view" style="display:none">
+        <div class="filter-bar" id="fragment-filter-bar">
+          <button class="filter-btn active" onclick="filterFragments(this,'all')">Tous</button>
+          <button class="filter-btn" onclick="filterFragments(this,'claude')">Claude</button>
+          <button class="filter-btn" onclick="filterFragments(this,'tom')">Tom</button>
+          <button class="filter-btn" onclick="filterFragments(this,'neo')">Neo</button>
+        </div>
+        <div id="fragments-body"></div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════
+const CFG_KEY = 'iris_h_cfg';
+let cfg = null;
+let data = { contacts:[], taches:[], deals:[], chantiers:[], tresorerie:[], fragments:[], bible:[] };
+let fragmentFilter = 'all';
+
+function getConfig(){
+  try{
+    const stored = JSON.parse(localStorage.getItem(CFG_KEY));
+    if(stored && stored.url && stored.key) return stored;
+  }catch(e){}
+  return null;
+}
+
+function saveConfig(){
+  const url = document.getElementById('inp-url').value.trim().replace(/\/$/,'');
+  const key = document.getElementById('inp-key').value.trim();
+  if(!url || !key){ showToast('Renseigne URL + clé Supabase'); return; }
+  localStorage.setItem(CFG_KEY, JSON.stringify({url, key}));
+  cfg = {url, key};
+  boot();
+}
+
+function clearConfig(){
+  if(!confirm('Déconnecter ce dashboard ?')) return;
+  localStorage.removeItem(CFG_KEY);
+  location.reload();
+}
+
+// ═══════════════════════════════════════════════
+// SUPABASE FETCH
+// ═══════════════════════════════════════════════
+async function supa(table, params='', fetchAll=false){
+  if(!fetchAll){
+    const url = `${cfg.url}/rest/v1/${table}?${params}&limit=1000`;
+    const res = await fetch(url, {
+      headers:{
+        'apikey': cfg.key,
+        'Authorization': `Bearer ${cfg.key}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    if(!res.ok) throw new Error(`${table}: ${res.status}`);
+    return res.json();
+  }
+  // Paginate to get ALL rows
+  let all=[], offset=0, pageSize=1000;
+  while(true){
+    const url = `${cfg.url}/rest/v1/${table}?${params}&limit=${pageSize}&offset=${offset}`;
+    const res = await fetch(url, {
+      headers:{
+        'apikey': cfg.key,
+        'Authorization': `Bearer ${cfg.key}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    if(!res.ok) throw new Error(`${table}: ${res.status}`);
+    const page = await res.json();
+    all = all.concat(page);
+    if(page.length < pageSize) break;
+    offset += pageSize;
+  }
+  return all;
+}
+
+// ═══════════════════════════════════════════════
+// LOAD ALL DATA
+// ═══════════════════════════════════════════════
+async function loadAll(){
+  const btn = document.getElementById('refresh-btn');
+  btn.classList.add('loading');
+  btn.textContent = 'Chargement';
+  try{
+    const [contacts, taches, deals, chantiers, tresorerie, fragments, bible] = await Promise.all([
+      supa('contacts','order=nom.asc.nullslast', true),
+      supa('taches','order=priorite,deadline&statut=neq.fait'),
+      supa('deals','order=etape,nom'),
+      supa('chantiers','order=nom'),
+      supa('tresorerie','order=entite'),
+      supa('memoire_fragments','order=created_at.desc'),
+      supa('memoire_bible','order=thematique')
+    ]);
+    data = { contacts, taches, deals, chantiers, tresorerie, fragments, bible };
+    localStorage.setItem('iris_h_cache', JSON.stringify({data, ts: Date.now()}));
+    render();
+    const t = new Date();
+    document.getElementById('refresh-time').textContent = `${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`;
+  } catch(e){
+    showToast('Erreur connexion Supabase');
+    const cache = localStorage.getItem('iris_h_cache');
+    if(cache){ const c = JSON.parse(cache); data = c.data; render(); }
+  } finally{
+    btn.classList.remove('loading');
+    btn.textContent = '↻ Actualiser';
+  }
+}
+
+// ═══════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════
+function render(){
+  renderKPIs();
+  renderCRM();
+  renderTodo();
+  renderDeals();
+  renderFinance();
+  renderMemoire();
+}
+
+// ── KPIs ──
+function renderKPIs(){
+  const dealsActifs = data.deals.filter(d=>!['perdu'].includes(d.etape));
+  const urgent = data.taches.filter(t=>t.priorite==='urgente');
+  
+  let budgetPct = 0;
+  const chActifs = data.chantiers.filter(c=>c.statut==='en_cours' && c.budget_initial>0);
+  if(chActifs.length){
+    const avg = chActifs.reduce((a,c)=>(a + c.budget_realise/c.budget_initial*100),0) / chActifs.length;
+    budgetPct = Math.round(avg);
+  }
+
+  document.getElementById('kpi-deals').textContent = dealsActifs.length;
+  document.getElementById('kpi-deals-sub').textContent = `dont ${data.deals.filter(d=>d.etape==='signe').length} signés`;
+  document.getElementById('kpi-urgent').textContent = urgent.length;
+  document.getElementById('kpi-urgent-sub').textContent = urgent.length===0 ? 'aucune urgence' : 'à traiter maintenant';
+  document.getElementById('kpi-budget').textContent = budgetPct + '%';
+  document.getElementById('kpi-budget-sub').textContent = `${chActifs.length} chantier${chActifs.length>1?'s':''} actif${chActifs.length>1?'s':''}`;
+  document.getElementById('kpi-contacts').textContent = data.contacts.length;
+  document.getElementById('kpi-contacts-sub').textContent = 'dans le CRM';
+
+  // Mémoire KPI
+  document.getElementById('kpi-memo').textContent = data.fragments.length;
+  document.getElementById('kpi-memo-sub').textContent = `${data.bible.filter(b=>b.contenu).length}/6 chapitres`;
+
+  const bel = document.getElementById('kpi-budget');
+  bel.className = 'kpi-value' + (budgetPct>90?' urgent': budgetPct>75?' warn':'');
+}
+
+// ── CRM ──
+let crmFilters = {entite:'all', statut:'all', metier:'all', loc:'all'};
+let crmPage = 0;
+const CRM_PAGE_SIZE = 100;
+
+function filterCRM(btn, dimension, value){
+  const bar = btn.closest('.filter-bar');
+  bar.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  crmFilters[dimension] = value;
+  crmPage = 0;
+  renderCRM();
+}
+
+function daysAgo(dateStr){
+  if(!dateStr) return null;
+  const d = Math.round((Date.now()-new Date(dateStr))/(86400000));
+  if(d===0) return "aujourd'hui";
+  if(d===1) return "hier";
+  return d+'j';
+}
+
+function entiteBadge(entites){
+  if(!entites || !entites.length) return '';
+  const map = {'BYM':'badge-bym','Urban Rise':'badge-ur','IRIS REP':'badge-iris','ARRISTO':'badge-perso','Galerie Carrez':'badge-perso','IRIS H':'badge-iris'};
+  if(Array.isArray(entites)){
+    return entites.map(e=>`<span class="badge ${map[e]||'badge-perso'}">${e}</span>`).join(' ');
+  }
+  return `<span class="badge badge-perso">${entites}</span>`;
+}
+
+function statutBadge(s){
+  const map = {prospect:'badge-a_faire','contacté':'badge-en_cours','qualifié':'badge-haute',actif:'badge-fait',inactif:'badge-basse'};
+  return s ? `<span class="badge ${map[s]||'badge-a_faire'}">${s}</span>` : '';
+}
+
+function agentBadge(a){
+  const map = {claude:'badge-claude',tom:'badge-tom',neo:'badge-neo'};
+  const label = {claude:'Claude',tom:'Tom',neo:'Neo'};
+  return `<span class="badge ${map[a]||''}">${label[a]||a}</span>`;
+}
+
+function renderCRM(){
+  const search = (document.getElementById('crm-search')?.value || '').toLowerCase();
+  let filtered = data.contacts;
+
+  if(crmFilters.entite!=='all'){
+    filtered = filtered.filter(c=>c.entite_iris && Array.isArray(c.entite_iris) && c.entite_iris.includes(crmFilters.entite));
+  }
+  if(crmFilters.statut!=='all'){
+    filtered = filtered.filter(c=>c.statut_relation===crmFilters.statut);
+  }
+  if(crmFilters.metier!=='all'){
+    filtered = filtered.filter(c=>c.metier===crmFilters.metier);
+  }
+  if(crmFilters.loc!=='all'){
+    filtered = filtered.filter(c=>c.localisation && c.localisation.includes(crmFilters.loc));
+  }
+  if(search){
+    filtered = filtered.filter(c=>{
+      const str = [c.prenom,c.nom,c.societe,c.metier,c.email,c.telephone,c.localisation,c.poste,c.notes,c.demande].filter(Boolean).join(' ').toLowerCase();
+      return str.includes(search);
+    });
+  }
+
+  const total = data.contacts.length;
+  const maxPage = Math.max(0, Math.ceil(filtered.length / CRM_PAGE_SIZE) - 1);
+  if(crmPage > maxPage) crmPage = maxPage;
+  const st = crmPage * CRM_PAGE_SIZE;
+  const pageData = filtered.slice(st, st + CRM_PAGE_SIZE);
+
+  const el = document.getElementById('crm-body');
+  document.getElementById('crm-count').textContent = filtered.length + '/' + total;
+
+  if(!filtered.length){
+    el.innerHTML=`<div class="empty"><div class="empty-ico">👥</div><div class="empty-text">Aucun contact trouvé</div></div>`;
+    return;
+  }
+
+  const pager = `<div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;font-size:11px;color:var(--dim)">
+    <span>${st+1} à ${Math.min(st+CRM_PAGE_SIZE, filtered.length)} sur ${filtered.length}</span>
+    <div style="display:flex;gap:.3rem">
+      <button class="filter-btn" onclick="crmPage=0;renderCRM()" ${crmPage===0?'disabled':''}>⟨⟨</button>
+      <button class="filter-btn" onclick="crmPage--;renderCRM()" ${crmPage===0?'disabled':''}>⟨</button>
+      <span style="padding:.35rem .6rem">${crmPage+1}/${maxPage+1}</span>
+      <button class="filter-btn" onclick="crmPage++;renderCRM()" ${crmPage>=maxPage?'disabled':''}>⟩</button>
+      <button class="filter-btn" onclick="crmPage=${maxPage};renderCRM()" ${crmPage>=maxPage?'disabled':''}>⟩⟩</button>
+    </div>
+  </div>`;
+
+  el.innerHTML= pager + `
+  <table class="crm-table">
+    <thead><tr>
+      <th>Prénom</th><th>Nom</th><th>Métier</th><th>Société</th><th>Localisation</th><th>Statut</th><th>Entité</th><th>Email</th><th>Tél</th>
+    </tr></thead>
+    <tbody>
+    ${pageData.map(c=>`<tr>
+      <td class="td-name">${c.prenom||''}</td>
+      <td class="td-name">${c.nom||''}</td>
+      <td>${c.metier||''}</td>
+      <td>${c.societe||''}</td>
+      <td>${c.localisation||''}</td>
+      <td>${statutBadge(c.statut_relation)}</td>
+      <td>${entiteBadge(c.entite_iris)}</td>
+      <td class="td-contact">${c.email?`<a href="mailto:${c.email}">${c.email}</a>`:''}</td>
+      <td class="td-contact">${c.telephone?`<a href="tel:${c.telephone}">${c.telephone}</a>`:''}</td>
+    </tr>`).join('')}
+    </tbody>
+  </table>` + pager;
+}
+
+// ── TODO ──
+function deadlineClass(d){
+  if(!d) return '';
+  const days = Math.round((new Date(d)-Date.now())/86400000);
+  if(days<0) return 'late';
+  if(days<=3) return 'soon';
+  return 'ok';
+}
+function deadlineLabel(d){
+  if(!d) return '';
+  const days = Math.round((new Date(d)-Date.now())/86400000);
+  if(days<0) return `en retard (${Math.abs(days)}j)`;
+  if(days===0) return "aujourd'hui";
+  if(days===1) return "demain";
+  return `dans ${days}j`;
+}
+
+function renderTodo(){
+  const groups = [
+    {key:'urgente', label:'Urgentes', cls:'badge-urgente'},
+    {key:'haute',   label:'Haute priorité', cls:'badge-haute'},
+    {key:'normale', label:'Normale', cls:'badge-normale'},
+  ];
+  const el = document.getElementById('todo-body');
+  let html = '';
+  for(const g of groups){
+    const items = data.taches.filter(t=>t.priorite===g.key && t.statut!=='fait');
+    if(!items.length) continue;
+    html += `<div class="todo-group">
+      <div class="todo-group-hdr" style="color:var(--text)">${g.label} <span class="count">${items.length}</span></div>
+      ${items.map(t=>{
+        const dc = deadlineClass(t.deadline);
+        return `<div class="todo-item">
+          <div class="todo-left">
+            <div class="todo-title">${t.titre}</div>
+            <div class="todo-meta">
+              ${t.entite ? entiteBadge(t.entite) : ''}
+              ${t.projet ? `<span style="color:var(--dim)">${t.projet}</span>` : ''}
+              <span class="badge badge-${t.statut}">${t.statut.replace('_',' ')}</span>
+              ${t.agent ? agentBadge(t.agent) : ''}
+            </div>
+          </div>
+          <div class="todo-right">
+            ${t.deadline ? `<span class="deadline ${dc}">${deadlineLabel(t.deadline)}</span>` : ''}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+  el.innerHTML = html || `<div class="empty"><div class="empty-ico">✅</div><div class="empty-text">Aucune tâche en cours</div></div>`;
+}
+
+// ── DEALS ──
+const ETAPES = [
+  {key:'prospect',      label:'Prospect'},
+  {key:'negociation',   label:'Négociation'},
+  {key:'due_diligence', label:'Due Diligence'},
+  {key:'signe',         label:'Signé'},
+  {key:'perdu',         label:'Perdu'},
+];
+const DEAL_TYPE = {
+  acquisition:'🏠',vente:'💰',chantier_bym:'🏗️',conseil_iris:'🤝'
+};
+const DEAL_LABEL = {
+  acquisition:'Acquisition',vente:'Vente',chantier_bym:'Chantier BYM',conseil_iris:'Conseil IRIS'
+};
+
+function fmt(n){ if(!n) return ''; if(n>=1000000) return (n/1000000).toFixed(1)+'M€'; if(n>=1000) return Math.round(n/1000)+'K€'; return n+'€'; }
+
+function renderDeals(){
+  const el = document.getElementById('deals-body');
+  el.innerHTML = ETAPES.map(e=>{
+    const cards = data.deals.filter(d=>d.etape===e.key);
+    return `<div class="kanban-col kcol-${e.key}">
+      <div class="kanban-col-hdr">${e.label} <span class="kcnt">${cards.length}</span></div>
+      ${cards.length ? cards.map(d=>`
+        <div class="deal-card">
+          <div class="deal-name"><span class="deal-type-ico">${DEAL_TYPE[d.type]||'📋'}</span>${d.nom}</div>
+          <div class="deal-meta">
+            ${DEAL_LABEL[d.type]||d.type||''}
+            ${d.entite ? '<br>'+entiteBadge(d.entite) : ''}
+          </div>
+          ${d.montant ? `<div class="deal-montant">${fmt(d.montant)}</div>` : ''}
+        </div>`).join('') :
+        `<div style="font-size:11px;color:var(--dim2);text-align:center;padding:.75rem">—</div>`}
+    </div>`;
+  }).join('');
+}
+
+// ── FINANCE ──
+function selectFinSection(btn, section){
+  document.querySelectorAll('.fin-nav-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.fin-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('fin-'+section).classList.add('active');
+}
+
+function renderFinance(){
+  const bel = document.getElementById('budget-body');
+  const ch = data.chantiers.filter(c=>c.budget_initial>0);
+  if(!ch.length){ bel.innerHTML=`<div class="empty"><div class="empty-text">Aucun chantier avec budget</div></div>`; }
+  else {
+    bel.innerHTML=`<div style="display:flex;flex-direction:column;gap:.6rem">
+    ${ch.map(c=>{
+      const pct = Math.round(c.budget_realise/c.budget_initial*100);
+      const cls = pct>90?'bfill-danger':pct>75?'bfill-warn':'bfill-ok';
+      return `<div class="budget-row">
+        <div class="budget-label">
+          <span class="bname">${c.nom} ${entiteBadge(c.entite)}</span>
+          <span class="bpct" style="color:${pct>90?'var(--red)':pct>75?'var(--orange)':'var(--green)'}">${pct}%</span>
+        </div>
+        <div class="budget-bar"><div class="budget-fill ${cls}" style="width:${Math.min(pct,100)}%"></div></div>
+        <div class="budget-nums"><span>${fmt(c.budget_realise)} réalisé</span><span>Budget : ${fmt(c.budget_initial)}</span></div>
+      </div>`;
+    }).join('')}
+    </div>`;
+  }
+
+  const entites = ['BYM','URBAN_RISE','IRIS_REP'];
+  const labels = {BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP'};
+  let totalIn=0, totalOut=0;
+  const tel = document.getElementById('treso-body');
+  tel.innerHTML=`<div style="display:flex;flex-direction:column;gap:.4rem">
+    <div class="treso-row" style="font-size:9px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:.2rem">
+      <span></span><span>Entrant</span><span>Sortant</span><span>Net</span>
+    </div>
+    ${entites.map(e=>{
+      const rows = data.tresorerie.filter(t=>t.entite===e);
+      const ein = rows.filter(r=>r.type==='entrant').reduce((a,r)=>a+r.montant,0);
+      const eout = rows.filter(r=>r.type==='sortant').reduce((a,r)=>a+r.montant,0);
+      const net = ein-eout;
+      totalIn+=ein; totalOut+=eout;
+      return `<div class="treso-row">
+        <span class="treso-entite">${labels[e]}</span>
+        <span class="treso-in">+${fmt(ein)||'0€'}</span>
+        <span class="treso-out">${fmt(eout)||'0€'}</span>
+        <span class="treso-net" style="color:${net>=0?'var(--green)':'var(--red)'}">  ${net>=0?'+':''}${fmt(Math.abs(net))}</span>
+      </div>`;
+    }).join('')}
+  </div>`;
+
+  const totalNet = totalIn-totalOut;
+  const chMarge = data.chantiers.filter(c=>c.budget_initial>0);
+  const margeAVG = chMarge.length ? Math.round(chMarge.reduce((a,c)=>{
+    return a+((c.budget_initial-c.budget_realise)/c.budget_initial*100);
+  },0)/chMarge.length) : 0;
+
+  document.getElementById('synth-body').innerHTML=`
+    <div class="synth-item"><div class="synth-label">Total entrant</div><div class="synth-value pos">${fmt(totalIn)}</div></div>
+    <div class="synth-item"><div class="synth-label">Total sortant</div><div class="synth-value neg">${fmt(totalOut)}</div></div>
+    <div class="synth-item"><div class="synth-label">Tréso nette</div><div class="synth-value ${totalNet>=0?'pos':'neg'}">${totalNet>=0?'+':''}${fmt(Math.abs(totalNet))}</div></div>
+    <div class="synth-item"><div class="synth-label">Marge moy.</div><div class="synth-value">${margeAVG}%</div></div>
+    <div class="synth-item"><div class="synth-label">Deals actifs</div><div class="synth-value">${data.deals.filter(d=>d.etape!=='perdu').length}</div></div>
+    <div class="synth-item"><div class="synth-label">Chantiers</div><div class="synth-value">${data.chantiers.filter(c=>c.statut==='en_cours').length}</div></div>`;
+
+  // Sections custom : lire les fragments avec le tag correspondant
+  const customSections = [
+    {id:'suivi1', tag:'suivi1', label:'Suivi financier 1'},
+    {id:'suivi2', tag:'suivi2', label:'Suivi financier 2'},
+    {id:'suivi3', tag:'suivi3', label:'Suivi financier 3'},
+    {id:'suivi4', tag:'suivi4', label:'Suivi financier 4'},
+    {id:'vilmar', tag:'vilmar', label:'Vilmar'}
+  ];
+  customSections.forEach(s=>{
+    const el = document.getElementById('fin-'+s.id+'-body');
+    if(!el) return;
+    const frags = data.fragments.filter(f=>f.tags && f.tags.includes(s.tag) && f.thematique==='finance');
+    if(!frags.length){
+      el.innerHTML = '';
+      return;
+    }
+    let total = 0;
+    const rows = frags.map(f=>{
+      const match = f.contenu.match(/(\d[\d\s]*)\s*euros?/i);
+      const montant = match ? parseFloat(match[1].replace(/\s/g,'')) : 0;
+      total += montant;
+      const libelle = f.contenu.replace(/(\d[\d\s]*)\s*euros?/i,'').replace(/[.:,]\s*$/,'').trim();
+      return {libelle, montant, date: f.created_at};
+    });
+    el.innerHTML = `<table class="crm-table" style="margin-top:.5rem">
+      <thead><tr><th>Libellé</th><th>Montant</th><th>Date</th></tr></thead>
+      <tbody>
+      ${rows.map(r=>`<tr>
+        <td class="td-name">${r.libelle}</td>
+        <td style="color:var(--green)">${fmt(r.montant)}</td>
+        <td class="ago">${formatDate(r.date)}</td>
+      </tr>`).join('')}
+      <tr style="border-top:2px solid var(--border)">
+        <td class="td-name" style="font-weight:600">Total</td>
+        <td style="color:var(--gold);font-weight:600">${fmt(total)}</td>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>`;
+  });
+}
+
+// ── MEMOIRE ──
+const THEMATIQUES = [
+  {key:'immobilier', label:'Immobilier / Foncier', ico:'🏢'},
+  {key:'finance',    label:'Finance / Trésorerie', ico:'💶'},
+  {key:'chantiers',  label:'Chantiers / BYM', ico:'🏗️'},
+  {key:'contacts',   label:'Contacts / Réseau', ico:'👥'},
+  {key:'juridique',  label:'Juridique / Sociétés', ico:'⚖️'},
+  {key:'dealflow',   label:'Deal Flow', ico:'📊'},
+];
+
+let activeBibleTheme = 'immobilier';
+
+function setMemoView(btn, view){
+  document.querySelectorAll('.memo-toggle-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('memo-bible-view').style.display = view==='bible' ? 'block' : 'none';
+  document.getElementById('memo-fragments-view').style.display = view==='fragments' ? 'block' : 'none';
+}
+
+function selectBibleChapter(btn, theme){
+  document.querySelectorAll('.memo-nav-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  activeBibleTheme = theme;
+  document.querySelectorAll('.bible-chapter').forEach(c=>c.classList.remove('active'));
+  const target = document.getElementById('bible-'+theme);
+  if(target) target.classList.add('active');
+}
+
+function filterFragments(btn, agent){
+  document.querySelectorAll('#fragment-filter-bar .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  fragmentFilter = agent;
+  renderFragments();
+}
+
+function formatDate(iso){
+  if(!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'}) + ' · ' + d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+}
+
+function renderMemoire(){
+  renderBible();
+  renderFragments();
+}
+
+function renderBible(){
+  const nav = document.getElementById('bible-nav');
+  const chapters = document.getElementById('bible-chapters');
+
+  nav.innerHTML = THEMATIQUES.map((t,i)=>
+    `<button class="memo-nav-btn ${i===0?'active':''}" onclick="selectBibleChapter(this,'${t.key}')">${t.ico} ${t.label}</button>`
+  ).join('');
+
+  chapters.innerHTML = THEMATIQUES.map((t,i)=>{
+    const entry = data.bible.find(b=>b.thematique===t.key);
+    const contenu = entry ? entry.contenu : '';
+    const maj = entry ? entry.derniere_maj : null;
+    const ver = entry ? entry.version : 0;
+
+    // Nombre de fragments liés
+    const fragCount = data.fragments.filter(f=>f.thematique===t.key).length;
+
+    return `<div class="bible-chapter ${i===0?'active':''}" id="bible-${t.key}">
+      <div class="sec-hdr">${t.ico} ${t.label}</div>
+      <div class="bible-content">${escapeHtml(contenu)}</div>
+      <div class="bible-meta">
+        <span>${maj ? 'Maj : '+formatDate(maj) : 'Jamais mis à jour'} ${ver ? '· v'+ver : ''}</span>
+        <span>${fragCount} fragment${fragCount>1?'s':''} source${fragCount>1?'s':''}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderFragments(){
+  const filtered = fragmentFilter==='all' ? data.fragments : data.fragments.filter(f=>f.agent===fragmentFilter);
+  const el = document.getElementById('fragments-body');
+
+  if(!filtered.length){
+    el.innerHTML=`<div class="empty"><div class="empty-ico">🧠</div><div class="empty-text">Aucun fragment enregistré</div></div>`;
+    return;
+  }
+
+  el.innerHTML = filtered.map(f=>`
+    <div class="fragment-item">
+      <div class="fragment-header">
+        <div>${agentBadge(f.agent)} <span class="badge badge-${f.importance==='haute'?'urgente':f.importance==='basse'?'basse':'normale'}">${f.importance}</span></div>
+        <div class="fragment-date">${formatDate(f.created_at)}</div>
+      </div>
+      <div class="fragment-text">${escapeHtml(f.contenu)}</div>
+      ${f.tags && f.tags.length ? `<div class="fragment-tags">${f.tags.map(t=>`<span class="fragment-tag">${t}</span>`).join('')}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function escapeHtml(str){
+  if(!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+// ═══════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ═══════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// ═══════════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════════
+function boot(){
+  cfg = getConfig();
+  if(!cfg){
+    document.getElementById('setup').classList.remove('hidden');
+    return;
+  }
+  document.getElementById('setup').classList.add('hidden');
+  const appEl = document.getElementById('app');
+  appEl.style.display='flex';
+  appEl.style.flexDirection='column';
+  appEl.style.height='100%';
+
+  const cache = localStorage.getItem('iris_h_cache');
+  if(cache){
+    try{
+      data = JSON.parse(cache).data;
+      if(!data.fragments) data.fragments = [];
+      if(!data.bible) data.bible = [];
+      render();
+    }catch(e){}
+  }
+  loadAll();
+}
+
+boot();
+</script>
+</body>
+</html>
