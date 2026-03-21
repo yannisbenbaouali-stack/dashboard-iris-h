@@ -631,13 +631,13 @@ async function loadAll(){
   btn.textContent = 'Chargement';
   try{
     const [contacts, taches, deals, chantiers, tresorerie, fragments, bible] = await Promise.all([
-      supa('contacts','order=nom.asc.nullslast', true),
-      supa('taches','order=priorite,deadline&statut=neq.fait'),
-      supa('deals','order=etape,nom'),
-      supa('chantiers','order=nom'),
-      supa('tresorerie','order=entite'),
-      supa('memoire_fragments','order=created_at.desc'),
-      supa('memoire_bible','order=thematique')
+      supa('contacts','order=nom.asc.nullslast', true).catch(()=>[]),
+      supa('taches','order=priorite,deadline&statut=neq.fait').catch(()=>[]),
+      supa('deals','order=etape,nom').catch(()=>[]),
+      supa('chantiers','order=nom').catch(()=>[]),
+      supa('tresorerie','order=entite').catch(()=>[]),
+      supa('memoire_fragments','order=created_at.desc').catch(()=>[]),
+      supa('memoire_bible','order=thematique').catch(()=>[])
     ]);
     data = { contacts, taches, deals, chantiers, tresorerie, fragments, bible };
     localStorage.setItem('iris_h_cache', JSON.stringify({data, ts: Date.now()}));
