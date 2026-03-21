@@ -640,7 +640,7 @@ async function loadAll(){
       supa('memoire_bible','order=thematique').catch(()=>[])
     ]);
     data = { contacts, taches, deals, chantiers, tresorerie, fragments, bible };
-    localStorage.setItem('iris_h_cache', JSON.stringify({data, ts: Date.now()}));
+    try{ localStorage.setItem('iris_h_cache', JSON.stringify({data: {taches:data.taches,deals:data.deals,chantiers:data.chantiers,tresorerie:data.tresorerie,fragments:data.fragments,bible:data.bible}, ts: Date.now()})); }catch(e){ console.warn('Cache quota exceeded'); }
     render();
     const t = new Date();
     document.getElementById('refresh-time').textContent = `${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`;
