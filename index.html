@@ -170,7 +170,7 @@ main{flex:1;overflow:hidden;position:relative}
 .deadline.soon{color:var(--orange)}
 .deadline.ok{color:var(--dim)}
 
-/* ── DEALS KANBAN ── */
+/* ── DEALS TABLE ── */
 .deals-filters{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
 .deals-filter-btn{
   padding:.35rem .85rem;border:1px solid var(--border2);border-radius:20px;
@@ -182,38 +182,33 @@ main{flex:1;overflow:hidden;position:relative}
 .deals-stat{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:.6rem .9rem}
 .deals-stat-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
 .deals-stat-value{font-family:var(--font-serif);font-size:1.3rem;color:var(--text);margin-top:.15rem}
-.kanban{display:flex;gap:.75rem;overflow-x:auto;padding-bottom:.5rem;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
-.kanban-col{flex:0 0 175px;display:flex;flex-direction:column;gap:.5rem}
-.kanban-col-hdr{
-  font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:.5rem .6rem;
-  border-radius:6px;display:flex;align-items:center;justify-content:space-between;
-  border:1px solid var(--border);background:var(--s2);color:var(--dim)
-}
-.kanban-col-hdr .kcnt{font-size:11px;background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:0 7px}
-.deal-card{
-  background:var(--s1);border:1px solid var(--border);border-radius:8px;
-  padding:.75rem .85rem;transition:.15s;cursor:default;border-left:3px solid var(--border)
-}
-.deal-card:hover{border-color:var(--border2);background:var(--s2)}
-.deal-card[data-entite="BYM"]{border-left-color:var(--blue)}
-.deal-card[data-entite="URBAN_RISE"]{border-left-color:var(--violet)}
-.deal-card[data-entite="IRIS_REP"]{border-left-color:var(--gold)}
-.deal-name{font-size:12px;color:var(--text);margin-bottom:.35rem;font-weight:500}
-.deal-type-ico{font-size:.9rem;margin-right:.2rem}
-.deal-meta{font-size:10px;color:var(--dim);line-height:1.7}
-.deal-montant{font-size:12px;color:var(--green);margin-top:.3rem;font-weight:500}
-.deal-comment{font-size:10px;color:var(--dim);margin-top:.25rem;font-style:italic}
 
-/* Column accent colours */
-.kcol-sourcing .kanban-col-hdr{border-color:#22d3ee30;color:var(--cyan)}
-.kcol-analyse .kanban-col-hdr{border-color:#5b9cf630;color:var(--blue)}
-.kcol-nego .kanban-col-hdr{border-color:#fb923c30;color:var(--orange)}
-.kcol-offre .kanban-col-hdr{border-color:#a78bfa30;color:var(--violet)}
-.kcol-compromis .kanban-col-hdr{border-color:#c8a45530;color:var(--gold)}
-.kcol-acte .kanban-col-hdr{border-color:#41c98e30;color:var(--green)}
-.kcol-travaux .kanban-col-hdr{border-color:#5b9cf630;color:var(--blue)}
-.kcol-commercialisation .kanban-col-hdr{border-color:#fb923c30;color:var(--orange)}
-.kcol-cloture .kanban-col-hdr{border-color:#41c98e30;color:var(--green)}
+.deals-table{width:100%;border-collapse:collapse;font-size:12px}
+.deals-table thead th{
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);
+  padding:.6rem .7rem;text-align:left;border-bottom:1px solid var(--border);
+  background:var(--s2);white-space:nowrap;cursor:pointer;user-select:none;transition:.15s
+}
+.deals-table thead th:hover{color:var(--gold)}
+.deals-table thead th.sorted-asc::after{content:' ▲';font-size:8px;color:var(--gold)}
+.deals-table thead th.sorted-desc::after{content:' ▼';font-size:8px;color:var(--gold)}
+.deals-table tbody tr{cursor:default;transition:.1s}
+.deals-table tbody tr:hover td{background:var(--s2)}
+.deals-table tbody td{padding:.55rem .7rem;border-bottom:1px solid var(--dim2);color:#888;vertical-align:middle}
+.deals-table .td-name{color:var(--text);font-weight:500}
+.deals-table .td-montant{color:var(--green);font-weight:500;white-space:nowrap}
+.deals-table .td-comment{font-size:10px;color:var(--dim);font-style:italic;max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.badge-etape{display:inline-flex;align-items:center;font-size:9px;padding:2px 7px;border-radius:3px;border:1px solid;white-space:nowrap}
+.badge-sourcing{background:#22d3ee18;border-color:#22d3ee40;color:var(--cyan)}
+.badge-analyse{background:var(--bluef);border-color:#5b9cf640;color:var(--blue)}
+.badge-nego{background:var(--orangef);border-color:#fb923c40;color:var(--orange)}
+.badge-offre{background:var(--violetf);border-color:#a78bfa40;color:var(--violet)}
+.badge-compromis{background:var(--goldf);border-color:#c8a45540;color:var(--gold)}
+.badge-acte{background:var(--greenf);border-color:#41c98e40;color:var(--green)}
+.badge-travaux{background:var(--bluef);border-color:#5b9cf640;color:var(--blue)}
+.badge-commercialisation{background:var(--orangef);border-color:#fb923c40;color:var(--orange)}
+.badge-cloture{background:var(--greenf);border-color:#41c98e40;color:var(--green)}
 
 /* ── FINANCE ── */
 .finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
@@ -484,7 +479,7 @@ main{flex:1;overflow:hidden;position:relative}
         <button class="deals-filter-btn" onclick="filterDeals(this,'IRIS_REP')">IRIS REP</button>
       </div>
       <div class="deals-stats" id="deals-stats"></div>
-      <div class="kanban" id="deals-body"></div>
+      <div id="deals-body"></div>
     </div>
 
     <!-- ── FINANCE ── -->
@@ -965,6 +960,11 @@ const ETAPES = [
   {key:'commercialisation',label:'Commerc.'},
   {key:'cloture',          label:'Clôture'},
 ];
+const ETAPE_ORDER = {};
+ETAPES.forEach((e,i)=> ETAPE_ORDER[e.key] = i);
+const ETAPE_LABEL = {};
+ETAPES.forEach(e=> ETAPE_LABEL[e.key] = e.label);
+
 const DEAL_TYPE = {
   acquisition:'🏠',vente:'💰',chantier:'🏗️',mandat:'🤝',montage:'📐',appel_offres:'📋',gestion:'🔑'
 };
@@ -973,6 +973,8 @@ const DEAL_LABEL = {
 };
 
 let dealsFilter = 'all';
+let dealsSortCol = 'etape';
+let dealsSortDir = 'asc';
 
 function filterDeals(btn, entite){
   document.querySelectorAll('.deals-filter-btn').forEach(b=>b.classList.remove('active'));
@@ -981,10 +983,39 @@ function filterDeals(btn, entite){
   renderDeals();
 }
 
+function sortDeals(col){
+  if(dealsSortCol === col){
+    dealsSortDir = dealsSortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    dealsSortCol = col;
+    dealsSortDir = 'asc';
+  }
+  renderDeals();
+}
+
 function fmt(n){ if(!n) return ''; if(n>=1000000) return (n/1000000).toFixed(1)+'M€'; if(n>=1000) return Math.round(n/1000)+'K€'; return n+'€'; }
 
 function renderDeals(){
-  const deals = dealsFilter==='all' ? data.deals : data.deals.filter(d=>d.entite===dealsFilter);
+  let deals = dealsFilter==='all' ? [...data.deals] : data.deals.filter(d=>d.entite===dealsFilter);
+
+  // Sort
+  const dir = dealsSortDir === 'asc' ? 1 : -1;
+  deals.sort((a,b)=>{
+    let va, vb;
+    if(dealsSortCol === 'etape'){
+      va = ETAPE_ORDER[a.etape] ?? 99;
+      vb = ETAPE_ORDER[b.etape] ?? 99;
+    } else if(['montant','ca_previ','resultat_previ'].includes(dealsSortCol)){
+      va = a[dealsSortCol] || 0;
+      vb = b[dealsSortCol] || 0;
+    } else {
+      va = (a[dealsSortCol] || '').toString().toLowerCase();
+      vb = (b[dealsSortCol] || '').toString().toLowerCase();
+    }
+    if(va < vb) return -1 * dir;
+    if(va > vb) return 1 * dir;
+    return 0;
+  });
 
   // Stats
   const totalDeals = deals.length;
@@ -999,27 +1030,42 @@ function renderDeals(){
     <div class="deals-stat"><div class="deals-stat-label">En travaux</div><div class="deals-stat-value">${enTravaux}</div></div>
   `;
 
+  const cols = [
+    {key:'nom', label:'Nom'},
+    {key:'entite', label:'Entité'},
+    {key:'type', label:'Type'},
+    {key:'etape', label:'Étape'},
+    {key:'montant', label:'Montant'},
+    {key:'ca_previ', label:'CA Prévi'},
+    {key:'resultat_previ', label:'Résultat Prévi'},
+    {key:'adresse', label:'Adresse'},
+    {key:'commentaire', label:'Commentaire'},
+  ];
+
   const el = document.getElementById('deals-body');
-  el.innerHTML = ETAPES.map(e=>{
-    const cards = deals.filter(d=>d.etape===e.key);
-    return `<div class="kanban-col kcol-${e.key}">
-      <div class="kanban-col-hdr">${e.label} <span class="kcnt">${cards.length}</span></div>
-      ${cards.length ? cards.map(d=>`
-        <div class="deal-card" data-entite="${d.entite||''}">
-          <div class="deal-name"><span class="deal-type-ico">${DEAL_TYPE[d.type]||'📋'}</span>${d.nom}</div>
-          <div class="deal-meta">
-            ${DEAL_LABEL[d.type]||d.type||''}
-            ${d.adresse ? '<br>'+d.adresse : ''}
-            ${d.entite ? '<br>'+entiteBadge(d.entite) : ''}
-          </div>
-          ${d.montant ? `<div class="deal-montant">${fmt(d.montant)}</div>` : ''}
-          ${d.ca_previ ? `<div style="font-size:10px;color:var(--cyan);margin-top:.15rem">CA: ${fmt(d.ca_previ)}</div>` : ''}
-          ${d.resultat_previ ? `<div style="font-size:10px;color:var(--green);margin-top:.1rem">Résultat: ${fmt(d.resultat_previ)}</div>` : ''}
-          ${d.commentaire ? `<div class="deal-comment">${d.commentaire}</div>` : ''}
-        </div>`).join('') :
-        `<div style="font-size:11px;color:var(--dim2);text-align:center;padding:.75rem">—</div>`}
-    </div>`;
-  }).join('');
+  el.innerHTML = `
+  <table class="deals-table">
+    <thead><tr>
+      ${cols.map(c=>{
+        let cls = '';
+        if(dealsSortCol===c.key) cls = dealsSortDir==='asc' ? 'sorted-asc' : 'sorted-desc';
+        return `<th class="${cls}" onclick="sortDeals('${c.key}')">${c.label}</th>`;
+      }).join('')}
+    </tr></thead>
+    <tbody>
+    ${deals.length ? deals.map(d=>`<tr>
+      <td class="td-name">${DEAL_TYPE[d.type]||'📋'} ${d.nom||''}</td>
+      <td>${entiteBadge(d.entite)}</td>
+      <td>${DEAL_LABEL[d.type]||d.type||''}</td>
+      <td><span class="badge-etape badge-${d.etape||''}">${ETAPE_LABEL[d.etape]||d.etape||''}</span></td>
+      <td class="td-montant">${fmt(d.montant)}</td>
+      <td class="td-montant" style="color:var(--cyan)">${fmt(d.ca_previ)}</td>
+      <td class="td-montant">${fmt(d.resultat_previ)}</td>
+      <td>${d.adresse||''}</td>
+      <td class="td-comment" title="${(d.commentaire||'').replace(/"/g,'&quot;')}">${d.commentaire||''}</td>
+    </tr>`).join('') : `<tr><td colspan="${cols.length}" style="text-align:center;padding:2rem;color:var(--dim)">Aucun deal</td></tr>`}
+    </tbody>
+  </table>`;
 }
 
 // ── FINANCE ──
