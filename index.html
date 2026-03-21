@@ -170,45 +170,31 @@ main{flex:1;overflow:hidden;position:relative}
 .deadline.soon{color:var(--orange)}
 .deadline.ok{color:var(--dim)}
 
-/* ── DEALS TABLE ── */
-.deals-filters{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
-.deals-filter-btn{
-  padding:.35rem .85rem;border:1px solid var(--border2);border-radius:20px;
-  font-family:var(--font-mono);font-size:10px;letter-spacing:1px;
-  text-transform:uppercase;color:var(--dim);background:var(--s2);cursor:pointer;transition:.2s
+/* ── DEALS KANBAN ── */
+.kanban{display:flex;gap:.75rem;overflow-x:auto;padding-bottom:.5rem;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+.kanban-col{flex:0 0 220px;display:flex;flex-direction:column;gap:.5rem}
+.kanban-col-hdr{
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:.5rem .75rem;
+  border-radius:6px;display:flex;align-items:center;justify-content:space-between;
+  border:1px solid var(--border);background:var(--s2);color:var(--dim)
 }
-.deals-filter-btn:hover,.deals-filter-btn.active{border-color:var(--gold);color:var(--gold);background:var(--goldf)}
-.deals-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1rem}
-.deals-stat{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:.6rem .9rem}
-.deals-stat-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
-.deals-stat-value{font-family:var(--font-serif);font-size:1.3rem;color:var(--text);margin-top:.15rem}
-
-.deals-table{width:100%;border-collapse:collapse;font-size:12px}
-.deals-table thead th{
-  font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);
-  padding:.6rem .7rem;text-align:left;border-bottom:1px solid var(--border);
-  background:var(--s2);white-space:nowrap;cursor:pointer;user-select:none;transition:.15s
+.kanban-col-hdr .kcnt{font-size:11px;background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:0 7px}
+.deal-card{
+  background:var(--s1);border:1px solid var(--border);border-radius:8px;
+  padding:.75rem .85rem;transition:.15s;cursor:default
 }
-.deals-table thead th:hover{color:var(--gold)}
-.deals-table thead th.sorted-asc::after{content:' ▲';font-size:8px;color:var(--gold)}
-.deals-table thead th.sorted-desc::after{content:' ▼';font-size:8px;color:var(--gold)}
-.deals-table tbody tr{cursor:default;transition:.1s}
-.deals-table tbody tr:hover td{background:var(--s2)}
-.deals-table tbody td{padding:.55rem .7rem;border-bottom:1px solid var(--dim2);color:#888;vertical-align:middle}
-.deals-table .td-name{color:var(--text);font-weight:500}
-.deals-table .td-montant{color:var(--green);font-weight:500;white-space:nowrap}
-.deals-table .td-comment{font-size:10px;color:var(--dim);font-style:italic;max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.deal-card:hover{border-color:var(--border2);background:var(--s2)}
+.deal-name{font-size:13px;color:var(--text);margin-bottom:.35rem;font-weight:500}
+.deal-type-ico{font-size:.9rem;margin-right:.2rem}
+.deal-meta{font-size:10px;color:var(--dim);line-height:1.7}
+.deal-montant{font-size:12px;color:var(--green);margin-top:.3rem;font-weight:500}
 
-.badge-etape{display:inline-flex;align-items:center;font-size:9px;padding:2px 7px;border-radius:3px;border:1px solid;white-space:nowrap}
-.badge-sourcing{background:#22d3ee18;border-color:#22d3ee40;color:var(--cyan)}
-.badge-analyse{background:var(--bluef);border-color:#5b9cf640;color:var(--blue)}
-.badge-nego{background:var(--orangef);border-color:#fb923c40;color:var(--orange)}
-.badge-offre{background:var(--violetf);border-color:#a78bfa40;color:var(--violet)}
-.badge-compromis{background:var(--goldf);border-color:#c8a45540;color:var(--gold)}
-.badge-acte{background:var(--greenf);border-color:#41c98e40;color:var(--green)}
-.badge-travaux{background:var(--bluef);border-color:#5b9cf640;color:var(--blue)}
-.badge-commercialisation{background:var(--orangef);border-color:#fb923c40;color:var(--orange)}
-.badge-cloture{background:var(--greenf);border-color:#41c98e40;color:var(--green)}
+/* Column accent colours */
+.kcol-prospect .kanban-col-hdr{border-color:#5b9cf630;color:var(--blue)}
+.kcol-negociation .kanban-col-hdr{border-color:#fb923c30;color:var(--orange)}
+.kcol-due_diligence .kanban-col-hdr{border-color:#a78bfa30;color:var(--violet)}
+.kcol-signe .kanban-col-hdr{border-color:#41c98e30;color:var(--green)}
+.kcol-perdu .kanban-col-hdr{border-color:#f8717130;color:var(--red)}
 
 /* ── FINANCE ── */
 .finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
@@ -344,7 +330,7 @@ main{flex:1;overflow:hidden;position:relative}
   .kpi:nth-child(4){border-top:1px solid var(--border);border-right:none}
   .kpi:nth-child(5){border-top:1px solid var(--border);grid-column:1/-1}
   .finance-grid{grid-template-columns:1fr}
-  .kanban-col{flex:0 0 150px}
+  .kanban-col{flex:0 0 185px}
   .logo span{display:none}
   .refresh-time{display:none}
   header{padding:.6rem 1rem}
@@ -426,7 +412,7 @@ main{flex:1;overflow:hidden;position:relative}
     <!-- ── CRM ── -->
     <div class="tab-content active" id="tab-crm">
       <div class="search-bar">
-        <input class="search-input" id="crm-search" type="text" placeholder="Rechercher (nom, email, société, métier, localisation...)" oninput="onCRMSearch()" autocomplete="off" spellcheck="false">
+        <input class="search-input" id="crm-search" type="text" placeholder="Rechercher (nom, email, société, métier, localisation...)" oninput="renderCRM()" autocomplete="off" spellcheck="false">
         <span class="search-count" id="crm-count"></span>
       </div>
       <div class="filter-bar" id="crm-filter-entite">
@@ -467,19 +453,28 @@ main{flex:1;overflow:hidden;position:relative}
 
     <!-- ── TODO ── -->
     <div class="tab-content" id="tab-todo">
+      <div class="filter-bar" id="todo-filter-entite">
+        <button class="filter-btn active" onclick="filterTodo(this,'all')">Toutes</button>
+        <button class="filter-btn" onclick="filterTodo(this,'IRIS H')">IRIS H</button>
+        <button class="filter-btn" onclick="filterTodo(this,'Infra')">Infra</button>
+        <button class="filter-btn" onclick="filterTodo(this,'BYM')">BYM</button>
+        <button class="filter-btn" onclick="filterTodo(this,'Urban Rise')">Urban Rise</button>
+        <button class="filter-btn" onclick="filterTodo(this,'IRIS REP')">IRIS REP</button>
+        <button class="filter-btn" onclick="filterTodo(this,'ARRISTO')">ARRISTO</button>
+      </div>
+      <div class="filter-bar" id="todo-filter-statut">
+        <button class="filter-btn active" onclick="filterTodoStatut(this,'all')">Tous statuts</button>
+        <button class="filter-btn" onclick="filterTodoStatut(this,'a_faire')">A faire</button>
+        <button class="filter-btn" onclick="filterTodoStatut(this,'en_cours')">En cours</button>
+        <button class="filter-btn" onclick="filterTodoStatut(this,'fait')">Fait</button>
+      </div>
+      <div style="font-size:10px;color:var(--dim);margin:6px 0 10px" id="todo-count"></div>
       <div id="todo-body"></div>
     </div>
 
     <!-- ── DEALS ── -->
     <div class="tab-content" id="tab-deals">
-      <div class="deals-filters" id="deals-filter-entite">
-        <button class="deals-filter-btn active" onclick="filterDeals(this,'all')">Tous</button>
-        <button class="deals-filter-btn" onclick="filterDeals(this,'BYM')">BYM</button>
-        <button class="deals-filter-btn" onclick="filterDeals(this,'URBAN_RISE')">Urban Rise</button>
-        <button class="deals-filter-btn" onclick="filterDeals(this,'IRIS_REP')">IRIS REP</button>
-      </div>
-      <div class="deals-stats" id="deals-stats"></div>
-      <div id="deals-body"></div>
+      <div class="kanban" id="deals-body"></div>
     </div>
 
     <!-- ── FINANCE ── -->
@@ -581,7 +576,7 @@ main{flex:1;overflow:hidden;position:relative}
 // ═══════════════════════════════════════════════
 const CFG_KEY = 'iris_h_cfg';
 let cfg = null;
-let data = { contacts:[], taches:[], deals:[], chantiers:[], tresorerie:[], fragments:[], bible:[] };
+let data = { contacts:[], taches:[], taches_v2:[], deals:[], chantiers:[], tresorerie:[], fragments:[], bible:[] };
 let fragmentFilter = 'all';
 
 function getConfig(){
@@ -651,27 +646,22 @@ async function loadAll(){
   btn.classList.add('loading');
   btn.textContent = 'Chargement';
   try{
-    const safe = async (fn) => { try { return await fn(); } catch(e) { console.warn('Warning:', e); return []; } };
-    const [taches, deals, chantiers, tresorerie, fragments, bible] = await Promise.all([
+    const safe = async (fn) => { try { return await fn(); } catch(e) { console.warn(e); return []; } };
+    const [contacts, taches, taches_v2, deals, chantiers, tresorerie, fragments, bible] = await Promise.all([
+      safe(() => supa('contacts','order=nom.asc.nullslast', true)),
       safe(() => supa('taches','order=created_at.desc')),
+      safe(() => supa('taches_v2','order=created_at.asc')),
       safe(() => supa('deals','order=created_at.desc')),
       safe(() => supa('chantiers','order=created_at.desc')),
       safe(() => supa('tresorerie','order=created_at.desc')),
       safe(() => supa('memoire_fragments','order=created_at.desc')),
       safe(() => supa('memoire_bible','order=thematique'))
     ]);
-    data.taches = taches;
-    data.deals = deals;
-    data.chantiers = chantiers;
-    data.tresorerie = tresorerie;
-    data.fragments = fragments;
-    data.bible = bible;
+    data = { contacts, taches, taches_v2, deals, chantiers, tresorerie, fragments, bible };
+    localStorage.setItem('iris_h_cache', JSON.stringify({data, ts: Date.now()}));
     render();
     const t = new Date();
     document.getElementById('refresh-time').textContent = `${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`;
-    localStorage.setItem('iris_h_cache', JSON.stringify({data: {...data, contacts:[]}, ts: Date.now()}));
-    // Load CRM count + first page via server-side pagination
-    loadCRMPage();
   } catch(e){
     showToast('Erreur connexion Supabase');
     const cache = localStorage.getItem('iris_h_cache');
@@ -679,125 +669,6 @@ async function loadAll(){
   } finally{
     btn.classList.remove('loading');
     btn.textContent = '↻ Actualiser';
-  }
-}
-
-// ── CRM SERVER-SIDE PAGINATION ──
-async function loadCRMPage(){
-  if(!cfg) return;
-  const el = document.getElementById('crm-body');
-  el.innerHTML = '<div class="empty"><div class="empty-text" style="color:var(--dim)">Chargement contacts...</div></div>';
-
-  // Build filters for Supabase query
-  let params = 'order=nom.asc.nullslast';
-  const search = (document.getElementById('crm-search')?.value || '').trim();
-
-  if(crmFilters.entite!=='all'){
-    params += `&entite_iris=cs.{"${crmFilters.entite}"}`;
-  }
-  if(crmFilters.statut!=='all'){
-    params += `&statut_relation=eq.${encodeURIComponent(crmFilters.statut)}`;
-  }
-  if(crmFilters.metier!=='all'){
-    params += `&metier=eq.${encodeURIComponent(crmFilters.metier)}`;
-  }
-  if(crmFilters.loc!=='all'){
-    params += `&localisation=like.*${encodeURIComponent(crmFilters.loc)}*`;
-  }
-  if(search){
-    // Full text search on multiple columns via or filter
-    const s = encodeURIComponent(`%${search}%`);
-    params += `&or=(nom.ilike.${s},prenom.ilike.${s},societe.ilike.${s},email.ilike.${s},metier.ilike.${s},localisation.ilike.${s},telephone.ilike.${s})`;
-  }
-
-  const offset = crmPage * CRM_PAGE_SIZE;
-  const countParams = params;
-
-  try {
-    // Get count with exact header
-    const countUrl = `${cfg.url}/rest/v1/contacts?${countParams}&limit=1&offset=0`;
-    const countRes = await fetch(countUrl, {
-      headers:{
-        'apikey': cfg.key,
-        'Authorization': `Bearer ${cfg.key}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'count=exact'
-      }
-    });
-    const crmTotalFiltered = parseInt(countRes.headers.get('content-range')?.split('/')[1] || '0');
-
-    // Get total unfiltered count
-    const totalUrl = `${cfg.url}/rest/v1/contacts?limit=1&offset=0`;
-    const totalRes = await fetch(totalUrl, {
-      headers:{
-        'apikey': cfg.key,
-        'Authorization': `Bearer ${cfg.key}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'count=exact'
-      }
-    });
-    crmTotalAll = parseInt(totalRes.headers.get('content-range')?.split('/')[1] || '0');
-
-    // Get page data
-    const pageUrl = `${cfg.url}/rest/v1/contacts?${params}&limit=${CRM_PAGE_SIZE}&offset=${offset}`;
-    const pageRes = await fetch(pageUrl, {
-      headers:{
-        'apikey': cfg.key,
-        'Authorization': `Bearer ${cfg.key}`,
-        'Content-Type': 'application/json'
-      }
-    });
-    const pageData = await pageRes.json();
-
-    // Update KPI contacts
-    document.getElementById('kpi-contacts').textContent = crmTotalAll;
-    document.getElementById('kpi-contacts-sub').textContent = 'dans le CRM';
-
-    // Render table
-    const maxPage = Math.max(0, Math.ceil(crmTotalFiltered / CRM_PAGE_SIZE) - 1);
-    if(crmPage > maxPage) crmPage = maxPage;
-
-    document.getElementById('crm-count').textContent = crmTotalFiltered + '/' + crmTotalAll;
-
-    if(!pageData.length){
-      el.innerHTML=`<div class="empty"><div class="empty-ico">👥</div><div class="empty-text">Aucun contact trouvé</div></div>`;
-      return;
-    }
-
-    const pager = `<div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;font-size:11px;color:var(--dim)">
-      <span>${offset+1} à ${Math.min(offset+CRM_PAGE_SIZE, crmTotalFiltered)} sur ${crmTotalFiltered}</span>
-      <div style="display:flex;gap:.3rem">
-        <button class="filter-btn" onclick="crmPage=0;loadCRMPage()" ${crmPage===0?'disabled':''}>⟨⟨</button>
-        <button class="filter-btn" onclick="crmPage--;loadCRMPage()" ${crmPage===0?'disabled':''}>⟨</button>
-        <span style="padding:.35rem .6rem">${crmPage+1}/${maxPage+1}</span>
-        <button class="filter-btn" onclick="crmPage++;loadCRMPage()" ${crmPage>=maxPage?'disabled':''}>⟩</button>
-        <button class="filter-btn" onclick="crmPage=${maxPage};loadCRMPage()" ${crmPage>=maxPage?'disabled':''}>⟩⟩</button>
-      </div>
-    </div>`;
-
-    el.innerHTML= pager + `
-    <table class="crm-table">
-      <thead><tr>
-        <th>Prénom</th><th>Nom</th><th>Métier</th><th>Société</th><th>Localisation</th><th>Statut</th><th>Entité</th><th>Email</th><th>Tél</th>
-      </tr></thead>
-      <tbody>
-      ${pageData.map(c=>`<tr>
-        <td class="td-name">${c.prenom||''}</td>
-        <td class="td-name">${c.nom||''}</td>
-        <td>${c.metier||''}</td>
-        <td>${c.societe||''}</td>
-        <td>${c.localisation||''}</td>
-        <td>${statutBadge(c.statut_relation)}</td>
-        <td>${entiteBadge(c.entite_iris)}</td>
-        <td class="td-contact">${c.email?`<a href="mailto:${c.email}">${c.email}</a>`:''}</td>
-        <td class="td-contact">${c.telephone?`<a href="tel:${c.telephone}">${c.telephone}</a>`:''}</td>
-      </tr>`).join('')}
-      </tbody>
-    </table>` + pager;
-
-  } catch(e){
-    console.warn('CRM load error:', e);
-    el.innerHTML=`<div class="empty"><div class="empty-ico">⚠️</div><div class="empty-text">Erreur chargement contacts</div></div>`;
   }
 }
 
@@ -831,7 +702,7 @@ function renderKPIs(){
   document.getElementById('kpi-urgent-sub').textContent = urgent.length===0 ? 'aucune urgence' : 'à traiter maintenant';
   document.getElementById('kpi-budget').textContent = budgetPct + '%';
   document.getElementById('kpi-budget-sub').textContent = `${chActifs.length} chantier${chActifs.length>1?'s':''} actif${chActifs.length>1?'s':''}`;
-  document.getElementById('kpi-contacts').textContent = crmTotalAll || '...';
+  document.getElementById('kpi-contacts').textContent = data.contacts.length;
   document.getElementById('kpi-contacts-sub').textContent = 'dans le CRM';
 
   // Mémoire KPI
@@ -845,9 +716,7 @@ function renderKPIs(){
 // ── CRM ──
 let crmFilters = {entite:'all', statut:'all', metier:'all', loc:'all'};
 let crmPage = 0;
-let crmTotalAll = 0;
-const CRM_PAGE_SIZE = 50;
-let crmSearchTimeout = null;
+const CRM_PAGE_SIZE = 100;
 
 function filterCRM(btn, dimension, value){
   const bar = btn.closest('.filter-bar');
@@ -855,17 +724,7 @@ function filterCRM(btn, dimension, value){
   btn.classList.add('active');
   crmFilters[dimension] = value;
   crmPage = 0;
-  loadCRMPage();
-}
-
-function onCRMSearch(){
-  clearTimeout(crmSearchTimeout);
-  crmSearchTimeout = setTimeout(()=>{ crmPage=0; loadCRMPage(); }, 350);
-}
-
-function renderCRM(){
-  // CRM is now server-side, just trigger a load
-  loadCRMPage();
+  renderCRM();
 }
 
 function daysAgo(dateStr){
@@ -896,6 +755,75 @@ function agentBadge(a){
   return `<span class="badge ${map[a]||''}">${label[a]||a}</span>`;
 }
 
+function renderCRM(){
+  const search = (document.getElementById('crm-search')?.value || '').toLowerCase();
+  let filtered = data.contacts;
+
+  if(crmFilters.entite!=='all'){
+    filtered = filtered.filter(c=>c.entite_iris && Array.isArray(c.entite_iris) && c.entite_iris.includes(crmFilters.entite));
+  }
+  if(crmFilters.statut!=='all'){
+    filtered = filtered.filter(c=>c.statut_relation===crmFilters.statut);
+  }
+  if(crmFilters.metier!=='all'){
+    filtered = filtered.filter(c=>c.metier===crmFilters.metier);
+  }
+  if(crmFilters.loc!=='all'){
+    filtered = filtered.filter(c=>c.localisation && c.localisation.includes(crmFilters.loc));
+  }
+  if(search){
+    filtered = filtered.filter(c=>{
+      const str = [c.prenom,c.nom,c.societe,c.metier,c.email,c.telephone,c.localisation,c.poste,c.notes,c.demande].filter(Boolean).join(' ').toLowerCase();
+      return str.includes(search);
+    });
+  }
+
+  const total = data.contacts.length;
+  const maxPage = Math.max(0, Math.ceil(filtered.length / CRM_PAGE_SIZE) - 1);
+  if(crmPage > maxPage) crmPage = maxPage;
+  const st = crmPage * CRM_PAGE_SIZE;
+  const pageData = filtered.slice(st, st + CRM_PAGE_SIZE);
+
+  const el = document.getElementById('crm-body');
+  document.getElementById('crm-count').textContent = filtered.length + '/' + total;
+
+  if(!filtered.length){
+    el.innerHTML=`<div class="empty"><div class="empty-ico">👥</div><div class="empty-text">Aucun contact trouvé</div></div>`;
+    return;
+  }
+
+  const pager = `<div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;font-size:11px;color:var(--dim)">
+    <span>${st+1} à ${Math.min(st+CRM_PAGE_SIZE, filtered.length)} sur ${filtered.length}</span>
+    <div style="display:flex;gap:.3rem">
+      <button class="filter-btn" onclick="crmPage=0;renderCRM()" ${crmPage===0?'disabled':''}>⟨⟨</button>
+      <button class="filter-btn" onclick="crmPage--;renderCRM()" ${crmPage===0?'disabled':''}>⟨</button>
+      <span style="padding:.35rem .6rem">${crmPage+1}/${maxPage+1}</span>
+      <button class="filter-btn" onclick="crmPage++;renderCRM()" ${crmPage>=maxPage?'disabled':''}>⟩</button>
+      <button class="filter-btn" onclick="crmPage=${maxPage};renderCRM()" ${crmPage>=maxPage?'disabled':''}>⟩⟩</button>
+    </div>
+  </div>`;
+
+  el.innerHTML= pager + `
+  <table class="crm-table">
+    <thead><tr>
+      <th>Prénom</th><th>Nom</th><th>Métier</th><th>Société</th><th>Localisation</th><th>Statut</th><th>Entité</th><th>Email</th><th>Tél</th>
+    </tr></thead>
+    <tbody>
+    ${pageData.map(c=>`<tr>
+      <td class="td-name">${c.prenom||''}</td>
+      <td class="td-name">${c.nom||''}</td>
+      <td>${c.metier||''}</td>
+      <td>${c.societe||''}</td>
+      <td>${c.localisation||''}</td>
+      <td>${statutBadge(c.statut_relation)}</td>
+      <td>${entiteBadge(c.entite_iris)}</td>
+      <td class="td-contact">${c.email?`<a href="mailto:${c.email}">${c.email}</a>`:''}</td>
+      <td class="td-contact">${c.telephone?`<a href="tel:${c.telephone}">${c.telephone}</a>`:''}</td>
+    </tr>`).join('')}
+    </tbody>
+  </table>` + pager;
+}
+
 // ── TODO ──
 function deadlineClass(d){
   if(!d) return '';
@@ -913,159 +841,122 @@ function deadlineLabel(d){
   return `dans ${days}j`;
 }
 
+// ── TODO ──
+let todoFilterEntite = 'all';
+let todoFilterStatut = 'all';
+
+function filterTodo(btn, val){
+  document.querySelectorAll('#todo-filter-entite .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  todoFilterEntite = val;
+  renderTodo();
+}
+function filterTodoStatut(btn, val){
+  document.querySelectorAll('#todo-filter-statut .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  todoFilterStatut = val;
+  renderTodo();
+}
+
+function todoPrioriteBadge(p){
+  const m = {urgente:'badge-urgente',haute:'badge-haute',moyenne:'badge-normale',basse:'badge-basse',fait:'badge-fait'};
+  const l = {urgente:'Urgent',haute:'Haute',moyenne:'Moyenne',basse:'Basse',fait:'Fait'};
+  return `<span class="badge ${m[p]||'badge-normale'}">${l[p]||p}</span>`;
+}
+function todoStatutLabel(s){
+  const m = {a_faire:'A faire',en_cours:'En cours',fait:'Fait'};
+  return m[s]||s;
+}
+function todoEntiteBadge(e){
+  const m = {'IRIS H':'badge-iris','Infra':'badge-perso','BYM':'badge-bym','Urban Rise':'badge-ur','IRIS REP':'badge-iris','ARRISTO':'badge-perso','Galerie Carrez':'badge-perso'};
+  return `<span class="badge ${m[e]||'badge-perso'}">${e}</span>`;
+}
+
 function renderTodo(){
-  const groups = [
-    {key:'urgente', label:'Urgentes', cls:'badge-urgente'},
-    {key:'haute',   label:'Haute priorité', cls:'badge-haute'},
-    {key:'normale', label:'Normale', cls:'badge-normale'},
-  ];
+  const src = data.taches_v2 && data.taches_v2.length ? data.taches_v2 : data.taches;
+  let filtered = src;
+  if(todoFilterEntite!=='all') filtered = filtered.filter(t=>t.entite===todoFilterEntite);
+  if(todoFilterStatut!=='all') filtered = filtered.filter(t=>t.statut===todoFilterStatut);
+
   const el = document.getElementById('todo-body');
-  let html = '';
-  for(const g of groups){
-    const items = data.taches.filter(t=>t.priorite===g.key && t.statut!=='fait');
-    if(!items.length) continue;
-    html += `<div class="todo-group">
-      <div class="todo-group-hdr" style="color:var(--text)">${g.label} <span class="count">${items.length}</span></div>
-      ${items.map(t=>{
-        const dc = deadlineClass(t.deadline);
-        return `<div class="todo-item">
-          <div class="todo-left">
-            <div class="todo-title">${t.titre}</div>
-            <div class="todo-meta">
-              ${t.entite ? entiteBadge(t.entite) : ''}
-              ${t.projet ? `<span style="color:var(--dim)">${t.projet}</span>` : ''}
-              <span class="badge badge-${t.statut}">${t.statut.replace('_',' ')}</span>
-              ${t.agent ? agentBadge(t.agent) : ''}
-            </div>
-          </div>
-          <div class="todo-right">
-            ${t.deadline ? `<span class="deadline ${dc}">${deadlineLabel(t.deadline)}</span>` : ''}
-          </div>
-        </div>`;
-      }).join('')}
-    </div>`;
+  const countEl = document.getElementById('todo-count');
+  if(countEl) countEl.textContent = filtered.length + ' / ' + src.length + ' tâches';
+
+  if(!filtered.length){
+    el.innerHTML = `<div class="empty"><div class="empty-ico">✅</div><div class="empty-text">Aucune tâche trouvée</div></div>`;
+    return;
   }
-  el.innerHTML = html || `<div class="empty"><div class="empty-ico">✅</div><div class="empty-text">Aucune tâche en cours</div></div>`;
+
+  // Sort: urgente first, then haute, moyenne, basse, fait. Within same priority: a_faire > en_cours > fait
+  const pOrd = {urgente:0,haute:1,moyenne:2,basse:3,fait:4};
+  const sOrd = {a_faire:0,en_cours:1,fait:2};
+  filtered.sort((a,b) => (pOrd[a.priorite]||9) - (pOrd[b.priorite]||9) || (sOrd[a.statut]||9) - (sOrd[b.statut]||9));
+
+  el.innerHTML = `<table class="crm-table" style="font-size:12px">
+    <thead><tr>
+      <th style="width:30px"></th>
+      <th>Tâche</th>
+      <th style="width:85px">Entité</th>
+      <th style="width:75px">Priorité</th>
+      <th style="width:70px">Statut</th>
+      <th style="width:30px"></th>
+    </tr></thead>
+    <tbody>
+    ${filtered.map(t=>{
+      const preTitle = t.prerequis_titre || '';
+      const nextTitle = t.suite_titre || '';
+      const sCls = t.statut==='fait'?'color:var(--green)':t.statut==='en_cours'?'color:var(--blue)':'color:var(--dim)';
+      return `<tr>
+        <td style="text-align:center;position:relative">${preTitle ? `<span style="cursor:pointer;color:var(--dim);font-size:14px" title="← ${preTitle}">◀</span>` : ''}</td>
+        <td>
+          <div class="td-name">${t.titre}</div>
+          <div style="font-size:10px;color:var(--dim)">${t.description||''}</div>
+        </td>
+        <td>${t.entite ? todoEntiteBadge(t.entite) : ''}</td>
+        <td>${todoPrioriteBadge(t.priorite)}</td>
+        <td style="${sCls};font-size:11px">${todoStatutLabel(t.statut)}</td>
+        <td style="text-align:center;position:relative">${nextTitle ? `<span style="cursor:pointer;color:var(--dim);font-size:14px" title="→ ${nextTitle}">▶</span>` : ''}</td>
+      </tr>`;
+    }).join('')}
+    </tbody>
+  </table>`;
 }
 
 // ── DEALS ──
 const ETAPES = [
-  {key:'sourcing',         label:'Sourcing'},
-  {key:'analyse',          label:'Analyse'},
-  {key:'nego',             label:'Négo'},
-  {key:'offre',            label:'Offre'},
-  {key:'compromis',        label:'Compromis'},
-  {key:'acte',             label:'Acte'},
-  {key:'travaux',          label:'Travaux'},
-  {key:'commercialisation',label:'Commerc.'},
-  {key:'cloture',          label:'Clôture'},
+  {key:'prospect',      label:'Prospect'},
+  {key:'negociation',   label:'Négociation'},
+  {key:'due_diligence', label:'Due Diligence'},
+  {key:'signe',         label:'Signé'},
+  {key:'perdu',         label:'Perdu'},
 ];
-const ETAPE_ORDER = {};
-ETAPES.forEach((e,i)=> ETAPE_ORDER[e.key] = i);
-const ETAPE_LABEL = {};
-ETAPES.forEach(e=> ETAPE_LABEL[e.key] = e.label);
-
 const DEAL_TYPE = {
-  acquisition:'🏠',vente:'💰',chantier:'🏗️',mandat:'🤝',montage:'📐',appel_offres:'📋',gestion:'🔑'
+  acquisition:'🏠',vente:'💰',chantier_bym:'🏗️',conseil_iris:'🤝'
 };
 const DEAL_LABEL = {
-  acquisition:'Acquisition',vente:'Vente',chantier:'Chantier',mandat:'Mandat',montage:'Montage',appel_offres:'Appel d\'offres',gestion:'Gestion'
+  acquisition:'Acquisition',vente:'Vente',chantier_bym:'Chantier BYM',conseil_iris:'Conseil IRIS'
 };
-
-let dealsFilter = 'all';
-let dealsSortCol = 'etape';
-let dealsSortDir = 'asc';
-
-function filterDeals(btn, entite){
-  document.querySelectorAll('.deals-filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  dealsFilter = entite;
-  renderDeals();
-}
-
-function sortDeals(col){
-  if(dealsSortCol === col){
-    dealsSortDir = dealsSortDir === 'asc' ? 'desc' : 'asc';
-  } else {
-    dealsSortCol = col;
-    dealsSortDir = 'asc';
-  }
-  renderDeals();
-}
 
 function fmt(n){ if(!n) return ''; if(n>=1000000) return (n/1000000).toFixed(1)+'M€'; if(n>=1000) return Math.round(n/1000)+'K€'; return n+'€'; }
 
 function renderDeals(){
-  let deals = dealsFilter==='all' ? [...data.deals] : data.deals.filter(d=>d.entite===dealsFilter);
-
-  // Sort
-  const dir = dealsSortDir === 'asc' ? 1 : -1;
-  deals.sort((a,b)=>{
-    let va, vb;
-    if(dealsSortCol === 'etape'){
-      va = ETAPE_ORDER[a.etape] ?? 99;
-      vb = ETAPE_ORDER[b.etape] ?? 99;
-    } else if(['montant','ca_previ','resultat_previ'].includes(dealsSortCol)){
-      va = a[dealsSortCol] || 0;
-      vb = b[dealsSortCol] || 0;
-    } else {
-      va = (a[dealsSortCol] || '').toString().toLowerCase();
-      vb = (b[dealsSortCol] || '').toString().toLowerCase();
-    }
-    if(va < vb) return -1 * dir;
-    if(va > vb) return 1 * dir;
-    return 0;
-  });
-
-  // Stats
-  const totalDeals = deals.length;
-  const totalMontant = deals.reduce((s,d)=>s+(d.montant||0),0);
-  const totalCA = deals.reduce((s,d)=>s+(d.ca_previ||0),0);
-  const enTravaux = deals.filter(d=>d.etape==='travaux').length;
-
-  document.getElementById('deals-stats').innerHTML = `
-    <div class="deals-stat"><div class="deals-stat-label">Deals actifs</div><div class="deals-stat-value">${totalDeals}</div></div>
-    <div class="deals-stat"><div class="deals-stat-label">Montant total</div><div class="deals-stat-value">${fmt(totalMontant)||'N/A'}</div></div>
-    <div class="deals-stat"><div class="deals-stat-label">CA prévi</div><div class="deals-stat-value">${fmt(totalCA)||'N/A'}</div></div>
-    <div class="deals-stat"><div class="deals-stat-label">En travaux</div><div class="deals-stat-value">${enTravaux}</div></div>
-  `;
-
-  const cols = [
-    {key:'nom', label:'Nom'},
-    {key:'entite', label:'Entité'},
-    {key:'type', label:'Type'},
-    {key:'etape', label:'Étape'},
-    {key:'montant', label:'Montant'},
-    {key:'ca_previ', label:'CA Prévi'},
-    {key:'resultat_previ', label:'Résultat Prévi'},
-    {key:'adresse', label:'Adresse'},
-    {key:'commentaire', label:'Commentaire'},
-  ];
-
   const el = document.getElementById('deals-body');
-  el.innerHTML = `
-  <table class="deals-table">
-    <thead><tr>
-      ${cols.map(c=>{
-        let cls = '';
-        if(dealsSortCol===c.key) cls = dealsSortDir==='asc' ? 'sorted-asc' : 'sorted-desc';
-        return `<th class="${cls}" onclick="sortDeals('${c.key}')">${c.label}</th>`;
-      }).join('')}
-    </tr></thead>
-    <tbody>
-    ${deals.length ? deals.map(d=>`<tr>
-      <td class="td-name">${DEAL_TYPE[d.type]||'📋'} ${d.nom||''}</td>
-      <td>${entiteBadge(d.entite)}</td>
-      <td>${DEAL_LABEL[d.type]||d.type||''}</td>
-      <td><span class="badge-etape badge-${d.etape||''}">${ETAPE_LABEL[d.etape]||d.etape||''}</span></td>
-      <td class="td-montant">${fmt(d.montant)}</td>
-      <td class="td-montant" style="color:var(--cyan)">${fmt(d.ca_previ)}</td>
-      <td class="td-montant">${fmt(d.resultat_previ)}</td>
-      <td>${d.adresse||''}</td>
-      <td class="td-comment" title="${(d.commentaire||'').replace(/"/g,'&quot;')}">${d.commentaire||''}</td>
-    </tr>`).join('') : `<tr><td colspan="${cols.length}" style="text-align:center;padding:2rem;color:var(--dim)">Aucun deal</td></tr>`}
-    </tbody>
-  </table>`;
+  el.innerHTML = ETAPES.map(e=>{
+    const cards = data.deals.filter(d=>d.etape===e.key);
+    return `<div class="kanban-col kcol-${e.key}">
+      <div class="kanban-col-hdr">${e.label} <span class="kcnt">${cards.length}</span></div>
+      ${cards.length ? cards.map(d=>`
+        <div class="deal-card">
+          <div class="deal-name"><span class="deal-type-ico">${DEAL_TYPE[d.type]||'📋'}</span>${d.nom}</div>
+          <div class="deal-meta">
+            ${DEAL_LABEL[d.type]||d.type||''}
+            ${d.entite ? '<br>'+entiteBadge(d.entite) : ''}
+          </div>
+          ${d.montant ? `<div class="deal-montant">${fmt(d.montant)}</div>` : ''}
+        </div>`).join('') :
+        `<div style="font-size:11px;color:var(--dim2);text-align:center;padding:.75rem">—</div>`}
+    </div>`;
+  }).join('');
 }
 
 // ── FINANCE ──
@@ -1131,7 +1022,7 @@ function renderFinance(){
     <div class="synth-item"><div class="synth-label">Total sortant</div><div class="synth-value neg">${fmt(totalOut)}</div></div>
     <div class="synth-item"><div class="synth-label">Tréso nette</div><div class="synth-value ${totalNet>=0?'pos':'neg'}">${totalNet>=0?'+':''}${fmt(Math.abs(totalNet))}</div></div>
     <div class="synth-item"><div class="synth-label">Marge moy.</div><div class="synth-value">${margeAVG}%</div></div>
-    <div class="synth-item"><div class="synth-label">Deals actifs</div><div class="synth-value">${data.deals.filter(d=>d.etape!=='cloture').length}</div></div>
+    <div class="synth-item"><div class="synth-label">Deals actifs</div><div class="synth-value">${data.deals.filter(d=>d.etape!=='perdu').length}</div></div>
     <div class="synth-item"><div class="synth-label">Chantiers</div><div class="synth-value">${data.chantiers.filter(c=>c.statut==='en_cours').length}</div></div>`;
 
   // Sections custom : lire les fragments avec le tag correspondant
