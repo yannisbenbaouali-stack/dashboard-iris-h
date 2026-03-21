@@ -171,30 +171,49 @@ main{flex:1;overflow:hidden;position:relative}
 .deadline.ok{color:var(--dim)}
 
 /* ── DEALS KANBAN ── */
+.deals-filters{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.deals-filter-btn{
+  padding:.35rem .85rem;border:1px solid var(--border2);border-radius:20px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--dim);background:var(--s2);cursor:pointer;transition:.2s
+}
+.deals-filter-btn:hover,.deals-filter-btn.active{border-color:var(--gold);color:var(--gold);background:var(--goldf)}
+.deals-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1rem}
+.deals-stat{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:.6rem .9rem}
+.deals-stat-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+.deals-stat-value{font-family:var(--font-serif);font-size:1.3rem;color:var(--text);margin-top:.15rem}
 .kanban{display:flex;gap:.75rem;overflow-x:auto;padding-bottom:.5rem;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
-.kanban-col{flex:0 0 220px;display:flex;flex-direction:column;gap:.5rem}
+.kanban-col{flex:0 0 175px;display:flex;flex-direction:column;gap:.5rem}
 .kanban-col-hdr{
-  font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:.5rem .75rem;
+  font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:.5rem .6rem;
   border-radius:6px;display:flex;align-items:center;justify-content:space-between;
   border:1px solid var(--border);background:var(--s2);color:var(--dim)
 }
 .kanban-col-hdr .kcnt{font-size:11px;background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:0 7px}
 .deal-card{
   background:var(--s1);border:1px solid var(--border);border-radius:8px;
-  padding:.75rem .85rem;transition:.15s;cursor:default
+  padding:.75rem .85rem;transition:.15s;cursor:default;border-left:3px solid var(--border)
 }
 .deal-card:hover{border-color:var(--border2);background:var(--s2)}
-.deal-name{font-size:13px;color:var(--text);margin-bottom:.35rem;font-weight:500}
+.deal-card[data-entite="BYM"]{border-left-color:var(--blue)}
+.deal-card[data-entite="URBAN_RISE"]{border-left-color:var(--violet)}
+.deal-card[data-entite="IRIS_REP"]{border-left-color:var(--gold)}
+.deal-name{font-size:12px;color:var(--text);margin-bottom:.35rem;font-weight:500}
 .deal-type-ico{font-size:.9rem;margin-right:.2rem}
 .deal-meta{font-size:10px;color:var(--dim);line-height:1.7}
 .deal-montant{font-size:12px;color:var(--green);margin-top:.3rem;font-weight:500}
+.deal-comment{font-size:10px;color:var(--dim);margin-top:.25rem;font-style:italic}
 
 /* Column accent colours */
-.kcol-prospect .kanban-col-hdr{border-color:#5b9cf630;color:var(--blue)}
-.kcol-negociation .kanban-col-hdr{border-color:#fb923c30;color:var(--orange)}
-.kcol-due_diligence .kanban-col-hdr{border-color:#a78bfa30;color:var(--violet)}
-.kcol-signe .kanban-col-hdr{border-color:#41c98e30;color:var(--green)}
-.kcol-perdu .kanban-col-hdr{border-color:#f8717130;color:var(--red)}
+.kcol-sourcing .kanban-col-hdr{border-color:#22d3ee30;color:var(--cyan)}
+.kcol-analyse .kanban-col-hdr{border-color:#5b9cf630;color:var(--blue)}
+.kcol-nego .kanban-col-hdr{border-color:#fb923c30;color:var(--orange)}
+.kcol-offre .kanban-col-hdr{border-color:#a78bfa30;color:var(--violet)}
+.kcol-compromis .kanban-col-hdr{border-color:#c8a45530;color:var(--gold)}
+.kcol-acte .kanban-col-hdr{border-color:#41c98e30;color:var(--green)}
+.kcol-travaux .kanban-col-hdr{border-color:#5b9cf630;color:var(--blue)}
+.kcol-commercialisation .kanban-col-hdr{border-color:#fb923c30;color:var(--orange)}
+.kcol-cloture .kanban-col-hdr{border-color:#41c98e30;color:var(--green)}
 
 /* ── FINANCE ── */
 .finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
@@ -330,7 +349,7 @@ main{flex:1;overflow:hidden;position:relative}
   .kpi:nth-child(4){border-top:1px solid var(--border);border-right:none}
   .kpi:nth-child(5){border-top:1px solid var(--border);grid-column:1/-1}
   .finance-grid{grid-template-columns:1fr}
-  .kanban-col{flex:0 0 185px}
+  .kanban-col{flex:0 0 150px}
   .logo span{display:none}
   .refresh-time{display:none}
   header{padding:.6rem 1rem}
@@ -458,6 +477,13 @@ main{flex:1;overflow:hidden;position:relative}
 
     <!-- ── DEALS ── -->
     <div class="tab-content" id="tab-deals">
+      <div class="deals-filters" id="deals-filter-entite">
+        <button class="deals-filter-btn active" onclick="filterDeals(this,'all')">Tous</button>
+        <button class="deals-filter-btn" onclick="filterDeals(this,'BYM')">BYM</button>
+        <button class="deals-filter-btn" onclick="filterDeals(this,'URBAN_RISE')">Urban Rise</button>
+        <button class="deals-filter-btn" onclick="filterDeals(this,'IRIS_REP')">IRIS REP</button>
+      </div>
+      <div class="deals-stats" id="deals-stats"></div>
       <div class="kanban" id="deals-body"></div>
     </div>
 
@@ -861,35 +887,67 @@ function renderTodo(){
 
 // ── DEALS ──
 const ETAPES = [
-  {key:'prospect',      label:'Prospect'},
-  {key:'negociation',   label:'Négociation'},
-  {key:'due_diligence', label:'Due Diligence'},
-  {key:'signe',         label:'Signé'},
-  {key:'perdu',         label:'Perdu'},
+  {key:'sourcing',         label:'Sourcing'},
+  {key:'analyse',          label:'Analyse'},
+  {key:'nego',             label:'Négo'},
+  {key:'offre',            label:'Offre'},
+  {key:'compromis',        label:'Compromis'},
+  {key:'acte',             label:'Acte'},
+  {key:'travaux',          label:'Travaux'},
+  {key:'commercialisation',label:'Commerc.'},
+  {key:'cloture',          label:'Clôture'},
 ];
 const DEAL_TYPE = {
-  acquisition:'🏠',vente:'💰',chantier_bym:'🏗️',conseil_iris:'🤝'
+  acquisition:'🏠',vente:'💰',chantier:'🏗️',mandat:'🤝',montage:'📐',appel_offres:'📋',gestion:'🔑'
 };
 const DEAL_LABEL = {
-  acquisition:'Acquisition',vente:'Vente',chantier_bym:'Chantier BYM',conseil_iris:'Conseil IRIS'
+  acquisition:'Acquisition',vente:'Vente',chantier:'Chantier',mandat:'Mandat',montage:'Montage',appel_offres:'Appel d\'offres',gestion:'Gestion'
 };
+
+let dealsFilter = 'all';
+
+function filterDeals(btn, entite){
+  document.querySelectorAll('.deals-filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  dealsFilter = entite;
+  renderDeals();
+}
 
 function fmt(n){ if(!n) return ''; if(n>=1000000) return (n/1000000).toFixed(1)+'M€'; if(n>=1000) return Math.round(n/1000)+'K€'; return n+'€'; }
 
 function renderDeals(){
+  const deals = dealsFilter==='all' ? data.deals : data.deals.filter(d=>d.entite===dealsFilter);
+
+  // Stats
+  const totalDeals = deals.length;
+  const totalMontant = deals.reduce((s,d)=>s+(d.montant||0),0);
+  const totalCA = deals.reduce((s,d)=>s+(d.ca_previ||0),0);
+  const enTravaux = deals.filter(d=>d.etape==='travaux').length;
+
+  document.getElementById('deals-stats').innerHTML = `
+    <div class="deals-stat"><div class="deals-stat-label">Deals actifs</div><div class="deals-stat-value">${totalDeals}</div></div>
+    <div class="deals-stat"><div class="deals-stat-label">Montant total</div><div class="deals-stat-value">${fmt(totalMontant)||'N/A'}</div></div>
+    <div class="deals-stat"><div class="deals-stat-label">CA prévi</div><div class="deals-stat-value">${fmt(totalCA)||'N/A'}</div></div>
+    <div class="deals-stat"><div class="deals-stat-label">En travaux</div><div class="deals-stat-value">${enTravaux}</div></div>
+  `;
+
   const el = document.getElementById('deals-body');
   el.innerHTML = ETAPES.map(e=>{
-    const cards = data.deals.filter(d=>d.etape===e.key);
+    const cards = deals.filter(d=>d.etape===e.key);
     return `<div class="kanban-col kcol-${e.key}">
       <div class="kanban-col-hdr">${e.label} <span class="kcnt">${cards.length}</span></div>
       ${cards.length ? cards.map(d=>`
-        <div class="deal-card">
+        <div class="deal-card" data-entite="${d.entite||''}">
           <div class="deal-name"><span class="deal-type-ico">${DEAL_TYPE[d.type]||'📋'}</span>${d.nom}</div>
           <div class="deal-meta">
             ${DEAL_LABEL[d.type]||d.type||''}
+            ${d.adresse ? '<br>'+d.adresse : ''}
             ${d.entite ? '<br>'+entiteBadge(d.entite) : ''}
           </div>
           ${d.montant ? `<div class="deal-montant">${fmt(d.montant)}</div>` : ''}
+          ${d.ca_previ ? `<div style="font-size:10px;color:var(--cyan);margin-top:.15rem">CA: ${fmt(d.ca_previ)}</div>` : ''}
+          ${d.resultat_previ ? `<div style="font-size:10px;color:var(--green);margin-top:.1rem">Résultat: ${fmt(d.resultat_previ)}</div>` : ''}
+          ${d.commentaire ? `<div class="deal-comment">${d.commentaire}</div>` : ''}
         </div>`).join('') :
         `<div style="font-size:11px;color:var(--dim2);text-align:center;padding:.75rem">—</div>`}
     </div>`;
@@ -959,7 +1017,7 @@ function renderFinance(){
     <div class="synth-item"><div class="synth-label">Total sortant</div><div class="synth-value neg">${fmt(totalOut)}</div></div>
     <div class="synth-item"><div class="synth-label">Tréso nette</div><div class="synth-value ${totalNet>=0?'pos':'neg'}">${totalNet>=0?'+':''}${fmt(Math.abs(totalNet))}</div></div>
     <div class="synth-item"><div class="synth-label">Marge moy.</div><div class="synth-value">${margeAVG}%</div></div>
-    <div class="synth-item"><div class="synth-label">Deals actifs</div><div class="synth-value">${data.deals.filter(d=>d.etape!=='perdu').length}</div></div>
+    <div class="synth-item"><div class="synth-label">Deals actifs</div><div class="synth-value">${data.deals.filter(d=>d.etape!=='cloture').length}</div></div>
     <div class="synth-item"><div class="synth-label">Chantiers</div><div class="synth-value">${data.chantiers.filter(c=>c.statut==='en_cours').length}</div></div>`;
 
   // Sections custom : lire les fragments avec le tag correspondant
