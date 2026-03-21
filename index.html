@@ -656,9 +656,9 @@ async function loadAll(){
   btn.classList.add('loading');
   btn.textContent = 'Chargement';
   try{
-    const safe = async (fn) => { try { return await fn(); } catch(e) { console.warn(e); return []; } };
-    const [contacts, taches, deals, chantiers, tresorerie, fragments, bible] = await Promise.all([
-      safe(() => supa('contacts','order=nom.asc.nullslast', true)),
+    const safe = async (fn) => { try { return await fn(); } catch(e) { console.warn('Warning:', e); return []; } };
+    // Load smaller tables first (fast)
+    const [taches, deals, chantiers, tresorerie, fragments, bible] = await Promise.all([
       safe(() => supa('taches','order=created_at.desc')),
       safe(() => supa('deals','order=created_at.desc')),
       safe(() => supa('chantiers','order=created_at.desc')),
@@ -666,11 +666,23 @@ async function loadAll(){
       safe(() => supa('memoire_fragments','order=created_at.desc')),
       safe(() => supa('memoire_bible','order=thematique'))
     ]);
-    data = { contacts, taches, deals, chantiers, tresorerie, fragments, bible };
-    localStorage.setItem('iris_h_cache', JSON.stringify({data, ts: Date.now()}));
+    data.taches = taches;
+    data.deals = deals;
+    data.chantiers = chantiers;
+    data.tresorerie = tresorerie;
+    data.fragments = fragments;
+    data.bible = bible;
     render();
     const t = new Date();
     document.getElementById('refresh-time').textContent = `${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`;
+    // Cache without contacts (too large for localStorage)
+    localStorage.setItem('iris_h_cache', JSON.stringify({data: {...data, contacts:[]}, ts: Date.now()}));
+    // Load contacts separately (large table, paginated)
+    safe(() => supa('contacts','order=nom.asc.nullslast', true)).then(contacts => {
+      data.contacts = contacts;
+      renderCRM();
+      renderKPIs();
+    });
   } catch(e){
     showToast('Erreur connexion Supabase');
     const cache = localStorage.getItem('iris_h_cache');
