@@ -431,7 +431,7 @@ main{flex:1;overflow:hidden;position:relative}
     <!-- ── CRM ── -->
     <div class="tab-content active" id="tab-crm">
       <div class="search-bar">
-        <input class="search-input" id="crm-search" type="text" placeholder="Rechercher (nom, email, société, métier, localisation...)" oninput="renderCRM()" autocomplete="off" spellcheck="false">
+        <input class="search-input" id="crm-search" type="text" placeholder="Rechercher (nom, email, société, métier, localisation...)" oninput="onCRMSearch()" autocomplete="off" spellcheck="false">
         <span class="search-count" id="crm-count"></span>
       </div>
       <div class="filter-bar" id="crm-filter-entite">
@@ -657,7 +657,6 @@ async function loadAll(){
   btn.textContent = 'Chargement';
   try{
     const safe = async (fn) => { try { return await fn(); } catch(e) { console.warn('Warning:', e); return []; } };
-    // Load smaller tables first (fast)
     const [taches, deals, chantiers, tresorerie, fragments, bible] = await Promise.all([
       safe(() => supa('taches','order=created_at.desc')),
       safe(() => supa('deals','order=created_at.desc')),
@@ -675,14 +674,9 @@ async function loadAll(){
     render();
     const t = new Date();
     document.getElementById('refresh-time').textContent = `${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`;
-    // Cache without contacts (too large for localStorage)
     localStorage.setItem('iris_h_cache', JSON.stringify({data: {...data, contacts:[]}, ts: Date.now()}));
-    // Load contacts separately (large table, paginated)
-    safe(() => supa('contacts','order=nom.asc.nullslast', true)).then(contacts => {
-      data.contacts = contacts;
-      renderCRM();
-      renderKPIs();
-    });
+    // Load CRM count + first page via server-side pagination
+    loadCRMPage();
   } catch(e){
     showToast('Erreur connexion Supabase');
     const cache = localStorage.getItem('iris_h_cache');
@@ -690,6 +684,125 @@ async function loadAll(){
   } finally{
     btn.classList.remove('loading');
     btn.textContent = '↻ Actualiser';
+  }
+}
+
+// ── CRM SERVER-SIDE PAGINATION ──
+async function loadCRMPage(){
+  if(!cfg) return;
+  const el = document.getElementById('crm-body');
+  el.innerHTML = '<div class="empty"><div class="empty-text" style="color:var(--dim)">Chargement contacts...</div></div>';
+
+  // Build filters for Supabase query
+  let params = 'order=nom.asc.nullslast';
+  const search = (document.getElementById('crm-search')?.value || '').trim();
+
+  if(crmFilters.entite!=='all'){
+    params += `&entite_iris=cs.{"${crmFilters.entite}"}`;
+  }
+  if(crmFilters.statut!=='all'){
+    params += `&statut_relation=eq.${encodeURIComponent(crmFilters.statut)}`;
+  }
+  if(crmFilters.metier!=='all'){
+    params += `&metier=eq.${encodeURIComponent(crmFilters.metier)}`;
+  }
+  if(crmFilters.loc!=='all'){
+    params += `&localisation=like.*${encodeURIComponent(crmFilters.loc)}*`;
+  }
+  if(search){
+    // Full text search on multiple columns via or filter
+    const s = encodeURIComponent(`%${search}%`);
+    params += `&or=(nom.ilike.${s},prenom.ilike.${s},societe.ilike.${s},email.ilike.${s},metier.ilike.${s},localisation.ilike.${s},telephone.ilike.${s})`;
+  }
+
+  const offset = crmPage * CRM_PAGE_SIZE;
+  const countParams = params;
+
+  try {
+    // Get count with exact header
+    const countUrl = `${cfg.url}/rest/v1/contacts?${countParams}&limit=1&offset=0`;
+    const countRes = await fetch(countUrl, {
+      headers:{
+        'apikey': cfg.key,
+        'Authorization': `Bearer ${cfg.key}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'count=exact'
+      }
+    });
+    const crmTotalFiltered = parseInt(countRes.headers.get('content-range')?.split('/')[1] || '0');
+
+    // Get total unfiltered count
+    const totalUrl = `${cfg.url}/rest/v1/contacts?limit=1&offset=0`;
+    const totalRes = await fetch(totalUrl, {
+      headers:{
+        'apikey': cfg.key,
+        'Authorization': `Bearer ${cfg.key}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'count=exact'
+      }
+    });
+    crmTotalAll = parseInt(totalRes.headers.get('content-range')?.split('/')[1] || '0');
+
+    // Get page data
+    const pageUrl = `${cfg.url}/rest/v1/contacts?${params}&limit=${CRM_PAGE_SIZE}&offset=${offset}`;
+    const pageRes = await fetch(pageUrl, {
+      headers:{
+        'apikey': cfg.key,
+        'Authorization': `Bearer ${cfg.key}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    const pageData = await pageRes.json();
+
+    // Update KPI contacts
+    document.getElementById('kpi-contacts').textContent = crmTotalAll;
+    document.getElementById('kpi-contacts-sub').textContent = 'dans le CRM';
+
+    // Render table
+    const maxPage = Math.max(0, Math.ceil(crmTotalFiltered / CRM_PAGE_SIZE) - 1);
+    if(crmPage > maxPage) crmPage = maxPage;
+
+    document.getElementById('crm-count').textContent = crmTotalFiltered + '/' + crmTotalAll;
+
+    if(!pageData.length){
+      el.innerHTML=`<div class="empty"><div class="empty-ico">👥</div><div class="empty-text">Aucun contact trouvé</div></div>`;
+      return;
+    }
+
+    const pager = `<div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;font-size:11px;color:var(--dim)">
+      <span>${offset+1} à ${Math.min(offset+CRM_PAGE_SIZE, crmTotalFiltered)} sur ${crmTotalFiltered}</span>
+      <div style="display:flex;gap:.3rem">
+        <button class="filter-btn" onclick="crmPage=0;loadCRMPage()" ${crmPage===0?'disabled':''}>⟨⟨</button>
+        <button class="filter-btn" onclick="crmPage--;loadCRMPage()" ${crmPage===0?'disabled':''}>⟨</button>
+        <span style="padding:.35rem .6rem">${crmPage+1}/${maxPage+1}</span>
+        <button class="filter-btn" onclick="crmPage++;loadCRMPage()" ${crmPage>=maxPage?'disabled':''}>⟩</button>
+        <button class="filter-btn" onclick="crmPage=${maxPage};loadCRMPage()" ${crmPage>=maxPage?'disabled':''}>⟩⟩</button>
+      </div>
+    </div>`;
+
+    el.innerHTML= pager + `
+    <table class="crm-table">
+      <thead><tr>
+        <th>Prénom</th><th>Nom</th><th>Métier</th><th>Société</th><th>Localisation</th><th>Statut</th><th>Entité</th><th>Email</th><th>Tél</th>
+      </tr></thead>
+      <tbody>
+      ${pageData.map(c=>`<tr>
+        <td class="td-name">${c.prenom||''}</td>
+        <td class="td-name">${c.nom||''}</td>
+        <td>${c.metier||''}</td>
+        <td>${c.societe||''}</td>
+        <td>${c.localisation||''}</td>
+        <td>${statutBadge(c.statut_relation)}</td>
+        <td>${entiteBadge(c.entite_iris)}</td>
+        <td class="td-contact">${c.email?`<a href="mailto:${c.email}">${c.email}</a>`:''}</td>
+        <td class="td-contact">${c.telephone?`<a href="tel:${c.telephone}">${c.telephone}</a>`:''}</td>
+      </tr>`).join('')}
+      </tbody>
+    </table>` + pager;
+
+  } catch(e){
+    console.warn('CRM load error:', e);
+    el.innerHTML=`<div class="empty"><div class="empty-ico">⚠️</div><div class="empty-text">Erreur chargement contacts</div></div>`;
   }
 }
 
@@ -723,7 +836,7 @@ function renderKPIs(){
   document.getElementById('kpi-urgent-sub').textContent = urgent.length===0 ? 'aucune urgence' : 'à traiter maintenant';
   document.getElementById('kpi-budget').textContent = budgetPct + '%';
   document.getElementById('kpi-budget-sub').textContent = `${chActifs.length} chantier${chActifs.length>1?'s':''} actif${chActifs.length>1?'s':''}`;
-  document.getElementById('kpi-contacts').textContent = data.contacts.length;
+  document.getElementById('kpi-contacts').textContent = crmTotalAll || '...';
   document.getElementById('kpi-contacts-sub').textContent = 'dans le CRM';
 
   // Mémoire KPI
@@ -737,7 +850,9 @@ function renderKPIs(){
 // ── CRM ──
 let crmFilters = {entite:'all', statut:'all', metier:'all', loc:'all'};
 let crmPage = 0;
-const CRM_PAGE_SIZE = 100;
+let crmTotalAll = 0;
+const CRM_PAGE_SIZE = 50;
+let crmSearchTimeout = null;
 
 function filterCRM(btn, dimension, value){
   const bar = btn.closest('.filter-bar');
@@ -745,7 +860,17 @@ function filterCRM(btn, dimension, value){
   btn.classList.add('active');
   crmFilters[dimension] = value;
   crmPage = 0;
-  renderCRM();
+  loadCRMPage();
+}
+
+function onCRMSearch(){
+  clearTimeout(crmSearchTimeout);
+  crmSearchTimeout = setTimeout(()=>{ crmPage=0; loadCRMPage(); }, 350);
+}
+
+function renderCRM(){
+  // CRM is now server-side, just trigger a load
+  loadCRMPage();
 }
 
 function daysAgo(dateStr){
@@ -774,75 +899,6 @@ function agentBadge(a){
   const map = {claude:'badge-claude',tom:'badge-tom',neo:'badge-neo'};
   const label = {claude:'Claude',tom:'Tom',neo:'Neo'};
   return `<span class="badge ${map[a]||''}">${label[a]||a}</span>`;
-}
-
-function renderCRM(){
-  const search = (document.getElementById('crm-search')?.value || '').toLowerCase();
-  let filtered = data.contacts;
-
-  if(crmFilters.entite!=='all'){
-    filtered = filtered.filter(c=>c.entite_iris && Array.isArray(c.entite_iris) && c.entite_iris.includes(crmFilters.entite));
-  }
-  if(crmFilters.statut!=='all'){
-    filtered = filtered.filter(c=>c.statut_relation===crmFilters.statut);
-  }
-  if(crmFilters.metier!=='all'){
-    filtered = filtered.filter(c=>c.metier===crmFilters.metier);
-  }
-  if(crmFilters.loc!=='all'){
-    filtered = filtered.filter(c=>c.localisation && c.localisation.includes(crmFilters.loc));
-  }
-  if(search){
-    filtered = filtered.filter(c=>{
-      const str = [c.prenom,c.nom,c.societe,c.metier,c.email,c.telephone,c.localisation,c.poste,c.notes,c.demande].filter(Boolean).join(' ').toLowerCase();
-      return str.includes(search);
-    });
-  }
-
-  const total = data.contacts.length;
-  const maxPage = Math.max(0, Math.ceil(filtered.length / CRM_PAGE_SIZE) - 1);
-  if(crmPage > maxPage) crmPage = maxPage;
-  const st = crmPage * CRM_PAGE_SIZE;
-  const pageData = filtered.slice(st, st + CRM_PAGE_SIZE);
-
-  const el = document.getElementById('crm-body');
-  document.getElementById('crm-count').textContent = filtered.length + '/' + total;
-
-  if(!filtered.length){
-    el.innerHTML=`<div class="empty"><div class="empty-ico">👥</div><div class="empty-text">Aucun contact trouvé</div></div>`;
-    return;
-  }
-
-  const pager = `<div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;font-size:11px;color:var(--dim)">
-    <span>${st+1} à ${Math.min(st+CRM_PAGE_SIZE, filtered.length)} sur ${filtered.length}</span>
-    <div style="display:flex;gap:.3rem">
-      <button class="filter-btn" onclick="crmPage=0;renderCRM()" ${crmPage===0?'disabled':''}>⟨⟨</button>
-      <button class="filter-btn" onclick="crmPage--;renderCRM()" ${crmPage===0?'disabled':''}>⟨</button>
-      <span style="padding:.35rem .6rem">${crmPage+1}/${maxPage+1}</span>
-      <button class="filter-btn" onclick="crmPage++;renderCRM()" ${crmPage>=maxPage?'disabled':''}>⟩</button>
-      <button class="filter-btn" onclick="crmPage=${maxPage};renderCRM()" ${crmPage>=maxPage?'disabled':''}>⟩⟩</button>
-    </div>
-  </div>`;
-
-  el.innerHTML= pager + `
-  <table class="crm-table">
-    <thead><tr>
-      <th>Prénom</th><th>Nom</th><th>Métier</th><th>Société</th><th>Localisation</th><th>Statut</th><th>Entité</th><th>Email</th><th>Tél</th>
-    </tr></thead>
-    <tbody>
-    ${pageData.map(c=>`<tr>
-      <td class="td-name">${c.prenom||''}</td>
-      <td class="td-name">${c.nom||''}</td>
-      <td>${c.metier||''}</td>
-      <td>${c.societe||''}</td>
-      <td>${c.localisation||''}</td>
-      <td>${statutBadge(c.statut_relation)}</td>
-      <td>${entiteBadge(c.entite_iris)}</td>
-      <td class="td-contact">${c.email?`<a href="mailto:${c.email}">${c.email}</a>`:''}</td>
-      <td class="td-contact">${c.telephone?`<a href="tel:${c.telephone}">${c.telephone}</a>`:''}</td>
-    </tr>`).join('')}
-    </tbody>
-  </table>` + pager;
 }
 
 // ── TODO ──
