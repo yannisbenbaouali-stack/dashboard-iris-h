@@ -630,17 +630,18 @@ async function loadAll(){
   btn.classList.add('loading');
   btn.textContent = 'Chargement';
   try{
+    const safe = async (fn) => { try { return await fn(); } catch(e) { console.warn(e); return []; } };
     const [contacts, taches, deals, chantiers, tresorerie, fragments, bible] = await Promise.all([
-      supa('contacts','order=nom.asc.nullslast', true).catch(()=>[]),
-      supa('taches','order=priorite,deadline&statut=neq.fait').catch(()=>[]),
-      supa('deals','order=etape,nom').catch(()=>[]),
-      supa('chantiers','order=nom').catch(()=>[]),
-      supa('tresorerie','order=entite').catch(()=>[]),
-      supa('memoire_fragments','order=created_at.desc').catch(()=>[]),
-      supa('memoire_bible','order=thematique').catch(()=>[])
+      safe(() => supa('contacts','order=nom.asc.nullslast', true)),
+      safe(() => supa('taches','order=created_at.desc')),
+      safe(() => supa('deals','order=created_at.desc')),
+      safe(() => supa('chantiers','order=created_at.desc')),
+      safe(() => supa('tresorerie','order=created_at.desc')),
+      safe(() => supa('memoire_fragments','order=created_at.desc')),
+      safe(() => supa('memoire_bible','order=thematique'))
     ]);
     data = { contacts, taches, deals, chantiers, tresorerie, fragments, bible };
-    try{ localStorage.setItem('iris_h_cache', JSON.stringify({data: {taches:data.taches,deals:data.deals,chantiers:data.chantiers,tresorerie:data.tresorerie,fragments:data.fragments,bible:data.bible}, ts: Date.now()})); }catch(e){ console.warn('Cache quota exceeded'); }
+    localStorage.setItem('iris_h_cache', JSON.stringify({data, ts: Date.now()}));
     render();
     const t = new Date();
     document.getElementById('refresh-time').textContent = `${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`;
