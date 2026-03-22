@@ -427,30 +427,22 @@ function renderTodo(){
   const actives=src.filter(t=>t.statut!=='fait').length;
   const faites=src.filter(t=>t.statut==='fait').length;
 
+  // Mini histogramme par entité
+  const byEntite={};src.filter(t=>t.statut!=='fait').forEach(t=>{byEntite[t.entite||'Autre']=(byEntite[t.entite||'Autre']||0)+1});
+  const entColors={'IRIS H':'#c8a455',Perso:'#888',BYM:'#5B9BD5','Urban Rise':'#a78bfa','IRIS REP':'#c8a455',ARRISTO:'#fb923c','Galerie Carrez':'#22d3ee',Autre:'#666'};
+  const miniBarHtml=Object.entries(byEntite).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div style="display:flex;align-items:center;gap:6px;font-size:10px;margin-bottom:2px"><span style="width:70px;text-align:right;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${k}</span><div style="height:8px;width:${Math.max(8,v/Math.max(...Object.values(byEntite))*80)}px;background:${entColors[k]||'#666'};border-radius:3px"></div><span style="color:var(--dim);font-weight:600">${v}</span></div>`).join('');
+
   document.getElementById('todo-kpis').innerHTML=`
     <div class="kpi red"><div class="kpi-label">Urgentes</div><div class="kpi-val">${urgentes}</div><div class="kpi-sub">à traiter immédiatement</div></div>
     <div class="kpi orange"><div class="kpi-label">En attente</div><div class="kpi-val">${attentes}</div><div class="kpi-sub">tiers à relancer</div></div>
     <div class="kpi"><div class="kpi-label">Tâches actives</div><div class="kpi-val">${actives}</div><div class="kpi-sub">a_faire + en_cours</div></div>
-    <div class="kpi green"><div class="kpi-label">Complétées</div><div class="kpi-val">${faites}</div><div class="kpi-sub">terminées</div></div>`;
+    <div class="kpi green"><div class="kpi-label">Complétées</div><div class="kpi-val">${faites}</div><div class="kpi-sub">terminées</div></div>
+    <div class="kpi" style="min-width:180px"><div class="kpi-label">Par entité</div><div style="margin-top:6px">${miniBarHtml}</div></div>`;
 
-  // Charts
-  const byEntite={};src.filter(t=>t.statut!=='fait').forEach(t=>{byEntite[t.entite||'Autre']=(byEntite[t.entite||'Autre']||0)+1});
-  const byPrio={};src.forEach(t=>{byPrio[t.priorite||'moyenne']=(byPrio[t.priorite||'moyenne']||0)+1});
-  document.getElementById('todo-charts').innerHTML=`
-    <div class="chart-card"><div class="chart-title">Tâches par entité</div><canvas id="chart-todo-entite" height="160"></canvas></div>
-    <div class="chart-card"><div class="chart-title">Répartition par priorité</div><canvas id="chart-todo-prio" height="160"></canvas></div>`;
-
-  setTimeout(()=>{
-    const ctx1=document.getElementById('chart-todo-entite');
-    if(ctx1)new Chart(ctx1,{type:'bar',data:{labels:Object.keys(byEntite),datasets:[{data:Object.values(byEntite),backgroundColor:'#5B9BD5',borderRadius:4}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
-    const pColors={urgente:'#e74c3c',haute:'#f39c12',moyenne:'#5B9BD5',standby:'#b0b4c0',fait:'#2ecc71'};
-    const pLabels={urgente:'Urgent',haute:'Haute',moyenne:'Moyenne',standby:'Standby',fait:'Fait'};
-    const ctx2=document.getElementById('chart-todo-prio');
-    if(ctx2)new Chart(ctx2,{type:'doughnut',data:{labels:Object.keys(byPrio).map(k=>pLabels[k]||k),datasets:[{data:Object.values(byPrio),backgroundColor:Object.keys(byPrio).map(k=>pColors[k]||'#ccc')}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:11}}}}}});
-  },50);
+  document.getElementById('todo-charts').innerHTML='';
 
   // Filters
-  const ents=['all','IRIS H','Infra','BYM','Urban Rise','IRIS REP','ARRISTO','Galerie Carrez'];
+  const ents=['all','IRIS H','Perso','BYM','Urban Rise','IRIS REP','ARRISTO','Galerie Carrez'];
   const codes=['all',...[...new Set(src.map(t=>t.code_projet).filter(Boolean))].sort()];
   document.getElementById('todo-filters').innerHTML=`
     ${todoFilterCode!=='all'?`<div style="margin-bottom:8px;display:flex;align-items:center;gap:8px"><span class="pill p-iris" style="font-size:12px">Projet : ${todoFilterCode}</span><button class="fbtn" onclick="todoFilterCode='all';renderTodo()" style="font-size:10px">✕ Retirer filtre</button></div>`:''}
@@ -471,7 +463,7 @@ function renderTodo(){
   const el=document.getElementById('todo-body');
   if(!filtered.length){el.innerHTML='<div class="empty"><div class="empty-ico">✅</div><div class="empty-text">Aucune tâche</div></div>';return}
 
-  const eBadge=e=>{const m={'IRIS H':'p-iris',Infra:'p-infra',BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',ARRISTO:'p-arristo','Galerie Carrez':'p-gc'};return e?`<span class="pill ${m[e]||'p-iris'}">${e}</span>`:''};
+  const eBadge=e=>{const m={'IRIS H':'p-iris',Perso:'p-infra',BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',ARRISTO:'p-arristo','Galerie Carrez':'p-gc'};return e?`<span class="pill ${m[e]||'p-iris'}">${e}</span>`:''};
   const pBadge=p=>{const m={urgente:'p-urg',haute:'p-high',moyenne:'p-med',standby:'p-standby',fait:'p-done'};const l={urgente:'Urgent',haute:'Haute',moyenne:'Moyenne',standby:'Standby',fait:'Fait'};return`<span class="pill ${m[p]||'p-med'}">${l[p]||p}</span>`};
   const sLabel=s=>({a_faire:'A faire',en_cours:'En cours',fait:'Fait'}[s]||s);
   const fDate=d=>{if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})};
@@ -493,7 +485,7 @@ function renderTodoRec(){
   document.getElementById('todo-count').textContent=`${src.length} tâches récurrentes`;
   const el=document.getElementById('todo-body');
   if(!src.length){el.innerHTML='<div class="empty"><div class="empty-ico">🔄</div><div class="empty-text">Aucune tâche récurrente</div></div>';return}
-  const eBadge=e=>{const m={'IRIS H':'p-iris',Infra:'p-infra',BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',ARRISTO:'p-arristo'};return e?`<span class="pill ${m[e]||'p-iris'}">${e}</span>`:''};
+  const eBadge=e=>{const m={'IRIS H':'p-iris',Perso:'p-infra',BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',ARRISTO:'p-arristo'};return e?`<span class="pill ${m[e]||'p-iris'}">${e}</span>`:''};
   el.innerHTML=`<div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Tâche</th><th>Entité</th>${weeks.map(w=>`<th style="width:34px;text-align:center">${w}</th>`).join('')}</tr></thead><tbody>
   ${src.map(t=>{const ts=suivi.filter(s=>s.tache_id===t.id);return`<tr><td><div class="td-name">${t.titre}</div><div style="font-size:10px;color:var(--dim)">${t.description||''}</div></td><td>${eBadge(t.entite)}</td>${weeks.map(w=>{const e=ts.find(s=>s.semaine===w);const ok=e&&e.fait;return`<td style="text-align:center;font-size:14px;color:${ok?'var(--green)':'var(--dim2)'}">${ok?'✓':'○'}</td>`}).join('')}</tr>`}).join('')}</tbody></table></div>`;
 }
@@ -582,11 +574,11 @@ function renderDeals(){
     <div class="kpi"><div class="kpi-label">Volume total</div><div class="kpi-val">${fmt(vol)||'N/A'}</div></div>
     <div class="kpi"><div class="kpi-label">CA prévi</div><div class="kpi-val">${fmt(totalCA)||'N/A'}</div></div>
     <div class="kpi"><div class="kpi-label">En travaux</div><div class="kpi-val">${enTravaux}</div></div>`;
-  const eBadge=e=>{const m={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris'};const l={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP'};return`<span class="pill ${m[e]||'p-iris'}">${l[e]||e||''}</span>`};
+  const eBadge=e=>{const m={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris',ARRISTO:'p-arristo',IRIS_H:'p-iris',GALERIE_CARREZ:'p-gc'};const l={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP',ARRISTO:'ARRISTO',IRIS_H:'IRIS H',GALERIE_CARREZ:'Galerie Carrez'};return`<span class="pill ${m[e]||'p-iris'}">${l[e]||e||''}</span>`};
   const etBadge=et=>`<span class="pill" style="font-size:9px">${ETAPE_LABEL[et]||et||''}</span>`;
   const cols=[{k:'code',l:'Code'},{k:'nom',l:'Nom'},{k:'entite',l:'Entité'},{k:'type',l:'Type'},{k:'etape',l:'Étape'},{k:'montant',l:'Montant'},{k:'ca_previ',l:'CA Prévi'},{k:'resultat_previ',l:'Résultat'},{k:'adresse',l:'Adresse'},{k:'commentaire',l:'Commentaire'}];
-  const filtersHtml=`<div class="filters" style="margin-bottom:12px"><button class="fbtn deals-fbtn${dealsFilter==='all'?' on':''}" onclick="filterDeals(this,'all')">Tous</button><button class="fbtn deals-fbtn${dealsFilter==='BYM'?' on':''}" onclick="filterDeals(this,'BYM')">BYM</button><button class="fbtn deals-fbtn${dealsFilter==='URBAN_RISE'?' on':''}" onclick="filterDeals(this,'URBAN_RISE')">Urban Rise</button><button class="fbtn deals-fbtn${dealsFilter==='IRIS_REP'?' on':''}" onclick="filterDeals(this,'IRIS_REP')">IRIS REP</button></div>`;
-  const entIco=e=>({BYM:'🏗️',URBAN_RISE:'🏠',IRIS_REP:'🔍'}[e]||'📋');
+  const filtersHtml=`<div class="filters" style="margin-bottom:12px"><button class="fbtn deals-fbtn${dealsFilter==='all'?' on':''}" onclick="filterDeals(this,'all')">Tous</button><button class="fbtn deals-fbtn${dealsFilter==='BYM'?' on':''}" onclick="filterDeals(this,'BYM')">BYM</button><button class="fbtn deals-fbtn${dealsFilter==='URBAN_RISE'?' on':''}" onclick="filterDeals(this,'URBAN_RISE')">Urban Rise</button><button class="fbtn deals-fbtn${dealsFilter==='IRIS_REP'?' on':''}" onclick="filterDeals(this,'IRIS_REP')">IRIS REP</button><button class="fbtn deals-fbtn${dealsFilter==='ARRISTO'?' on':''}" onclick="filterDeals(this,'ARRISTO')">ARRISTO</button><button class="fbtn deals-fbtn${dealsFilter==='IRIS_H'?' on':''}" onclick="filterDeals(this,'IRIS_H')">IRIS H</button><button class="fbtn deals-fbtn${dealsFilter==='GALERIE_CARREZ'?' on':''}" onclick="filterDeals(this,'GALERIE_CARREZ')">Galerie Carrez</button></div>`;
+  const entIco=e=>({BYM:'🏗️',URBAN_RISE:'🏠',IRIS_REP:'🔍',ARRISTO:'🤝',IRIS_H:'🏛️',GALERIE_CARREZ:'🎨'}[e]||'📋');
   document.getElementById('deals-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr>${cols.map(c=>{let cls='';if(dealsSortCol===c.k)cls=dealsSortDir==='asc'?' ▲':' ▼';return`<th style="cursor:pointer" onclick="sortDeals('${c.k}')">${c.l}${cls}</th>`}).join('')}</tr></thead><tbody>
   ${deals.length?deals.map(d=>`<tr><td><a href="#" onclick="goToTodoForDeal('${d.code||''}');return false" style="color:var(--blue);font-weight:600;text-decoration:none;font-size:12px" title="Voir les tâches ${d.code}">${d.code||''}</a></td><td class="td-name">${entIco(d.entite)} ${d.nom||''}</td><td>${eBadge(d.entite)}</td><td>${DL[d.type]||d.type||''}</td><td>${etBadge(d.etape)}</td><td style="color:var(--green);font-weight:500">${fmt(d.montant)}</td><td style="color:var(--blue)">${fmt(d.ca_previ)}</td><td style="color:var(--green)">${fmt(d.resultat_previ)}</td><td>${d.adresse||''}</td><td style="font-size:10px;color:var(--dim);font-style:italic;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${(d.commentaire||'').replace(/"/g,'&quot;')}">${d.commentaire||''}</td></tr>`).join(''):`<tr><td colspan="${cols.length}" style="text-align:center;padding:2rem;color:var(--dim)">Aucun deal</td></tr>`}
   </tbody></table>`;
