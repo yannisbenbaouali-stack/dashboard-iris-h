@@ -256,7 +256,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <!-- DEALS -->
       <div class="tab" id="tab-deals">
         <div class="kpis" id="deals-kpis"></div>
-        <div class="kanban" id="deals-body"></div>
+        <div id="deals-body"></div>
       </div>
 
       <!-- FINANCE -->
@@ -357,8 +357,8 @@ function render(){
 function updateNavCounts(){
   const tv2=data.taches_v2.filter(t=>(t.type_tache||'classique')==='classique'&&t.statut!=='fait');
   document.getElementById('nav-todo-cnt').textContent=tv2.length;
-  document.getElementById('nav-deals-cnt').textContent=data.deals.filter(d=>d.etape!=='perdu').length;
-  document.getElementById('nav-crm-cnt').textContent=data.contacts.length.toLocaleString();
+  document.getElementById('nav-deals-cnt').textContent=data.deals.filter(d=>d.etape!=='cloture').length;
+  document.getElementById('nav-crm-cnt').textContent=(data._crmTotal||data.contacts.length).toLocaleString();
 }
 
 let currentTab='todo';
