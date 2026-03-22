@@ -357,7 +357,7 @@ function render(){
 function updateNavCounts(){
   const tv2=data.taches_v2.filter(t=>(t.type_tache||'classique')==='classique'&&t.statut!=='fait');
   document.getElementById('nav-todo-cnt').textContent=tv2.length;
-  document.getElementById('nav-deals-cnt').textContent=data.deals.filter(d=>d.etape!=='cloture').length;
+  document.getElementById('nav-deals-cnt').textContent=data.deals.filter(d=>!['cloture','dead'].includes(d.etape)).length;
   document.getElementById('nav-crm-cnt').textContent=(data._crmTotal||data.contacts.length).toLocaleString();
 }
 
@@ -551,7 +551,7 @@ async function loadCRMTable(){
 // ════════════════════════════════════════
 // DEALS
 // ════════════════════════════════════════
-const ETAPES=[{key:'sourcing',label:'Sourcing'},{key:'analyse',label:'Analyse'},{key:'nego',label:'Négo'},{key:'offre',label:'Offre'},{key:'compromis',label:'Compromis'},{key:'acte',label:'Acte'},{key:'travaux',label:'Travaux'},{key:'commercialisation',label:'Commerc.'},{key:'cloture',label:'Clôture'}];
+const ETAPES=[{key:'sourcing',label:'Sourcing'},{key:'analyse',label:'Analyse'},{key:'nego',label:'Négo'},{key:'offre',label:'Offre'},{key:'compromis',label:'Compromis'},{key:'acte',label:'Acte'},{key:'travaux',label:'Travaux'},{key:'commercialisation',label:'Commerc.'},{key:'to_sell',label:'To Sell'},{key:'cloture',label:'Clôture'},{key:'dead',label:'Dead'}];
 const ETAPE_ORDER={};ETAPES.forEach((e,i)=>ETAPE_ORDER[e.key]=i);
 const ETAPE_LABEL={};ETAPES.forEach(e=>ETAPE_LABEL[e.key]=e.label);
 const DT={acquisition:'🏠',vente:'💰',chantier:'🏗️',mandat:'🤝',montage:'📐',appel_offres:'📋',gestion:'🔑',chantier_bym:'🏗️',conseil_iris:'🤝'};
@@ -565,7 +565,7 @@ function renderDeals(){
   let deals=dealsFilter==='all'?[...data.deals]:data.deals.filter(d=>d.entite===dealsFilter);
   const dir=dealsSortDir==='asc'?1:-1;
   deals.sort((a,b)=>{let va,vb;if(dealsSortCol==='etape'){va=ETAPE_ORDER[a.etape]??99;vb=ETAPE_ORDER[b.etape]??99}else if(['montant','ca_previ','resultat_previ'].includes(dealsSortCol)){va=a[dealsSortCol]||0;vb=b[dealsSortCol]||0}else{va=(a[dealsSortCol]||'').toString().toLowerCase();vb=(b[dealsSortCol]||'').toString().toLowerCase()}return va<vb?-1*dir:va>vb?1*dir:0});
-  const actifs=deals.filter(d=>d.etape!=='cloture');
+  const actifs=deals.filter(d=>!['cloture','dead'].includes(d.etape));
   const vol=actifs.reduce((a,d)=>a+(d.montant||0),0);
   const totalCA=deals.reduce((s,d)=>s+(d.ca_previ||0),0);
   const enTravaux=deals.filter(d=>d.etape==='travaux').length;
@@ -575,7 +575,7 @@ function renderDeals(){
     <div class="kpi"><div class="kpi-label">CA prévi</div><div class="kpi-val">${fmt(totalCA)||'N/A'}</div></div>
     <div class="kpi"><div class="kpi-label">En travaux</div><div class="kpi-val">${enTravaux}</div></div>`;
   const eBadge=e=>{const m={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris',ARRISTO:'p-arristo',IRIS_H:'p-iris',GALERIE_CARREZ:'p-gc'};const l={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP',ARRISTO:'ARRISTO',IRIS_H:'IRIS H',GALERIE_CARREZ:'Galerie Carrez'};return`<span class="pill ${m[e]||'p-iris'}">${l[e]||e||''}</span>`};
-  const etBadge=et=>`<span class="pill" style="font-size:9px">${ETAPE_LABEL[et]||et||''}</span>`;
+  const etBadge=et=>{const st={dead:'background:#f8717118;color:#f87171;border:1px solid #f8717140',to_sell:'background:#fb923c18;color:#fb923c;border:1px solid #fb923c40',cloture:'background:#41c98e18;color:#41c98e;border:1px solid #41c98e40'};return`<span class="pill" style="font-size:9px;${st[et]||''}">${ETAPE_LABEL[et]||et||''}</span>`};
   const cols=[{k:'code',l:'Code'},{k:'nom',l:'Nom'},{k:'entite',l:'Entité'},{k:'type',l:'Type'},{k:'etape',l:'Étape'},{k:'montant',l:'Montant'},{k:'ca_previ',l:'CA Prévi'},{k:'resultat_previ',l:'Résultat'},{k:'adresse',l:'Adresse'},{k:'commentaire',l:'Commentaire'}];
   const filtersHtml=`<div class="filters" style="margin-bottom:12px"><button class="fbtn deals-fbtn${dealsFilter==='all'?' on':''}" onclick="filterDeals(this,'all')">Tous</button><button class="fbtn deals-fbtn${dealsFilter==='BYM'?' on':''}" onclick="filterDeals(this,'BYM')">BYM</button><button class="fbtn deals-fbtn${dealsFilter==='URBAN_RISE'?' on':''}" onclick="filterDeals(this,'URBAN_RISE')">Urban Rise</button><button class="fbtn deals-fbtn${dealsFilter==='IRIS_REP'?' on':''}" onclick="filterDeals(this,'IRIS_REP')">IRIS REP</button><button class="fbtn deals-fbtn${dealsFilter==='ARRISTO'?' on':''}" onclick="filterDeals(this,'ARRISTO')">ARRISTO</button><button class="fbtn deals-fbtn${dealsFilter==='IRIS_H'?' on':''}" onclick="filterDeals(this,'IRIS_H')">IRIS H</button><button class="fbtn deals-fbtn${dealsFilter==='GALERIE_CARREZ'?' on':''}" onclick="filterDeals(this,'GALERIE_CARREZ')">Galerie Carrez</button></div>`;
   const entIco=e=>({BYM:'🏗️',URBAN_RISE:'🏠',IRIS_REP:'🔍',ARRISTO:'🤝',IRIS_H:'🏛️',GALERIE_CARREZ:'🎨'}[e]||'📋');
