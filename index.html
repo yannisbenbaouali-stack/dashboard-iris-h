@@ -197,6 +197,21 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
   .charts-row{grid-template-columns:1fr}
   .content{padding:16px}
 }
+/* ── MODALE DETAIL TACHE ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9000;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:14px;width:100%;max-width:520px;padding:24px;box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+.modal-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.modal-sub{font-size:11px;color:var(--dim);margin-bottom:16px}
+.modal-textarea{width:100%;min-height:160px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:var(--font);font-size:13px;color:var(--text);resize:vertical;outline:none;line-height:1.6}
+.modal-textarea:focus{border-color:var(--blue)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.modal-btn{padding:8px 18px;border-radius:8px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);transition:.15s}
+.modal-btn-save{background:var(--navy);color:#fff;border-color:var(--navy)}
+.modal-btn-save:hover{opacity:.85}
+.modal-btn-cancel{background:transparent;color:var(--dim)}
+.modal-btn-cancel:hover{background:var(--bg)}
+.modal-loading{font-size:11px;color:var(--dim);margin-top:8px;display:none}
 </style>
 </head>
 <body>
@@ -286,6 +301,19 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
   </div>
 </div>
 
+<!-- MODALE DETAIL TACHE -->
+<div class="modal-overlay" id="task-modal" onclick="if(event.target===this)closeTaskModal()">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-task-title"></div>
+    <div class="modal-sub" id="modal-task-sub"></div>
+    <textarea class="modal-textarea" id="modal-task-detail" placeholder="Décris cette tâche en détail..."></textarea>
+    <div class="modal-loading" id="modal-loading">Enregistrement...</div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-cancel" onclick="closeTaskModal()">Annuler</button>
+      <button class="modal-btn modal-btn-save" id="modal-save-btn" onclick="saveTaskDetail()">Mettre à jour</button>
+    </div>
+  </div>
+</div>
 <div id="toast"></div>
 
 <script>
@@ -472,7 +500,7 @@ function renderTodo(){
   el.innerHTML=`<table class="tbl"><thead><tr><th style="width:24px"></th><th>Tâche</th><th>Code</th><th>Projet</th><th>Entité</th><th>Priorité</th><th>Statut</th><th>Échéance</th><th>Attente de</th><th style="width:24px"></th></tr></thead><tbody>
   ${filtered.map(t=>{
     const sCls=t.statut==='fait'?'color:var(--green)':t.statut==='en_cours'?'color:var(--blue)':'color:var(--dim)';
-    return`<tr><td style="text-align:center;font-size:12px;color:var(--dim)">${t.prerequis_titre?`<span title="← ${t.prerequis_titre}" style="cursor:pointer">◀</span>`:''}</td><td><div class="td-name">${t.titre}</div><div style="font-size:10px;color:var(--dim)">${t.description||''}</div></td><td style="font-size:11px"><span class="pill p-iris" style="font-size:9px;cursor:pointer" onclick="todoFilterCode='${t.code_projet||''}';renderTodo()">${t.code_projet||''}</span></td><td style="font-size:11px;color:var(--dim)">${t.projet||''}</td><td>${eBadge(t.entite)}</td><td>${pBadge(t.priorite)}</td><td style="${sCls};font-size:11px">${sLabel(t.statut)}</td><td style="${dCls(t.echeance)};font-size:11px">${fDate(t.echeance)}</td><td>${t.attente_de?`<span class="pill p-att">${t.attente_de}</span>`:''}</td><td style="text-align:center;font-size:12px;color:var(--dim)">${t.suite_titre?`<span title="→ ${t.suite_titre}" style="cursor:pointer">▶</span>`:''}</td></tr>`}).join('')}</tbody></table>`;
+    return`<tr><td style="text-align:center;font-size:12px;color:var(--dim)">${t.prerequis_titre?`<span title="← ${t.prerequis_titre}" style="cursor:pointer">◀</span>`:''}</td><td style="cursor:pointer" onclick="openTaskDetail('${t.id}')"><div class="td-name" style="display:flex;align-items:center;gap:6px">${t.detail?'<span style="color:var(--blue);font-size:10px" title="Détail renseigné">●</span>':''}<span>${t.titre}</span></div><div style="font-size:10px;color:var(--dim)">${t.description||''}</div></td><td style="font-size:11px"><span class="pill p-iris" style="font-size:9px;cursor:pointer" onclick="event.stopPropagation();todoFilterCode='${t.code_projet||''}';renderTodo()">${t.code_projet||''}</span></td><td style="font-size:11px;color:var(--dim)">${t.projet||''}</td><td>${eBadge(t.entite)}</td><td>${pBadge(t.priorite)}</td><td style="${sCls};font-size:11px">${sLabel(t.statut)}</td><td style="${dCls(t.echeance)};font-size:11px">${fDate(t.echeance)}</td><td>${t.attente_de?`<span class="pill p-att">${t.attente_de}</span>`:''}</td><td style="text-align:center;font-size:12px;color:var(--dim)">${t.suite_titre?`<span title="→ ${t.suite_titre}" style="cursor:pointer">▶</span>`:''}</td></tr>`}).join('')}</tbody></table>`;
 }
 
 function renderTodoRec(){
@@ -693,6 +721,52 @@ function toggleSkill(i){
   chev.style.transform=open?'':'rotate(90deg)';
 }
 function fmtDt(iso){if(!iso)return'';const d=new Date(iso);return d.toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'})+' · '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}
+
+// ════════════════════════════════════════
+// MODALE DETAIL TACHE
+// ════════════════════════════════════════
+let currentTaskId=null;
+
+function openTaskDetail(id){
+  const t=(data.taches_v2||[]).find(t=>t.id===id);
+  if(!t)return;
+  currentTaskId=id;
+  document.getElementById('modal-task-title').textContent=t.titre;
+  document.getElementById('modal-task-sub').textContent=[t.code_projet,t.entite,t.projet].filter(Boolean).join(' · ');
+  document.getElementById('modal-task-detail').value=t.detail||'';
+  document.getElementById('modal-loading').style.display='none';
+  document.getElementById('modal-save-btn').disabled=false;
+  document.getElementById('task-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('modal-task-detail').focus(),100);
+}
+
+function closeTaskModal(){
+  document.getElementById('task-modal').classList.remove('open');
+  currentTaskId=null;
+}
+
+async function saveTaskDetail(){
+  if(!currentTaskId||!cfg)return;
+  const detail=document.getElementById('modal-task-detail').value;
+  const loading=document.getElementById('modal-loading');
+  const btn=document.getElementById('modal-save-btn');
+  loading.style.display='block';btn.disabled=true;
+  try{
+    await fetch(`${cfg.url}/rest/v1/taches_v2?id=eq.${currentTaskId}`,{
+      method:'PATCH',
+      headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'},
+      body:JSON.stringify({detail})
+    });
+    const t=(data.taches_v2||[]).find(t=>t.id===currentTaskId);
+    if(t)t.detail=detail;
+    closeTaskModal();
+  }catch(e){
+    console.warn('Save detail:',e);
+    loading.textContent='Erreur, réessaie';
+  }finally{
+    loading.style.display='none';btn.disabled=false;
+  }
+}
 
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)}
 
