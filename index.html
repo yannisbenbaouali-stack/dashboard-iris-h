@@ -2,1311 +2,695 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <title>IRIS H · Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Fraunces:opsz,wght@9..144,300;9..144,700&display=swap');
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#07080a; --s1:#0f1114; --s2:#141618; --s3:#1a1d22;
-  --border:#22262e; --border2:#2d3340;
-  --gold:#c8a455; --goldf:#c8a45518;
-  --blue:#5b9cf6; --bluef:#5b9cf618;
-  --green:#41c98e; --greenf:#41c98e18;
-  --violet:#a78bfa; --violetf:#a78bfa18;
-  --orange:#fb923c; --orangef:#fb923c18;
-  --red:#f87171; --redf:#f8717118;
-  --cyan:#22d3ee; --cyanf:#22d3ee18;
-  --text:#ccc5b8; --dim:#666; --dim2:#333;
-  --font-mono:'IBM Plex Mono',monospace;
-  --font-serif:'Fraunces',serif;
+  --navy:#0e1f4d;--navy2:#162a5c;--navy3:#1d3570;
+  --blue:#5B9BD5;--blue2:#7AB3E0;--blue-bg:rgba(91,155,213,0.08);--blue-border:rgba(91,155,213,0.2);
+  --bg:#f4f6fa;--card:#fff;--border:#e2e6ef;--border2:#d1d5e0;
+  --text:#1a1d2b;--dim:#7a7f8e;--dim2:#b0b4c0;
+  --green:#2ecc71;--green-bg:#eafaf1;--red:#e74c3c;--red-bg:#fdecea;
+  --orange:#f39c12;--orange-bg:#fef5e7;--purple:#7F77DD;--purple-bg:#f0effe;
+  --font:'Nunito Sans',sans-serif;
 }
-html{height:100%;overflow:hidden}
-body{background:var(--bg);color:var(--text);font-family:var(--font-mono);font-size:13px;height:100%;display:flex;flex-direction:column;overflow:hidden}
+html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--text)}
 
-/* ── SETUP SCREEN ── */
-#setup{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;padding:2rem}
+/* SETUP */
+#setup{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:1000}
 #setup.hidden{display:none}
-.setup-box{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:2.5rem;max-width:480px;width:100%}
-.setup-logo{font-family:var(--font-serif);font-size:2rem;color:var(--gold);margin-bottom:.3rem}
-.setup-sub{font-size:10px;letter-spacing:4px;color:var(--dim);margin-bottom:2rem;text-transform:uppercase}
-.setup-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;margin-top:1.2rem}
-.setup-input{width:100%;background:var(--s2);border:1px solid var(--border2);border-radius:8px;padding:.75rem 1rem;font-family:var(--font-mono);font-size:12px;color:var(--text);outline:none}
-.setup-input:focus{border-color:var(--gold)}
-.setup-btn{margin-top:1.5rem;width:100%;background:var(--gold);border:none;border-radius:8px;padding:.85rem;font-family:var(--font-mono);font-size:13px;font-weight:600;color:#07080a;cursor:pointer;transition:.2s}
-.setup-btn:hover{background:var(--goldl,#e8c47a)}
-.setup-note{font-size:10px;color:var(--dim);margin-top:1rem;line-height:1.6}
+.setup-box{background:var(--navy2);border:1px solid var(--navy3);border-radius:16px;padding:2.5rem;max-width:440px;width:100%}
+.setup-logo{font-size:1.8rem;font-weight:700;color:#fff;margin-bottom:4px}
+.setup-logo span{color:var(--blue)}
+.setup-sub{font-size:11px;letter-spacing:3px;color:var(--dim2);margin-bottom:2rem;text-transform:uppercase}
+.setup-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim2);margin-bottom:6px;margin-top:1rem}
+.setup-input{width:100%;background:var(--navy);border:1px solid var(--navy3);border-radius:8px;padding:10px 12px;font-family:var(--font);font-size:13px;color:#fff;outline:none}
+.setup-input:focus{border-color:var(--blue)}
+.setup-btn{margin-top:1.5rem;width:100%;background:var(--blue);border:none;border-radius:8px;padding:12px;font-family:var(--font);font-size:14px;font-weight:600;color:#fff;cursor:pointer}
+.setup-btn:hover{background:var(--blue2)}
+.setup-note{font-size:11px;color:var(--dim2);margin-top:1rem;line-height:1.6}
 
-/* ── HEADER ── */
-header{
-  display:flex;align-items:center;gap:1rem;
-  padding:.75rem 1.25rem;
-  border-bottom:1px solid var(--border);
-  background:var(--s1);
-  flex-shrink:0;
-  position:relative;z-index:10
-}
-.logo{font-family:var(--font-serif);font-size:1.35rem;color:var(--gold);font-weight:700;flex-shrink:0}
-.logo span{font-size:.75rem;font-family:var(--font-mono);color:var(--dim);font-weight:400;letter-spacing:2px;vertical-align:middle;margin-left:.4rem}
+/* LAYOUT */
+#app{display:none;height:100%;flex-direction:row}
+.sidebar{width:220px;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+.sb-header{padding:20px 18px 12px}
+.sb-logo{font-size:1.4rem;font-weight:700;color:#fff}
+.sb-logo span{color:var(--blue);font-weight:400}
+.sb-search{margin:8px 14px 14px;position:relative}
+.sb-search input{width:100%;padding:8px 10px 8px 32px;background:rgba(91,155,213,0.1);border:1px solid rgba(91,155,213,0.15);border-radius:8px;font-family:var(--font);font-size:12px;color:#fff;outline:none}
+.sb-search input::placeholder{color:rgba(255,255,255,0.35)}
+.sb-search input:focus{border-color:var(--blue);background:rgba(91,155,213,0.15)}
+.sb-search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(255,255,255,0.35)}
+.sb-nav{flex:1;display:flex;flex-direction:column;gap:2px;padding:0 8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:13px;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .12s;border:none;background:none;width:100%;text-align:left;font-family:var(--font)}
+.nav-item:hover{color:rgba(255,255,255,0.8);background:rgba(91,155,213,0.08)}
+.nav-item.active{color:#fff;background:rgba(91,155,213,0.15)}
+.nav-item.active .nav-dot{background:var(--blue)}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:transparent;flex-shrink:0;transition:.12s}
+.nav-cnt{margin-left:auto;font-size:10px;background:rgba(91,155,213,0.2);color:var(--blue);padding:2px 7px;border-radius:10px}
+.sb-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,0.06);font-size:10px;color:rgba(255,255,255,0.25)}
+.sb-settings{cursor:pointer;color:rgba(255,255,255,0.3);font-size:11px;margin-top:4px}
+.sb-settings:hover{color:var(--blue)}
 
-/* Tab nav in header */
-.tabs-nav{display:flex;gap:0;flex:1;overflow-x:auto;scrollbar-width:none}
-.tabs-nav::-webkit-scrollbar{display:none}
-.tab-btn{
-  padding:.5rem 1.1rem;font-family:var(--font-mono);font-size:11px;
-  letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);
-  background:transparent;border:none;border-bottom:2px solid transparent;
-  cursor:pointer;white-space:nowrap;transition:.15s;
-}
-.tab-btn:hover{color:var(--text)}
-.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{display:flex;align-items:center;padding:14px 28px;background:var(--card);border-bottom:1px solid var(--border)}
+.topbar-title{font-size:17px;font-weight:600;color:var(--navy)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.top-btn{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:500;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;font-family:var(--font);transition:.15s}
+.top-btn:hover{background:var(--bg);border-color:var(--border2);color:var(--text)}
+.top-btn.accent{border-color:var(--blue);color:var(--blue);background:rgba(91,155,213,0.05)}
+.top-btn.accent:hover{background:rgba(91,155,213,0.12)}
+.top-btn.warn{border-color:var(--orange);color:var(--orange)}
 
-.refresh-area{display:flex;align-items:center;gap:.6rem;flex-shrink:0}
-.refresh-time{font-size:10px;color:var(--dim);white-space:nowrap}
-.refresh-btn{
-  background:var(--goldf);border:1px solid var(--gold);border-radius:6px;
-  padding:.4rem .8rem;font-family:var(--font-mono);font-size:11px;
-  color:var(--gold);cursor:pointer;transition:.2s;white-space:nowrap
-}
-.refresh-btn:hover{background:var(--gold);color:#07080a}
-.refresh-btn.loading{opacity:.5;pointer-events:none}
-.refresh-btn.loading::after{content:' ⟳'}
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:24px 28px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.tab{display:none}
+.tab.active{display:block}
 
-/* ── KPI BAR ── */
-.kpi-bar{
-  display:grid;grid-template-columns:repeat(5,1fr);
-  border-bottom:1px solid var(--border);
-  flex-shrink:0;background:var(--s2)
-}
-.kpi{
-  padding:.7rem 1.1rem;border-right:1px solid var(--border);
-  display:flex;flex-direction:column;gap:2px
-}
-.kpi:last-child{border-right:none}
-.kpi-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
-.kpi-value{font-family:var(--font-serif);font-size:1.5rem;color:var(--text);line-height:1}
-.kpi-value.urgent{color:var(--red)}
-.kpi-value.ok{color:var(--green)}
-.kpi-value.memo{color:var(--cyan)}
-.kpi-sub{font-size:10px;color:var(--dim)}
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.kpi{background:var(--card);border-radius:12px;padding:18px 20px;border:1px solid var(--border);border-left:4px solid var(--blue);transition:.15s}
+.kpi:hover{border-color:var(--border2)}
+.kpi-label{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.kpi-val{font-size:32px;font-weight:700;color:var(--navy);line-height:1}
+.kpi-sub{font-size:12px;color:var(--dim);margin-top:6px}
+.kpi.red{border-left-color:var(--red)} .kpi.red .kpi-val{color:var(--red)}
+.kpi.orange{border-left-color:var(--orange)} .kpi.orange .kpi-val{color:var(--orange)}
+.kpi.green{border-left-color:var(--green)} .kpi.green .kpi-val{color:var(--green)}
 
-/* ── MAIN CONTENT ── */
-main{flex:1;overflow:hidden;position:relative}
-.tab-content{
-  position:absolute;inset:0;overflow-y:auto;
-  padding:1.25rem;
-  display:none;
-  scrollbar-width:thin;scrollbar-color:var(--border2) transparent
-}
-.tab-content.active{display:block}
+/* CHARTS */
+.charts-row{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-bottom:24px}
+.chart-card{background:var(--card);border-radius:12px;padding:18px 20px;border:1px solid var(--border)}
+.chart-title{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
 
-/* ── SECTION HEADERS ── */
-.sec-hdr{
-  font-size:9px;letter-spacing:5px;text-transform:uppercase;
-  color:var(--dim);margin-bottom:1rem;
-  display:flex;align-items:center;gap:.75rem
-}
-.sec-hdr::after{content:'';flex:1;height:1px;background:var(--border)}
+/* TABLE */
+.tcard{background:var(--card);border-radius:12px;padding:18px 20px;border:1px solid var(--border);margin-bottom:16px}
+.tcard-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.tcard-title{font-size:13px;font-weight:600;color:var(--navy)}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;padding:8px 8px;font-size:10px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)}
+.tbl td{padding:8px 8px;border-bottom:1px solid var(--bg);color:var(--text);vertical-align:middle}
+.tbl tr:hover td{background:var(--bg)}
+.td-name{font-weight:600;color:var(--navy)}
+.td-link{color:var(--blue);text-decoration:none}
+.td-link:hover{text-decoration:underline}
 
-/* ── CRM TABLE ── */
-.filter-bar{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
-.filter-btn{
-  padding:.35rem .85rem;border:1px solid var(--border2);border-radius:20px;
-  font-family:var(--font-mono);font-size:10px;letter-spacing:1px;
-  text-transform:uppercase;color:var(--dim);background:var(--s2);cursor:pointer;transition:.2s
-}
-.filter-btn:hover,.filter-btn.active{border-color:var(--gold);color:var(--gold);background:var(--goldf)}
+/* PILLS */
+.pill{display:inline-block;padding:2px 9px;border-radius:6px;font-size:10px;font-weight:600;white-space:nowrap}
+.p-iris{background:rgba(91,155,213,0.12);color:#0e1f4d}
+.p-bym{background:rgba(55,138,221,0.1);color:#0C447C}
+.p-ur{background:var(--purple-bg);color:#3C3489}
+.p-arristo{background:#F1EFE8;color:#444}
+.p-gc{background:#FBEAF0;color:#72243E}
+.p-infra{background:#E1F5EE;color:#085041}
+.p-urg{background:var(--red-bg);color:var(--red)}
+.p-high{background:var(--orange-bg);color:#b36d00}
+.p-med{background:rgba(91,155,213,0.1);color:#0C447C}
+.p-standby{background:#F1EFE8;color:#666}
+.p-done{background:var(--green-bg);color:#1a8a4a}
+.p-att{background:var(--orange-bg);color:#c57600}
 
-.crm-table{width:100%;border-collapse:collapse;font-size:12px}
-.crm-table thead th{
-  font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);
-  padding:.6rem .9rem;text-align:left;border-bottom:1px solid var(--border);
-  background:var(--s2);white-space:nowrap
-}
-.crm-table tbody tr{cursor:default;transition:.1s}
-.crm-table tbody tr:hover td{background:var(--s2)}
-.crm-table tbody td{padding:.6rem .9rem;border-bottom:1px solid var(--dim2);color:#888;vertical-align:middle}
-.crm-table .td-name{color:var(--text);font-weight:500}
-.crm-table .td-contact a{color:var(--blue);text-decoration:none}
-.crm-table .td-contact a:hover{text-decoration:underline}
-.ago{font-size:10px;color:var(--dim)}
+/* FILTERS */
+.filters{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.fbtn{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:500;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;font-family:var(--font);transition:.12s}
+.fbtn:hover{border-color:var(--border2);color:var(--text)}
+.fbtn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
 
-/* ── BADGES ── */
-.badge{display:inline-flex;align-items:center;font-size:10px;padding:1px 7px;border-radius:3px;border:1px solid;white-space:nowrap}
-.badge-bym{background:var(--bluef);border-color:#5b9cf640;color:var(--blue)}
-.badge-ur{background:var(--violetf);border-color:#a78bfa40;color:var(--violet)}
-.badge-iris{background:var(--goldf);border-color:#c8a45540;color:var(--gold)}
-.badge-perso{background:var(--s3);border-color:var(--border2);color:var(--dim)}
-.badge-urgente{background:var(--redf);border-color:#f8717140;color:var(--red)}
-.badge-haute{background:var(--orangef);border-color:#fb923c40;color:var(--orange)}
-.badge-normale{background:var(--s3);border-color:var(--border2);color:var(--dim)}
-.badge-basse{background:var(--s3);border-color:var(--border2);color:var(--dim2)}
-.badge-a_faire{background:var(--s3);border-color:var(--border2);color:var(--dim)}
-.badge-en_cours{background:var(--bluef);border-color:#5b9cf640;color:var(--blue)}
-.badge-fait{background:var(--greenf);border-color:#41c98e40;color:var(--green)}
+/* PAGER */
+.pager{display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:11px;color:var(--dim)}
+.pager-btns{display:flex;gap:4px}
+.pager-btns button{padding:4px 10px;border-radius:4px;font-size:11px;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;font-family:var(--font)}
+.pager-btns button:hover:not(:disabled){background:var(--bg)}
+.pager-btns button:disabled{opacity:.3;cursor:default}
 
-/* Agent badges */
-.badge-claude{background:#c8a45518;border-color:#c8a45540;color:var(--gold)}
-.badge-tom{background:#22d3ee18;border-color:#22d3ee40;color:var(--cyan)}
-.badge-neo{background:#a78bfa18;border-color:#a78bfa40;color:var(--violet)}
+/* KANBAN */
+.kanban{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px}
+.kcol{flex:0 0 220px;display:flex;flex-direction:column;gap:8px}
+.kcol-hdr{font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 12px;border-radius:8px;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);background:var(--card);color:var(--dim);font-weight:600}
+.kcol-hdr .kcnt{font-size:11px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:0 7px}
+.deal-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;transition:.12s}
+.deal-card:hover{border-color:var(--border2)}
+.deal-name{font-size:13px;color:var(--navy);font-weight:600;margin-bottom:4px}
+.deal-meta{font-size:11px;color:var(--dim);line-height:1.6}
+.deal-montant{font-size:13px;color:var(--green);margin-top:4px;font-weight:600}
 
-/* ── TODO ── */
-.todo-group{margin-bottom:1.5rem}
-.todo-group-hdr{font-size:9px;letter-spacing:4px;text-transform:uppercase;padding:.4rem 0;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
-.todo-group-hdr .count{font-size:10px;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:1px 7px}
-.todo-item{
-  display:grid;grid-template-columns:1fr auto;gap:.5rem;align-items:center;
-  padding:.65rem .9rem;background:var(--s1);border:1px solid var(--border);
-  border-radius:8px;margin-bottom:.4rem;transition:.15s
-}
-.todo-item:hover{border-color:var(--border2);background:var(--s2)}
-.todo-left{}
-.todo-title{font-size:13px;color:var(--text);margin-bottom:3px}
-.todo-meta{font-size:10px;color:var(--dim);display:flex;gap:.6rem;flex-wrap:wrap}
-.todo-right{display:flex;gap:.4rem;align-items:center;flex-shrink:0}
-.deadline{font-size:10px}
-.deadline.late{color:var(--red)}
-.deadline.soon{color:var(--orange)}
-.deadline.ok{color:var(--dim)}
-
-/* ── DEALS TABLE ── */
-.deals-filters{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
-.deals-filter-btn{padding:.35rem .85rem;border:1px solid var(--border2);border-radius:20px;font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);background:var(--s2);cursor:pointer;transition:.2s}
-.deals-filter-btn:hover,.deals-filter-btn.active{border-color:var(--gold);color:var(--gold);background:var(--goldf)}
-.deals-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1rem}
-.deals-stat{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:.6rem .9rem}
-.deals-stat-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
-.deals-stat-value{font-family:var(--font-serif);font-size:1.3rem;color:var(--text);margin-top:.15rem}
-.deals-table{width:100%;border-collapse:collapse;font-size:12px}
-.deals-table thead th{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);padding:.6rem .7rem;text-align:left;border-bottom:1px solid var(--border);background:var(--s2);white-space:nowrap;cursor:pointer;user-select:none;transition:.15s}
-.deals-table thead th:hover{color:var(--gold)}
-.deals-table thead th.sorted-asc::after{content:' ▲';font-size:8px;color:var(--gold)}
-.deals-table thead th.sorted-desc::after{content:' ▼';font-size:8px;color:var(--gold)}
-.deals-table tbody tr{cursor:default;transition:.1s}
-.deals-table tbody tr:hover td{background:var(--s2)}
-.deals-table tbody td{padding:.55rem .7rem;border-bottom:1px solid var(--dim2);color:#888;vertical-align:middle}
-.deals-table .td-name{color:var(--text);font-weight:500}
-.deals-table .td-montant{color:var(--green);font-weight:500;white-space:nowrap}
-.deals-table .td-comment{font-size:10px;color:var(--dim);font-style:italic;max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.badge-etape{display:inline-flex;align-items:center;font-size:9px;padding:2px 7px;border-radius:3px;border:1px solid;white-space:nowrap}
-.badge-sourcing{background:#22d3ee18;border-color:#22d3ee40;color:var(--cyan)}
-.badge-analyse{background:var(--bluef);border-color:#5b9cf640;color:var(--blue)}
-.badge-nego{background:var(--orangef);border-color:#fb923c40;color:var(--orange)}
-.badge-offre{background:var(--violetf);border-color:#a78bfa40;color:var(--violet)}
-.badge-compromis{background:var(--goldf);border-color:#c8a45540;color:var(--gold)}
-.badge-acte{background:var(--greenf);border-color:#41c98e40;color:var(--green)}
-.badge-travaux{background:var(--bluef);border-color:#5b9cf640;color:var(--blue)}
-.badge-commercialisation{background:var(--orangef);border-color:#fb923c40;color:var(--orange)}
-.badge-cloture{background:var(--greenf);border-color:#41c98e40;color:var(--green)}
-
-/* ── FINANCE ── */
-.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.finance-card{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem}
-.finance-card-title{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--dim);margin-bottom:.9rem}
-
-/* Budget progress */
-.budget-row{margin-bottom:.85rem}
-.budget-row:last-child{margin-bottom:0}
-.budget-label{display:flex;justify-content:space-between;margin-bottom:.3rem;font-size:12px}
-.budget-label .bname{color:var(--text)}
-.budget-label .bpct{font-size:11px}
-.budget-bar{height:6px;background:var(--dim2);border-radius:3px;overflow:hidden}
-.budget-fill{height:100%;border-radius:3px;transition:.3s}
-.bfill-ok{background:var(--green)}
-.bfill-warn{background:var(--orange)}
-.bfill-danger{background:var(--red)}
-.budget-nums{display:flex;justify-content:space-between;margin-top:.2rem;font-size:10px;color:var(--dim)}
-
-/* Trésorerie */
-.treso-row{display:grid;grid-template-columns:80px 1fr 1fr 1fr;gap:.5rem;align-items:center;margin-bottom:.5rem;font-size:12px}
-.treso-row:last-child{margin-bottom:0}
-.treso-entite{color:var(--dim);font-size:10px;letter-spacing:1px;text-transform:uppercase}
-.treso-in{color:var(--green)}
-.treso-out{color:var(--red)}
-.treso-net{}
-
-/* Synthèse groupe */
-.synth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
-.synth-item{background:var(--s2);border:1px solid var(--border2);border-radius:8px;padding:.75rem .9rem}
-.synth-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:.3rem}
-.synth-value{font-family:var(--font-serif);font-size:1.4rem;color:var(--text)}
-.synth-value.pos{color:var(--green)}
-.synth-value.neg{color:var(--red)}
-
-/* ── MEMOIRE ── */
-.memo-nav{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem}
-.memo-nav-btn{
-  padding:.4rem .9rem;border:1px solid var(--border2);border-radius:20px;
-  font-family:var(--font-mono);font-size:10px;letter-spacing:1px;
-  text-transform:uppercase;color:var(--dim);background:var(--s2);cursor:pointer;transition:.2s
-}
-.memo-nav-btn:hover,.memo-nav-btn.active{border-color:var(--cyan);color:var(--cyan);background:var(--cyanf)}
-
+/* MEMO */
+.memo-toggle{display:flex;gap:4px;margin-bottom:12px}
+.memo-toggle-btn{padding:6px 14px;border-radius:6px;font-size:12px;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;font-family:var(--font)}
+.memo-toggle-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.memo-nav{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.memo-nav-btn{padding:5px 10px;border-radius:6px;font-size:11px;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;font-family:var(--font)}
+.memo-nav-btn.active{border-color:var(--blue);color:var(--blue);background:rgba(91,155,213,0.06)}
 .bible-chapter{display:none}
 .bible-chapter.active{display:block}
-
-.bible-content{
-  background:var(--s1);border:1px solid var(--border);border-radius:10px;
-  padding:1.5rem 1.75rem;line-height:1.85;font-size:13px;color:var(--text);
-  min-height:200px;white-space:pre-wrap;word-wrap:break-word
-}
-.bible-content:empty::after{
-  content:'Aucune donnée pour ce chapitre. Tom et Neo alimenteront cette section au fil des échanges.';
-  color:var(--dim);font-style:italic
-}
-
-.bible-meta{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-top:.75rem;font-size:10px;color:var(--dim)
-}
-
-.memo-fragments{margin-top:1.5rem}
-.fragment-item{
-  background:var(--s1);border:1px solid var(--border);border-radius:8px;
-  padding:.75rem 1rem;margin-bottom:.5rem;transition:.15s
-}
-.fragment-item:hover{border-color:var(--border2);background:var(--s2)}
-.fragment-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem}
-.fragment-agent{font-size:10px}
+.bible-content{font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap;background:var(--bg);border-radius:8px;padding:14px;margin-bottom:8px}
+.bible-meta{font-size:10px;color:var(--dim);display:flex;justify-content:space-between}
+.fragment-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.fragment-header{display:flex;justify-content:space-between;margin-bottom:6px}
 .fragment-date{font-size:10px;color:var(--dim)}
-.fragment-text{font-size:12px;color:var(--text);line-height:1.7}
-.fragment-tags{display:flex;gap:.3rem;margin-top:.4rem;flex-wrap:wrap}
-.fragment-tag{font-size:9px;padding:1px 6px;border-radius:3px;background:var(--s3);border:1px solid var(--border2);color:var(--dim)}
+.fragment-text{font-size:13px;line-height:1.6;color:var(--text)}
+.fragment-tags{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px}
+.fragment-tag{font-size:10px;background:var(--bg);color:var(--dim);padding:2px 7px;border-radius:4px}
 
-.memo-toggle{
-  display:flex;gap:.5rem;margin-bottom:1rem
-}
-.memo-toggle-btn{
-  padding:.35rem .75rem;border:1px solid var(--border2);border-radius:6px;
-  font-family:var(--font-mono);font-size:10px;letter-spacing:1px;
-  text-transform:uppercase;color:var(--dim);background:var(--s2);cursor:pointer;transition:.2s
-}
-.memo-toggle-btn:hover,.memo-toggle-btn.active{border-color:var(--gold);color:var(--gold);background:var(--goldf)}
+/* FIN */
+.fin-nav{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.fin-nav-btn{padding:5px 10px;border-radius:6px;font-size:11px;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;font-family:var(--font)}
+.fin-nav-btn.active{border-color:var(--navy);color:var(--navy);background:rgba(14,31,77,0.05)}
+.fin-section{display:none}.fin-section.active{display:block}
+.budget-row{margin-bottom:12px}
+.budget-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.bname{color:var(--text);font-weight:500}.bpct{font-weight:600}
+.budget-bar{height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.budget-fill{height:100%;border-radius:4px}
+.bfill-ok{background:var(--green)}.bfill-warn{background:var(--orange)}.bfill-danger{background:var(--red)}
+.budget-nums{display:flex;justify-content:space-between;font-size:10px;color:var(--dim);margin-top:3px}
+.treso-row{display:grid;grid-template-columns:100px 1fr 1fr 1fr;gap:8px;padding:4px 0;font-size:12px}
+.treso-entite{font-weight:600;color:var(--navy)}
+.treso-in{color:var(--green)}.treso-out{color:var(--red)}.treso-net{font-weight:600}
+.synth-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bg)}
+.synth-label{font-size:12px;color:var(--dim)}.synth-value{font-size:14px;font-weight:600}
+.synth-value.pos{color:var(--green)}.synth-value.neg{color:var(--red)}
 
-/* ── SEARCH BAR ── */
-.search-bar{
-  display:flex;gap:.5rem;margin-bottom:1rem;align-items:center
-}
-.search-input{
-  flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:8px;
-  padding:.55rem .9rem;font-family:var(--font-mono);font-size:12px;color:var(--text);outline:none
-}
-.search-input:focus{border-color:var(--gold)}
-.search-input::placeholder{color:var(--dim)}
-.search-count{font-size:10px;color:var(--dim);white-space:nowrap}
+/* EMPTY */
+.empty{text-align:center;padding:40px;color:var(--dim)}
+.empty-ico{font-size:32px;margin-bottom:8px;opacity:.5}
+.empty-text{font-size:13px}
 
-/* ── FINANCE CATEGORIES ── */
-.fin-nav{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem}
-.fin-nav-btn{
-  padding:.4rem .9rem;border:1px solid var(--border2);border-radius:20px;
-  font-family:var(--font-mono);font-size:10px;letter-spacing:1px;
-  text-transform:uppercase;color:var(--dim);background:var(--s2);cursor:pointer;transition:.2s
-}
-.fin-nav-btn:hover,.fin-nav-btn.active{border-color:var(--green);color:var(--green);background:var(--greenf)}
+/* SEARCH RESULTS */
+#global-results{display:none;position:absolute;top:100%;left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:0 0 8px 8px;max-height:300px;overflow-y:auto;z-index:100;font-size:12px}
+#global-results .gr-item{padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--bg)}
+#global-results .gr-item:hover{background:var(--bg)}
+.gr-type{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-right:6px}
 
-.fin-section{display:none}
-.fin-section.active{display:block}
+/* TOAST */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--navy);color:#fff;padding:10px 24px;border-radius:8px;font-size:13px;transition:.3s;opacity:0;z-index:999}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ── EMPTY STATE ── */
-.empty{text-align:center;padding:3rem 1rem;color:var(--dim)}
-.empty-ico{font-size:2rem;margin-bottom:.5rem}
-.empty-text{font-size:12px}
-
-/* ── LOADING ── */
-.skeleton{background:linear-gradient(90deg,var(--s2) 25%,var(--s3) 50%,var(--s2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px;height:14px}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* ── ERROR TOAST ── */
-#toast{
-  position:fixed;bottom:1.5rem;right:1.5rem;
-  background:var(--red);color:#fff;
-  padding:.7rem 1.2rem;border-radius:8px;font-size:12px;
-  transform:translateY(100px);opacity:0;transition:.3s;z-index:9999
-}
-#toast.show{transform:translateY(0);opacity:1}
-
-/* ── RESPONSIVE MOBILE ── */
-@media(max-width:640px){
-  .kpi-bar{grid-template-columns:repeat(2,1fr)}
-  .kpi:nth-child(2){border-right:none}
-  .kpi:nth-child(3){border-top:1px solid var(--border)}
-  .kpi:nth-child(4){border-top:1px solid var(--border);border-right:none}
-  .kpi:nth-child(5){border-top:1px solid var(--border);grid-column:1/-1}
-  .finance-grid{grid-template-columns:1fr}
-  .deals-stats{grid-template-columns:repeat(2,1fr)}
-  .logo span{display:none}
-  .refresh-time{display:none}
-  header{padding:.6rem 1rem}
-  .tab-btn{font-size:10px;padding:.5rem .8rem}
+@media(max-width:768px){
+  .sidebar{width:60px}.sb-header,.sb-search,.sb-footer,.nav-cnt{display:none}
+  .nav-item{justify-content:center;padding:12px}.nav-item span:not(.nav-dot){display:none}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts-row{grid-template-columns:1fr}
+  .content{padding:16px}
 }
 </style>
 </head>
 <body>
 
-<!-- ══ SETUP SCREEN ══ -->
 <div id="setup">
   <div class="setup-box">
-    <div class="setup-logo">IRIS H</div>
-    <div class="setup-sub">Dashboard · Configuration</div>
+    <div class="setup-logo">IRIS <span>H</span></div>
+    <div class="setup-sub">Dashboard</div>
     <div class="setup-label">URL Supabase</div>
-    <input class="setup-input" id="inp-url" type="text" placeholder="https://xxxxxxxxx.supabase.co" autocomplete="off" spellcheck="false">
+    <input class="setup-input" id="inp-url" placeholder="https://xxxx.supabase.co">
     <div class="setup-label">Clé anon (anon public key)</div>
-    <input class="setup-input" id="inp-key" type="password" placeholder="eyJhbGci..." autocomplete="off" spellcheck="false">
-    <button class="setup-btn" onclick="saveConfig()">Connecter →</button>
-    <div class="setup-note">
-      Supabase → Settings → API → Project URL + anon public key.<br>
-      Ces informations sont stockées localement dans votre navigateur.
+    <input class="setup-input" id="inp-key" placeholder="eyJhbG..." type="password">
+    <button class="setup-btn" onclick="saveConfig()">Connecter</button>
+    <div class="setup-note">Supabase → Settings → API → Project URL + anon public key.</div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="sidebar">
+    <div class="sb-header">
+      <div class="sb-logo">IRIS <span>H</span></div>
+    </div>
+    <div class="sb-search">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="global-search" placeholder="Rechercher..." oninput="globalSearch(this.value)" onfocus="this.parentElement.querySelector('#global-results')&&(document.getElementById('global-results').style.display='block')" onblur="setTimeout(()=>{const r=document.getElementById('global-results');if(r)r.style.display='none'},200)">
+      <div id="global-results"></div>
+    </div>
+    <div class="sb-nav">
+      <button class="nav-item active" onclick="switchTab(this,'todo')"><span class="nav-dot"></span><span>Todo</span><span class="nav-cnt" id="nav-todo-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'deals')"><span class="nav-dot"></span><span>Deal Flow</span><span class="nav-cnt" id="nav-deals-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'finance')"><span class="nav-dot"></span><span>Finance</span></button>
+      <button class="nav-item" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'memoire')"><span class="nav-dot"></span><span>Mémoire</span></button>
+    </div>
+    <div class="sb-footer">
+      <div>Supabase connecté</div>
+      <div id="refresh-time-sb"></div>
+      <div class="sb-settings" onclick="clearConfig()">Déconnecter</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Todo</div>
+      <div class="topbar-right" id="topbar-right"></div>
+    </div>
+    <div class="content">
+
+      <!-- TODO -->
+      <div class="tab active" id="tab-todo">
+        <div class="kpis" id="todo-kpis"></div>
+        <div class="charts-row" id="todo-charts"></div>
+        <div id="todo-filters"></div>
+        <div class="tcard"><div class="tcard-hdr"><span class="tcard-title" id="todo-count"></span></div><div id="todo-body"></div></div>
+      </div>
+
+      <!-- DEALS -->
+      <div class="tab" id="tab-deals">
+        <div class="kpis" id="deals-kpis"></div>
+        <div class="kanban" id="deals-body"></div>
+      </div>
+
+      <!-- FINANCE -->
+      <div class="tab" id="tab-finance">
+        <div class="kpis" id="fin-kpis"></div>
+        <div class="fin-nav" id="fin-nav"></div>
+        <div id="fin-sections"></div>
+      </div>
+
+      <!-- CRM -->
+      <div class="tab" id="tab-crm">
+        <div class="kpis" id="crm-kpis"></div>
+        <div class="charts-row" id="crm-charts"></div>
+        <div id="crm-filters"></div>
+        <div class="tcard"><div class="tcard-hdr"><span class="tcard-title" id="crm-count"></span></div><div id="crm-body"></div></div>
+      </div>
+
+      <!-- MEMOIRE -->
+      <div class="tab" id="tab-memoire">
+        <div class="memo-toggle" id="memo-toggle"></div>
+        <div id="memo-bible-view"></div>
+        <div id="memo-fragments-view" style="display:none"></div>
+        <div id="memo-skills-view" style="display:none"></div>
+      </div>
+
     </div>
   </div>
 </div>
 
-<!-- ══ DASHBOARD ══ -->
-<div id="app" style="display:none;height:100%;flex-direction:column;display:none">
-
-  <!-- Header -->
-  <header>
-    <div class="logo">IRIS H <span>DASHBOARD</span></div>
-    <nav class="tabs-nav">
-      <button class="tab-btn active" data-tab="crm">CRM</button>
-      <button class="tab-btn" data-tab="todo">Todo</button>
-      <button class="tab-btn" data-tab="deals">Deal Flow</button>
-      <button class="tab-btn" data-tab="finance">Finance</button>
-      <button class="tab-btn" data-tab="memoire">Mémoire</button>
-    </nav>
-    <div class="refresh-area">
-      <span class="refresh-time" id="refresh-time">—</span>
-      <button class="refresh-btn" id="refresh-btn" onclick="loadAll()">↻ Actualiser</button>
-      <button style="background:transparent;border:none;color:var(--dim);cursor:pointer;font-size:16px;padding:.3rem" onclick="clearConfig()" title="Déconnecter">⚙</button>
-    </div>
-  </header>
-
-  <!-- KPIs -->
-  <div class="kpi-bar">
-    <div class="kpi">
-      <div class="kpi-label">Deals actifs</div>
-      <div class="kpi-value" id="kpi-deals">—</div>
-      <div class="kpi-sub" id="kpi-deals-sub">en cours</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Tâches urgentes</div>
-      <div class="kpi-value urgent" id="kpi-urgent">—</div>
-      <div class="kpi-sub" id="kpi-urgent-sub">à traiter</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Budget moyen</div>
-      <div class="kpi-value" id="kpi-budget">—</div>
-      <div class="kpi-sub" id="kpi-budget-sub">chantiers actifs</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Contacts</div>
-      <div class="kpi-value ok" id="kpi-contacts">—</div>
-      <div class="kpi-sub" id="kpi-contacts-sub">dans le CRM</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Mémoire IA</div>
-      <div class="kpi-value memo" id="kpi-memo">—</div>
-      <div class="kpi-sub" id="kpi-memo-sub">fragments</div>
-    </div>
-  </div>
-
-  <!-- Main content -->
-  <main>
-
-    <!-- ── CRM ── -->
-    <div class="tab-content active" id="tab-crm">
-      <div class="search-bar">
-        <input class="search-input" id="crm-search" type="text" placeholder="Rechercher (nom, email, société, métier, localisation...)" oninput="onCRMSearch()" autocomplete="off" spellcheck="false">
-        <span class="search-count" id="crm-count"></span>
-      </div>
-      <div class="filter-bar" id="crm-filter-entite">
-        <button class="filter-btn active" onclick="filterCRM(this,'entite','all')">Toutes entités</button>
-        <button class="filter-btn" onclick="filterCRM(this,'entite','BYM')">BYM</button>
-        <button class="filter-btn" onclick="filterCRM(this,'entite','Urban Rise')">Urban Rise</button>
-        <button class="filter-btn" onclick="filterCRM(this,'entite','IRIS REP')">IRIS REP</button>
-        <button class="filter-btn" onclick="filterCRM(this,'entite','ARRISTO')">ARRISTO</button>
-        <button class="filter-btn" onclick="filterCRM(this,'entite','Galerie Carrez')">Galerie Carrez</button>
-      </div>
-      <div class="filter-bar" id="crm-filter-statut">
-        <button class="filter-btn active" onclick="filterCRM(this,'statut','all')">Tous statuts</button>
-        <button class="filter-btn" onclick="filterCRM(this,'statut','prospect')">Prospect</button>
-        <button class="filter-btn" onclick="filterCRM(this,'statut','contacté')">Contacté</button>
-        <button class="filter-btn" onclick="filterCRM(this,'statut','qualifié')">Qualifié</button>
-        <button class="filter-btn" onclick="filterCRM(this,'statut','actif')">Actif</button>
-        <button class="filter-btn" onclick="filterCRM(this,'statut','inactif')">Inactif</button>
-      </div>
-      <div class="filter-bar" id="crm-filter-metier">
-        <button class="filter-btn active" onclick="filterCRM(this,'metier','all')">Tous métiers</button>
-        <button class="filter-btn" onclick="filterCRM(this,'metier','Investisseur')">Investisseur</button>
-        <button class="filter-btn" onclick="filterCRM(this,'metier','Broker')">Broker</button>
-        <button class="filter-btn" onclick="filterCRM(this,'metier','Agent immobilier')">Agent immo</button>
-        <button class="filter-btn" onclick="filterCRM(this,'metier','Promoteur')">Promoteur</button>
-        <button class="filter-btn" onclick="filterCRM(this,'metier','Architecte')">Architecte</button>
-        <button class="filter-btn" onclick="filterCRM(this,'metier','Notaire')">Notaire</button>
-        <button class="filter-btn" onclick="filterCRM(this,'metier','Avocat')">Avocat</button>
-        <button class="filter-btn" onclick="filterCRM(this,'metier','Conseil')">Conseil</button>
-      </div>
-      <div class="filter-bar" id="crm-filter-loc">
-        <button class="filter-btn active" onclick="filterCRM(this,'loc','all')">Toutes villes</button>
-        <button class="filter-btn" onclick="filterCRM(this,'loc','Paris')">Paris</button>
-        <button class="filter-btn" onclick="filterCRM(this,'loc','Tours')">Tours</button>
-        <button class="filter-btn" onclick="filterCRM(this,'loc','Orléans')">Orléans</button>
-      </div>
-      <div id="crm-body"></div>
-    </div>
-
-    <!-- ── TODO ── -->
-    <div class="tab-content" id="tab-todo">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-        <select id="todo-mode" onchange="switchTodoMode(this.value)" style="background:var(--s2);color:var(--text);border:1px solid var(--border2);border-radius:6px;padding:6px 12px;font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer">
-          <option value="classique">Classique</option>
-          <option value="recurrente">Récurrente</option>
-        </select>
-        <button class="filter-btn" id="btn-attentes" onclick="toggleAttentes(this)" style="border-color:var(--orange);color:var(--orange)">ATTENTES</button>
-      </div>
-      <div id="todo-classique-view">
-        <div class="filter-bar" id="todo-filter-entite">
-          <button class="filter-btn active" onclick="filterTodo(this,'all')">Toutes</button>
-          <button class="filter-btn" onclick="filterTodo(this,'IRIS H')">IRIS H</button>
-          <button class="filter-btn" onclick="filterTodo(this,'Infra')">Infra</button>
-          <button class="filter-btn" onclick="filterTodo(this,'BYM')">BYM</button>
-          <button class="filter-btn" onclick="filterTodo(this,'Urban Rise')">Urban Rise</button>
-          <button class="filter-btn" onclick="filterTodo(this,'IRIS REP')">IRIS REP</button>
-          <button class="filter-btn" onclick="filterTodo(this,'ARRISTO')">ARRISTO</button>
-          <button class="filter-btn" onclick="filterTodo(this,'Galerie Carrez')">Galerie Carrez</button>
-        </div>
-        <div class="filter-bar" id="todo-filter-statut">
-          <button class="filter-btn active" onclick="filterTodoStatut(this,'all')">Tous statuts</button>
-          <button class="filter-btn" onclick="filterTodoStatut(this,'a_faire')">A faire</button>
-          <button class="filter-btn" onclick="filterTodoStatut(this,'en_cours')">En cours</button>
-          <button class="filter-btn" onclick="filterTodoStatut(this,'fait')">Fait</button>
-        </div>
-        <div style="font-size:10px;color:var(--dim);margin:6px 0 10px" id="todo-count"></div>
-        <div id="todo-body"></div>
-      </div>
-      <div id="todo-recurrente-view" style="display:none">
-        <div style="font-size:10px;color:var(--dim);margin:6px 0 10px" id="todo-rec-count"></div>
-        <div id="todo-rec-body"></div>
-      </div>
-    </div>
-
-    <!-- ── DEALS ── -->
-    <div class="tab-content" id="tab-deals">
-      <div class="deals-filters" id="deals-filter-entite">
-        <button class="deals-filter-btn active" onclick="filterDeals(this,'all')">Tous</button>
-        <button class="deals-filter-btn" onclick="filterDeals(this,'BYM')">BYM</button>
-        <button class="deals-filter-btn" onclick="filterDeals(this,'URBAN_RISE')">Urban Rise</button>
-        <button class="deals-filter-btn" onclick="filterDeals(this,'IRIS_REP')">IRIS REP</button>
-      </div>
-      <div class="deals-stats" id="deals-stats"></div>
-      <div id="deals-body"></div>
-    </div>
-
-    <!-- ── FINANCE ── -->
-    <div class="tab-content" id="tab-finance">
-      <div class="fin-nav" id="fin-nav">
-        <button class="fin-nav-btn active" onclick="selectFinSection(this,'budget')">🏗️ Budget Chantiers</button>
-        <button class="fin-nav-btn" onclick="selectFinSection(this,'treso')">💶 Trésorerie</button>
-        <button class="fin-nav-btn" onclick="selectFinSection(this,'synth')">📊 Synthèse Groupe</button>
-        <button class="fin-nav-btn" onclick="selectFinSection(this,'suivi1')">📋 Suivi financier 1</button>
-        <button class="fin-nav-btn" onclick="selectFinSection(this,'suivi2')">📋 Suivi financier 2</button>
-        <button class="fin-nav-btn" onclick="selectFinSection(this,'suivi3')">📋 Suivi financier 3</button>
-        <button class="fin-nav-btn" onclick="selectFinSection(this,'suivi4')">📋 Suivi financier 4</button>
-        <button class="fin-nav-btn" onclick="selectFinSection(this,'vilmar')">👤 Vilmar</button>
-      </div>
-
-      <div class="fin-section active" id="fin-budget">
-        <div class="sec-hdr">Chantiers · Budget vs Réalisé</div>
-        <div id="budget-body"></div>
-      </div>
-
-      <div class="fin-section" id="fin-treso">
-        <div class="finance-grid">
-          <div class="finance-card">
-            <div class="finance-card-title">Trésorerie par entité</div>
-            <div id="treso-body"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="fin-section" id="fin-synth">
-        <div class="finance-card" style="margin-bottom:1rem">
-          <div class="finance-card-title">Synthèse groupe consolidée</div>
-          <div class="synth-grid" id="synth-body"></div>
-        </div>
-      </div>
-
-      <div class="fin-section" id="fin-suivi1">
-        <div class="sec-hdr">Suivi financier 1</div>
-        <div class="bible-content" id="fin-suivi1-body"></div>
-      </div>
-
-      <div class="fin-section" id="fin-suivi2">
-        <div class="sec-hdr">Suivi financier 2</div>
-        <div class="bible-content" id="fin-suivi2-body"></div>
-      </div>
-
-      <div class="fin-section" id="fin-suivi3">
-        <div class="sec-hdr">Suivi financier 3</div>
-        <div class="bible-content" id="fin-suivi3-body"></div>
-      </div>
-
-      <div class="fin-section" id="fin-suivi4">
-        <div class="sec-hdr">Suivi financier 4</div>
-        <div class="bible-content" id="fin-suivi4-body"></div>
-      </div>
-
-      <div class="fin-section" id="fin-vilmar">
-        <div class="sec-hdr">Vilmar</div>
-        <div class="bible-content" id="fin-vilmar-body"></div>
-      </div>
-    </div>
-
-    <!-- ── MEMOIRE IA ── -->
-    <div class="tab-content" id="tab-memoire">
-
-      <div class="memo-toggle">
-        <button class="memo-toggle-btn active" onclick="setMemoView(this,'bible')">Bible consolidée</button>
-        <button class="memo-toggle-btn" onclick="setMemoView(this,'fragments')">Fragments bruts</button>
-      </div>
-
-      <!-- VUE BIBLE -->
-      <div id="memo-bible-view">
-        <div class="memo-nav" id="bible-nav"></div>
-        <div id="bible-chapters"></div>
-      </div>
-
-      <!-- VUE FRAGMENTS -->
-      <div id="memo-fragments-view" style="display:none">
-        <div class="filter-bar" id="fragment-filter-bar">
-          <button class="filter-btn active" onclick="filterFragments(this,'all')">Tous</button>
-          <button class="filter-btn" onclick="filterFragments(this,'claude')">Claude</button>
-          <button class="filter-btn" onclick="filterFragments(this,'tom')">Tom</button>
-          <button class="filter-btn" onclick="filterFragments(this,'neo')">Neo</button>
-        </div>
-        <div id="fragments-body"></div>
-      </div>
-
-    </div>
-
-  </main>
-</div>
-
-<!-- Toast -->
 <div id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════════════════
-const CFG_KEY = 'iris_h_cfg';
-let cfg = null;
-let data = { contacts:[], taches:[], taches_v2:[], rec_suivi:[], deals:[], chantiers:[], tresorerie:[], fragments:[], bible:[] };
-let fragmentFilter = 'all';
+const CFG_KEY='iris_h_cfg';
+let cfg=null;
+let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[]};
 
-function getConfig(){
-  try{
-    const stored = JSON.parse(localStorage.getItem(CFG_KEY));
-    if(stored && stored.url && stored.key) return stored;
-  }catch(e){}
-  return null;
-}
-
+function getConfig(){try{const s=JSON.parse(localStorage.getItem(CFG_KEY));if(s&&s.url&&s.key)return s}catch(e){}return null}
 function saveConfig(){
-  const url = document.getElementById('inp-url').value.trim().replace(/\/$/,'');
-  const key = document.getElementById('inp-key').value.trim();
-  if(!url || !key){ showToast('Renseigne URL + clé Supabase'); return; }
-  localStorage.setItem(CFG_KEY, JSON.stringify({url, key}));
-  cfg = {url, key};
-  boot();
+  const url=document.getElementById('inp-url').value.trim().replace(/\/$/,'');
+  const key=document.getElementById('inp-key').value.trim();
+  if(!url||!key){showToast('Renseigne URL + clé');return}
+  localStorage.setItem(CFG_KEY,JSON.stringify({url,key}));cfg={url,key};boot();
 }
+function clearConfig(){if(!confirm('Déconnecter ?'))return;localStorage.removeItem(CFG_KEY);location.reload()}
 
-function clearConfig(){
-  if(!confirm('Déconnecter ce dashboard ?')) return;
-  localStorage.removeItem(CFG_KEY);
-  location.reload();
-}
-
-// ═══════════════════════════════════════════════
-// SUPABASE FETCH
-// ═══════════════════════════════════════════════
-async function supa(table, params='', fetchAll=false){
+async function supa(table,params='',fetchAll=false){
   if(!fetchAll){
-    const url = `${cfg.url}/rest/v1/${table}?${params}&limit=1000`;
-    const res = await fetch(url, {
-      headers:{
-        'apikey': cfg.key,
-        'Authorization': `Bearer ${cfg.key}`,
-        'Content-Type': 'application/json'
-      }
-    });
-    if(!res.ok) throw new Error(`${table}: ${res.status}`);
-    return res.json();
+    const r=await fetch(`${cfg.url}/rest/v1/${table}?${params}&limit=1000`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'}});
+    if(!r.ok)throw new Error(`${table}:${r.status}`);return r.json();
   }
-  // Paginate to get ALL rows
-  let all=[], offset=0, pageSize=1000;
+  let all=[],off=0;
   while(true){
-    const url = `${cfg.url}/rest/v1/${table}?${params}&limit=${pageSize}&offset=${offset}`;
-    const res = await fetch(url, {
-      headers:{
-        'apikey': cfg.key,
-        'Authorization': `Bearer ${cfg.key}`,
-        'Content-Type': 'application/json'
-      }
-    });
-    if(!res.ok) throw new Error(`${table}: ${res.status}`);
-    const page = await res.json();
-    all = all.concat(page);
-    if(page.length < pageSize) break;
-    offset += pageSize;
+    const r=await fetch(`${cfg.url}/rest/v1/${table}?${params}&limit=1000&offset=${off}`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'}});
+    if(!r.ok)throw new Error(`${table}:${r.status}`);const p=await r.json();all=all.concat(p);if(p.length<1000)break;off+=1000;
   }
   return all;
 }
 
-// ═══════════════════════════════════════════════
-// LOAD ALL DATA
-// ═══════════════════════════════════════════════
 async function loadAll(){
-  const btn = document.getElementById('refresh-btn');
-  btn.classList.add('loading');
-  btn.textContent = 'Chargement';
-  const safe = async (fn) => { try { return await fn(); } catch(e) { console.warn('Warning:', e); return []; } };
-  const [taches, taches_v2, rec_suivi, deals, chantiers, tresorerie, fragments, bible] = await Promise.all([
-    safe(() => supa('taches','order=created_at.desc')),
-    safe(() => supa('taches_v2','order=created_at.asc')),
-    safe(() => supa('taches_recurrentes_suivi','order=semaine.asc')),
-    safe(() => supa('deals','order=created_at.desc')),
-    safe(() => supa('chantiers','order=created_at.desc')),
-    safe(() => supa('tresorerie','order=created_at.desc')),
-    safe(() => supa('memoire_fragments','order=created_at.desc')),
-    safe(() => supa('memoire_bible','order=thematique'))
-  ]);
-  data.taches = taches;
-  data.taches_v2 = taches_v2;
-  data.rec_suivi = rec_suivi;
-  data.deals = deals;
-  data.chantiers = chantiers;
-  data.tresorerie = tresorerie;
-  data.fragments = fragments;
-  data.bible = bible;
-  render();
-  const t = new Date();
-  document.getElementById('refresh-time').textContent = `${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`;
-  try { localStorage.setItem('iris_h_cache', JSON.stringify({data: {...data, contacts:[]}, ts: Date.now()})); } catch(e){}
-  loadCRMPage();
-  btn.classList.remove('loading');
-  btn.textContent = '↻ Actualiser';
-}
-
-// ── CRM SERVER-SIDE PAGINATION ──
-let crmTotalAll = 0;
-let crmSearchTimeout = null;
-function onCRMSearch(){ clearTimeout(crmSearchTimeout); crmSearchTimeout = setTimeout(()=>{ crmPage=0; loadCRMPage(); }, 350); }
-
-async function loadCRMPage(){
-  if(!cfg) return;
-  const el = document.getElementById('crm-body');
-  el.innerHTML = '<div class="empty"><div class="empty-text" style="color:var(--dim)">Chargement contacts...</div></div>';
-  let params = 'order=nom.asc.nullslast';
-  const search = (document.getElementById('crm-search')?.value || '').trim();
-  if(crmFilters.entite!=='all') params += `&entite_iris=cs.{"${crmFilters.entite}"}`;
-  if(crmFilters.statut!=='all') params += `&statut_relation=eq.${encodeURIComponent(crmFilters.statut)}`;
-  if(crmFilters.metier!=='all') params += `&metier=eq.${encodeURIComponent(crmFilters.metier)}`;
-  if(crmFilters.loc!=='all') params += `&localisation=like.*${encodeURIComponent(crmFilters.loc)}*`;
-  if(search){ const s=encodeURIComponent(`%${search}%`); params += `&or=(nom.ilike.${s},prenom.ilike.${s},societe.ilike.${s},email.ilike.${s},metier.ilike.${s},localisation.ilike.${s},telephone.ilike.${s})`; }
-  const offset = crmPage * CRM_PAGE_SIZE;
-  try {
-    const hdr = {'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'count=exact'};
-    const [countRes, totalRes, pageRes] = await Promise.all([
-      fetch(`${cfg.url}/rest/v1/contacts?${params}&limit=1&offset=0`, {headers:hdr}),
-      fetch(`${cfg.url}/rest/v1/contacts?limit=1&offset=0`, {headers:hdr}),
-      fetch(`${cfg.url}/rest/v1/contacts?${params}&limit=${CRM_PAGE_SIZE}&offset=${offset}`, {headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'}})
+  try{
+    const safe=async fn=>{try{return await fn()}catch(e){console.warn(e);return[]}};
+    const[contacts,taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills]=await Promise.all([
+      safe(()=>supa('contacts','order=nom.asc.nullslast',true)),
+      safe(()=>supa('taches','order=created_at.desc')),
+      safe(()=>supa('taches_v2','order=created_at.asc')),
+      safe(()=>supa('taches_recurrentes_suivi','order=semaine.asc')),
+      safe(()=>supa('deals','order=created_at.desc')),
+      safe(()=>supa('chantiers','order=created_at.desc')),
+      safe(()=>supa('tresorerie','order=created_at.desc')),
+      safe(()=>supa('memoire_fragments','order=created_at.desc')),
+      safe(()=>supa('memoire_bible','order=thematique')),
+      safe(()=>supa('skills','order=categorie,nom'))
     ]);
-    const crmTotalFiltered = parseInt(countRes.headers.get('content-range')?.split('/')[1] || '0');
-    crmTotalAll = parseInt(totalRes.headers.get('content-range')?.split('/')[1] || '0');
-    const pageData = await pageRes.json();
-    document.getElementById('kpi-contacts').textContent = crmTotalAll;
-    const maxPage = Math.max(0, Math.ceil(crmTotalFiltered / CRM_PAGE_SIZE) - 1);
-    if(crmPage > maxPage) crmPage = maxPage;
-    document.getElementById('crm-count').textContent = crmTotalFiltered + '/' + crmTotalAll;
-    if(!pageData.length){ el.innerHTML=`<div class="empty"><div class="empty-ico">👥</div><div class="empty-text">Aucun contact trouvé</div></div>`; return; }
-    const pager = `<div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;font-size:11px;color:var(--dim)">
-      <span>${offset+1} à ${Math.min(offset+CRM_PAGE_SIZE, crmTotalFiltered)} sur ${crmTotalFiltered}</span>
-      <div style="display:flex;gap:.3rem">
-        <button class="filter-btn" onclick="crmPage=0;loadCRMPage()" ${crmPage===0?'disabled':''}>⟨⟨</button>
-        <button class="filter-btn" onclick="crmPage--;loadCRMPage()" ${crmPage===0?'disabled':''}>⟨</button>
-        <span style="padding:.35rem .6rem">${crmPage+1}/${maxPage+1}</span>
-        <button class="filter-btn" onclick="crmPage++;loadCRMPage()" ${crmPage>=maxPage?'disabled':''}>⟩</button>
-        <button class="filter-btn" onclick="crmPage=${maxPage};loadCRMPage()" ${crmPage>=maxPage?'disabled':''}>⟩⟩</button>
-      </div>
-    </div>`;
-    el.innerHTML= pager + `<table class="crm-table"><thead><tr><th>Prénom</th><th>Nom</th><th>Métier</th><th>Société</th><th>Localisation</th><th>Statut</th><th>Entité</th><th>Email</th><th>Tél</th></tr></thead><tbody>
-    ${pageData.map(c=>`<tr><td class="td-name">${c.prenom||''}</td><td class="td-name">${c.nom||''}</td><td>${c.metier||''}</td><td>${c.societe||''}</td><td>${c.localisation||''}</td><td>${statutBadge(c.statut_relation)}</td><td>${entiteBadge(c.entite_iris)}</td><td class="td-contact">${c.email?`<a href="mailto:${c.email}">${c.email}</a>`:''}</td><td class="td-contact">${c.telephone?`<a href="tel:${c.telephone}">${c.telephone}</a>`:''}</td></tr>`).join('')}</tbody></table>` + pager;
-  } catch(e){ console.warn('CRM:', e); el.innerHTML=`<div class="empty"><div class="empty-ico">⚠️</div><div class="empty-text">Erreur chargement contacts</div></div>`; }
+    data={contacts,taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills};
+    localStorage.setItem('iris_h_cache',JSON.stringify({data,ts:Date.now()}));
+    render();
+    const t=new Date();
+    const ts=`${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`;
+    document.getElementById('refresh-time-sb').textContent=ts;
+  }catch(e){
+    showToast('Erreur connexion Supabase');
+    const c=localStorage.getItem('iris_h_cache');
+    if(c){data=JSON.parse(c).data;render()}
+  }
 }
 
-// ═══════════════════════════════════════════════
-// RENDER
-// ═══════════════════════════════════════════════
 function render(){
-  renderKPIs();
-  renderCRM();
-  renderTodo();
-  renderDeals();
-  renderFinance();
-  renderMemoire();
+  updateNavCounts();
+  renderCurrentTab();
 }
 
-// ── KPIs ──
-function renderKPIs(){
-  const dealsActifs = data.deals.filter(d=>!['perdu'].includes(d.etape));
-  const urgent = data.taches.filter(t=>t.priorite==='urgente');
-  
-  let budgetPct = 0;
-  const chActifs = data.chantiers.filter(c=>c.statut==='en_cours' && c.budget_initial>0);
-  if(chActifs.length){
-    const avg = chActifs.reduce((a,c)=>(a + c.budget_realise/c.budget_initial*100),0) / chActifs.length;
-    budgetPct = Math.round(avg);
+function updateNavCounts(){
+  const tv2=data.taches_v2.filter(t=>(t.type_tache||'classique')==='classique'&&t.statut!=='fait');
+  document.getElementById('nav-todo-cnt').textContent=tv2.length;
+  document.getElementById('nav-deals-cnt').textContent=data.deals.filter(d=>d.etape!=='perdu').length;
+  document.getElementById('nav-crm-cnt').textContent=data.contacts.length.toLocaleString();
+}
+
+let currentTab='todo';
+function switchTab(btn,tab){
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  currentTab=tab;
+  const titles={todo:'Todo',deals:'Deal Flow',finance:'Finance',crm:'CRM',memoire:'Mémoire IA'};
+  document.getElementById('topbar-title').textContent=titles[tab]||tab;
+  renderCurrentTab();
+  updateTopbar();
+}
+
+function renderCurrentTab(){
+  const m={todo:renderTodo,deals:renderDeals,finance:renderFinance,crm:renderCRM,memoire:renderMemoire};
+  if(m[currentTab])m[currentTab]();
+}
+
+function updateTopbar(){
+  const r=document.getElementById('topbar-right');
+  if(currentTab==='todo'){
+    r.innerHTML=`<select class="top-btn" onchange="switchTodoMode(this.value)" id="todo-mode-sel"><option value="classique">Classique</option><option value="recurrente">Récurrente</option></select>
+    <button class="top-btn warn" id="btn-attentes" onclick="toggleAttentes(this)">Attentes (${data.taches_v2.filter(t=>t.attente_de).length})</button>
+    <button class="top-btn accent" onclick="loadAll()">Actualiser</button>`;
+  }else{
+    r.innerHTML=`<button class="top-btn accent" onclick="loadAll()">Actualiser</button>`;
   }
-
-  document.getElementById('kpi-deals').textContent = dealsActifs.length;
-  document.getElementById('kpi-deals-sub').textContent = `dont ${data.deals.filter(d=>d.etape==='signe').length} signés`;
-  document.getElementById('kpi-urgent').textContent = urgent.length;
-  document.getElementById('kpi-urgent-sub').textContent = urgent.length===0 ? 'aucune urgence' : 'à traiter maintenant';
-  document.getElementById('kpi-budget').textContent = budgetPct + '%';
-  document.getElementById('kpi-budget-sub').textContent = `${chActifs.length} chantier${chActifs.length>1?'s':''} actif${chActifs.length>1?'s':''}`;
-  document.getElementById('kpi-contacts').textContent = data.contacts.length;
-  document.getElementById('kpi-contacts-sub').textContent = 'dans le CRM';
-
-  // Mémoire KPI
-  document.getElementById('kpi-memo').textContent = data.fragments.length;
-  document.getElementById('kpi-memo-sub').textContent = `${data.bible.filter(b=>b.contenu).length}/6 chapitres`;
-
-  const bel = document.getElementById('kpi-budget');
-  bel.className = 'kpi-value' + (budgetPct>90?' urgent': budgetPct>75?' warn':'');
 }
 
-// ── CRM ──
-let crmFilters = {entite:'all', statut:'all', metier:'all', loc:'all'};
-let crmPage = 0;
-const CRM_PAGE_SIZE = 100;
-
-function filterCRM(btn, dimension, value){
-  const bar = btn.closest('.filter-bar');
-  bar.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  crmFilters[dimension] = value;
-  crmPage = 0;
-  loadCRMPage();
+// ════════════════════════════════════════
+// GLOBAL SEARCH
+// ════════════════════════════════════════
+function globalSearch(q){
+  const el=document.getElementById('global-results');
+  if(!q||q.length<2){el.style.display='none';return}
+  const ql=q.toLowerCase();
+  let results=[];
+  data.contacts.filter(c=>[c.prenom,c.nom,c.email,c.societe,c.metier,c.telephone].filter(Boolean).join(' ').toLowerCase().includes(ql)).slice(0,5).forEach(c=>results.push({type:'contact',label:`${c.prenom||''} ${c.nom||''}`.trim(),sub:c.email||c.societe||'',tab:'crm'}));
+  data.taches_v2.filter(t=>[t.titre,t.description,t.entite,t.projet].filter(Boolean).join(' ').toLowerCase().includes(ql)).slice(0,5).forEach(t=>results.push({type:'tâche',label:t.titre,sub:t.entite||'',tab:'todo'}));
+  data.deals.filter(d=>[d.nom,d.entite,d.type].filter(Boolean).join(' ').toLowerCase().includes(ql)).slice(0,3).forEach(d=>results.push({type:'deal',label:d.nom,sub:d.entite||'',tab:'deals'}));
+  if(!results.length){el.style.display='none';return}
+  el.style.display='block';
+  el.innerHTML=results.map(r=>`<div class="gr-item" onclick="document.querySelector('.nav-item[onclick*=\\'${r.tab}\\']').click()"><span class="gr-type">${r.type}</span><strong>${r.label}</strong> <span style="color:var(--dim)">${r.sub}</span></div>`).join('');
 }
 
-function daysAgo(dateStr){
-  if(!dateStr) return null;
-  const d = Math.round((Date.now()-new Date(dateStr))/(86400000));
-  if(d===0) return "aujourd'hui";
-  if(d===1) return "hier";
-  return d+'j';
-}
+// ════════════════════════════════════════
+// TODO
+// ════════════════════════════════════════
+let todoFilterE='all',todoFilterS='all',todoMode='classique',todoAttentes=false;
 
-function entiteBadge(entites){
-  if(!entites || !entites.length) return '';
-  const map = {'BYM':'badge-bym','Urban Rise':'badge-ur','IRIS REP':'badge-iris','ARRISTO':'badge-perso','Galerie Carrez':'badge-perso','IRIS H':'badge-iris'};
-  if(Array.isArray(entites)){
-    return entites.map(e=>`<span class="badge ${map[e]||'badge-perso'}">${e}</span>`).join(' ');
-  }
-  return `<span class="badge badge-perso">${entites}</span>`;
-}
-
-function statutBadge(s){
-  const map = {prospect:'badge-a_faire','contacté':'badge-en_cours','qualifié':'badge-haute',actif:'badge-fait',inactif:'badge-basse'};
-  return s ? `<span class="badge ${map[s]||'badge-a_faire'}">${s}</span>` : '';
-}
-
-function agentBadge(a){
-  const map = {claude:'badge-claude',tom:'badge-tom',neo:'badge-neo'};
-  const label = {claude:'Claude',tom:'Tom',neo:'Neo'};
-  return `<span class="badge ${map[a]||''}">${label[a]||a}</span>`;
-}
-
-function renderCRM(){ loadCRMPage(); }
-
-// ── TODO ──
-function deadlineClass(d){
-  if(!d) return '';
-  const days = Math.round((new Date(d)-Date.now())/86400000);
-  if(days<0) return 'late';
-  if(days<=3) return 'soon';
-  return 'ok';
-}
-function deadlineLabel(d){
-  if(!d) return '';
-  const days = Math.round((new Date(d)-Date.now())/86400000);
-  if(days<0) return `en retard (${Math.abs(days)}j)`;
-  if(days===0) return "aujourd'hui";
-  if(days===1) return "demain";
-  return `dans ${days}j`;
-}
-
-// ── TODO ──
-let todoFilterEntite = 'all';
-let todoFilterStatut = 'all';
-let todoMode = 'classique';
-let todoAttentesOnly = false;
-
-function switchTodoMode(mode){
-  todoMode = mode;
-  document.getElementById('todo-classique-view').style.display = mode==='classique'?'block':'none';
-  document.getElementById('todo-recurrente-view').style.display = mode==='recurrente'?'block':'none';
-  if(mode==='recurrente') renderTodoRecurrente();
-  else renderTodo();
-}
-function toggleAttentes(btn){
-  todoAttentesOnly = !todoAttentesOnly;
-  btn.style.background = todoAttentesOnly ? 'var(--orangef)' : 'transparent';
-  renderTodo();
-}
-function filterTodo(btn, val){
-  document.querySelectorAll('#todo-filter-entite .filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  todoFilterEntite = val;
-  renderTodo();
-}
-function filterTodoStatut(btn, val){
-  document.querySelectorAll('#todo-filter-statut .filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  todoFilterStatut = val;
-  renderTodo();
-}
-
-function todoPrioriteBadge(p){
-  const m = {urgente:'badge-urgente',haute:'badge-haute',moyenne:'badge-normale',standby:'badge-basse',fait:'badge-fait'};
-  const l = {urgente:'Urgent',haute:'Haute',moyenne:'Moyenne',standby:'Standby',fait:'Fait'};
-  return `<span class="badge ${m[p]||'badge-normale'}">${l[p]||p}</span>`;
-}
-function todoStatutLabel(s){
-  const m = {a_faire:'A faire',en_cours:'En cours',fait:'Fait'};
-  return m[s]||s;
-}
-function todoEntiteBadge(e){
-  const m = {'IRIS H':'badge-iris','Infra':'badge-perso','BYM':'badge-bym','Urban Rise':'badge-ur','IRIS REP':'badge-iris','ARRISTO':'badge-perso','Galerie Carrez':'badge-perso'};
-  return `<span class="badge ${m[e]||'badge-perso'}">${e}</span>`;
-}
-function fmtDate(d){
-  if(!d) return '';
-  const dt = new Date(d);
-  return dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
-}
-function deadlineCls(d){
-  if(!d) return '';
-  const days = Math.round((new Date(d)-Date.now())/86400000);
-  if(days<0) return 'color:var(--red)';
-  if(days<=3) return 'color:var(--orange)';
-  return 'color:var(--dim)';
-}
+function switchTodoMode(m){todoMode=m;renderTodo()}
+function toggleAttentes(btn){todoAttentes=!todoAttentes;btn.style.background=todoAttentes?'var(--orange-bg)':'';renderTodo()}
 
 function renderTodo(){
-  const src = (data.taches_v2 && data.taches_v2.length ? data.taches_v2 : data.taches).filter(t=>(t.type_tache||'classique')==='classique');
-  let filtered = src;
-  if(todoAttentesOnly) filtered = filtered.filter(t=>t.attente_de);
-  if(todoFilterEntite!=='all') filtered = filtered.filter(t=>t.entite===todoFilterEntite);
-  if(todoFilterStatut!=='all') filtered = filtered.filter(t=>t.statut===todoFilterStatut);
+  if(todoMode==='recurrente'){renderTodoRec();return}
+  const src=(data.taches_v2||[]).filter(t=>(t.type_tache||'classique')==='classique');
+  const urgentes=src.filter(t=>t.priorite==='urgente'&&t.statut!=='fait').length;
+  const attentes=src.filter(t=>t.attente_de).length;
+  const actives=src.filter(t=>t.statut!=='fait').length;
+  const faites=src.filter(t=>t.statut==='fait').length;
 
-  const el = document.getElementById('todo-body');
-  const countEl = document.getElementById('todo-count');
-  if(countEl) countEl.textContent = filtered.length + ' / ' + src.length + ' tâches' + (todoAttentesOnly ? ' (attentes uniquement)' : '');
+  document.getElementById('todo-kpis').innerHTML=`
+    <div class="kpi red"><div class="kpi-label">Urgentes</div><div class="kpi-val">${urgentes}</div><div class="kpi-sub">à traiter immédiatement</div></div>
+    <div class="kpi orange"><div class="kpi-label">En attente</div><div class="kpi-val">${attentes}</div><div class="kpi-sub">tiers à relancer</div></div>
+    <div class="kpi"><div class="kpi-label">Tâches actives</div><div class="kpi-val">${actives}</div><div class="kpi-sub">a_faire + en_cours</div></div>
+    <div class="kpi green"><div class="kpi-label">Complétées</div><div class="kpi-val">${faites}</div><div class="kpi-sub">terminées</div></div>`;
 
-  if(!filtered.length){
-    el.innerHTML = `<div class="empty"><div class="empty-ico">✅</div><div class="empty-text">Aucune tâche trouvée</div></div>`;
-    return;
-  }
+  // Charts
+  const byEntite={};src.filter(t=>t.statut!=='fait').forEach(t=>{byEntite[t.entite||'Autre']=(byEntite[t.entite||'Autre']||0)+1});
+  const byPrio={};src.forEach(t=>{byPrio[t.priorite||'moyenne']=(byPrio[t.priorite||'moyenne']||0)+1});
+  document.getElementById('todo-charts').innerHTML=`
+    <div class="chart-card"><div class="chart-title">Tâches par entité</div><canvas id="chart-todo-entite" height="160"></canvas></div>
+    <div class="chart-card"><div class="chart-title">Répartition par priorité</div><canvas id="chart-todo-prio" height="160"></canvas></div>`;
 
-  const pOrd = {urgente:0,haute:1,moyenne:2,standby:3,fait:4};
-  const sOrd = {a_faire:0,en_cours:1,fait:2};
-  filtered.sort((a,b) => (pOrd[a.priorite]||9) - (pOrd[b.priorite]||9) || (sOrd[a.statut]||9) - (sOrd[b.statut]||9));
+  setTimeout(()=>{
+    const ctx1=document.getElementById('chart-todo-entite');
+    if(ctx1)new Chart(ctx1,{type:'bar',data:{labels:Object.keys(byEntite),datasets:[{data:Object.values(byEntite),backgroundColor:'#5B9BD5',borderRadius:4}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
+    const pColors={urgente:'#e74c3c',haute:'#f39c12',moyenne:'#5B9BD5',standby:'#b0b4c0',fait:'#2ecc71'};
+    const pLabels={urgente:'Urgent',haute:'Haute',moyenne:'Moyenne',standby:'Standby',fait:'Fait'};
+    const ctx2=document.getElementById('chart-todo-prio');
+    if(ctx2)new Chart(ctx2,{type:'doughnut',data:{labels:Object.keys(byPrio).map(k=>pLabels[k]||k),datasets:[{data:Object.values(byPrio),backgroundColor:Object.keys(byPrio).map(k=>pColors[k]||'#ccc')}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:11}}}}}});
+  },50);
 
-  el.innerHTML = `<table class="crm-table" style="font-size:12px">
-    <thead><tr>
-      <th style="width:26px"></th>
-      <th>Tâche</th>
-      <th style="width:80px">Projet</th>
-      <th style="width:75px">Entité</th>
-      <th style="width:65px">Priorité</th>
-      <th style="width:60px">Statut</th>
-      <th style="width:65px">Échéance</th>
-      <th style="width:85px">Attente de</th>
-      <th style="width:26px"></th>
-    </tr></thead>
-    <tbody>
-    ${filtered.map(t=>{
-      const preTitle = t.prerequis_titre || '';
-      const nextTitle = t.suite_titre || '';
-      const sCls = t.statut==='fait'?'color:var(--green)':t.statut==='en_cours'?'color:var(--blue)':'color:var(--dim)';
-      return `<tr>
-        <td style="text-align:center">${preTitle ? `<span style="cursor:pointer;color:var(--dim);font-size:13px" title="← ${preTitle}">◀</span>` : ''}</td>
-        <td>
-          <div class="td-name">${t.titre}</div>
-          <div style="font-size:10px;color:var(--dim)">${t.description||''}</div>
-        </td>
-        <td style="font-size:11px;color:var(--dim)">${t.projet||''}</td>
-        <td>${t.entite ? todoEntiteBadge(t.entite) : ''}</td>
-        <td>${todoPrioriteBadge(t.priorite)}</td>
-        <td style="${sCls};font-size:11px">${todoStatutLabel(t.statut)}</td>
-        <td style="${deadlineCls(t.echeance)};font-size:11px">${fmtDate(t.echeance)}</td>
-        <td style="font-size:11px;color:var(--orange)">${t.attente_de||''}</td>
-        <td style="text-align:center">${nextTitle ? `<span style="cursor:pointer;color:var(--dim);font-size:13px" title="→ ${nextTitle}">▶</span>` : ''}</td>
-      </tr>`;
-    }).join('')}
-    </tbody>
-  </table>`;
+  // Filters
+  const ents=['all','IRIS H','Infra','BYM','Urban Rise','IRIS REP','ARRISTO','Galerie Carrez'];
+  document.getElementById('todo-filters').innerHTML=`
+    <div class="filters">${ents.map(e=>`<button class="fbtn${todoFilterE===e?' on':''}" onclick="todoFilterE='${e}';renderTodo()">${e==='all'?'Toutes':e}</button>`).join('')}</div>
+    <div class="filters"><button class="fbtn${todoFilterS==='all'?' on':''}" onclick="todoFilterS='all';renderTodo()">Tous statuts</button><button class="fbtn${todoFilterS==='a_faire'?' on':''}" onclick="todoFilterS='a_faire';renderTodo()">A faire</button><button class="fbtn${todoFilterS==='en_cours'?' on':''}" onclick="todoFilterS='en_cours';renderTodo()">En cours</button><button class="fbtn${todoFilterS==='fait'?' on':''}" onclick="todoFilterS='fait';renderTodo()">Fait</button></div>`;
+
+  let filtered=src.slice();
+  if(todoAttentes)filtered=filtered.filter(t=>t.attente_de);
+  if(todoFilterE!=='all')filtered=filtered.filter(t=>t.entite===todoFilterE);
+  if(todoFilterS!=='all')filtered=filtered.filter(t=>t.statut===todoFilterS);
+  const pOrd={urgente:0,haute:1,moyenne:2,standby:3,fait:4};
+  const sOrd={a_faire:0,en_cours:1,fait:2};
+  filtered.sort((a,b)=>(pOrd[a.priorite]||9)-(pOrd[b.priorite]||9)||(sOrd[a.statut]||9)-(sOrd[b.statut]||9));
+
+  document.getElementById('todo-count').textContent=`${filtered.length} / ${src.length} tâches${todoAttentes?' (attentes)':''}`;
+  const el=document.getElementById('todo-body');
+  if(!filtered.length){el.innerHTML='<div class="empty"><div class="empty-ico">✅</div><div class="empty-text">Aucune tâche</div></div>';return}
+
+  const eBadge=e=>{const m={'IRIS H':'p-iris',Infra:'p-infra',BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',ARRISTO:'p-arristo','Galerie Carrez':'p-gc'};return e?`<span class="pill ${m[e]||'p-iris'}">${e}</span>`:''};
+  const pBadge=p=>{const m={urgente:'p-urg',haute:'p-high',moyenne:'p-med',standby:'p-standby',fait:'p-done'};const l={urgente:'Urgent',haute:'Haute',moyenne:'Moyenne',standby:'Standby',fait:'Fait'};return`<span class="pill ${m[p]||'p-med'}">${l[p]||p}</span>`};
+  const sLabel=s=>({a_faire:'A faire',en_cours:'En cours',fait:'Fait'}[s]||s);
+  const fDate=d=>{if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})};
+  const dCls=d=>{if(!d)return'';const days=Math.round((new Date(d)-Date.now())/864e5);return days<0?'color:var(--red)':days<=3?'color:var(--orange)':'color:var(--dim)'};
+
+  el.innerHTML=`<table class="tbl"><thead><tr><th style="width:24px"></th><th>Tâche</th><th>Projet</th><th>Entité</th><th>Priorité</th><th>Statut</th><th>Échéance</th><th>Attente de</th><th style="width:24px"></th></tr></thead><tbody>
+  ${filtered.map(t=>{
+    const sCls=t.statut==='fait'?'color:var(--green)':t.statut==='en_cours'?'color:var(--blue)':'color:var(--dim)';
+    return`<tr><td style="text-align:center;font-size:12px;color:var(--dim)">${t.prerequis_titre?`<span title="← ${t.prerequis_titre}" style="cursor:pointer">◀</span>`:''}</td><td><div class="td-name">${t.titre}</div><div style="font-size:10px;color:var(--dim)">${t.description||''}</div></td><td style="font-size:11px;color:var(--dim)">${t.projet||''}</td><td>${eBadge(t.entite)}</td><td>${pBadge(t.priorite)}</td><td style="${sCls};font-size:11px">${sLabel(t.statut)}</td><td style="${dCls(t.echeance)};font-size:11px">${fDate(t.echeance)}</td><td>${t.attente_de?`<span class="pill p-att">${t.attente_de}</span>`:''}</td><td style="text-align:center;font-size:12px;color:var(--dim)">${t.suite_titre?`<span title="→ ${t.suite_titre}" style="cursor:pointer">▶</span>`:''}</td></tr>`}).join('')}</tbody></table>`;
 }
 
-function renderTodoRecurrente(){
-  const src = (data.taches_v2||[]).filter(t=>t.type_tache==='recurrente');
-  const suivi = data.rec_suivi || [];
-  const weeks = ['S1','S2','S3','S4','S5','S6','S7','S8','S9','S10','S11','S12'];
-
-  const el = document.getElementById('todo-rec-body');
-  const countEl = document.getElementById('todo-rec-count');
-  if(countEl) countEl.textContent = src.length + ' tâches récurrentes, 12 semaines';
-
-  if(!src.length){
-    el.innerHTML = `<div class="empty"><div class="empty-ico">🔄</div><div class="empty-text">Aucune tâche récurrente</div></div>`;
-    return;
-  }
-
-  el.innerHTML = `<div style="overflow-x:auto"><table class="crm-table" style="font-size:12px">
-    <thead><tr>
-      <th>Tâche</th>
-      <th style="width:70px">Entité</th>
-      ${weeks.map(w=>`<th style="width:32px;text-align:center;font-size:9px">${w}</th>`).join('')}
-    </tr></thead>
-    <tbody>
-    ${src.map(t=>{
-      const tSuivi = suivi.filter(s=>s.tache_id===t.id);
-      return `<tr>
-        <td>
-          <div class="td-name">${t.titre}</div>
-          <div style="font-size:10px;color:var(--dim)">${t.description||''}</div>
-        </td>
-        <td>${t.entite ? todoEntiteBadge(t.entite) : ''}</td>
-        ${weeks.map(w=>{
-          const entry = tSuivi.find(s=>s.semaine===w);
-          const checked = entry && entry.fait;
-          return `<td style="text-align:center"><span style="cursor:pointer;font-size:14px;color:${checked?'var(--green)':'var(--dim2)'}">${checked?'✓':'○'}</span></td>`;
-        }).join('')}
-      </tr>`;
-    }).join('')}
-    </tbody>
-  </table></div>`;
+function renderTodoRec(){
+  const src=(data.taches_v2||[]).filter(t=>t.type_tache==='recurrente');
+  const suivi=data.rec_suivi||[];
+  const weeks=['S1','S2','S3','S4','S5','S6','S7','S8','S9','S10','S11','S12'];
+  document.getElementById('todo-kpis').innerHTML='';
+  document.getElementById('todo-charts').innerHTML='';
+  document.getElementById('todo-filters').innerHTML='';
+  document.getElementById('todo-count').textContent=`${src.length} tâches récurrentes`;
+  const el=document.getElementById('todo-body');
+  if(!src.length){el.innerHTML='<div class="empty"><div class="empty-ico">🔄</div><div class="empty-text">Aucune tâche récurrente</div></div>';return}
+  const eBadge=e=>{const m={'IRIS H':'p-iris',Infra:'p-infra',BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',ARRISTO:'p-arristo'};return e?`<span class="pill ${m[e]||'p-iris'}">${e}</span>`:''};
+  el.innerHTML=`<div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Tâche</th><th>Entité</th>${weeks.map(w=>`<th style="width:34px;text-align:center">${w}</th>`).join('')}</tr></thead><tbody>
+  ${src.map(t=>{const ts=suivi.filter(s=>s.tache_id===t.id);return`<tr><td><div class="td-name">${t.titre}</div><div style="font-size:10px;color:var(--dim)">${t.description||''}</div></td><td>${eBadge(t.entite)}</td>${weeks.map(w=>{const e=ts.find(s=>s.semaine===w);const ok=e&&e.fait;return`<td style="text-align:center;font-size:14px;color:${ok?'var(--green)':'var(--dim2)'}">${ok?'✓':'○'}</td>`}).join('')}</tr>`}).join('')}</tbody></table></div>`;
 }
 
-// ── DEALS ──
-const ETAPES = [
-  {key:'sourcing',label:'Sourcing'},{key:'analyse',label:'Analyse'},{key:'nego',label:'Négo'},{key:'offre',label:'Offre'},
-  {key:'compromis',label:'Compromis'},{key:'acte',label:'Acte'},{key:'travaux',label:'Travaux'},
-  {key:'commercialisation',label:'Commerc.'},{key:'cloture',label:'Clôture'}
-];
-const ETAPE_ORDER = {}; ETAPES.forEach((e,i)=>ETAPE_ORDER[e.key]=i);
-const ETAPE_LABEL = {}; ETAPES.forEach(e=>ETAPE_LABEL[e.key]=e.label);
-const DEAL_TYPE = {acquisition:'🏠',vente:'💰',chantier:'🏗️',mandat:'🤝',montage:'📐',appel_offres:'📋',gestion:'🔑',chantier_bym:'🏗️',conseil_iris:'🤝'};
-const DEAL_LABEL = {acquisition:'Acquisition',vente:'Vente',chantier:'Chantier',mandat:'Mandat',montage:'Montage',appel_offres:'AO',gestion:'Gestion',chantier_bym:'Chantier',conseil_iris:'Conseil'};
-let dealsFilter = 'all', dealsSortCol = 'etape', dealsSortDir = 'asc';
-function filterDeals(btn, entite){ document.querySelectorAll('.deals-filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); dealsFilter=entite; renderDeals(); }
-function sortDeals(col){ if(dealsSortCol===col) dealsSortDir=dealsSortDir==='asc'?'desc':'asc'; else{dealsSortCol=col;dealsSortDir='asc';} renderDeals(); }
+// ════════════════════════════════════════
+// CRM
+// ════════════════════════════════════════
+let crmF={entite:'all',statut:'all',metier:'all',loc:'all'},crmPage=0;
+const CRM_PS=100;
 
-function fmt(n){ if(!n) return ''; if(n>=1000000) return (n/1000000).toFixed(1)+'M€'; if(n>=1000) return Math.round(n/1000)+'K€'; return n+'€'; }
+function renderCRM(){
+  const total=data.contacts.length;
+  const withEmail=data.contacts.filter(c=>c.email).length;
+  const withTel=data.contacts.filter(c=>c.telephone).length;
+  const withLoc=data.contacts.filter(c=>c.localisation).length;
+  document.getElementById('crm-kpis').innerHTML=`
+    <div class="kpi"><div class="kpi-label">Total contacts</div><div class="kpi-val">${total.toLocaleString()}</div></div>
+    <div class="kpi"><div class="kpi-label">Avec email</div><div class="kpi-val">${withEmail.toLocaleString()}</div><div class="kpi-sub">${Math.round(withEmail/total*100)}%</div></div>
+    <div class="kpi"><div class="kpi-label">Avec téléphone</div><div class="kpi-val">${withTel.toLocaleString()}</div><div class="kpi-sub">${Math.round(withTel/total*100)}%</div></div>
+    <div class="kpi"><div class="kpi-label">Localisés</div><div class="kpi-val">${withLoc.toLocaleString()}</div><div class="kpi-sub">${Math.round(withLoc/total*100)}%</div></div>`;
+
+  const byMetier={};data.contacts.forEach(c=>{if(c.metier&&c.metier!=='Inactif')byMetier[c.metier]=(byMetier[c.metier]||0)+1});
+  const top8=Object.entries(byMetier).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  document.getElementById('crm-charts').innerHTML=`
+    <div class="chart-card"><div class="chart-title">Contacts par métier</div><canvas id="chart-crm-metier" height="160"></canvas></div>
+    <div class="chart-card"><div class="chart-title">Par statut</div><canvas id="chart-crm-statut" height="160"></canvas></div>`;
+  setTimeout(()=>{
+    const ctx1=document.getElementById('chart-crm-metier');
+    if(ctx1)new Chart(ctx1,{type:'bar',data:{labels:top8.map(x=>x[0]),datasets:[{data:top8.map(x=>x[1]),backgroundColor:'#0e1f4d',borderRadius:4}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}});
+    const byStat={};data.contacts.forEach(c=>{byStat[c.statut_relation||'inconnu']=(byStat[c.statut_relation||'inconnu']||0)+1});
+    const sColors={prospect:'#5B9BD5',contacté:'#f39c12',qualifié:'#7F77DD',actif:'#2ecc71',inactif:'#b0b4c0'};
+    const ctx2=document.getElementById('chart-crm-statut');
+    if(ctx2)new Chart(ctx2,{type:'doughnut',data:{labels:Object.keys(byStat),datasets:[{data:Object.values(byStat),backgroundColor:Object.keys(byStat).map(k=>sColors[k]||'#ccc')}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:11}}}}}});
+  },50);
+
+  const ents=['all','BYM','Urban Rise','IRIS REP','ARRISTO','Galerie Carrez'];
+  const stats=['all','prospect','contacté','qualifié','actif','inactif'];
+  const metiers=['all','Investisseur','Broker','Agent immobilier','Promoteur','Architecte','Notaire','Avocat','Conseil'];
+  const locs=['all','Paris','Tours','Orléans'];
+  document.getElementById('crm-filters').innerHTML=`
+    <div style="margin-bottom:8px"><input style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none" id="crm-search" placeholder="Rechercher (nom, email, société, métier...)" oninput="crmPage=0;renderCRMTable()"></div>
+    <div class="filters">${ents.map(e=>`<button class="fbtn${crmF.entite===e?' on':''}" onclick="crmF.entite='${e}';crmPage=0;renderCRMTable()">${e==='all'?'Toutes entités':e}</button>`).join('')}</div>
+    <div class="filters">${stats.map(s=>`<button class="fbtn${crmF.statut===s?' on':''}" onclick="crmF.statut='${s}';crmPage=0;renderCRMTable()">${s==='all'?'Tous statuts':s}</button>`).join('')}</div>
+    <div class="filters">${metiers.map(m=>`<button class="fbtn${crmF.metier===m?' on':''}" onclick="crmF.metier='${m.replace(/'/g,"\\'")}';crmPage=0;renderCRMTable()">${m==='all'?'Tous métiers':m}</button>`).join('')}</div>
+    <div class="filters">${locs.map(l=>`<button class="fbtn${crmF.loc===l?' on':''}" onclick="crmF.loc='${l}';crmPage=0;renderCRMTable()">${l==='all'?'Toutes villes':l}</button>`).join('')}</div>`;
+  renderCRMTable();
+}
+
+function renderCRMTable(){
+  const search=(document.getElementById('crm-search')?.value||'').toLowerCase();
+  let f=data.contacts;
+  if(crmF.entite!=='all')f=f.filter(c=>c.entite_iris&&Array.isArray(c.entite_iris)&&c.entite_iris.includes(crmF.entite));
+  if(crmF.statut!=='all')f=f.filter(c=>c.statut_relation===crmF.statut);
+  if(crmF.metier!=='all')f=f.filter(c=>c.metier===crmF.metier);
+  if(crmF.loc!=='all')f=f.filter(c=>c.localisation&&c.localisation.includes(crmF.loc));
+  if(search)f=f.filter(c=>[c.prenom,c.nom,c.societe,c.metier,c.email,c.telephone,c.localisation].filter(Boolean).join(' ').toLowerCase().includes(search));
+  const mx=Math.max(0,Math.ceil(f.length/CRM_PS)-1);if(crmPage>mx)crmPage=mx;
+  const st=crmPage*CRM_PS;const pg=f.slice(st,st+CRM_PS);
+  document.getElementById('crm-count').textContent=`${f.length} / ${data.contacts.length} contacts`;
+  const el=document.getElementById('crm-body');
+  if(!f.length){el.innerHTML='<div class="empty"><div class="empty-ico">👥</div><div class="empty-text">Aucun contact</div></div>';return}
+  const eBadge=ei=>{if(!ei||!ei.length)return'';const m={BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',ARRISTO:'p-arristo','Galerie Carrez':'p-gc','IRIS H':'p-iris'};return(Array.isArray(ei)?ei:[ei]).map(e=>`<span class="pill ${m[e]||'p-iris'}">${e}</span>`).join(' ')};
+  const sBadge=s=>{const m={prospect:'p-med',contacté:'p-high',qualifié:'p-ur',actif:'p-done',inactif:'p-standby'};return s?`<span class="pill ${m[s]||'p-med'}">${s}</span>`:''};
+  const pager=`<div class="pager"><span>${st+1} à ${Math.min(st+CRM_PS,f.length)} sur ${f.length}</span><div class="pager-btns"><button onclick="crmPage=0;renderCRMTable()" ${!crmPage?'disabled':''}>⟨⟨</button><button onclick="crmPage--;renderCRMTable()" ${!crmPage?'disabled':''}>⟨</button><span style="padding:0 8px">${crmPage+1}/${mx+1}</span><button onclick="crmPage++;renderCRMTable()" ${crmPage>=mx?'disabled':''}>⟩</button><button onclick="crmPage=${mx};renderCRMTable()" ${crmPage>=mx?'disabled':''}>⟩⟩</button></div></div>`;
+  el.innerHTML=pager+`<table class="tbl"><thead><tr><th>Prénom</th><th>Nom</th><th>Métier</th><th>Société</th><th>Localisation</th><th>Statut</th><th>Entité</th><th>Email</th><th>Tél</th></tr></thead><tbody>
+  ${pg.map(c=>`<tr><td class="td-name">${c.prenom||''}</td><td class="td-name">${c.nom||''}</td><td>${c.metier||''}</td><td>${c.societe||''}</td><td>${c.localisation||''}</td><td>${sBadge(c.statut_relation)}</td><td>${eBadge(c.entite_iris)}</td><td>${c.email?`<a class="td-link" href="mailto:${c.email}">${c.email}</a>`:''}</td><td>${c.telephone?`<a class="td-link" href="tel:${c.telephone}">${c.telephone}</a>`:''}</td></tr>`).join('')}</tbody></table>`+pager;
+}
+
+// ════════════════════════════════════════
+// DEALS
+// ════════════════════════════════════════
+const ETAPES=[{key:'prospect',label:'Prospect'},{key:'negociation',label:'Négociation'},{key:'due_diligence',label:'Due Diligence'},{key:'signe',label:'Signé'},{key:'perdu',label:'Perdu'}];
+const DT={acquisition:'🏠',vente:'💰',chantier_bym:'🏗️',conseil_iris:'🤝'};
+function fmt(n){if(!n)return'';if(n>=1e6)return(n/1e6).toFixed(1)+'M€';if(n>=1e3)return Math.round(n/1e3)+'K€';return n+'€'}
 
 function renderDeals(){
-  let deals = dealsFilter==='all' ? [...data.deals] : data.deals.filter(d=>d.entite===dealsFilter);
-  const dir = dealsSortDir==='asc'?1:-1;
-  deals.sort((a,b)=>{
-    let va,vb;
-    if(dealsSortCol==='etape'){va=ETAPE_ORDER[a.etape]??99;vb=ETAPE_ORDER[b.etape]??99;}
-    else if(['montant','ca_previ','resultat_previ'].includes(dealsSortCol)){va=a[dealsSortCol]||0;vb=b[dealsSortCol]||0;}
-    else{va=(a[dealsSortCol]||'').toString().toLowerCase();vb=(b[dealsSortCol]||'').toString().toLowerCase();}
-    return va<vb?-1*dir:va>vb?1*dir:0;
-  });
-  const totalDeals=deals.length, totalMontant=deals.reduce((s,d)=>s+(d.montant||0),0), totalCA=deals.reduce((s,d)=>s+(d.ca_previ||0),0), enTravaux=deals.filter(d=>d.etape==='travaux').length;
-  document.getElementById('deals-stats').innerHTML = `
-    <div class="deals-stat"><div class="deals-stat-label">Deals actifs</div><div class="deals-stat-value">${totalDeals}</div></div>
-    <div class="deals-stat"><div class="deals-stat-label">Montant total</div><div class="deals-stat-value">${fmt(totalMontant)||'N/A'}</div></div>
-    <div class="deals-stat"><div class="deals-stat-label">CA prévi</div><div class="deals-stat-value">${fmt(totalCA)||'N/A'}</div></div>
-    <div class="deals-stat"><div class="deals-stat-label">En travaux</div><div class="deals-stat-value">${enTravaux}</div></div>`;
-  const cols=[{key:'nom',label:'Nom'},{key:'entite',label:'Entité'},{key:'type',label:'Type'},{key:'etape',label:'Étape'},{key:'montant',label:'Montant'},{key:'ca_previ',label:'CA Prévi'},{key:'resultat_previ',label:'Résultat'},{key:'adresse',label:'Adresse'},{key:'commentaire',label:'Commentaire'}];
-  const el = document.getElementById('deals-body');
-  el.innerHTML = `<table class="deals-table"><thead><tr>
-    ${cols.map(c=>`<th class="${dealsSortCol===c.key?(dealsSortDir==='asc'?'sorted-asc':'sorted-desc'):''}" onclick="sortDeals('${c.key}')">${c.label}</th>`).join('')}
-  </tr></thead><tbody>
-  ${deals.length ? deals.map(d=>`<tr>
-    <td class="td-name">${DEAL_TYPE[d.type]||'📋'} ${d.nom||''}</td>
-    <td>${entiteBadge(d.entite)}</td>
-    <td>${DEAL_LABEL[d.type]||d.type||''}</td>
-    <td><span class="badge-etape badge-${d.etape||''}">${ETAPE_LABEL[d.etape]||d.etape||''}</span></td>
-    <td class="td-montant">${fmt(d.montant)}</td>
-    <td class="td-montant" style="color:var(--cyan)">${fmt(d.ca_previ)}</td>
-    <td class="td-montant">${fmt(d.resultat_previ)}</td>
-    <td>${d.adresse||''}</td>
-    <td class="td-comment" title="${(d.commentaire||'').replace(/"/g,'&quot;')}">${d.commentaire||''}</td>
-  </tr>`).join('') : `<tr><td colspan="${cols.length}" style="text-align:center;padding:2rem;color:var(--dim)">Aucun deal</td></tr>`}
-  </tbody></table>`;
+  const actifs=data.deals.filter(d=>d.etape!=='perdu');
+  const signes=data.deals.filter(d=>d.etape==='signe');
+  const vol=actifs.reduce((a,d)=>a+(d.montant||0),0);
+  document.getElementById('deals-kpis').innerHTML=`
+    <div class="kpi"><div class="kpi-label">Deals actifs</div><div class="kpi-val">${actifs.length}</div></div>
+    <div class="kpi green"><div class="kpi-label">Signés</div><div class="kpi-val">${signes.length}</div></div>
+    <div class="kpi"><div class="kpi-label">Volume total</div><div class="kpi-val">${fmt(vol)}</div></div>
+    <div class="kpi"><div class="kpi-label">Pipeline</div><div class="kpi-val">${data.deals.filter(d=>d.etape==='negociation').length}</div><div class="kpi-sub">en négociation</div></div>`;
+  const eBadge=e=>{const m={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris'};const l={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP'};return`<span class="pill ${m[e]||'p-iris'}">${l[e]||e||''}</span>`};
+  document.getElementById('deals-body').innerHTML=ETAPES.map(e=>{
+    const cards=data.deals.filter(d=>d.etape===e.key);
+    return`<div class="kcol"><div class="kcol-hdr">${e.label}<span class="kcnt">${cards.length}</span></div>${cards.length?cards.map(d=>`<div class="deal-card"><div class="deal-name">${DT[d.type]||'📋'} ${d.nom}</div><div class="deal-meta">${d.entite?eBadge(d.entite):''}</div>${d.montant?`<div class="deal-montant">${fmt(d.montant)}</div>`:''}</div>`).join(''):'<div style="text-align:center;color:var(--dim2);font-size:11px;padding:12px">—</div>'}</div>`}).join('');
 }
 
-// ── FINANCE ──
-function selectFinSection(btn, section){
-  document.querySelectorAll('.fin-nav-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.fin-section').forEach(s=>s.classList.remove('active'));
-  document.getElementById('fin-'+section).classList.add('active');
-}
-
+// ════════════════════════════════════════
+// FINANCE
+// ════════════════════════════════════════
 function renderFinance(){
-  const bel = document.getElementById('budget-body');
-  const ch = data.chantiers.filter(c=>c.budget_initial>0);
-  if(!ch.length){ bel.innerHTML=`<div class="empty"><div class="empty-text">Aucun chantier avec budget</div></div>`; }
-  else {
-    bel.innerHTML=`<div style="display:flex;flex-direction:column;gap:.6rem">
-    ${ch.map(c=>{
-      const pct = Math.round(c.budget_realise/c.budget_initial*100);
-      const cls = pct>90?'bfill-danger':pct>75?'bfill-warn':'bfill-ok';
-      return `<div class="budget-row">
-        <div class="budget-label">
-          <span class="bname">${c.nom} ${entiteBadge(c.entite)}</span>
-          <span class="bpct" style="color:${pct>90?'var(--red)':pct>75?'var(--orange)':'var(--green)'}">${pct}%</span>
-        </div>
-        <div class="budget-bar"><div class="budget-fill ${cls}" style="width:${Math.min(pct,100)}%"></div></div>
-        <div class="budget-nums"><span>${fmt(c.budget_realise)} réalisé</span><span>Budget : ${fmt(c.budget_initial)}</span></div>
-      </div>`;
-    }).join('')}
-    </div>`;
-  }
+  const entites=['BYM','URBAN_RISE','IRIS_REP'];const labels={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP'};
+  let tIn=0,tOut=0;
+  entites.forEach(e=>{const rows=data.tresorerie.filter(t=>t.entite===e);tIn+=rows.filter(r=>r.type==='entrant').reduce((a,r)=>a+r.montant,0);tOut+=rows.filter(r=>r.type==='sortant').reduce((a,r)=>a+r.montant,0)});
+  const net=tIn-tOut;
+  const ch=data.chantiers.filter(c=>c.budget_initial>0);
+  const avgPct=ch.length?Math.round(ch.reduce((a,c)=>a+c.budget_realise/c.budget_initial*100,0)/ch.length):0;
 
-  const entites = ['BYM','URBAN_RISE','IRIS_REP'];
-  const labels = {BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP'};
-  let totalIn=0, totalOut=0;
-  const tel = document.getElementById('treso-body');
-  tel.innerHTML=`<div style="display:flex;flex-direction:column;gap:.4rem">
-    <div class="treso-row" style="font-size:9px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:.2rem">
-      <span></span><span>Entrant</span><span>Sortant</span><span>Net</span>
-    </div>
-    ${entites.map(e=>{
-      const rows = data.tresorerie.filter(t=>t.entite===e);
-      const ein = rows.filter(r=>r.type==='entrant').reduce((a,r)=>a+r.montant,0);
-      const eout = rows.filter(r=>r.type==='sortant').reduce((a,r)=>a+r.montant,0);
-      const net = ein-eout;
-      totalIn+=ein; totalOut+=eout;
-      return `<div class="treso-row">
-        <span class="treso-entite">${labels[e]}</span>
-        <span class="treso-in">+${fmt(ein)||'0€'}</span>
-        <span class="treso-out">${fmt(eout)||'0€'}</span>
-        <span class="treso-net" style="color:${net>=0?'var(--green)':'var(--red)'}">  ${net>=0?'+':''}${fmt(Math.abs(net))}</span>
-      </div>`;
-    }).join('')}
-  </div>`;
+  document.getElementById('fin-kpis').innerHTML=`
+    <div class="kpi green"><div class="kpi-label">Total entrant</div><div class="kpi-val">${fmt(tIn)}</div></div>
+    <div class="kpi red"><div class="kpi-label">Total sortant</div><div class="kpi-val">${fmt(tOut)}</div></div>
+    <div class="kpi ${net>=0?'green':'red'}"><div class="kpi-label">Tréso nette</div><div class="kpi-val">${net>=0?'+':''}${fmt(Math.abs(net))}</div></div>
+    <div class="kpi"><div class="kpi-label">Budget moyen</div><div class="kpi-val">${avgPct}%</div><div class="kpi-sub">${ch.length} chantier${ch.length>1?'s':''}</div></div>`;
 
-  const totalNet = totalIn-totalOut;
-  const chMarge = data.chantiers.filter(c=>c.budget_initial>0);
-  const margeAVG = chMarge.length ? Math.round(chMarge.reduce((a,c)=>{
-    return a+((c.budget_initial-c.budget_realise)/c.budget_initial*100);
-  },0)/chMarge.length) : 0;
+  const sections=['budget','treso','synth'];const sLabels={budget:'Budget Chantiers',treso:'Trésorerie',synth:'Synthèse'};
+  document.getElementById('fin-nav').innerHTML=sections.map((s,i)=>`<button class="fin-nav-btn${i===0?' active':''}" onclick="document.querySelectorAll('.fin-section').forEach(x=>x.classList.remove('active'));document.getElementById('fin-${s}').classList.add('active');document.querySelectorAll('.fin-nav-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${sLabels[s]}</button>`).join('');
 
-  document.getElementById('synth-body').innerHTML=`
-    <div class="synth-item"><div class="synth-label">Total entrant</div><div class="synth-value pos">${fmt(totalIn)}</div></div>
-    <div class="synth-item"><div class="synth-label">Total sortant</div><div class="synth-value neg">${fmt(totalOut)}</div></div>
-    <div class="synth-item"><div class="synth-label">Tréso nette</div><div class="synth-value ${totalNet>=0?'pos':'neg'}">${totalNet>=0?'+':''}${fmt(Math.abs(totalNet))}</div></div>
-    <div class="synth-item"><div class="synth-label">Marge moy.</div><div class="synth-value">${margeAVG}%</div></div>
+  const eBadge=e=>{const m={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris'};const l={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP'};return`<span class="pill ${m[e]||''}">${l[e]||e}</span>`};
+
+  let html=`<div class="fin-section active" id="fin-budget"><div class="tcard">`;
+  if(!ch.length)html+='<div class="empty"><div class="empty-text">Aucun chantier avec budget</div></div>';
+  else html+=ch.map(c=>{const pct=Math.round(c.budget_realise/c.budget_initial*100);const cls=pct>90?'bfill-danger':pct>75?'bfill-warn':'bfill-ok';return`<div class="budget-row"><div class="budget-label"><span class="bname">${c.nom} ${eBadge(c.entite)}</span><span class="bpct" style="color:${pct>90?'var(--red)':pct>75?'var(--orange)':'var(--green)'}">${pct}%</span></div><div class="budget-bar"><div class="budget-fill ${cls}" style="width:${Math.min(pct,100)}%"></div></div><div class="budget-nums"><span>${fmt(c.budget_realise)} réalisé</span><span>Budget : ${fmt(c.budget_initial)}</span></div></div>`}).join('');
+  html+=`</div></div>`;
+
+  html+=`<div class="fin-section" id="fin-treso"><div class="tcard"><div class="treso-row" style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px"><span></span><span>Entrant</span><span>Sortant</span><span>Net</span></div>`;
+  entites.forEach(e=>{const rows=data.tresorerie.filter(t=>t.entite===e);const ein=rows.filter(r=>r.type==='entrant').reduce((a,r)=>a+r.montant,0);const eout=rows.filter(r=>r.type==='sortant').reduce((a,r)=>a+r.montant,0);const n=ein-eout;html+=`<div class="treso-row"><span class="treso-entite">${labels[e]}</span><span class="treso-in">+${fmt(ein)||'0€'}</span><span class="treso-out">${fmt(eout)||'0€'}</span><span class="treso-net" style="color:${n>=0?'var(--green)':'var(--red)'}">${n>=0?'+':''}${fmt(Math.abs(n))}</span></div>`});
+  html+=`</div></div>`;
+
+  html+=`<div class="fin-section" id="fin-synth"><div class="tcard">
+    <div class="synth-item"><div class="synth-label">Total entrant</div><div class="synth-value pos">${fmt(tIn)}</div></div>
+    <div class="synth-item"><div class="synth-label">Total sortant</div><div class="synth-value neg">${fmt(tOut)}</div></div>
+    <div class="synth-item"><div class="synth-label">Tréso nette</div><div class="synth-value ${net>=0?'pos':'neg'}">${net>=0?'+':''}${fmt(Math.abs(net))}</div></div>
     <div class="synth-item"><div class="synth-label">Deals actifs</div><div class="synth-value">${data.deals.filter(d=>d.etape!=='perdu').length}</div></div>
-    <div class="synth-item"><div class="synth-label">Chantiers</div><div class="synth-value">${data.chantiers.filter(c=>c.statut==='en_cours').length}</div></div>`;
-
-  // Sections custom : lire les fragments avec le tag correspondant
-  const customSections = [
-    {id:'suivi1', tag:'suivi1', label:'Suivi financier 1'},
-    {id:'suivi2', tag:'suivi2', label:'Suivi financier 2'},
-    {id:'suivi3', tag:'suivi3', label:'Suivi financier 3'},
-    {id:'suivi4', tag:'suivi4', label:'Suivi financier 4'},
-    {id:'vilmar', tag:'vilmar', label:'Vilmar'}
-  ];
-  customSections.forEach(s=>{
-    const el = document.getElementById('fin-'+s.id+'-body');
-    if(!el) return;
-    const frags = data.fragments.filter(f=>f.tags && f.tags.includes(s.tag) && f.thematique==='finance');
-    if(!frags.length){
-      el.innerHTML = '';
-      return;
-    }
-    let total = 0;
-    const rows = frags.map(f=>{
-      const match = f.contenu.match(/(\d[\d\s]*)\s*euros?/i);
-      const montant = match ? parseFloat(match[1].replace(/\s/g,'')) : 0;
-      total += montant;
-      const libelle = f.contenu.replace(/(\d[\d\s]*)\s*euros?/i,'').replace(/[.:,]\s*$/,'').trim();
-      return {libelle, montant, date: f.created_at};
-    });
-    el.innerHTML = `<table class="crm-table" style="margin-top:.5rem">
-      <thead><tr><th>Libellé</th><th>Montant</th><th>Date</th></tr></thead>
-      <tbody>
-      ${rows.map(r=>`<tr>
-        <td class="td-name">${r.libelle}</td>
-        <td style="color:var(--green)">${fmt(r.montant)}</td>
-        <td class="ago">${formatDate(r.date)}</td>
-      </tr>`).join('')}
-      <tr style="border-top:2px solid var(--border)">
-        <td class="td-name" style="font-weight:600">Total</td>
-        <td style="color:var(--gold);font-weight:600">${fmt(total)}</td>
-        <td></td>
-      </tr>
-      </tbody>
-    </table>`;
-  });
+  </div></div>`;
+  document.getElementById('fin-sections').innerHTML=html;
 }
 
-// ── MEMOIRE ──
-const THEMATIQUES = [
-  {key:'immobilier', label:'Immobilier / Foncier', ico:'🏢'},
-  {key:'finance',    label:'Finance / Trésorerie', ico:'💶'},
-  {key:'chantiers',  label:'Chantiers / BYM', ico:'🏗️'},
-  {key:'contacts',   label:'Contacts / Réseau', ico:'👥'},
-  {key:'juridique',  label:'Juridique / Sociétés', ico:'⚖️'},
-  {key:'dealflow',   label:'Deal Flow', ico:'📊'},
-];
-
-let activeBibleTheme = 'immobilier';
-
-function setMemoView(btn, view){
-  document.querySelectorAll('.memo-toggle-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('memo-bible-view').style.display = view==='bible' ? 'block' : 'none';
-  document.getElementById('memo-fragments-view').style.display = view==='fragments' ? 'block' : 'none';
-}
-
-function selectBibleChapter(btn, theme){
-  document.querySelectorAll('.memo-nav-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  activeBibleTheme = theme;
-  document.querySelectorAll('.bible-chapter').forEach(c=>c.classList.remove('active'));
-  const target = document.getElementById('bible-'+theme);
-  if(target) target.classList.add('active');
-}
-
-function filterFragments(btn, agent){
-  document.querySelectorAll('#fragment-filter-bar .filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  fragmentFilter = agent;
-  renderFragments();
-}
-
-function formatDate(iso){
-  if(!iso) return '';
-  const d = new Date(iso);
-  return d.toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'}) + ' · ' + d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-}
+// ════════════════════════════════════════
+// MEMOIRE
+// ════════════════════════════════════════
+const THEMES=[{key:'immobilier',label:'Immobilier',ico:'🏢'},{key:'finance',label:'Finance',ico:'💶'},{key:'chantiers',label:'Chantiers',ico:'🏗️'},{key:'contacts',label:'Contacts',ico:'👥'},{key:'juridique',label:'Juridique',ico:'⚖️'},{key:'dealflow',label:'Deal Flow',ico:'📊'}];
+let activeTheme='immobilier',memoView='bible',fragFilter='all';
 
 function renderMemoire(){
-  renderBible();
-  renderFragments();
+  document.getElementById('memo-toggle').innerHTML=`<button class="memo-toggle-btn${memoView==='bible'?' active':''}" onclick="memoView='bible';renderMemoire()">Bible consolidée</button><button class="memo-toggle-btn${memoView==='fragments'?' active':''}" onclick="memoView='fragments';renderMemoire()">Fragments bruts</button><button class="memo-toggle-btn${memoView==='skills'?' active':''}" onclick="memoView='skills';renderMemoire()">Skills agents</button>`;
+  if(memoView==='bible')renderBible();else if(memoView==='fragments')renderFragments();else renderSkills();
+  document.getElementById('memo-bible-view').style.display=memoView==='bible'?'block':'none';
+  document.getElementById('memo-fragments-view').style.display=memoView==='fragments'?'block':'none';
+  document.getElementById('memo-skills-view').style.display=memoView==='skills'?'block':'none';
 }
 
 function renderBible(){
-  const nav = document.getElementById('bible-nav');
-  const chapters = document.getElementById('bible-chapters');
-
-  nav.innerHTML = THEMATIQUES.map((t,i)=>
-    `<button class="memo-nav-btn ${i===0?'active':''}" onclick="selectBibleChapter(this,'${t.key}')">${t.ico} ${t.label}</button>`
-  ).join('');
-
-  chapters.innerHTML = THEMATIQUES.map((t,i)=>{
-    const entry = data.bible.find(b=>b.thematique===t.key);
-    const contenu = entry ? entry.contenu : '';
-    const maj = entry ? entry.derniere_maj : null;
-    const ver = entry ? entry.version : 0;
-
-    // Nombre de fragments liés
-    const fragCount = data.fragments.filter(f=>f.thematique===t.key).length;
-
-    return `<div class="bible-chapter ${i===0?'active':''}" id="bible-${t.key}">
-      <div class="sec-hdr">${t.ico} ${t.label}</div>
-      <div class="bible-content">${escapeHtml(contenu)}</div>
-      <div class="bible-meta">
-        <span>${maj ? 'Maj : '+formatDate(maj) : 'Jamais mis à jour'} ${ver ? '· v'+ver : ''}</span>
-        <span>${fragCount} fragment${fragCount>1?'s':''} source${fragCount>1?'s':''}</span>
-      </div>
-    </div>`;
-  }).join('');
+  const el=document.getElementById('memo-bible-view');
+  el.innerHTML=`<div class="memo-nav">${THEMES.map((t,i)=>`<button class="memo-nav-btn${activeTheme===t.key?' active':''}" onclick="activeTheme='${t.key}';renderBible()">${t.ico} ${t.label}</button>`).join('')}</div>
+  ${THEMES.map(t=>{const e=data.bible.find(b=>b.thematique===t.key);const c=e?e.contenu:'';const maj=e?e.derniere_maj:null;const v=e?e.version:0;const fc=data.fragments.filter(f=>f.thematique===t.key).length;
+  return`<div class="bible-chapter${activeTheme===t.key?' active':''}" id="bible-${t.key}"><div class="bible-content">${escHtml(c)}</div><div class="bible-meta"><span>${maj?'Maj : '+fmtDt(maj):'Jamais mis à jour'}${v?' · v'+v:''}</span><span>${fc} fragment${fc>1?'s':''}</span></div></div>`}).join('')}`;
 }
 
 function renderFragments(){
-  const filtered = fragmentFilter==='all' ? data.fragments : data.fragments.filter(f=>f.agent===fragmentFilter);
-  const el = document.getElementById('fragments-body');
-
-  if(!filtered.length){
-    el.innerHTML=`<div class="empty"><div class="empty-ico">🧠</div><div class="empty-text">Aucun fragment enregistré</div></div>`;
-    return;
-  }
-
-  el.innerHTML = filtered.map(f=>`
-    <div class="fragment-item">
-      <div class="fragment-header">
-        <div>${agentBadge(f.agent)} <span class="badge badge-${f.importance==='haute'?'urgente':f.importance==='basse'?'basse':'normale'}">${f.importance}</span></div>
-        <div class="fragment-date">${formatDate(f.created_at)}</div>
-      </div>
-      <div class="fragment-text">${escapeHtml(f.contenu)}</div>
-      ${f.tags && f.tags.length ? `<div class="fragment-tags">${f.tags.map(t=>`<span class="fragment-tag">${t}</span>`).join('')}</div>` : ''}
-    </div>
-  `).join('');
+  const filtered=fragFilter==='all'?data.fragments:data.fragments.filter(f=>f.agent===fragFilter);
+  const el=document.getElementById('memo-fragments-view');
+  const agBadge=a=>{const m={claude:'p-iris',tom:'p-infra',neo:'p-ur'};const l={claude:'Claude',tom:'Tom',neo:'Neo'};return`<span class="pill ${m[a]||''}">${l[a]||a}</span>`};
+  el.innerHTML=`<div class="filters"><button class="fbtn${fragFilter==='all'?' on':''}" onclick="fragFilter='all';renderFragments()">Tous</button><button class="fbtn${fragFilter==='claude'?' on':''}" onclick="fragFilter='claude';renderFragments()">Claude</button><button class="fbtn${fragFilter==='tom'?' on':''}" onclick="fragFilter='tom';renderFragments()">Tom</button><button class="fbtn${fragFilter==='neo'?' on':''}" onclick="fragFilter='neo';renderFragments()">Neo</button></div>
+  ${filtered.length?filtered.map(f=>`<div class="fragment-item"><div class="fragment-header"><div>${agBadge(f.agent)} <span class="pill ${f.importance==='haute'?'p-urg':'p-med'}">${f.importance}</span></div><div class="fragment-date">${fmtDt(f.created_at)}</div></div><div class="fragment-text">${escHtml(f.contenu)}</div>${f.tags&&f.tags.length?`<div class="fragment-tags">${f.tags.map(t=>`<span class="fragment-tag">${t}</span>`).join('')}</div>`:''}</div>`).join(''):'<div class="empty"><div class="empty-ico">🧠</div><div class="empty-text">Aucun fragment</div></div>'}`;
 }
 
-function escapeHtml(str){
-  if(!str) return '';
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+function escHtml(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}
+
+function renderSkills(){
+  const el=document.getElementById('memo-skills-view');
+  const skills=data.skills||[];
+  if(!skills.length){el.innerHTML='<div class="empty"><div class="empty-ico">⚡</div><div class="empty-text">Aucun skill enregistré</div></div>';return}
+  const catPill={api:'p-infra',workflow:'p-done',contexte:'p-ur',template:'p-high',outil:'p-med'};
+  const agBadge=a=>{const m={claude:'p-iris',tom:'p-infra',neo:'p-ur'};const l={claude:'Claude',tom:'Tom',neo:'Neo'};return`<span class="pill ${m[a]||''}">${l[a]||a}</span>`};
+  el.innerHTML=`<div style="font-size:12px;color:var(--dim);margin-bottom:12px">${skills.length} skill${skills.length>1?'s':''} actif${skills.length>1?'s':''}</div>`+
+    skills.map((s,i)=>{
+      const agents=(s.agents||[]).map(a=>agBadge(a)).join(' ');
+      return`<div class="tcard" style="margin-bottom:8px;padding:0;overflow:hidden">
+        <div onclick="toggleSkill(${i})" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;gap:10px;transition:background .12s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''">
+          <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">
+            <span class="pill ${catPill[s.categorie]||'p-med'}">${s.categorie||'autre'}</span>
+            <span style="font-weight:600;color:var(--navy)">${escHtml(s.nom)}</span>
+            <span style="color:var(--dim);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(s.description||'')}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+            ${agents}
+            <span style="color:var(--dim);font-size:11px">v${s.version||1}</span>
+            <span id="skill-chev-${i}" style="color:var(--dim);transition:transform .15s;display:inline-block;font-size:10px">▸</span>
+          </div>
+        </div>
+        <div id="skill-body-${i}" style="display:none;padding:0 16px 14px">
+          <div style="font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap;background:var(--bg);border-radius:8px;padding:12px;max-height:300px;overflow-y:auto">${escHtml(s.contenu)}</div>
+          <div class="bible-meta" style="margin-top:8px"><span>Mis à jour : ${fmtDt(s.updated_at)}</span></div>
+        </div>
+      </div>`}).join('');
 }
 
-// ═══════════════════════════════════════════════
-// TABS
-// ═══════════════════════════════════════════════
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
-  });
-});
-
-// ═══════════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════════
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3500);
+function toggleSkill(i){
+  const body=document.getElementById('skill-body-'+i);
+  const chev=document.getElementById('skill-chev-'+i);
+  if(!body)return;
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  chev.style.transform=open?'':'rotate(90deg)';
 }
+function fmtDt(iso){if(!iso)return'';const d=new Date(iso);return d.toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'})+' · '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}
 
-// ═══════════════════════════════════════════════
-// BOOT
-// ═══════════════════════════════════════════════
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)}
+
 function boot(){
-  cfg = getConfig();
-  if(!cfg){
-    document.getElementById('setup').classList.remove('hidden');
-    return;
-  }
+  cfg=getConfig();
+  if(!cfg){document.getElementById('setup').classList.remove('hidden');return}
   document.getElementById('setup').classList.add('hidden');
-  const appEl = document.getElementById('app');
-  appEl.style.display='flex';
-  appEl.style.flexDirection='column';
-  appEl.style.height='100%';
-
-  const cache = localStorage.getItem('iris_h_cache');
-  if(cache){
-    try{
-      data = JSON.parse(cache).data;
-      if(!data.fragments) data.fragments = [];
-      if(!data.bible) data.bible = [];
-      render();
-    }catch(e){}
-  }
+  document.getElementById('app').style.display='flex';
+  updateTopbar();
+  const cache=localStorage.getItem('iris_h_cache');
+  if(cache){try{data=JSON.parse(cache).data;if(!data.fragments)data.fragments=[];if(!data.bible)data.bible=[];if(!data.taches_v2)data.taches_v2=[];if(!data.rec_suivi)data.rec_suivi=[];if(!data.skills)data.skills=[];render()}catch(e){}}
   loadAll();
 }
-
 boot();
 </script>
 </body>
