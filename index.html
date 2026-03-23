@@ -473,7 +473,7 @@ function renderTodo(){
   document.getElementById('todo-charts').innerHTML='';
 
   // Filters
-  const ents=['all','IRIS H','Perso','BYM','Urban Rise','IRIS REP','ARRISTO','Galerie Carrez'];
+  const ents=['all','IRIS H','Perso','BYM','Urban Rise','IRIS REP','ARRISTO','Galerie Carrez','Autre'];
   const codes=['all',...[...new Set(src.map(t=>t.code_projet).filter(Boolean))].sort()];
   document.getElementById('todo-filters').innerHTML=`
     ${todoFilterCode!=='all'?`<div style="margin-bottom:8px;display:flex;align-items:center;gap:8px"><span class="pill p-iris" style="font-size:12px">Projet : ${todoFilterCode}</span><button class="fbtn" onclick="todoFilterCode='all';renderTodo()" style="font-size:10px">✕ Retirer filtre</button></div>`:''}
