@@ -677,7 +677,7 @@ async function renderProspects(){
         const res=await supa('contacts',`id=eq.${pc.contact_id}&select=id,prenom,nom,email,telephone`);
         if(res.length)contact=res[0];
       }catch(e){}
-      return{...pc,...contact,pc_role:pc.role,pc_statut:pc.statut,pc_principal:pc.is_principal,pc_entite:pc.entite};
+      return{...pc,...contact,pc_role:pc.role,pc_statut:pc.statut,pc_principal:pc.is_principal,pc_entite:pc.entite,pc_last_call:pc.last_call};
     }));
     return{...p,pcs:enriched};
   }));
@@ -699,12 +699,13 @@ async function renderProspects(){
       const display=c.email||[c.prenom,c.nom].filter(Boolean).join(' ')||c.telephone||'Sans info';
       const roleStr=c.pc_role?` · ${c.pc_role}`:'';
       const entStr=c.pc_entite?` ${eBadge(c.pc_entite)}`:'';
-      return`<div style="display:flex;align-items:center;gap:6px;padding:2px 0;border-bottom:1px solid var(--bg)"><div style="flex:1;min-width:0;font-size:11px;${nameStyle};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${display}<span style="color:var(--dim);font-style:italic">${roleStr}</span></div>${entStr}${csBadge(c.pc_statut)}</div>`;
+      const lcStr=c.pc_last_call?`<span style="font-size:9px;color:var(--dim);white-space:nowrap">${fDate(c.pc_last_call)}</span>`:'';
+      return`<div style="display:flex;align-items:center;gap:6px;padding:2px 0;border-bottom:1px solid var(--bg)"><div style="flex:1;min-width:0;font-size:11px;${nameStyle};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${display}<span style="color:var(--dim);font-style:italic">${roleStr}</span></div>${entStr}${csBadge(c.pc_statut)}${lcStr}</div>`;
     }).join('')}</div>`;
   };
 
-  document.getElementById('prospects-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr><th style="width:70px"></th><th>Entreprise</th><th style="min-width:300px">Contacts CRM</th><th>Entités prospect</th><th>Last call</th></tr></thead><tbody>
-  ${rows.map(p=>`<tr style="vertical-align:top"><td>${logoCell(p)}</td><td class="td-name" style="vertical-align:top;padding-top:12px">${p.nom_entreprise||''}</td><td>${contactsBlock(p.pcs)}</td><td style="vertical-align:top;padding-top:12px">${(p.entites||[]).map(e=>eBadge(e)).join(' ')}</td><td style="font-size:11px;color:var(--dim);vertical-align:top;padding-top:12px">${fDate(p.last_call)}</td></tr>`).join('')}
+  document.getElementById('prospects-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr><th style="width:70px"></th><th style="width:120px">Entreprise</th><th>Contacts CRM</th></tr></thead><tbody>
+  ${rows.map(p=>`<tr style="vertical-align:top"><td>${logoCell(p)}</td><td class="td-name" style="vertical-align:top;padding-top:12px;font-size:12px">${p.nom_entreprise||''}</td><td>${contactsBlock(p.pcs)}</td></tr>`).join('')}
   </tbody></table>`;
 }
 
