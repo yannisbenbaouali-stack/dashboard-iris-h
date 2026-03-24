@@ -106,6 +106,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .p-ur{background:var(--purple-bg);color:#3C3489}
 .p-arristo{background:#F1EFE8;color:#444}
 .p-gc{background:#FBEAF0;color:#72243E}
+.p-c2c{background:#E8F0F1;color:#2C3E50}
 .p-infra{background:#E1F5EE;color:#085041}
 .p-urg{background:var(--red-bg);color:var(--red)}
 .p-high{background:var(--orange-bg);color:#b36d00}
@@ -241,7 +242,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
     </div>
     <div class="sb-nav">
       <button class="nav-item active" onclick="switchTab(this,'todo')"><span class="nav-dot"></span><span>Todo</span><span class="nav-cnt" id="nav-todo-cnt">0</span></button>
-      <button class="nav-item" onclick="switchTab(this,'deals')"><span class="nav-dot"></span><span>Deal Flow</span><span class="nav-cnt" id="nav-deals-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'deals')"><span class="nav-dot"></span><span>Dealflow Projets</span><span class="nav-cnt" id="nav-deals-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'prospects')"><span class="nav-dot"></span><span>Dealflow Prospects</span><span class="nav-cnt" id="nav-prospects-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'finance')"><span class="nav-dot"></span><span>Finance</span></button>
       <button class="nav-item" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'memoire')"><span class="nav-dot"></span><span>Mémoire</span></button>
@@ -272,6 +274,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <div class="tab" id="tab-deals">
         <div class="kpis" id="deals-kpis"></div>
         <div id="deals-body"></div>
+      </div>
+
+      <!-- PROSPECTS -->
+      <div class="tab" id="tab-prospects">
+        <div class="kpis" id="prospects-kpis"></div>
+        <div id="prospects-body"></div>
       </div>
 
       <!-- FINANCE -->
@@ -396,14 +404,14 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Deal Flow',finance:'Finance',crm:'CRM',memoire:'Mémoire IA'};
+  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
 }
 
 function renderCurrentTab(){
-  const m={todo:renderTodo,deals:renderDeals,finance:renderFinance,crm:renderCRM,memoire:renderMemoire};
+  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire};
   if(m[currentTab])m[currentTab]();
 }
 
@@ -460,20 +468,21 @@ function renderTodo(){
 
   // Mini histogramme par entité
   const byEntite={};src.filter(t=>t.statut!=='fait').forEach(t=>{byEntite[t.entite||'Autre']=(byEntite[t.entite||'Autre']||0)+1});
-  const entColors={'IRIS H':'#c8a455',Perso:'#888',BYM:'#5B9BD5','Urban Rise':'#a78bfa','IRIS REP':'#c8a455',ARRISTO:'#fb923c','Galerie Carrez':'#22d3ee',Autre:'#666'};
+  const entColors={'IRIS H':'#c8a455',Perso:'#888',BYM:'#5B9BD5','Urban Rise':'#a78bfa','IRIS REP':'#c8a455',ARRISTO:'#fb923c','Galerie Carrez':'#22d3ee','C2C.FR':'#2C3E50',Autre:'#666'};
   const miniBarHtml=Object.entries(byEntite).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div style="display:flex;align-items:center;gap:6px;font-size:10px;margin-bottom:2px"><span style="width:70px;text-align:right;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${k}</span><div style="height:8px;width:${Math.max(8,v/Math.max(...Object.values(byEntite))*80)}px;background:${entColors[k]||'#666'};border-radius:3px"></div><span style="color:var(--dim);font-weight:600">${v}</span></div>`).join('');
 
+  document.getElementById('todo-kpis').style.gridTemplateColumns='repeat(5,1fr)';
   document.getElementById('todo-kpis').innerHTML=`
-    <div class="kpi red"><div class="kpi-label">Urgentes</div><div class="kpi-val">${urgentes}</div><div class="kpi-sub">à traiter immédiatement</div></div>
+    <div class="kpi red"><div class="kpi-label">Urgentes</div><div class="kpi-val">${urgentes}</div><div class="kpi-sub">à traiter</div></div>
     <div class="kpi orange"><div class="kpi-label">En attente</div><div class="kpi-val">${attentes}</div><div class="kpi-sub">tiers à relancer</div></div>
-    <div class="kpi"><div class="kpi-label">Tâches actives</div><div class="kpi-val">${actives}</div><div class="kpi-sub">a_faire + en_cours</div></div>
+    <div class="kpi"><div class="kpi-label">Actives</div><div class="kpi-val">${actives}</div><div class="kpi-sub">a_faire + en_cours</div></div>
     <div class="kpi green"><div class="kpi-label">Complétées</div><div class="kpi-val">${faites}</div><div class="kpi-sub">terminées</div></div>
-    <div class="kpi" style="min-width:180px"><div class="kpi-label">Par entité</div><div style="margin-top:6px">${miniBarHtml}</div></div>`;
+    <div class="kpi" style="min-width:160px"><div class="kpi-label">Par entité</div><div style="margin-top:6px">${miniBarHtml}</div></div>`;
 
   document.getElementById('todo-charts').innerHTML='';
 
   // Filters
-  const ents=['all','IRIS H','Perso','BYM','Urban Rise','IRIS REP','ARRISTO','Galerie Carrez','Autre'];
+  const ents=['all','IRIS H','Perso','BYM','Urban Rise','IRIS REP','ARRISTO','Galerie Carrez','C2C.FR','Autre'];
   const codes=['all',...[...new Set(src.map(t=>t.code_projet).filter(Boolean))].sort()];
   document.getElementById('todo-filters').innerHTML=`
     ${todoFilterCode!=='all'?`<div style="margin-bottom:8px;display:flex;align-items:center;gap:8px"><span class="pill p-iris" style="font-size:12px">Projet : ${todoFilterCode}</span><button class="fbtn" onclick="todoFilterCode='all';renderTodo()" style="font-size:10px">✕ Retirer filtre</button></div>`:''}
@@ -502,17 +511,17 @@ function renderTodo(){
   const el=document.getElementById('todo-body');
   if(!filtered.length){el.innerHTML='<div class="empty"><div class="empty-ico">✅</div><div class="empty-text">Aucune tâche</div></div>';return}
 
-  const eBadge=e=>{const m={'IRIS H':'p-iris',Perso:'p-infra',BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',ARRISTO:'p-arristo','Galerie Carrez':'p-gc'};return e?`<span class="pill ${m[e]||'p-iris'}">${e}</span>`:''};
+  const eBadge=e=>{const m={'IRIS H':'p-iris',Perso:'p-infra',BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',ARRISTO:'p-arristo','Galerie Carrez':'p-gc','C2C.FR':'p-c2c'};return e?`<span class="pill ${m[e]||'p-iris'}">${e}</span>`:''};
   const pBadge=p=>{const m={urgente:'p-urg',haute:'p-high',moyenne:'p-med',standby:'p-standby',fait:'p-done'};const l={urgente:'Urgent',haute:'Haute',moyenne:'Moyenne',standby:'Standby',fait:'Fait'};return`<span class="pill ${m[p]||'p-med'}">${l[p]||p}</span>`};
   const sLabel=s=>({a_faire:'A faire',en_cours:'En cours',fait:'Fait'}[s]||s);
   const fDate=d=>{if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})};
   const dCls=d=>{if(!d)return'';const days=Math.round((new Date(d)-Date.now())/864e5);return days<0?'color:var(--red)':days<=3?'color:var(--orange)':'color:var(--dim)'};
   const thS=k=>{let s='';if(todoSortCol===k)s=todoSortDir==='asc'?' ▲':' ▼';return s};
 
-  el.innerHTML=`<table class="tbl"><thead><tr><th style="width:24px"></th><th>Tâche</th><th style="cursor:pointer" onclick="sortTodo('code_projet')">Code${thS('code_projet')}</th><th style="cursor:pointer" onclick="sortTodo('projet')">Projet${thS('projet')}</th><th style="cursor:pointer" onclick="sortTodo('entite')">Entité${thS('entite')}</th><th style="cursor:pointer" onclick="sortTodo('priorite')">Priorité${thS('priorite')}</th><th style="cursor:pointer" onclick="sortTodo('statut')">Statut${thS('statut')}</th><th style="cursor:pointer" onclick="sortTodo('echeance')">Échéance${thS('echeance')}</th><th style="cursor:pointer" onclick="sortTodo('attente_de')">Attente de${thS('attente_de')}</th><th style="cursor:pointer" onclick="sortTodo('derniere_relance')">Relance${thS('derniere_relance')}</th><th style="width:24px"></th></tr></thead><tbody>
+  el.innerHTML=`<table class="tbl"><thead><tr><th style="width:24px"></th><th>Tâche</th><th style="cursor:pointer" onclick="sortTodo('code_projet')">Code${thS('code_projet')}</th><th style="cursor:pointer" onclick="sortTodo('projet')">Projet${thS('projet')}</th><th style="cursor:pointer" onclick="sortTodo('entite')">Entité${thS('entite')}</th><th style="cursor:pointer" onclick="sortTodo('priorite')">Priorité${thS('priorite')}</th><th style="cursor:pointer" onclick="sortTodo('statut')">Statut${thS('statut')}</th><th style="cursor:pointer" onclick="sortTodo('echeance')">Échéance${thS('echeance')}</th><th style="cursor:pointer" onclick="sortTodo('attente_de')">Attente de${thS('attente_de')}</th><th style="cursor:pointer" onclick="sortTodo('derniere_relance')">Relancé le${thS('derniere_relance')}</th><th style="width:30px"></th></tr></thead><tbody>
   ${filtered.map(t=>{
     const sCls=t.statut==='fait'?'color:var(--green)':t.statut==='en_cours'?'color:var(--blue)':'color:var(--dim)';
-    return`<tr><td style="text-align:center;font-size:12px;color:var(--dim)">${t.prerequis_titre?`<span title="← ${t.prerequis_titre}" style="cursor:pointer">◀</span>`:''}</td><td style="cursor:pointer" onclick="openTaskDetail('${t.id}')"><div class="td-name" style="display:flex;align-items:center;gap:6px">${t.detail?'<span style="color:var(--blue);font-size:10px" title="Détail renseigné">●</span>':''}<span>${t.titre}</span></div><div style="font-size:10px;color:var(--dim)">${t.description||''}</div></td><td style="font-size:11px"><span class="pill p-iris" style="font-size:9px;cursor:pointer" onclick="event.stopPropagation();todoFilterCode='${t.code_projet||''}';renderTodo()">${t.code_projet||''}</span></td><td style="font-size:11px;color:var(--dim)">${t.projet||''}</td><td>${eBadge(t.entite)}</td><td>${pBadge(t.priorite)}</td><td style="${sCls};font-size:11px">${sLabel(t.statut)}</td><td style="${dCls(t.echeance)};font-size:11px">${fDate(t.echeance)}</td><td>${t.attente_de?`<span class="pill p-att">${t.attente_de}</span>`:''}</td><td style="font-size:10px;color:var(--dim)">${t.derniere_relance?fDate(t.derniere_relance):''}</td><td style="text-align:center;font-size:12px;color:var(--dim)">${t.suite_titre?`<span title="→ ${t.suite_titre}" style="cursor:pointer">▶</span>`:''}</td></tr>`}).join('')}</tbody></table>`;
+    return`<tr><td style="text-align:center;font-size:12px;color:var(--dim)">${t.prerequis_titre?`<span title="← ${t.prerequis_titre}" style="cursor:pointer">◀</span>`:''}</td><td><div class="td-name" style="display:flex;align-items:center;gap:6px">${t.detail?'<span style="color:var(--blue);font-size:10px" title="Détail renseigné">●</span>':''}<span>${t.titre}</span></div><div style="font-size:10px;color:var(--dim)">${t.description||''}</div></td><td style="font-size:11px"><span class="pill p-iris" style="font-size:9px;cursor:pointer" onclick="event.stopPropagation();todoFilterCode='${t.code_projet||''}';renderTodo()">${t.code_projet||''}</span></td><td style="font-size:11px;color:var(--dim)">${t.projet||''}</td><td>${eBadge(t.entite)}</td><td>${pBadge(t.priorite)}</td><td style="${sCls};font-size:11px">${sLabel(t.statut)}</td><td style="${dCls(t.echeance)};font-size:11px">${fDate(t.echeance)}</td><td>${t.attente_de?`<span class="pill p-att">${t.attente_de}</span>`:''}</td><td style="font-size:10px;color:var(--dim)">${t.derniere_relance?fDate(t.derniere_relance):''}</td><td style="text-align:center"><button onclick="openTaskDetail('${t.id}')" style="width:24px;height:24px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--blue);cursor:pointer;font-size:14px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;transition:.12s" onmouseover="this.style.background='var(--blue)';this.style.color='#fff'" onmouseout="this.style.background='var(--card)';this.style.color='var(--blue)'">+</button></td></tr>`}).join('')}</tbody></table>`;
 }
 
 function renderTodoRec(){
@@ -622,6 +631,16 @@ function renderDeals(){
   document.getElementById('deals-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr>${cols.map(c=>{let cls='';if(dealsSortCol===c.k)cls=dealsSortDir==='asc'?' ▲':' ▼';return`<th style="cursor:pointer" onclick="sortDeals('${c.k}')">${c.l}${cls}</th>`}).join('')}</tr></thead><tbody>
   ${deals.length?deals.map(d=>`<tr><td><a href="#" onclick="goToTodoForDeal('${d.code||''}');return false" style="color:var(--blue);font-weight:600;text-decoration:none;font-size:12px" title="Voir les tâches ${d.code}">${d.code||''}</a></td><td class="td-name">${entIco(d.entite)} ${d.nom||''}</td><td>${eBadge(d.entite)}</td><td>${DL[d.type]||d.type||''}</td><td>${etBadge(d.etape)}</td><td style="color:var(--green);font-weight:500">${fmt(d.montant)}</td><td style="color:var(--blue)">${fmt(d.ca_previ)}</td><td style="color:var(--green)">${fmt(d.resultat_previ)}</td><td>${d.adresse||''}</td><td style="font-size:10px;color:var(--dim);font-style:italic;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${(d.commentaire||'').replace(/"/g,'&quot;')}">${d.commentaire||''}</td></tr>`).join(''):`<tr><td colspan="${cols.length}" style="text-align:center;padding:2rem;color:var(--dim)">Aucun deal</td></tr>`}
   </tbody></table>`;
+}
+
+// ════════════════════════════════════════
+// DEALFLOW PROSPECTS
+// ════════════════════════════════════════
+function renderProspects(){
+  document.getElementById('prospects-kpis').innerHTML=`
+    <div class="kpi"><div class="kpi-label">Prospects</div><div class="kpi-val">0</div><div class="kpi-sub">en construction</div></div>`;
+  document.getElementById('prospects-body').innerHTML=`<div class="tcard"><div style="text-align:center;padding:40px;color:var(--dim)"><div style="font-size:32px;margin-bottom:8px;opacity:.5">🔍</div><div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px">Dealflow Prospects</div><div style="font-size:12px">Cet onglet est en cours de construction. Reviens vers Claude pour définir la structure.</div></div></div>`;
+  document.getElementById('nav-prospects-cnt').textContent='0';
 }
 
 // ════════════════════════════════════════
