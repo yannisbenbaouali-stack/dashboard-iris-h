@@ -653,7 +653,8 @@ async function renderProspects(){
   document.getElementById('nav-prospects-cnt').textContent=actifs;
 
   const eBadge=e=>{const m={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris',ARRISTO:'p-arristo',GALERIE_CARREZ:'p-gc'};const l={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP',ARRISTO:'ARRISTO',GALERIE_CARREZ:'Galerie Carrez'};return`<span class="pill ${m[e]||'p-iris'}">${l[e]||e||''}</span>`};
-  const sBadge=s=>{const m={a_prospecter:'background:var(--blue-bg);color:var(--blue)',en_cours:'background:var(--orange-bg);color:#b36d00',a_relancer:'background:#fce4ec;color:#c62828',valide:'background:var(--green-bg);color:#1a8a4a',dead:'background:#f5f5f5;color:#999'};const l={a_prospecter:'A prospecter',en_cours:'En cours',a_relancer:'A relancer',valide:'Validé',dead:'Dead'};return`<span class="pill" style="${m[s]||''}">${l[s]||s||''}</span>`};
+  const csBadge=s=>{const m={a_prospecter:'background:var(--blue-bg);color:var(--blue)',en_cours:'background:var(--orange-bg);color:#b36d00',a_relancer:'background:#fce4ec;color:#c62828',valide:'background:var(--green-bg);color:#1a8a4a',dead:'background:#f5f5f5;color:#999'};const l={a_prospecter:'A prospecter',en_cours:'En cours',a_relancer:'A relancer',valide:'Validé',dead:'Dead'};return`<span class="pill" style="font-size:9px;${m[s]||''}">${l[s]||s||''}</span>`};
+  const psBadge=s=>{const m={a_prospecter:'background:var(--blue-bg);color:var(--blue)',en_cours:'background:var(--orange-bg);color:#b36d00',a_relancer:'background:#fce4ec;color:#c62828',valide:'background:var(--green-bg);color:#1a8a4a',dead:'background:#f5f5f5;color:#999'};const l={a_prospecter:'A prospecter',en_cours:'En cours',a_relancer:'A relancer',valide:'Validé',dead:'Dead'};return`<span class="pill" style="${m[s]||''}">${l[s]||s||''}</span>`};
   const fDate=d=>{if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})};
 
   const filtersHtml=`<div class="filters" style="margin-bottom:12px"><button class="fbtn prosp-fbtn${prospectsFilter==='all'?' on':''}" onclick="filterProspects(this,'all')">Tous</button><button class="fbtn prosp-fbtn${prospectsFilter==='BYM'?' on':''}" onclick="filterProspects(this,'BYM')">BYM</button><button class="fbtn prosp-fbtn${prospectsFilter==='IRIS_REP'?' on':''}" onclick="filterProspects(this,'IRIS_REP')">IRIS REP</button><button class="fbtn prosp-fbtn${prospectsFilter==='URBAN_RISE'?' on':''}" onclick="filterProspects(this,'URBAN_RISE')">Urban Rise</button><button class="fbtn prosp-fbtn${prospectsFilter==='ARRISTO'?' on':''}" onclick="filterProspects(this,'ARRISTO')">ARRISTO</button><button class="fbtn prosp-fbtn${prospectsFilter==='GALERIE_CARREZ'?' on':''}" onclick="filterProspects(this,'GALERIE_CARREZ')">Galerie Carrez</button></div>`;
@@ -662,16 +663,22 @@ async function renderProspects(){
     document.getElementById('prospects-body').innerHTML=filtersHtml+'<div class="empty"><div class="empty-ico">🔍</div><div class="empty-text">Aucun prospect</div></div>';return;
   }
 
-  // Chercher les contacts liés à chaque prospect via societe
+  // Charger les liaisons prospect_contacts avec les infos contact
   const rows=await Promise.all(pros.map(async p=>{
-    let contacts=[];
-    if(p.type==='entreprise'&&p.nom_entreprise){
+    let pcs=[];
+    try{
+      pcs=await supa('prospect_contacts',`prospect_id=eq.${p.id}&order=is_principal.desc,created_at.asc&select=*`);
+    }catch(e){}
+    // Enrichir avec les données contact
+    const enriched=await Promise.all(pcs.map(async pc=>{
+      let contact={};
       try{
-        const q=encodeURIComponent(`%${p.nom_entreprise.split(' ')[0]}%`);
-        contacts=await supa('contacts',`societe=ilike.${q}&select=id,prenom,nom&limit=15`);
+        const res=await supa('contacts',`id=eq.${pc.contact_id}&select=id,prenom,nom,email,telephone`);
+        if(res.length)contact=res[0];
       }catch(e){}
-    }
-    return{...p,contacts};
+      return{...pc,...contact,pc_role:pc.role,pc_statut:pc.statut,pc_principal:pc.is_principal};
+    }));
+    return{...p,pcs:enriched};
   }));
 
   const logoUrl=p=>{
@@ -680,17 +687,19 @@ async function renderProspects(){
     return`<div style="width:36px;height:36px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🏢</div>`;
   };
 
-  const contactsList=(p,contacts)=>{
-    if(!contacts.length)return'<span style="color:var(--dim);font-size:11px">Aucun contact</span>';
-    return contacts.map(c=>{
-      const isPrincipal=p.contact_principal_id&&c.id===p.contact_principal_id;
-      const style=isPrincipal?'font-weight:700;text-decoration:underline':'';
-      return`<span style="font-size:11px;${style}">${c.prenom||''} ${c.nom||''}</span>`;
-    }).join(', ');
+  const contactsBlock=pcs=>{
+    if(!pcs.length)return'<span style="color:var(--dim);font-size:11px">Aucun contact lié</span>';
+    return pcs.map(c=>{
+      const principal=c.pc_principal;
+      const nameStyle=principal?'font-weight:700;text-decoration:underline':'';
+      const display=c.email||[c.prenom,c.nom].filter(Boolean).join(' ')||c.telephone||'Sans info';
+      const roleLine=c.pc_role?`<div style="font-size:9px;color:var(--dim);font-style:italic;margin-top:1px">${c.pc_role}</div>`:'';
+      return`<div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid var(--bg)"><div style="flex:1;min-width:0"><div style="font-size:11px;${nameStyle}">${display}</div>${roleLine}</div>${csBadge(c.pc_statut)}</div>`;
+    }).join('');
   };
 
-  document.getElementById('prospects-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr><th style="width:50px"></th><th>Entreprise / Prospect</th><th>Contacts CRM</th><th>Entités</th><th>Statut</th><th>Last call</th></tr></thead><tbody>
-  ${rows.map(p=>`<tr><td>${logoUrl(p)}</td><td class="td-name">${p.nom_entreprise||''}</td><td style="max-width:300px">${contactsList(p,p.contacts)}</td><td>${(p.entites||[]).map(e=>eBadge(e)).join(' ')}</td><td>${sBadge(p.statut)}</td><td style="font-size:11px;color:var(--dim)">${fDate(p.last_call)}</td></tr>`).join('')}
+  document.getElementById('prospects-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr><th style="width:50px"></th><th>Entreprise</th><th style="min-width:250px">Contacts CRM</th><th>Entités</th><th>Statut</th><th>Last call</th></tr></thead><tbody>
+  ${rows.map(p=>`<tr><td>${logoUrl(p)}</td><td class="td-name">${p.nom_entreprise||''}</td><td>${contactsBlock(p.pcs)}</td><td>${(p.entites||[]).map(e=>eBadge(e)).join(' ')}</td><td>${psBadge(p.statut)}</td><td style="font-size:11px;color:var(--dim)">${fDate(p.last_call)}</td></tr>`).join('')}
   </tbody></table>`;
 }
 
