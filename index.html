@@ -674,7 +674,7 @@ async function renderProspects(){
     const enriched=await Promise.all(pcs.map(async pc=>{
       let contact={};
       try{
-        const res=await supa('contacts',`id=eq.${pc.contact_id}&select=id,prenom,nom,email,telephone`);
+        const res=await supa('contacts',`id=eq.${pc.contact_id}&select=id,prenom,nom,email,telephone,entite_iris`);
         if(res.length)contact=res[0];
       }catch(e){}
       return{...pc,...contact,pc_role:pc.role,pc_statut:pc.statut,pc_principal:pc.is_principal,pc_entite:pc.entite,pc_last_call:pc.last_call};
@@ -683,29 +683,34 @@ async function renderProspects(){
   }));
 
   const logoCell=p=>{
+    const special=['Useless','A creuser'];
+    const icoEmoji=p.nom_entreprise==='Useless'?'🗑️':p.nom_entreprise==='A creuser'?'🔎':'🏢';
     const ico=p.type==='personne'
-      ?`<div style="width:36px;height:36px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:18px">👤</div>`
+      ?`<div style="width:40px;height:40px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:20px">👤</div>`
+      :special.includes(p.nom_entreprise)
+        ?`<div style="width:40px;height:40px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:20px">${icoEmoji}</div>`
       :p.domaine_web
-        ?`<img src="https://logo.clearbit.com/${p.domaine_web}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:36px;height:36px;border-radius:8px;object-fit:contain;background:#fff;border:1px solid var(--border)"><div style="width:36px;height:36px;border-radius:8px;background:var(--bg);display:none;align-items:center;justify-content:center;font-size:18px">🏢</div>`
-        :`<div style="width:36px;height:36px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:18px">🏢</div>`;
+        ?`<img src="https://unavatar.io/${p.domaine_web}?fallback=false" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=${p.domaine_web}&sz=64'" style="width:40px;height:40px;border-radius:10px;object-fit:contain;background:#fff;border:1px solid var(--border)">`
+        :`<div style="width:40px;height:40px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:20px">🏢</div>`;
     return`<div style="display:flex;flex-direction:column;align-items:center;gap:4px">${ico}${psBadge(p.statut)}</div>`;
   };
 
   const contactsBlock=pcs=>{
     if(!pcs.length)return'<span style="color:var(--dim);font-size:11px">Aucun contact lié</span>';
-    return`<div style="max-height:200px;overflow-y:auto">${pcs.map(c=>{
+    return`<div style="max-height:220px;overflow-y:auto">${pcs.map(c=>{
       const principal=c.pc_principal;
       const nameStyle=principal?'font-weight:700;text-decoration:underline':'';
       const display=c.email||[c.prenom,c.nom].filter(Boolean).join(' ')||c.telephone||'Sans info';
       const roleStr=c.pc_role?` · ${c.pc_role}`:'';
-      const entStr=c.pc_entite?` ${eBadge(c.pc_entite)}`:'';
-      const lcStr=c.pc_last_call?`<span style="font-size:9px;color:var(--dim);white-space:nowrap">${fDate(c.pc_last_call)}</span>`:'';
-      return`<div style="display:flex;align-items:center;gap:6px;padding:2px 0;border-bottom:1px solid var(--bg)"><div style="flex:1;min-width:0;font-size:11px;${nameStyle};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${display}<span style="color:var(--dim);font-style:italic">${roleStr}</span></div>${entStr}${csBadge(c.pc_statut)}${lcStr}</div>`;
+      const ents=(c.entite_iris||[]);
+      const entStr=ents.length?ents.map(e=>eBadge(e)).join(' '):'';
+      const lcStr=c.pc_last_call?`<span style="font-size:9px;color:var(--dim);white-space:nowrap;margin-left:4px">${fDate(c.pc_last_call)}</span>`:'';
+      return`<div style="display:flex;align-items:center;gap:5px;padding:2px 0;border-bottom:1px solid var(--bg)"><div style="flex:1;min-width:0;font-size:11px;${nameStyle};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${display}<span style="color:var(--dim);font-style:italic">${roleStr}</span></div>${entStr}${csBadge(c.pc_statut)}${lcStr}</div>`;
     }).join('')}</div>`;
   };
 
-  document.getElementById('prospects-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr><th style="width:70px"></th><th style="width:120px">Entreprise</th><th>Contacts CRM</th></tr></thead><tbody>
-  ${rows.map(p=>`<tr style="vertical-align:top"><td>${logoCell(p)}</td><td class="td-name" style="vertical-align:top;padding-top:12px;font-size:12px">${p.nom_entreprise||''}</td><td>${contactsBlock(p.pcs)}</td></tr>`).join('')}
+  document.getElementById('prospects-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr><th style="width:70px"></th><th style="width:110px;text-align:center">Entreprise</th><th>Contacts CRM</th></tr></thead><tbody>
+  ${rows.map(p=>`<tr style="vertical-align:top"><td>${logoCell(p)}</td><td style="vertical-align:top;padding-top:10px;text-align:center"><div class="td-name" style="font-size:12px">${p.nom_entreprise||''}</div></td><td>${contactsBlock(p.pcs)}</td></tr>`).join('')}
   </tbody></table>`;
 }
 
