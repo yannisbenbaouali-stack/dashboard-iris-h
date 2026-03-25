@@ -689,7 +689,7 @@ async function renderProspects(){
         const res=await supa('contacts',`id=eq.${pc.contact_id}&select=id,prenom,nom,email,telephone,entite_iris`);
         if(res.length)contact=res[0];
       }catch(e){}
-      return{...pc,...contact,pc_role:pc.role,pc_statut:pc.statut,pc_principal:pc.is_principal,pc_entite:pc.entite,pc_last_call:pc.last_call};
+      return{...contact,pc_id:pc.id,pc_role:pc.role,pc_statut:pc.statut,pc_principal:pc.is_principal,pc_entite:pc.entite,pc_last_call:pc.last_call,notes:pc.notes};
     }));
     return{...p,pcs:enriched};
   }));
@@ -742,50 +742,54 @@ async function renderProspects(){
       const ents=(c.entite_iris||[]);
       const entStr=ents.length?ents.map(e=>eBadge(e)).join(' '):'';
       const lcStr=c.pc_last_call?`<span style="font-size:9px;color:var(--dim);white-space:nowrap;margin-left:4px">${fDate(c.pc_last_call)}</span>`:'';
-      return`<div style="display:flex;align-items:center;gap:5px;padding:2px 0;border-bottom:1px solid var(--bg)"><div style="flex:1;min-width:0;font-size:11px;${nameStyle};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${display}<span style="color:var(--dim);font-style:italic">${roleStr}</span></div>${entStr}${csBadge(c.pc_statut)}${lcStr}</div>`;
+      const hasNote=c.notes&&c.notes.trim();
+      const noteBtn=`<button onclick="openContactNote('${c.pc_id}')" style="width:16px;height:16px;border-radius:4px;border:1px solid ${hasNote?'var(--blue)':'var(--border)'};background:${hasNote?'rgba(91,155,213,0.08)':'transparent'};color:var(--blue);cursor:pointer;font-size:9px;font-weight:700;line-height:1;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;padding:0" onmouseover="this.style.background='var(--blue)';this.style.color='#fff'" onmouseout="this.style.background='${hasNote?'rgba(91,155,213,0.08)':'transparent'}';this.style.color='var(--blue)'">${hasNote?'●':'+'}</button>`;
+      return`<div style="display:flex;align-items:center;gap:5px;padding:2px 0;border-bottom:1px solid var(--bg)"><div style="flex:1;min-width:0;font-size:11px;${nameStyle};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${display}<span style="color:var(--dim);font-style:italic">${roleStr}</span></div>${entStr}${csBadge(c.pc_statut)}${lcStr}${noteBtn}</div>`;
     }).join('')}</div>`;
   };
 
-  const noteBtn=p=>{
-    const hasNote=p.notes&&p.notes.trim();
-    return`<button onclick="openProspectNote('${p.id}')" style="width:24px;height:24px;border-radius:6px;border:1px solid ${hasNote?'var(--blue)':'var(--border)'};background:${hasNote?'rgba(91,155,213,0.08)':'var(--card)'};color:var(--blue);cursor:pointer;font-size:14px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;transition:.12s" onmouseover="this.style.background='var(--blue)';this.style.color='#fff'" onmouseout="this.style.background='${hasNote?'rgba(91,155,213,0.08)':'var(--card)'}';this.style.color='var(--blue)'">${hasNote?'●':'+'}</button>`;
-  };
-
-  document.getElementById('prospects-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr><th style="width:80px"></th><th style="width:110px;text-align:center">Entreprise</th><th>Contacts CRM</th><th style="width:30px"></th></tr></thead><tbody>
-  ${rows.map(p=>`<tr style="vertical-align:top"><td>${logoCell(p)}</td><td style="vertical-align:top;padding-top:10px;text-align:center"><div class="td-name" style="font-size:12px">${p.nom_entreprise||''}</div></td><td>${contactsBlock(p.pcs)}</td><td style="vertical-align:top;padding-top:10px;text-align:center">${noteBtn(p)}</td></tr>`).join('')}
+  document.getElementById('prospects-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr><th style="width:80px"></th><th style="width:110px;text-align:center">Entreprise</th><th>Contacts CRM</th></tr></thead><tbody>
+  ${rows.map(p=>`<tr style="vertical-align:top"><td>${logoCell(p)}</td><td style="vertical-align:top;padding-top:10px;text-align:center"><div class="td-name" style="font-size:12px">${p.nom_entreprise||''}</div></td><td>${contactsBlock(p.pcs)}</td></tr>`).join('')}
   </tbody></table>`;
 }
 
-let currentProspectId=null;
-function openProspectNote(id){
-  const p=(data.prospects||[]).find(p=>p.id===id);
-  if(!p)return;
-  currentProspectId=id;
-  document.getElementById('modal-prospect-title').textContent=p.nom_entreprise||'Prospect';
-  document.getElementById('modal-prospect-note').value=p.notes||'';
+let currentPcId=null;
+function openContactNote(pcId){
+  // pcId est l'id de prospect_contacts
+  currentPcId=pcId;
+  document.getElementById('modal-prospect-title').textContent='Note contact';
+  document.getElementById('modal-prospect-sub').textContent='';
+  document.getElementById('modal-prospect-note').value='';
   document.getElementById('modal-prospect-loading').style.display='none';
   document.getElementById('modal-prospect-save').disabled=false;
+  // Charger la note existante
+  if(cfg){
+    fetch(`${cfg.url}/rest/v1/prospect_contacts?id=eq.${pcId}&select=notes,contact_id`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`}})
+    .then(r=>r.json()).then(d=>{
+      if(d.length){
+        document.getElementById('modal-prospect-note').value=d[0].notes||'';
+      }
+    }).catch(()=>{});
+  }
   document.getElementById('prospect-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('modal-prospect-note').focus(),100);
+  setTimeout(()=>document.getElementById('modal-prospect-note').focus(),150);
 }
 function closeProspectModal(){
   document.getElementById('prospect-modal').classList.remove('open');
-  currentProspectId=null;
+  currentPcId=null;
 }
 async function saveProspectNote(){
-  if(!currentProspectId||!cfg)return;
+  if(!currentPcId||!cfg)return;
   const notes=document.getElementById('modal-prospect-note').value;
   const loading=document.getElementById('modal-prospect-loading');
   const btn=document.getElementById('modal-prospect-save');
   loading.style.display='block';btn.disabled=true;
   try{
-    await fetch(`${cfg.url}/rest/v1/prospects?id=eq.${currentProspectId}`,{
+    await fetch(`${cfg.url}/rest/v1/prospect_contacts?id=eq.${currentPcId}`,{
       method:'PATCH',
       headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'},
       body:JSON.stringify({notes})
     });
-    const p=(data.prospects||[]).find(p=>p.id===currentProspectId);
-    if(p)p.notes=notes;
     closeProspectModal();
     renderProspects();
   }catch(e){
