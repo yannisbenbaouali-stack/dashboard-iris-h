@@ -363,7 +363,7 @@ async function loadAll(){
     safe(()=>supa('memoire_fragments','order=created_at.desc')),
     safe(()=>supa('memoire_bible','order=thematique')),
     safe(()=>supa('skills','order=categorie,nom')),
-    safe(()=>supa('prospects','order=nom_entreprise.asc'))
+    safe(()=>supa('prospects','order=created_at.asc'))
   ]);
   data.taches=taches;data.taches_v2=taches_v2;data.rec_suivi=rec_suivi;data.deals=deals;
   data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;
@@ -641,7 +641,10 @@ let prospectsFilter='all';
 function filterProspects(btn,v){document.querySelectorAll('.prosp-fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');prospectsFilter=v;renderProspects()}
 
 async function renderProspects(){
-  const pros=prospectsFilter==='all'?[...data.prospects]:data.prospects.filter(p=>(p.entites||[]).includes(prospectsFilter));
+  let pros=prospectsFilter==='all'?[...data.prospects]:data.prospects.filter(p=>(p.entites||[]).includes(prospectsFilter));
+  // Tri : ordre d'ajout, sauf "A creuser" avant dernier et "dead" en dernier
+  const sortKey=p=>p.nom_entreprise==='Useless'||p.statut==='dead'?2:p.nom_entreprise==='A creuser'?1:0;
+  pros.sort((a,b)=>{const ka=sortKey(a),kb=sortKey(b);if(ka!==kb)return ka-kb;return 0});
   const actifs=data.prospects.filter(p=>p.statut!=='dead').length;
   const enCours=data.prospects.filter(p=>p.statut==='en_cours').length;
   const valides=data.prospects.filter(p=>p.statut==='valide').length;
