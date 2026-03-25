@@ -322,6 +322,19 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
     </div>
   </div>
 </div>
+<!-- MODALE NOTE PROSPECT -->
+<div class="modal-overlay" id="prospect-modal" onclick="if(event.target===this)closeProspectModal()">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-prospect-title"></div>
+    <div class="modal-sub" id="modal-prospect-sub">Note prospect</div>
+    <textarea class="modal-textarea" id="modal-prospect-note" placeholder="Ajoute une note..."></textarea>
+    <div class="modal-loading" id="modal-prospect-loading">Enregistrement...</div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-cancel" onclick="closeProspectModal()">Annuler</button>
+      <button class="modal-btn modal-btn-save" id="modal-prospect-save" onclick="saveProspectNote()">Mettre à jour</button>
+    </div>
+  </div>
+</div>
 <div id="toast"></div>
 
 <script>
@@ -695,7 +708,8 @@ async function renderProspects(){
       :p.domaine_web
         ?`<img src="https://unavatar.io/${p.domaine_web}?fallback=false" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=${p.domaine_web}&sz=64'" style="width:40px;height:40px;border-radius:10px;object-fit:contain;background:#fff;border:1px solid var(--border)">`
         :`<div style="width:40px;height:40px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:20px">🏢</div>`;
-    return`<div style="display:flex;flex-direction:column;align-items:center;gap:4px">${ico}${psBadge(p.statut)}</div>`;
+    const dpc=p.derniere_prise_contact?fDate(p.derniere_prise_contact):'<span style="color:var(--dim2)">non contacté</span>';
+    return`<div style="display:flex;flex-direction:column;align-items:center;gap:3px">${ico}${psBadge(p.statut)}<div style="font-size:9px;color:var(--dim)">${dpc}</div></div>`;
   };
 
   const contactsBlock=pcs=>{
@@ -712,9 +726,53 @@ async function renderProspects(){
     }).join('')}</div>`;
   };
 
-  document.getElementById('prospects-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr><th style="width:70px"></th><th style="width:110px;text-align:center">Entreprise</th><th>Contacts CRM</th></tr></thead><tbody>
-  ${rows.map(p=>`<tr style="vertical-align:top"><td>${logoCell(p)}</td><td style="vertical-align:top;padding-top:10px;text-align:center"><div class="td-name" style="font-size:12px">${p.nom_entreprise||''}</div></td><td>${contactsBlock(p.pcs)}</td></tr>`).join('')}
+  const noteBtn=p=>{
+    const hasNote=p.notes&&p.notes.trim();
+    return`<button onclick="openProspectNote('${p.id}')" style="width:24px;height:24px;border-radius:6px;border:1px solid ${hasNote?'var(--blue)':'var(--border)'};background:${hasNote?'rgba(91,155,213,0.08)':'var(--card)'};color:var(--blue);cursor:pointer;font-size:14px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;transition:.12s" onmouseover="this.style.background='var(--blue)';this.style.color='#fff'" onmouseout="this.style.background='${hasNote?'rgba(91,155,213,0.08)':'var(--card)'}';this.style.color='var(--blue)'">${hasNote?'●':'+'}</button>`;
+  };
+
+  document.getElementById('prospects-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr><th style="width:80px"></th><th style="width:110px;text-align:center">Entreprise</th><th>Contacts CRM</th><th style="width:30px"></th></tr></thead><tbody>
+  ${rows.map(p=>`<tr style="vertical-align:top"><td>${logoCell(p)}</td><td style="vertical-align:top;padding-top:10px;text-align:center"><div class="td-name" style="font-size:12px">${p.nom_entreprise||''}</div></td><td>${contactsBlock(p.pcs)}</td><td style="vertical-align:top;padding-top:10px;text-align:center">${noteBtn(p)}</td></tr>`).join('')}
   </tbody></table>`;
+}
+
+let currentProspectId=null;
+function openProspectNote(id){
+  const p=(data.prospects||[]).find(p=>p.id===id);
+  if(!p)return;
+  currentProspectId=id;
+  document.getElementById('modal-prospect-title').textContent=p.nom_entreprise||'Prospect';
+  document.getElementById('modal-prospect-note').value=p.notes||'';
+  document.getElementById('modal-prospect-loading').style.display='none';
+  document.getElementById('modal-prospect-save').disabled=false;
+  document.getElementById('prospect-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('modal-prospect-note').focus(),100);
+}
+function closeProspectModal(){
+  document.getElementById('prospect-modal').classList.remove('open');
+  currentProspectId=null;
+}
+async function saveProspectNote(){
+  if(!currentProspectId||!cfg)return;
+  const notes=document.getElementById('modal-prospect-note').value;
+  const loading=document.getElementById('modal-prospect-loading');
+  const btn=document.getElementById('modal-prospect-save');
+  loading.style.display='block';btn.disabled=true;
+  try{
+    await fetch(`${cfg.url}/rest/v1/prospects?id=eq.${currentProspectId}`,{
+      method:'PATCH',
+      headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'},
+      body:JSON.stringify({notes})
+    });
+    const p=(data.prospects||[]).find(p=>p.id===currentProspectId);
+    if(p)p.notes=notes;
+    closeProspectModal();
+    renderProspects();
+  }catch(e){
+    loading.textContent='Erreur, réessaie';
+  }finally{
+    loading.style.display='none';btn.disabled=false;
+  }
 }
 
 // ════════════════════════════════════════
