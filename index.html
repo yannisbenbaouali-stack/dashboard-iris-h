@@ -818,7 +818,7 @@ function renderFinance(){
     <div class="kpi ${net>=0?'green':'red'}"><div class="kpi-label">Tréso nette</div><div class="kpi-val">${net>=0?'+':''}${fmt(Math.abs(net))}</div></div>
     <div class="kpi"><div class="kpi-label">Budget moyen</div><div class="kpi-val">${avgPct}%</div><div class="kpi-sub">${ch.length} chantier${ch.length>1?'s':''}</div></div>`;
 
-  const sections=['budget','treso','synth'];const sLabels={budget:'Budget Chantiers',treso:'Trésorerie',synth:'Synthèse'};
+  const sections=['budget','treso','synth','vilmar'];const sLabels={budget:'Budget Chantiers',treso:'Trésorerie',synth:'Synthèse',vilmar:'Vilmar'};
   document.getElementById('fin-nav').innerHTML=sections.map((s,i)=>`<button class="fin-nav-btn${i===0?' active':''}" onclick="document.querySelectorAll('.fin-section').forEach(x=>x.classList.remove('active'));document.getElementById('fin-${s}').classList.add('active');document.querySelectorAll('.fin-nav-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${sLabels[s]}</button>`).join('');
 
   const eBadge=e=>{const m={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris'};const l={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP'};return`<span class="pill ${m[e]||''}">${l[e]||e}</span>`};
@@ -838,6 +838,28 @@ function renderFinance(){
     <div class="synth-item"><div class="synth-label">Tréso nette</div><div class="synth-value ${net>=0?'pos':'neg'}">${net>=0?'+':''}${fmt(Math.abs(net))}</div></div>
     <div class="synth-item"><div class="synth-label">Deals actifs</div><div class="synth-value">${data.deals.filter(d=>d.etape!=='perdu').length}</div></div>
   </div></div>`;
+
+  // Section Vilmar
+  const vilmarFrags = data.fragments.filter(f => f.tags && f.tags.includes('vilmar') && f.thematique === 'finance');
+  const vilmarRows = vilmarFrags.map(f => {
+    const m = f.contenu.match(/(\d[\d\s]*)\s*euros?/i);
+    const montant = m ? parseFloat(m[1].replace(/\s/g,'')) : 0;
+    const libelle = f.contenu.replace(/^Vilmar\s*:\s*/i,'').replace(/\d[\d\s]*\s*euros?\s*/i,'').trim().replace(/^[,.:~>\-\s]+/,'').replace(/[,.:]+$/,'');
+    return {libelle, montant};
+  });
+  const vilmarTotal = vilmarRows.reduce((a,r)=>a+r.montant,0);
+  const vilmarHtml = vilmarRows.length
+    ? `<table style="width:100%;border-collapse:collapse">
+        <thead><tr style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px">
+          <th style="text-align:left;padding:6px 0;border-bottom:1px solid var(--border)">Libellé</th>
+          <th style="text-align:right;padding:6px 0;border-bottom:1px solid var(--border)">Montant</th>
+        </tr></thead>
+        <tbody>
+          ${vilmarRows.map(r=>`<tr><td style="padding:8px 0;font-size:13px;border-bottom:1px solid var(--border)">${r.libelle}</td><td style="padding:8px 0;font-size:13px;text-align:right;color:var(--green);border-bottom:1px solid var(--border)">${fmt(r.montant)}</td></tr>`).join('')}
+          <tr><td style="padding:10px 0;font-weight:700;font-size:13px">Total</td><td style="padding:10px 0;font-weight:700;font-size:13px;text-align:right;color:var(--gold)">${fmt(vilmarTotal)}</td></tr>
+        </tbody></table>`
+    : '<div class="empty"><div class="empty-text">Aucune donnée Vilmar</div></div>';
+  html+=`<div class="fin-section" id="fin-vilmar"><div class="tcard">${vilmarHtml}</div></div>`;
   document.getElementById('fin-sections').innerHTML=html;
 }
 
