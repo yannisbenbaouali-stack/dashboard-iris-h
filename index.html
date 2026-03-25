@@ -267,7 +267,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div class="kpis" id="todo-kpis"></div>
         <div class="charts-row" id="todo-charts"></div>
         <div id="todo-filters"></div>
-        <div class="tcard"><div class="tcard-hdr"><span class="tcard-title" id="todo-count"></span></div><div id="todo-body"></div></div>
+        <div class="tcard"><div class="tcard-hdr"><span class="tcard-title" id="todo-count"></span><input id="todo-search" placeholder="Rechercher..." oninput="renderTodo()" style="margin-left:auto;padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-family:var(--font);font-size:11px;outline:none;width:200px;background:var(--bg);color:var(--text)"></div><div id="todo-body"></div></div>
       </div>
 
       <!-- DEALS -->
@@ -509,6 +509,8 @@ function renderTodo(){
   if(todoFilterS!=='all')filtered=filtered.filter(t=>t.statut===todoFilterS);
   if(todoFilterCode!=='all')filtered=filtered.filter(t=>t.code_projet===todoFilterCode);
   if(todoFilterPrio!=='all')filtered=filtered.filter(t=>t.priorite===todoFilterPrio&&t.statut!=='fait');
+  const todoQ=(document.getElementById('todo-search')?.value||'').toLowerCase().trim();
+  if(todoQ)filtered=filtered.filter(t=>[t.titre,t.description,t.entite,t.projet,t.code_projet,t.attente_de].filter(Boolean).join(' ').toLowerCase().includes(todoQ));
   const pOrd={urgente:0,haute:1,moyenne:2,standby:3,fait:4};
   const sOrd={a_faire:0,en_cours:1,fait:2};
   const tDir=todoSortDir==='asc'?1:-1;
