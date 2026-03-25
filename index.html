@@ -654,10 +654,10 @@ let prospectsFilter='all';
 function filterProspects(btn,v){document.querySelectorAll('.prosp-fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');prospectsFilter=v;renderProspects()}
 
 async function renderProspects(){
-  let pros=prospectsFilter==='all'?[...data.prospects]:data.prospects.filter(p=>(p.entites||[]).includes(prospectsFilter));
+  let allPros=[...data.prospects];
   // Tri : ordre d'ajout, sauf "A creuser" avant dernier et "dead" en dernier
   const sortKey=p=>p.nom_entreprise==='Useless'||p.statut==='dead'?2:p.nom_entreprise==='A creuser'?1:0;
-  pros.sort((a,b)=>{const ka=sortKey(a),kb=sortKey(b);if(ka!==kb)return ka-kb;return 0});
+  allPros.sort((a,b)=>{const ka=sortKey(a),kb=sortKey(b);if(ka!==kb)return ka-kb;return 0});
   const actifs=data.prospects.filter(p=>p.statut!=='dead').length;
   const enCours=data.prospects.filter(p=>p.statut==='en_cours').length;
   const valides=data.prospects.filter(p=>p.statut==='valide').length;
@@ -668,8 +668,8 @@ async function renderProspects(){
     <div class="kpi"><div class="kpi-label">Actifs</div><div class="kpi-val">${actifs}</div></div>`;
   document.getElementById('nav-prospects-cnt').textContent=actifs;
 
-  const eMap={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris',ARRISTO:'p-arristo',GALERIE_CARREZ:'p-gc'};
-  const eLabel={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP',ARRISTO:'ARRISTO',GALERIE_CARREZ:'Galerie Carrez'};
+  const eMap={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris',ARRISTO:'p-arristo',GALERIE_CARREZ:'p-gc','IRIS REP':'p-iris'};
+  const eLabel={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP',ARRISTO:'ARRISTO',GALERIE_CARREZ:'Galerie Carrez','IRIS REP':'IRIS REP'};
   const eBadge=e=>`<span class="pill ${eMap[e]||'p-iris'}">${eLabel[e]||e||''}</span>`;
   const csBadge=s=>{const m={a_prospecter:'background:var(--blue-bg);color:var(--blue)',en_cours:'background:var(--orange-bg);color:#b36d00',a_relancer:'background:#fce4ec;color:#c62828',valide:'background:var(--green-bg);color:#1a8a4a',dead:'background:#f5f5f5;color:#999'};const l={a_prospecter:'A prospecter',en_cours:'En cours',a_relancer:'A relancer',valide:'Validé',dead:'Dead'};return`<span class="pill" style="font-size:9px;${m[s]||''}">${l[s]||s||''}</span>`};
   const psBadge=s=>{const m={a_prospecter:'var(--blue-bg)',en_cours:'var(--orange-bg)',a_relancer:'#fce4ec',valide:'var(--green-bg)',dead:'#f5f5f5'};const mc={a_prospecter:'var(--blue)',en_cours:'#b36d00',a_relancer:'#c62828',valide:'#1a8a4a',dead:'#999'};const l={a_prospecter:'A prospecter',en_cours:'En cours',a_relancer:'A relancer',valide:'Validé',dead:'Dead'};return`<span style="font-size:9px;color:${mc[s]||'var(--dim)'};background:${m[s]||'var(--bg)'};padding:2px 6px;border-radius:4px;white-space:nowrap">${l[s]||s||''}</span>`};
@@ -677,12 +677,8 @@ async function renderProspects(){
 
   const filtersHtml=`<div class="filters" style="margin-bottom:12px"><button class="fbtn prosp-fbtn${prospectsFilter==='all'?' on':''}" onclick="filterProspects(this,'all')">Tous</button><button class="fbtn prosp-fbtn${prospectsFilter==='BYM'?' on':''}" onclick="filterProspects(this,'BYM')">BYM</button><button class="fbtn prosp-fbtn${prospectsFilter==='IRIS_REP'?' on':''}" onclick="filterProspects(this,'IRIS_REP')">IRIS REP</button><button class="fbtn prosp-fbtn${prospectsFilter==='URBAN_RISE'?' on':''}" onclick="filterProspects(this,'URBAN_RISE')">Urban Rise</button><button class="fbtn prosp-fbtn${prospectsFilter==='ARRISTO'?' on':''}" onclick="filterProspects(this,'ARRISTO')">ARRISTO</button><button class="fbtn prosp-fbtn${prospectsFilter==='GALERIE_CARREZ'?' on':''}" onclick="filterProspects(this,'GALERIE_CARREZ')">Galerie Carrez</button></div>`;
 
-  if(!pros.length){
-    document.getElementById('prospects-body').innerHTML=filtersHtml+'<div class="empty"><div class="empty-ico">🔍</div><div class="empty-text">Aucun prospect</div></div>';return;
-  }
-
   // Charger les liaisons prospect_contacts avec les infos contact
-  const rows=await Promise.all(pros.map(async p=>{
+  const allRows=await Promise.all(allPros.map(async p=>{
     let pcs=[];
     try{
       pcs=await supa('prospect_contacts',`prospect_id=eq.${p.id}&order=is_principal.desc,created_at.asc&select=*`);
@@ -697,6 +693,30 @@ async function renderProspects(){
     }));
     return{...p,pcs:enriched};
   }));
+
+  // Filtrage par entité : on filtre les contacts de chaque prospect, et on masque les prospects sans contacts pertinents
+  const ef=prospectsFilter;
+  const entMatch=(entites,f)=>{
+    if(!entites||!entites.length)return false;
+    // Normaliser : "IRIS REP" et "IRIS_REP" doivent matcher
+    const norm=s=>(s||'').replace(/\s+/g,'_').toUpperCase();
+    return entites.some(e=>norm(e)===norm(f));
+  };
+  let rows;
+  if(ef==='all'){
+    rows=allRows;
+  }else{
+    rows=allRows.map(p=>{
+      const filteredPcs=p.pcs.filter(c=>entMatch(c.entite_iris||[],ef));
+      return{...p,pcs_filtered:filteredPcs};
+    }).filter(p=>p.pcs_filtered.length>0||(p.entites||[]).some(e=>entMatch([e],ef)));
+    // Utiliser pcs_filtered pour l'affichage
+    rows=rows.map(p=>({...p,pcs:p.pcs_filtered||p.pcs}));
+  }
+
+  if(!rows.length){
+    document.getElementById('prospects-body').innerHTML=filtersHtml+'<div class="empty"><div class="empty-ico">🔍</div><div class="empty-text">Aucun prospect pour cette entité</div></div>';return;
+  }
 
   const logoCell=p=>{
     const special=['Useless','A creuser'];
