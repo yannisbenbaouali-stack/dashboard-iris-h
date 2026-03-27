@@ -340,7 +340,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 <script>
 const CFG_KEY='iris_h_cfg';
 let cfg=null;
-let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[]};
+let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[],rapports_rediges:[]};
 
 function getConfig(){try{const s=JSON.parse(localStorage.getItem(CFG_KEY));if(s&&s.url&&s.key)return s}catch(e){}return null}
 function saveConfig(){
@@ -366,7 +366,7 @@ async function supa(table,params='',fetchAll=false){
 
 async function loadAll(){
   const safe=async fn=>{try{return await fn()}catch(e){console.warn('Warning:',e);return[]}};
-  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo]=await Promise.all([
+  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges]=await Promise.all([
     safe(()=>supa('taches','order=created_at.desc')),
     safe(()=>supa('taches_v2','order=created_at.asc')),
     safe(()=>supa('taches_recurrentes_suivi','order=semaine.asc')),
@@ -377,10 +377,11 @@ async function loadAll(){
     safe(()=>supa('memoire_bible','order=thematique')),
     safe(()=>supa('skills','order=categorie,nom')),
     safe(()=>supa('prospects','order=created_at.asc')),
-    safe(()=>supa('rapport_hebdo_suivi','order=semaine.asc'))
+    safe(()=>supa('rapport_hebdo_suivi','order=semaine.asc')),
+    safe(()=>supa('rapports_hebdo','order=semaine.asc'))
   ]);
   data.taches=taches;data.taches_v2=taches_v2;data.rec_suivi=rec_suivi;data.deals=deals;
-  data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;
+  data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;
   try{localStorage.setItem('iris_h_cache',JSON.stringify({data:{...data,contacts:[]},ts:Date.now()}))}catch(e){}
   render();
   const t=new Date();
@@ -557,20 +558,60 @@ function renderTodoRec(){
   ${src.map(t=>{const ts=suivi.filter(s=>s.tache_id===t.id);return`<tr><td><div class="td-name">${t.titre}</div><div style="font-size:10px;color:var(--dim)">${t.description||''}</div></td><td>${eBadge(t.entite)}</td>${weeks.map(w=>{const e=ts.find(s=>s.semaine===w);const ok=e&&e.fait;return`<td style="text-align:center;font-size:14px;color:${ok?'var(--green)':'var(--dim2)'}">${ok?'✓':'○'}</td>`}).join('')}</tr>`}).join('')}</tbody></table></div>`;
 }
 
+let rapportView='synthese',rapportSemaine='';
+
 function renderTodoRapport(){
   const deals=(data.deals||[]).filter(d=>d.etape!=='dead');
   const suivi=data.rapport_hebdo||[];
-  const weeks=['S1','S2','S3','S4','S5','S6','S7','S8','S9','S10','S11','S12'];
+  const rapports=data.rapports_rediges||[];
+
+  // Calculer le numéro de semaine actuel
+  const now=new Date();
+  const startOfYear=new Date(now.getFullYear(),0,1);
+  const currentWeek=Math.ceil(((now-startOfYear)/864e5+startOfYear.getDay()+1)/7);
+
+  // Générer les semaines : de S1 à la semaine courante + quelques unes à venir
+  const startWeek=Math.max(1,currentWeek-8);
+  const weeks=[];for(let i=startWeek;i<=currentWeek+2;i++)weeks.push('S'+i);
+
+  // Semaines qui ont un rapport rédigé
+  const rapportWeeks=rapports.map(r=>r.semaine).sort();
+
   document.getElementById('todo-kpis').innerHTML='';
   document.getElementById('todo-charts').innerHTML='';
-  document.getElementById('todo-filters').innerHTML='';
-  document.getElementById('todo-count').textContent=`${deals.length} dossiers suivis`;
+
+  // Boutons : Synthèse + semaines avec rapports
+  const allBtns=[{key:'synthese',label:'Synthèse'}];
+  // Ajouter les semaines qui ont un rapport, plus la semaine courante
+  const weeksWithReport=new Set(rapportWeeks);
+  weeksWithReport.add('S'+currentWeek);
+  [...weeksWithReport].sort((a,b)=>{const na=parseInt(a.slice(1)),nb=parseInt(b.slice(1));return na-nb}).forEach(w=>{
+    allBtns.push({key:w,label:w});
+  });
+
+  document.getElementById('todo-filters').innerHTML=`<div class="filters">${allBtns.map(b=>`<button class="fbtn${rapportView===b.key?' on':''}" onclick="rapportView='${b.key}';rapportSemaine='${b.key}';renderTodoRapport()">${b.label}</button>`).join('')}</div>`;
+
+  document.getElementById('todo-count').textContent=rapportView==='synthese'?`${deals.length} dossiers suivis`:`Rapport ${rapportView}`;
   const el=document.getElementById('todo-body');
-  if(!deals.length){el.innerHTML='<div class="empty"><div class="empty-ico">📋</div><div class="empty-text">Aucun dossier</div></div>';return}
-  const eBadge=e=>{const m={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris',ARRISTO:'p-arristo',GALERIE_CARREZ:'p-gc',IRIS_H:'p-iris'};const l={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP',ARRISTO:'ARRISTO',GALERIE_CARREZ:'Galerie Carrez',IRIS_H:'IRIS H'};return e?`<span class="pill ${m[e]||'p-iris'}">${l[e]||e}</span>`:''};
-  const etBadge=et=>{const st={dead:'background:#f8717118;color:#f87171',to_sell:'background:#fb923c18;color:#fb923c',cloture:'background:#41c98e18;color:#41c98e'};return`<span class="pill" style="font-size:9px;${st[et]||''}">${ETAPE_LABEL[et]||et||''}</span>`};
-  el.innerHTML=`<div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Code</th><th>Dossier</th><th>Entité</th><th>Étape</th>${weeks.map(w=>`<th style="width:34px;text-align:center">${w}</th>`).join('')}</tr></thead><tbody>
-  ${deals.map(d=>{const ds=suivi.filter(s=>s.deal_id===d.id);return`<tr><td style="font-size:11px;font-weight:600;color:var(--blue)">${d.code||''}</td><td class="td-name" style="font-size:12px">${d.nom||''}</td><td>${eBadge(d.entite)}</td><td>${etBadge(d.etape)}</td>${weeks.map(w=>{const e=ds.find(s=>s.semaine===w);const ok=e&&e.fait;return`<td style="text-align:center;font-size:14px;color:${ok?'var(--green)':'var(--dim2)'};cursor:pointer" title="${e&&e.commentaire?e.commentaire:''}">${ok?'✓':'○'}</td>`}).join('')}</tr>`}).join('')}</tbody></table></div>`;
+
+  if(rapportView==='synthese'){
+    // Grille synthèse avec pastilles colorées
+    if(!deals.length){el.innerHTML='<div class="empty"><div class="empty-ico">📋</div><div class="empty-text">Aucun dossier</div></div>';return}
+    const eBadge=e=>{const m={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris',ARRISTO:'p-arristo',GALERIE_CARREZ:'p-gc',IRIS_H:'p-iris'};const l={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP',ARRISTO:'ARRISTO',GALERIE_CARREZ:'Galerie Carrez',IRIS_H:'IRIS H'};return e?`<span class="pill ${m[e]||'p-iris'}">${l[e]||e}</span>`:''};
+    const etBadge=et=>{const st={dead:'background:#f8717118;color:#f87171',to_sell:'background:#fb923c18;color:#fb923c',cloture:'background:#41c98e18;color:#41c98e'};return`<span class="pill" style="font-size:9px;${st[et]||''}">${ETAPE_LABEL[et]||et||''}</span>`};
+    const dot=c=>{const colors={vert:'#2ecc71',orange:'#f39c12',rouge:'#e74c3c',gris:'#d1d5e0'};return`<div style="width:12px;height:12px;border-radius:50%;background:${colors[c]||colors.gris};margin:0 auto"></div>`};
+
+    el.innerHTML=`<div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Code</th><th>Dossier</th><th>Entité</th><th>Étape</th>${weeks.map(w=>`<th style="width:34px;text-align:center;${w==='S'+currentWeek?'color:var(--blue);font-weight:700':''}">${w}</th>`).join('')}</tr></thead><tbody>
+    ${deals.map(d=>{const ds=suivi.filter(s=>s.deal_id===d.id);return`<tr><td style="font-size:11px;font-weight:600;color:var(--blue)">${d.code||''}</td><td class="td-name" style="font-size:12px">${d.nom||''}</td><td>${eBadge(d.entite)}</td><td>${etBadge(d.etape)}</td>${weeks.map(w=>{const e=ds.find(s=>s.semaine===w);const c=e?e.couleur:'gris';return`<td style="text-align:center;cursor:pointer" title="${e&&e.commentaire?e.commentaire:w}">${dot(c)}</td>`}).join('')}</tr>`}).join('')}</tbody></table></div>`;
+  }else{
+    // Afficher le rapport rédigé de la semaine sélectionnée
+    const rapport=rapports.find(r=>r.semaine===rapportView);
+    if(rapport&&rapport.contenu){
+      el.innerHTML=`<div class="tcard"><div style="font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap">${rapport.contenu.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</div><div style="font-size:10px;color:var(--dim);margin-top:12px">Mis à jour : ${rapport.updated_at?new Date(rapport.updated_at).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'}):'N/A'}</div></div>`;
+    }else{
+      el.innerHTML=`<div class="empty"><div class="empty-ico">📝</div><div class="empty-text">Aucun rapport rédigé pour ${rapportView}.<br>Le rapport sera généré vendredi.</div></div>`;
+    }
+  }
 }
 
 // ════════════════════════════════════════
@@ -1006,7 +1047,7 @@ function boot(){
   document.getElementById('app').style.display='flex';
   updateTopbar();
   const cache=localStorage.getItem('iris_h_cache');
-  if(cache){try{data=JSON.parse(cache).data;if(!data.fragments)data.fragments=[];if(!data.bible)data.bible=[];if(!data.taches_v2)data.taches_v2=[];if(!data.rec_suivi)data.rec_suivi=[];if(!data.skills)data.skills=[];if(!data.prospects)data.prospects=[];if(!data.rapport_hebdo)data.rapport_hebdo=[];render()}catch(e){}}
+  if(cache){try{data=JSON.parse(cache).data;if(!data.fragments)data.fragments=[];if(!data.bible)data.bible=[];if(!data.taches_v2)data.taches_v2=[];if(!data.rec_suivi)data.rec_suivi=[];if(!data.skills)data.skills=[];if(!data.prospects)data.prospects=[];if(!data.rapport_hebdo)data.rapport_hebdo=[];if(!data.rapports_rediges)data.rapports_rediges=[];render()}catch(e){}}
   loadAll();
 }
 boot();
