@@ -570,8 +570,8 @@ function renderTodoRapport(){
   const startOfYear=new Date(now.getFullYear(),0,1);
   const currentWeek=Math.ceil(((now-startOfYear)/864e5+startOfYear.getDay()+1)/7);
 
-  // Générer les semaines : de S1 à la semaine courante + quelques unes à venir
-  const startWeek=Math.max(1,currentWeek-8);
+  // Générer les semaines : de S13 à la semaine courante + quelques unes à venir
+  const startWeek=13;
   const weeks=[];for(let i=startWeek;i<=currentWeek+2;i++)weeks.push('S'+i);
 
   // Semaines qui ont un rapport rédigé
