@@ -312,7 +312,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
           <button class="fbtn on" id="orga-btn-tout" onclick="switchOrga('organigramme.html',this)">Tout</button>
           <button class="fbtn" id="orga-btn-bym" onclick="switchOrga('organigramme_bym.html',this)">BYM</button>
         </div>
-        <iframe id="organigramme-frame" src="organigramme.html" style="width:100%;height:calc(100vh - 160px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
+        <iframe id="organigramme-frame" src="organigramme.html?v=2" style="width:100%;height:calc(100vh - 160px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
       </div>
 
     </div>
@@ -1049,7 +1049,7 @@ async function saveTaskDetail(){
 }
 
 function switchOrga(src,btn){
-  document.getElementById('organigramme-frame').src=src;
+  document.getElementById('organigramme-frame').src=src+'?v='+Date.now();
   document.querySelectorAll('#tab-organigramme .fbtn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
 }
