@@ -264,7 +264,7 @@
     <li>Christian Bonventre ne peut pas être DG (conflit obtention Carte T)</li>
   </ul>
 
-  <h4>VF H / JB H</h4>
+  <h4>GARV HOLDING / JB H</h4>
   <ul>
     <li>SASU → EURL</li>
   </ul>
@@ -366,7 +366,7 @@ function makeNode(id, opts) {
 
 makeNode('yannis', { x: centerX, y: Y.yannis, delay: 0.1, name: 'Yannis Benbaouali (TNS)', person: true, subtitle: 'Actionnaire unique' });
 
-makeNode('irisH', { x: centerX, y: Y.irisH, delay: 0.3, name: 'IRIS H', forme: 'SASU', capital: '2 500 €', activity: 'Holding active, Marchand de biens, conseil en immobilier tertiaire/brokerage', dark: true, cartes: ['Carte T', 'Carte G'] });
+makeNode('irisH', { x: centerX, y: Y.irisH, delay: 0.3, name: 'IRIS H', forme: 'SASU', capital: '2 500 €', activity: 'Holding active, Marchand de biens, conseil en immobilier tertiaire/brokerage, maîtrise d'oeuvre', dark: true, cartes: ['Carte T', 'Carte G'] });
 
 // Columns: RIR=0, CD1=1, GC=2, BUYBUY=3, C2C=4, Synay=5, BYM=6
 const fX = {};
@@ -406,7 +406,7 @@ const junX = colX(NUM_COLS - 1) + COL_W * 0.7 + 160;
 makeNode('vilmar', { x: vilX, y: Y.persons - 210, delay: 0.6, name: 'Vilmar Filho', person: true, subtitle: 'Associé Gérant' });
 makeNode('junior', { x: junX, y: Y.persons - 210, delay: 0.62, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
 
-makeNode('vfh', { x: vilX, y: Y.holdings - 20, delay: 0.7, name: 'VF H', forme: 'EURL', capital: '100 €' });
+makeNode('vfh', { x: vilX, y: Y.holdings - 20, delay: 0.7, name: 'GARV HOLDING', forme: 'EURL', capital: '100 €' });
 makeNode('jbh', { x: junX, y: Y.holdings - 20, delay: 0.72, name: 'JB H', forme: 'EURL', capital: '100 €' });
 
 // ---- DRAW ----
@@ -497,7 +497,7 @@ setTimeout(() => {
   drawLine(from.x, from.y, to.x, to.y, '');
   drawPctOnLine('33 %', from, to, 0.5, 15, 'grey');
 
-  // Vilmar → VF H (100%)
+  // Vilmar → GARV HOLDING (100%)
   from = botC('vilmar'); to = topC('vfh');
   drawLine(from.x, from.y, to.x, to.y, '');
   drawPctOnLine('100 %', from, to, 0.5, 30, 'grey');
@@ -507,7 +507,7 @@ setTimeout(() => {
   drawLine(from.x, from.y, to.x, to.y, '');
   drawPctOnLine('100 %', from, to, 0.5, 30, 'grey');
 
-  // VF H → BYM (33%)
+  // GARV HOLDING → BYM (33%)
   const vfB = botC('vfh');
   const bymT = topC('bym');
   drawLine(vfB.x, vfB.y, bymT.x, bymT.y, 'dashed');
