@@ -366,7 +366,7 @@ function makeNode(id, opts) {
 
 makeNode('yannis', { x: centerX, y: Y.yannis, delay: 0.1, name: 'Yannis Benbaouali (TNS)', person: true, subtitle: 'Actionnaire unique' });
 
-makeNode('irisH', { x: centerX, y: Y.irisH, delay: 0.3, name: 'IRIS H', forme: 'SASU', capital: '100 €', activity: 'Holding active, Marchand de biens, conseil en immobilier tertiaire/brokerage', dark: true, cartes: ['Carte T', 'Carte G'] });
+makeNode('irisH', { x: centerX, y: Y.irisH, delay: 0.3, name: 'IRIS H', forme: 'SASU', capital: '2 500 €', activity: 'Holding active, Marchand de biens, conseil en immobilier tertiaire/brokerage', dark: true, cartes: ['Carte T', 'Carte G'] });
 
 // Columns: RIR=0, CD1=1, GC=2, BUYBUY=3, C2C=4, Synay=5, BYM=6
 const fX = {};
@@ -406,8 +406,8 @@ const junX = colX(NUM_COLS - 1) + COL_W * 0.7 + 160;
 makeNode('vilmar', { x: vilX, y: Y.persons - 210, delay: 0.6, name: 'Vilmar Filho', person: true, subtitle: 'Associé Gérant' });
 makeNode('junior', { x: junX, y: Y.persons - 210, delay: 0.62, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
 
-makeNode('vfh', { x: vilX, y: Y.holdings - 20, delay: 0.7, name: 'VF H', forme: 'SASU', capital: '100 €' });
-makeNode('jbh', { x: junX, y: Y.holdings - 20, delay: 0.72, name: 'JB H', forme: 'SASU', capital: '100 €' });
+makeNode('vfh', { x: vilX, y: Y.holdings - 20, delay: 0.7, name: 'VF H', forme: 'EURL', capital: '100 €' });
+makeNode('jbh', { x: junX, y: Y.holdings - 20, delay: 0.72, name: 'JB H', forme: 'EURL', capital: '100 €' });
 
 // ---- DRAW ----
 function drawLine(x1, y1, x2, y2, cls) {

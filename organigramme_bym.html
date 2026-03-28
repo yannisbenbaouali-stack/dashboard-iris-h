@@ -93,7 +93,7 @@
 
 <div class="header">
   <h1>BYM Construction</h1>
-  <p>Structure capitalistique</p>
+  <p>Structure capitalistique (holdings uniquement)</p>
 </div>
 
 <div class="chart-wrapper">
@@ -105,14 +105,14 @@
 <script>
 const PERSON_ICON = `<svg class="person-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0112 0v1"/></svg>`;
 
-const CHART_W = 1200;
+const CHART_W = 1000;
 const chart = document.getElementById('chart');
 const svg = document.getElementById('linesSvg');
 
 chart.style.width = CHART_W + 'px';
-chart.style.height = '650px';
+chart.style.height = '380px';
 svg.setAttribute('width', CHART_W);
-svg.setAttribute('height', 650);
+svg.setAttribute('height', 380);
 
 const nodePos = {};
 
@@ -130,46 +130,31 @@ function makeNode(id, opts) {
   let cls = 'card';
   if (dark) cls += ' dark';
   if (pending) cls += ' pending';
-  if (person) cls += ' person';
 
   let h = `<div class="${cls}">`;
-  if (person) {
-    h += `<div class="entity-name">${PERSON_ICON} ${name}</div>`;
-    if (subtitle) h += `<div class="entity-type">${subtitle}</div>`;
-  } else {
-    h += `<div class="entity-name">${name}</div>`;
-    if (forme) h += `<div class="entity-type">${forme}</div>`;
-    if (capital) h += `<div class="entity-capital">Capital : ${capital}</div>`;
-    if (activity) h += `<div class="entity-activity">${activity}</div>`;
-    if (cartes && cartes.length) h += `<div class="cartes">${cartes.map(c => `<span class="carte-badge">${c}</span>`).join('')}</div>`;
-  }
+  h += `<div class="entity-name">${name}</div>`;
+  if (forme) h += `<div class="entity-type">${forme}</div>`;
+  if (capital) h += `<div class="entity-capital">Capital : ${capital}</div>`;
+  if (activity) h += `<div class="entity-activity">${activity}</div>`;
+  if (cartes && cartes.length) h += `<div class="cartes">${cartes.map(c => `<span class="carte-badge">${c}</span>`).join('')}</div>`;
   h += '</div>';
 
   node.innerHTML = h;
   chart.appendChild(node);
 }
 
-// Positions
-const centerX = CHART_W / 2;
-const col1 = 250;  // JB H (gauche)
-const col2 = centerX; // VF H (centre)
-const col3 = 950;  // IRIS H (droite)
-const off = 60; // décalage personnes vers la droite
+const col1 = 200;
+const col2 = CHART_W / 2;
+const col3 = 800;
 
-// Row 0 : Personnes physiques (décalées à droite de leur holding)
-makeNode('junior', { x: col1 + off, y: 0, delay: 0.1, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
-makeNode('vilmar', { x: col2 + off, y: 0, delay: 0.15, name: 'Vilmar Filho', person: true, subtitle: 'Associé Gérant' });
-makeNode('yannis', { x: col3 + off, y: 0, delay: 0.2, name: 'Yannis Benbaouali (TNS)', person: true, subtitle: 'Actionnaire unique IRIS H' });
+// Holdings
+makeNode('jbh', { x: col1, y: 0, delay: 0.1, name: 'JB H', forme: 'EURL', capital: '100 €', activity: 'Holding active', dark: true });
+makeNode('vfh', { x: col2, y: 0, delay: 0.15, name: 'VF H', forme: 'EURL', capital: '100 €', activity: 'Holding active', dark: true });
+makeNode('irisH', { x: col3, y: 0, delay: 0.2, name: 'IRIS H', forme: 'SASU', capital: '2 500 €', activity: 'Holding active', dark: true, cartes: ['Carte T', 'Carte G'] });
 
-// Row 1 : Holdings (toutes en dark)
-makeNode('jbh', { x: col1, y: 160, delay: 0.3, name: 'JB H', forme: 'SASU', capital: '100 €', activity: 'Holding active', dark: true });
-makeNode('vfh', { x: col2, y: 160, delay: 0.35, name: 'VF H', forme: 'SASU', capital: '100 €', activity: 'Holding active', dark: true });
-makeNode('irisH', { x: col3, y: 160, delay: 0.4, name: 'IRIS H', forme: 'SASU', capital: '5 000 €', activity: 'Holding active', dark: true, cartes: ['Carte T', 'Carte G'] });
+// BYM
+makeNode('bym', { x: col2, y: 230, delay: 0.4, name: 'BYM Construction', forme: 'SAS', capital: '1 500 €', activity: 'Rénovation', pending: true });
 
-// Row 2 : BYM
-makeNode('bym', { x: centerX, y: 420, delay: 0.6, name: 'BYM Construction', forme: 'SAS', capital: '1 500 €', activity: 'Rénovation', pending: true });
-
-// ---- DRAW LINES ----
 function drawLine(x1, y1, x2, y2, cls) {
   const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
   line.setAttribute('x1', x1); line.setAttribute('y1', y1);
@@ -199,51 +184,19 @@ function drawPctOnLine(text, from, to, ratio, offsetX, colorCls) {
 }
 
 setTimeout(() => {
-  // Le point d'arrivée unique : centre du sommet de BYM
   const bT = topC('bym');
-
-  // Personnes -> Holdings (traits pleins gris)
-  let from = botC('yannis'), to = topC('irisH');
-  drawLine(from.x, from.y, to.x, to.y, '');
-  drawPctOnLine('100 %', from, to, 0.5, 0, 'grey');
-
-  from = botC('vilmar'); to = topC('vfh');
-  drawLine(from.x, from.y, to.x, to.y, '');
-  drawPctOnLine('100 %', from, to, 0.5, 0, 'grey');
-
-  from = botC('junior'); to = topC('jbh');
-  drawLine(from.x, from.y, to.x, to.y, '');
-  drawPctOnLine('100 %', from, to, 0.5, 0, 'grey');
-
-  // Holdings -> BYM (traits pleins orange, tous arrivent au centre sommet BYM)
-  const iB = botC('irisH');
-  drawLine(iB.x, iB.y, bT.x, bT.y, 'solid-orange');
-  drawPctOnLine('17 %', iB, bT, 0.4, 20, 'orange');
-
-  const vB = botC('vfh');
-  drawLine(vB.x, vB.y, bT.x, bT.y, 'solid-orange');
-  drawPctOnLine('17 %', vB, bT, 0.4, -20, 'orange');
 
   const jB = botC('jbh');
   drawLine(jB.x, jB.y, bT.x, bT.y, 'solid-orange');
-  drawPctOnLine('17 %', jB, bT, 0.4, -30, 'orange');
+  drawPctOnLine('33,3 %', jB, bT, 0.45, -25, 'orange');
 
-  // Personnes physiques -> BYM direct (traits pleins orange)
-  const yanB = botC('yannis');
-  drawLine(yanB.x, yanB.y, bT.x, bT.y, 'solid-orange');
-  drawPctOnLine('16 %', yanB, bT, 0.25, 35, 'orange');
+  const vB = botC('vfh');
+  drawLine(vB.x, vB.y, bT.x, bT.y, 'solid-orange');
+  drawPctOnLine('33,3 %', vB, bT, 0.45, 0, 'orange');
 
-  const vilB = botC('vilmar');
-  drawLine(vilB.x, vilB.y, bT.x, bT.y, 'solid-orange');
-  drawPctOnLine('17 %', vilB, bT, 0.25, -35, 'orange');
-
-  const junB = botC('junior');
-  drawLine(junB.x, junB.y, bT.x, bT.y, 'solid-orange');
-  drawPctOnLine('16 %', junB, bT, 0.25, -40, 'orange');
-
-  // Prestation de services (bleu pointillé)
-  drawLine(vilB.x, vilB.y, bT.x, bT.y, 'blue-dashed');
-  drawLine(junB.x, junB.y, bT.x, bT.y, 'blue-dashed');
+  const iB = botC('irisH');
+  drawLine(iB.x, iB.y, bT.x, bT.y, 'solid-orange');
+  drawPctOnLine('33,3 %', iB, bT, 0.45, 25, 'orange');
 
 }, 100);
 </script>
