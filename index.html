@@ -308,7 +308,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 
       <!-- ORGANIGRAMME -->
       <div class="tab" id="tab-organigramme">
-        <iframe id="organigramme-frame" src="organigramme.html" style="width:100%;height:calc(100vh - 120px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
+        <div class="filters" style="margin-bottom:12px">
+          <button class="fbtn on" id="orga-btn-tout" onclick="switchOrga('organigramme.html',this)">Tout</button>
+          <button class="fbtn" id="orga-btn-bym" onclick="switchOrga('organigramme_bym.html',this)">BYM</button>
+        </div>
+        <iframe id="organigramme-frame" src="organigramme.html" style="width:100%;height:calc(100vh - 160px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
       </div>
 
     </div>
@@ -1042,6 +1046,12 @@ async function saveTaskDetail(){
   }finally{
     loading.style.display='none';btn.disabled=false;
   }
+}
+
+function switchOrga(src,btn){
+  document.getElementById('organigramme-frame').src=src;
+  document.querySelectorAll('#tab-organigramme .fbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
 }
 
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)}

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organigramme BYM Construction</title>
+<style>
+  :root {
+    --bg: #f5f3f0;
+    --card-bg: #ffffff;
+    --card-border: #e0ddd8;
+    --dark: #1a1a1a;
+    --dark-card: #2a2a2a;
+    --accent: #b8860b;
+    --text: #3a3a3a;
+    --text-light: #888;
+    --text-muted: #aaa;
+    --line: #c0bdb8;
+    --pending-border: #d4a843;
+    --pending-bg: rgba(212, 168, 67, 0.04);
+    --shadow: 0 2px 16px rgba(0,0,0,0.06);
+    --shadow-hover: 0 8px 32px rgba(0,0,0,0.12);
+    --person-bg: #fafaf8;
+    --person-border: #d8d5d0;
+    --blue: #4682b4;
+    --green: #2e8b57;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    background: var(--bg); color: var(--text);
+    min-height: 100vh; overflow-x: auto;
+  }
+
+  .header { text-align: center; padding: 40px 20px 10px; }
+  .header h1 { font-size: 28px; font-weight: 700; color: var(--dark); letter-spacing: -0.5px; }
+  .header p { font-size: 14px; color: var(--text-light); margin-top: 6px; }
+
+  .legend {
+    display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+    padding: 16px 20px 30px; font-size: 13px; color: var(--text-light);
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .legend-dot.active { background: var(--dark); }
+  .legend-dot.pending { background: transparent; border: 2px dashed var(--pending-border); }
+  .legend-dot.person { background: var(--person-bg); border: 1.5px solid var(--person-border); }
+  .legend-line { width: 20px; height: 2px; }
+  .legend-line.blue { background: var(--blue); border-top: 2px dashed var(--blue); background: transparent; }
+
+  .chart-wrapper { display: flex; justify-content: center; padding: 0 20px 40px; overflow-x: auto; }
+  .chart { position: relative; margin: 0 auto; }
+
+  .lines-svg { position: absolute; top: 0; left: 0; pointer-events: none; }
+  .lines-svg line { stroke: var(--line); stroke-width: 1.5; }
+  .lines-svg line.dashed { stroke-dasharray: 6 4; stroke: var(--pending-border); }
+  .lines-svg line.blue-dashed { stroke-dasharray: 6 4; stroke: var(--blue); }
+
+  .node { position: absolute; transform: translateX(-50%); opacity: 0; animation: fadeIn 0.5s ease forwards; }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  .card {
+    background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 12px;
+    padding: 16px 20px; min-width: 180px; max-width: 220px; text-align: center;
+    box-shadow: var(--shadow); transition: box-shadow 0.2s, transform 0.2s; cursor: default;
+  }
+  .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+  .card.dark { background: var(--dark-card); border-color: var(--dark); }
+  .card.dark .entity-name { color: #fff; }
+  .card.dark .entity-type, .card.dark .entity-capital, .card.dark .entity-activity { color: #bbb; }
+  .card.pending { border: 2px dashed var(--pending-border); background: var(--pending-bg); }
+  .card.person { background: var(--person-bg); border-color: var(--person-border); min-width: 150px; }
+
+  .entity-name { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .entity-type { font-size: 12px; color: var(--text-light); }
+  .entity-capital { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .entity-activity { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+
+  .person-svg { width: 18px; height: 18px; color: var(--text-light); }
+
+  .pct-label { position: absolute; font-size: 11px; font-weight: 600; pointer-events: none; white-space: nowrap; }
+  .pct-label.grey { color: var(--text-light); }
+  .pct-label.orange { color: var(--pending-border); }
+
+  .cartes { display: flex; gap: 4px; justify-content: center; margin-top: 6px; }
+  .carte-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: rgba(184, 134, 11, 0.1); color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>BYM Construction</h1>
+  <p>Structure capitalistique</p>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot person"></div><span>Personne physique</span></div>
+  <div class="legend-item"><div class="legend-dot active"></div><span>Entité active</span></div>
+  <div class="legend-item"><div class="legend-dot pending"></div><span>En cours de création</span></div>
+  <div class="legend-item"><div class="legend-line blue"></div><span>Prestation de services</span></div>
+</div>
+
+<div class="chart-wrapper">
+  <div class="chart" id="chart">
+    <svg class="lines-svg" id="linesSvg"></svg>
+  </div>
+</div>
+
+<script>
+const PERSON_ICON = `<svg class="person-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0112 0v1"/></svg>`;
+
+const CHART_W = 900;
+const chart = document.getElementById('chart');
+const svg = document.getElementById('linesSvg');
+
+chart.style.width = CHART_W + 'px';
+chart.style.height = '520px';
+svg.setAttribute('width', CHART_W);
+svg.setAttribute('height', 520);
+
+const nodePos = {};
+
+function makeNode(id, opts) {
+  const { x, y, delay, name, forme, capital, activity, dark, pending, person, subtitle, cartes } = opts;
+  nodePos[id] = { cx: x, top: y };
+
+  const node = document.createElement('div');
+  node.className = 'node';
+  node.id = 'n-' + id;
+  node.style.left = x + 'px';
+  node.style.top = y + 'px';
+  node.style.animationDelay = (delay || 0) + 's';
+
+  let cls = 'card';
+  if (dark) cls += ' dark';
+  if (pending) cls += ' pending';
+  if (person) cls += ' person';
+
+  let h = `<div class="${cls}">`;
+  if (person) {
+    h += `<div class="entity-name">${PERSON_ICON} ${name}</div>`;
+    if (subtitle) h += `<div class="entity-type">${subtitle}</div>`;
+  } else {
+    h += `<div class="entity-name">${name}</div>`;
+    if (forme) h += `<div class="entity-type">${forme}</div>`;
+    if (capital) h += `<div class="entity-capital">Capital : ${capital}</div>`;
+    if (activity) h += `<div class="entity-activity">${activity}</div>`;
+    if (cartes && cartes.length) h += `<div class="cartes">${cartes.map(c => `<span class="carte-badge">${c}</span>`).join('')}</div>`;
+  }
+  h += '</div>';
+
+  node.innerHTML = h;
+  chart.appendChild(node);
+}
+
+// Positions
+const centerX = CHART_W / 2;
+const col1 = 200;  // Vilmar
+const col2 = centerX; // IRIS H / Yannis
+const col3 = 700;  // Junior
+
+// Row 0 : Personnes physiques
+makeNode('yannis', { x: col2, y: 0, delay: 0.1, name: 'Yannis Benbaouali (TNS)', person: true, subtitle: 'Actionnaire unique IRIS H' });
+makeNode('vilmar', { x: col1, y: 0, delay: 0.15, name: 'Vilmar Filho', person: true, subtitle: 'Associé Gérant' });
+makeNode('junior', { x: col3, y: 0, delay: 0.2, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
+
+// Row 1 : Holdings
+makeNode('irisH', { x: col2, y: 130, delay: 0.3, name: 'IRIS H', forme: 'SASU', capital: '100 €', activity: 'Holding active', dark: true, cartes: ['Carte T', 'Carte G'] });
+makeNode('vfh', { x: col1, y: 130, delay: 0.35, name: 'VF H', forme: 'SASU', capital: '100 €' });
+makeNode('jbh', { x: col3, y: 130, delay: 0.4, name: 'JB H', forme: 'SASU', capital: '100 €' });
+
+// Row 2 : BYM
+makeNode('bym', { x: centerX, y: 320, delay: 0.6, name: 'BYM Construction', forme: 'SAS', capital: '1 500 €', activity: 'Rénovation', pending: true });
+
+// ---- DRAW LINES ----
+function drawLine(x1, y1, x2, y2, cls) {
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+  line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+  if (cls) line.setAttribute('class', cls);
+  svg.appendChild(line);
+}
+
+function drawPct(text, x, y, colorCls) {
+  const lbl = document.createElement('div');
+  lbl.className = 'pct-label ' + (colorCls || 'grey');
+  lbl.textContent = text;
+  lbl.style.left = x + 'px';
+  lbl.style.top = y + 'px';
+  lbl.style.transform = 'translateX(-50%)';
+  chart.appendChild(lbl);
+}
+
+function cardH(id) { return document.getElementById('n-' + id).querySelector('.card').offsetHeight; }
+function topC(id) { return { x: nodePos[id].cx, y: nodePos[id].top }; }
+function botC(id) { return { x: nodePos[id].cx, y: nodePos[id].top + cardH(id) }; }
+
+function drawPctOnLine(text, from, to, ratio, offsetX, colorCls) {
+  const x = from.x + (to.x - from.x) * ratio + (offsetX || 0);
+  const y = from.y + (to.y - from.y) * ratio + 4;
+  drawPct(text, x, y, colorCls);
+}
+
+setTimeout(() => {
+  // Yannis -> IRIS H (100%)
+  let from = botC('yannis'), to = topC('irisH');
+  drawLine(from.x, from.y, to.x, to.y, '');
+  drawPctOnLine('100 %', from, to, 0.5, 0, 'grey');
+
+  // Vilmar -> VF H (100%)
+  from = botC('vilmar'); to = topC('vfh');
+  drawLine(from.x, from.y, to.x, to.y, '');
+  drawPctOnLine('100 %', from, to, 0.5, 0, 'grey');
+
+  // Junior -> JB H (100%)
+  from = botC('junior'); to = topC('jbh');
+  drawLine(from.x, from.y, to.x, to.y, '');
+  drawPctOnLine('100 %', from, to, 0.5, 0, 'grey');
+
+  // IRIS H -> BYM (33%)
+  const iB = botC('irisH'), bT = topC('bym');
+  drawLine(iB.x, iB.y, bT.x, bT.y, 'dashed');
+  drawPctOnLine('33 %', iB, bT, 0.5, 0, 'orange');
+
+  // VF H -> BYM (33%)
+  const vB = botC('vfh');
+  drawLine(vB.x, vB.y, bT.x, bT.y, 'dashed');
+  drawPctOnLine('33 %', vB, bT, 0.5, -30, 'orange');
+
+  // JB H -> BYM (33%)
+  const jB = botC('jbh');
+  drawLine(jB.x, jB.y, bT.x, bT.y, 'dashed');
+  drawPctOnLine('33 %', jB, bT, 0.5, 30, 'orange');
+
+  // Vilmar -> BYM (prestation de services, blue dashed)
+  const vilB = botC('vilmar');
+  drawLine(vilB.x, vilB.y, bT.x, bT.y, 'blue-dashed');
+
+  // Junior -> BYM (prestation de services, blue dashed)
+  const junB = botC('junior');
+  drawLine(junB.x, junB.y, bT.x, bT.y, 'blue-dashed');
+
+}, 100);
+</script>
+
+</body>
+</html>
