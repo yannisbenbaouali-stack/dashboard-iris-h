@@ -208,7 +208,7 @@ setTimeout(() => {
   // Le point d'arrivée unique : centre du sommet de BYM
   const bT = topC('bym');
 
-  // Personnes -> Holdings (traits pleins gris, du bas centre de la personne au sommet centre de la holding)
+  // Personnes -> Holdings (traits pleins gris)
   let from = botC('yannis'), to = topC('irisH');
   drawLine(from.x, from.y, to.x, to.y, '');
   drawPctOnLine('100 %', from, to, 0.5, 0, 'grey');
@@ -224,7 +224,7 @@ setTimeout(() => {
   // Holdings -> BYM (traits pleins orange, tous arrivent au centre sommet BYM)
   const iB = botC('irisH');
   drawLine(iB.x, iB.y, bT.x, bT.y, 'solid-orange');
-  drawPctOnLine('33 %', iB, bT, 0.4, 20, 'orange');
+  drawPctOnLine('17 %', iB, bT, 0.4, 20, 'orange');
 
   const vB = botC('vfh');
   drawLine(vB.x, vB.y, bT.x, bT.y, 'solid-orange');
@@ -232,16 +232,20 @@ setTimeout(() => {
 
   const jB = botC('jbh');
   drawLine(jB.x, jB.y, bT.x, bT.y, 'solid-orange');
-  drawPctOnLine('16,5 %', jB, bT, 0.4, -30, 'orange');
+  drawPctOnLine('17 %', jB, bT, 0.4, -30, 'orange');
 
-  // Personnes physiques -> BYM direct (traits pleins orange, du bas centre personne au centre sommet BYM)
+  // Personnes physiques -> BYM direct (traits pleins orange)
+  const yanB = botC('yannis');
+  drawLine(yanB.x, yanB.y, bT.x, bT.y, 'solid-orange');
+  drawPctOnLine('16 %', yanB, bT, 0.25, 35, 'orange');
+
   const vilB = botC('vilmar');
   drawLine(vilB.x, vilB.y, bT.x, bT.y, 'solid-orange');
   drawPctOnLine('17 %', vilB, bT, 0.25, -35, 'orange');
 
   const junB = botC('junior');
   drawLine(junB.x, junB.y, bT.x, bT.y, 'solid-orange');
-  drawPctOnLine('16,5 %', junB, bT, 0.25, -40, 'orange');
+  drawPctOnLine('16 %', junB, bT, 0.25, -40, 'orange');
 
   // Prestation de services (bleu pointillé)
   drawLine(vilB.x, vilB.y, bT.x, bT.y, 'blue-dashed');
