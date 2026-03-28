@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organigramme – Groupe IRIS H</title>
+<style>
+  :root {
+    --bg: #f5f3f0;
+    --card-bg: #ffffff;
+    --card-border: #e0ddd8;
+    --dark: #1a1a1a;
+    --dark-card: #2a2a2a;
+    --accent: #b8860b;
+    --text: #3a3a3a;
+    --text-light: #888;
+    --text-muted: #aaa;
+    --line: #c0bdb8;
+    --pending-border: #d4a843;
+    --pending-bg: rgba(212, 168, 67, 0.04);
+    --shadow: 0 2px 16px rgba(0,0,0,0.06);
+    --shadow-hover: 0 8px 32px rgba(0,0,0,0.12);
+    --person-bg: #fafaf8;
+    --person-border: #d8d5d0;
+    --blue: #4682b4;
+    --green: #2e8b57;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    background: var(--bg); color: var(--text);
+    min-height: 100vh; overflow-x: auto;
+  }
+
+  .header { text-align: center; padding: 40px 20px 10px; }
+  .header h1 { font-size: 32px; font-weight: 700; color: var(--dark); letter-spacing: -0.5px; }
+  .header p { font-size: 14px; color: var(--text-light); margin-top: 6px; }
+
+  .legend {
+    display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+    padding: 16px 20px 30px; font-size: 13px; color: var(--text-light);
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .legend-dot.active { background: var(--dark); }
+  .legend-dot.pending { background: transparent; border: 2px dashed var(--pending-border); }
+  .legend-dot.person { background: var(--person-bg); border: 1.5px solid var(--person-border); }
+  .legend-dot.created { background: #fff; border: 1.5px solid var(--card-border); }
+  .legend-line { width: 28px; height: 2px; border-radius: 1px; }
+  .legend-line.blue { background: var(--blue); }
+
+  .chart-wrapper {
+    position: relative; display: flex; justify-content: center;
+    padding: 0 20px 20px; min-width: fit-content;
+  }
+  .chart { position: relative; }
+
+  .lines-svg {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+  .lines-svg line { stroke: var(--line); stroke-width: 1.5; fill: none; }
+  .lines-svg path { fill: none; stroke-width: 1.5; }
+  .lines-svg .dashed { stroke-dasharray: 6 4; stroke: var(--pending-border); }
+  .lines-svg .blue-line { stroke: var(--blue); stroke-width: 2; }
+  .lines-svg .blue-dashed { stroke: var(--blue); stroke-width: 2; stroke-dasharray: 6 4; }
+
+  .card {
+    position: relative; z-index: 1;
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 16px 26px;
+    box-shadow: var(--shadow); text-align: center; cursor: pointer;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    white-space: nowrap;
+  }
+  .card:hover { box-shadow: var(--shadow-hover); border-color: var(--accent); transform: translateY(-2px); }
+
+  .card.dark { background: var(--dark-card); border-color: var(--dark); color: #fff; }
+  .card.dark .entity-type, .card.dark .entity-activity { color: #bbb; }
+  .card.dark .entity-name { color: #fff; }
+  .card.dark .carte-label { color: var(--accent); }
+  .card.dark .entity-activity { white-space: normal; max-width: 280px; }
+
+  .card.pending { border-style: dashed; border-color: var(--pending-border); background: var(--pending-bg); }
+  .card.pending::after {
+    content: '⏳'; position: absolute; top: -10px; right: -10px;
+    font-size: 14px; background: var(--bg); border-radius: 50%;
+    width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+  }
+
+  .card.person {
+    background: var(--person-bg); border: 1.5px solid var(--person-border);
+    padding: 10px 16px; border-radius: 10px;
+  }
+  .card.person .entity-name { font-size: 13px; font-weight: 600; color: var(--text); }
+
+  .person-svg {
+    width: 14px; height: 14px; margin-bottom: -2px; margin-right: 2px;
+    opacity: 0.45; display: inline-block; vertical-align: middle;
+  }
+
+  .entity-name { font-size: 19px; font-weight: 700; color: var(--dark); margin-bottom: 3px; }
+  .entity-type { font-size: 13px; color: var(--text-light); font-weight: 500; letter-spacing: 0.3px; }
+  .entity-capital { font-size: 12px; color: var(--accent); font-weight: 600; margin-top: 2px; }
+  .entity-activity { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 2px; max-width: 200px; white-space: normal; }
+  .carte-label { font-size: 12px; font-style: italic; color: var(--accent); margin-top: 6px; letter-spacing: 0.2px; }
+  .entity-detail { font-size: 11px; color: var(--text-light); margin-top: 3px; font-style: italic; }
+
+  .pct-label {
+    position: absolute; z-index: 2;
+    font-size: 11px; font-weight: 700;
+    background: var(--bg); padding: 1px 7px; border-radius: 8px;
+    letter-spacing: 0.3px; pointer-events: none; white-space: nowrap;
+  }
+  .pct-label.grey { color: var(--line); }
+  .pct-label.orange { color: var(--pending-border); }
+  .pct-label.blue { color: var(--blue); }
+
+  .node {
+    position: absolute;
+    display: flex; flex-direction: column; align-items: center;
+    opacity: 0; animation: fadeUp 0.45s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  .encart {
+    position: relative; margin: 0 auto 30px; max-width: 820px;
+    border: 1.5px dashed var(--pending-border); border-radius: 16px;
+    background: var(--pending-bg); padding: 34px 40px 24px;
+  }
+  .encart-title {
+    position: absolute; top: -12px; left: 30px;
+    background: var(--bg); padding: 2px 14px;
+    font-size: 13px; font-weight: 700; color: var(--accent);
+    letter-spacing: 0.3px; border-radius: 6px;
+  }
+  .encart-content { display: flex; gap: 50px; justify-content: center; align-items: flex-start; }
+  .encart-sub { display: flex; flex-direction: column; align-items: center; }
+  .encart-card {
+    background: var(--card-bg); border: 1px dashed var(--pending-border);
+    border-radius: 12px; padding: 16px 26px; text-align: center;
+    box-shadow: var(--shadow); position: relative;
+  }
+  .encart-card::after {
+    content: '⏳'; position: absolute; top: -10px; right: -10px;
+    font-size: 14px; background: var(--pending-bg); border-radius: 50%;
+    width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+  }
+  .encart-label { font-size: 11px; color: var(--text-muted); margin-top: 6px; margin-bottom: 10px; }
+  .encart-circles { display: flex; gap: 12px; justify-content: center; }
+  .encart-circle {
+    width: 58px; height: 58px; border-radius: 50%;
+    border: 1px dashed var(--card-border); background: var(--person-bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 600; color: var(--text-light);
+    text-align: center; line-height: 1.2;
+  }
+
+  .todo {
+    max-width: 700px; margin: 0 auto 40px;
+    padding: 24px 30px; background: #fff;
+    border: 1px solid var(--card-border); border-radius: 10px;
+    box-shadow: var(--shadow); font-size: 14px; color: var(--text);
+  }
+  .todo h3 {
+    font-size: 15px; font-weight: 700; color: var(--dark);
+    margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .todo h4 {
+    font-size: 13px; font-weight: 700; color: var(--accent);
+    margin-top: 14px; margin-bottom: 4px;
+  }
+  .todo ul { list-style: disc; padding-left: 20px; }
+  .todo li { margin: 3px 0; color: var(--text-light); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Groupe IRIS H</h1>
+  <p>Organigramme juridique et capitalistique</p>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot person"></div><span>Personne physique</span></div>
+  <div class="legend-item"><div class="legend-dot active"></div><span>Entité active</span></div>
+  <div class="legend-item"><div class="legend-dot created"></div><span>Société créée</span></div>
+  <div class="legend-item"><div class="legend-dot pending"></div><span>En cours de création</span></div>
+  <div class="legend-item"><div class="legend-line blue"></div><span>Prestation de services</span></div>
+</div>
+
+<div class="chart-wrapper">
+  <div class="chart" id="chart">
+    <svg class="lines-svg" id="linesSvg"></svg>
+  </div>
+</div>
+
+<!-- Encart immatriculation Q4 2026 -->
+<div class="encart">
+  <div class="encart-title">Immatriculation pour Q4 2026</div>
+  <div class="encart-content">
+    <div class="encart-sub">
+      <div class="encart-card">
+        <div class="entity-name">UR 1</div>
+        <div class="entity-type">SAS</div>
+        <div class="entity-capital">Capital : 100 €</div>
+        <div class="entity-activity">Société de projet marchand</div>
+      </div>
+      <div class="encart-label">100 % IRIS H</div>
+      <div class="encart-circles">
+        <div class="encart-circle">Invest. 1</div>
+        <div class="encart-circle">Invest. 2</div>
+        <div class="encart-circle">Banque</div>
+      </div>
+    </div>
+    <div class="encart-sub">
+      <div class="encart-card">
+        <div class="entity-name">UR 2</div>
+        <div class="entity-type">SAS</div>
+        <div class="entity-capital">Capital : 100 €</div>
+        <div class="entity-activity">Société de projet marchand</div>
+      </div>
+      <div class="encart-label">100 % IRIS H</div>
+      <div class="encart-circles">
+        <div class="encart-circle">Invest. 1</div>
+        <div class="encart-circle">Invest. 2</div>
+        <div class="encart-circle">Banque</div>
+      </div>
+    </div>
+    <div class="encart-sub">
+      <div class="encart-card">
+        <div class="entity-name">Synay</div>
+        <div class="entity-type">SARL</div>
+        <div class="entity-capital">Capital : 2 000 €</div>
+        <div class="entity-activity">Maîtrise d'œuvre</div>
+      </div>
+      <div class="encart-label">IRIS H 49 % · Anas El Hamdani 51 %</div>
+    </div>
+  </div>
+</div>
+
+<!-- TODO -->
+<div class="todo">
+  <h3>Todo</h3>
+
+  <h4>IRIS H</h4>
+  <ul>
+    <li>SASU → EURL</li>
+    <li>Capital 100 € → 5 000 €</li>
+    <li>Ajout objet social : Maîtrise d'œuvre, Transaction immobilière, Gestion immobilière</li>
+    <li>Migrer la boîte postale de Paris à Tours via La Poste</li>
+    <li>Sélection code NAF (activité principale parmi holding, transaction, MOE, conseil)</li>
+  </ul>
+
+  <h4>Galerie Carrez</h4>
+  <ul>
+    <li>Christian Bonventre ne peut pas être DG (conflit obtention Carte T)</li>
+  </ul>
+
+  <h4>VF H / JB H</h4>
+  <ul>
+    <li>SASU → EURL</li>
+  </ul>
+
+  <h4>BYM Construction</h4>
+  <ul>
+    <li>Création complète à lancer (avril 2026)</li>
+  </ul>
+
+  <h4>RIR SAS</h4>
+  <ul>
+    <li>Création à lancer (avril 2026)</li>
+    <li>Siège social : 21 rue Nicolas Hubert, 45100 Orléans</li>
+    <li>Définir code NAF et objet social (Conseil pour les affaires et autres conseils de gestion)</li>
+  </ul>
+
+  <h4>CD 1</h4>
+  <ul>
+    <li style="color: var(--green); font-weight: 600;">Envoyer statuts et contrats d'obligations</li>
+    <li>Souscription services comptable (fin d'année)</li>
+  </ul>
+
+  <h4>C2C.FR</h4>
+  <ul>
+    <li>Souscription services comptable (attente avis des associés)</li>
+  </ul>
+
+  <h4>Priorité souscription RBA</h4>
+  <ul>
+    <li>Immédiat : IRIS H, Galerie Carrez</li>
+    <li>Dès création : RIR, BYM Construction</li>
+    <li>Autres : C2C.FR (avis associés), CD 1 (fin d'année)</li>
+  </ul>
+</div>
+
+<script>
+const PERSON_ICON = `<svg class="person-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0112 0v1"/></svg>`;
+
+const COL_W = 250;
+const NUM_COLS = 6;
+const EXTRA_RIGHT = 310;
+const CHART_W = COL_W * NUM_COLS + 100 + EXTRA_RIGHT;
+const chart = document.getElementById('chart');
+const svg = document.getElementById('linesSvg');
+
+chart.style.width = CHART_W + 'px';
+chart.style.height = '780px';
+svg.setAttribute('width', CHART_W);
+svg.setAttribute('height', 780);
+
+function colX(i) { return 50 + i * COL_W + COL_W / 2; }
+const centerX = (50 + NUM_COLS * COL_W + 50) / 2;
+
+const Y = {
+  yannis: 0,
+  irisH: 110,
+  persons: 260,
+  holdings: 340,
+  filiales: 460,
+};
+
+const nodePos = {};
+
+function makeNode(id, opts) {
+  const { x, y, delay, name, forme, capital, activity, dark, pending, person, subtitle, cartes, detail } = opts;
+  nodePos[id] = { cx: x, top: y };
+
+  const node = document.createElement('div');
+  node.className = 'node';
+  node.id = 'n-' + id;
+  node.style.left = x + 'px';
+  node.style.top = y + 'px';
+  node.style.animationDelay = (delay || 0) + 's';
+
+  let cls = 'card';
+  if (dark) cls += ' dark';
+  if (pending) cls += ' pending';
+  if (person) cls += ' person';
+
+  let h = `<div class="${cls}">`;
+  if (person) {
+    h += `<div class="entity-name">${PERSON_ICON} ${name}</div>`;
+    if (subtitle) h += `<div class="entity-type">${subtitle}</div>`;
+  } else {
+    h += `<div class="entity-name">${name}</div>`;
+    if (forme) h += `<div class="entity-type">${forme}</div>`;
+    if (capital) h += `<div class="entity-capital">Capital : ${capital}</div>`;
+    if (activity) h += `<div class="entity-activity">${activity}</div>`;
+    if (detail) h += `<div class="entity-detail">${detail}</div>`;
+    if (cartes && cartes.length) h += `<div class="carte-label">${cartes.join(' · ')}</div>`;
+  }
+  h += `</div>`;
+
+  node.innerHTML = h;
+  chart.appendChild(node);
+}
+
+// ---- NODES ----
+
+makeNode('yannis', { x: centerX, y: Y.yannis, delay: 0.1, name: 'Yannis Benbaouali (TNS)', person: true, subtitle: 'Actionnaire unique' });
+
+makeNode('irisH', { x: centerX, y: Y.irisH, delay: 0.3, name: 'IRIS H', forme: 'SASU', capital: '100 €', activity: 'Holding active, Marchand de biens, conseil en immobilier tertiaire/brokerage', dark: true, cartes: ['Carte T', 'Carte G'] });
+
+// Columns: RIR=0, CD1=1, GC=2, BUYBUY=3, C2C=4, Synay=5, BYM=6
+const fX = {};
+
+fX['rir'] = colX(0);
+makeNode('rir', { x: colX(0), y: Y.filiales, delay: 0.6, name: 'RIR', forme: 'SAS', capital: '1 000 €', activity: 'Conseil pour les affaires et autres conseils de gestion', pending: true });
+
+fX['cd1'] = colX(1);
+makeNode('cd1', { x: colX(1), y: Y.filiales, delay: 0.65, name: 'CD 1', forme: 'SAS', capital: '1 000 €', activity: 'Société de projet marchand' });
+
+fX['gc'] = colX(2);
+makeNode('gc', { x: colX(2), y: Y.filiales, delay: 0.7, name: 'Galerie Carrez', forme: 'SAS', capital: '1 000 €', activity: 'Agence immobilière', cartes: ['Carte T'] });
+
+fX['buybuy'] = colX(3);
+makeNode('buybuy', { x: colX(3), y: Y.filiales, delay: 0.75, name: 'BUYBUY', forme: 'SAS', capital: '1 000 €', activity: 'Marchand de biens' });
+
+fX['c2c'] = colX(4);
+makeNode('c2c', { x: colX(4), y: Y.filiales, delay: 0.8, name: 'C2C.FR', forme: 'SCI à l\'IS', capital: '1 500 €', activity: 'Détention immobilière' });
+
+fX['bym'] = colX(5);
+makeNode('bym', { x: colX(5), y: Y.filiales, delay: 0.9, name: 'BYM Construction', forme: 'SAS', capital: '1 500 €', activity: 'Rénovation', pending: true });
+
+// ---- PERSONS ----
+
+makeNode('klepic', { x: fX.rir, y: Y.persons, delay: 0.5, name: 'Vélibor Klepic', person: true });
+
+makeNode('cahen', { x: fX.cd1, y: Y.persons, delay: 0.52, name: 'Julien Cahen', person: true });
+
+const bonvX = (fX.gc + fX.buybuy) / 2;
+makeNode('bonventre', { x: bonvX, y: Y.persons, delay: 0.54, name: 'Christian Bonventre', person: true });
+
+const poisX = (fX.buybuy + fX.c2c) / 2;
+makeNode('poissonnier', { x: poisX, y: Y.persons, delay: 0.56, name: 'Laurent Poissonnier', person: true });
+
+const vilX = colX(NUM_COLS - 1) + COL_W * 0.7;
+const junX = colX(NUM_COLS - 1) + COL_W * 0.7 + 160;
+makeNode('vilmar', { x: vilX, y: Y.persons - 210, delay: 0.6, name: 'Vilmar Filho', person: true, subtitle: 'Associé Gérant' });
+makeNode('junior', { x: junX, y: Y.persons - 210, delay: 0.62, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
+
+makeNode('vfh', { x: vilX, y: Y.holdings - 20, delay: 0.7, name: 'VF H', forme: 'SASU', capital: '100 €' });
+makeNode('jbh', { x: junX, y: Y.holdings - 20, delay: 0.72, name: 'JB H', forme: 'SASU', capital: '100 €' });
+
+// ---- DRAW ----
+function drawLine(x1, y1, x2, y2, cls) {
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+  line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+  if (cls) line.setAttribute('class', cls);
+  svg.appendChild(line);
+}
+
+function drawPct(text, x, y, colorCls) {
+  const lbl = document.createElement('div');
+  lbl.className = 'pct-label ' + (colorCls || 'grey');
+  lbl.textContent = text;
+  lbl.style.left = x + 'px';
+  lbl.style.top = y + 'px';
+  lbl.style.transform = 'translateX(-50%)';
+  chart.appendChild(lbl);
+}
+
+function cardH(id) { return document.getElementById('n-' + id).querySelector('.card').offsetHeight; }
+function topC(id) { return { x: nodePos[id].cx, y: nodePos[id].top }; }
+function botC(id) { return { x: nodePos[id].cx, y: nodePos[id].top + cardH(id) }; }
+
+function drawPctOnLine(text, from, to, ratio, offsetX, colorCls) {
+  const x = from.x + (to.x - from.x) * ratio + (offsetX || 0);
+  const y = from.y + (to.y - from.y) * ratio + 4;
+  drawPct(text, x, y, colorCls);
+}
+
+setTimeout(() => {
+
+  let from = botC('yannis'), to = topC('irisH');
+  drawLine(from.x, from.y, to.x, to.y, '');
+  drawPctOnLine('100 %', from, to, 0.5, 0, 'grey');
+
+  const iB = botC('irisH');
+  const links = [
+    { id: 'rir', pct: '49 %', p: true },
+    { id: 'cd1', pct: '75 %', p: false },
+    { id: 'gc', pct: '51 %', p: false },
+    { id: 'buybuy', pct: '51 %', p: false },
+    { id: 'c2c', pct: '33 %', p: false },
+    { id: 'bym', pct: '33 %', p: true },
+  ];
+
+  links.forEach(l => {
+    const fT = topC(l.id);
+    drawLine(iB.x, iB.y, fT.x, fT.y, l.p ? 'blue-dashed' : 'blue-line');
+    // Push down gc label so it doesn't overlap CB
+    const r = (l.id === 'gc') ? 0.6 : 0.5;
+    drawPctOnLine(l.pct, iB, fT, r, 0, 'blue');
+  });
+
+  // Klepic → RIR (51%)
+  from = botC('klepic'); to = topC('rir');
+  drawLine(from.x, from.y, to.x, to.y, 'dashed');
+  drawPctOnLine('51 %', from, to, 0.5, 20, 'orange');
+
+  // Cahen → CD1 (25%)
+  from = botC('cahen'); to = topC('cd1');
+  drawLine(from.x, from.y, to.x, to.y, '');
+  drawPctOnLine('25 %', from, to, 0.5, 20, 'grey');
+
+  // Bonventre → GC (49%)
+  from = botC('bonventre'); to = topC('gc');
+  drawLine(from.x, from.y, to.x, to.y, '');
+  drawPctOnLine('49 %', from, to, 0.5, 0, 'grey');
+
+  // Bonventre → BUYBUY (37%)
+  to = topC('buybuy');
+  drawLine(from.x, from.y, to.x, to.y, '');
+  drawPctOnLine('37 %', from, to, 0.5, 0, 'grey');
+
+  // Bonventre → C2C (33%)
+  to = topC('c2c');
+  drawLine(from.x, from.y, to.x, to.y, '');
+  drawPctOnLine('33 %', from, to, 0.5, 0, 'grey');
+
+  // Poissonnier → BUYBUY (10%)
+  from = botC('poissonnier'); to = topC('buybuy');
+  drawLine(from.x, from.y, to.x, to.y, '');
+  drawPctOnLine('10 %', from, to, 0.5, -15, 'grey');
+
+  // Poissonnier → C2C (33%)
+  to = topC('c2c');
+  drawLine(from.x, from.y, to.x, to.y, '');
+  drawPctOnLine('33 %', from, to, 0.5, 15, 'grey');
+
+  // Vilmar → VF H (100%)
+  from = botC('vilmar'); to = topC('vfh');
+  drawLine(from.x, from.y, to.x, to.y, '');
+  drawPctOnLine('100 %', from, to, 0.5, 30, 'grey');
+
+  // Junior → JB H (100%)
+  from = botC('junior'); to = topC('jbh');
+  drawLine(from.x, from.y, to.x, to.y, '');
+  drawPctOnLine('100 %', from, to, 0.5, 30, 'grey');
+
+  // VF H → BYM (33%)
+  const vfB = botC('vfh');
+  const bymT = topC('bym');
+  drawLine(vfB.x, vfB.y, bymT.x, bymT.y, 'dashed');
+  drawPctOnLine('33 %', vfB, bymT, 0.5, -30, 'orange');
+
+  // JB H → BYM (33%)
+  const jbB = botC('jbh');
+  drawLine(jbB.x, jbB.y, bymT.x, bymT.y, 'dashed');
+  drawPctOnLine('33 %', jbB, bymT, 0.5, 30, 'orange');
+
+  // Vilmar → BYM (straight blue)
+  const vilB = botC('vilmar');
+  drawLine(vilB.x, vilB.y, bymT.x, bymT.y, 'blue-dashed');
+
+  // Junior → BYM (straight blue)
+  const junB = botC('junior');
+  drawLine(junB.x, junB.y, bymT.x, bymT.y, 'blue-dashed');
+
+}, 100);
+</script>
+
+</body>
+</html>

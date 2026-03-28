@@ -247,6 +247,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'finance')"><span class="nav-dot"></span><span>Finance</span></button>
       <button class="nav-item" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'memoire')"><span class="nav-dot"></span><span>Mémoire</span></button>
+      <button class="nav-item" onclick="switchTab(this,'organigramme')"><span class="nav-dot"></span><span>Organigramme</span></button>
     </div>
     <div class="sb-footer">
       <div>Supabase connecté</div>
@@ -303,6 +304,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div id="memo-bible-view"></div>
         <div id="memo-fragments-view" style="display:none"></div>
         <div id="memo-skills-view" style="display:none"></div>
+      </div>
+
+      <!-- ORGANIGRAMME -->
+      <div class="tab" id="tab-organigramme">
+        <iframe id="organigramme-frame" src="organigramme.html" style="width:100%;height:calc(100vh - 120px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
       </div>
 
     </div>
@@ -420,7 +426,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA'};
+  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
