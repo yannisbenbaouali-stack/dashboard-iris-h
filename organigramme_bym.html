@@ -111,14 +111,14 @@
 <script>
 const PERSON_ICON = `<svg class="person-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0112 0v1"/></svg>`;
 
-const CHART_W = 900;
+const CHART_W = 1200;
 const chart = document.getElementById('chart');
 const svg = document.getElementById('linesSvg');
 
 chart.style.width = CHART_W + 'px';
-chart.style.height = '520px';
+chart.style.height = '650px';
 svg.setAttribute('width', CHART_W);
-svg.setAttribute('height', 520);
+svg.setAttribute('height', 650);
 
 const nodePos = {};
 
@@ -159,7 +159,7 @@ function makeNode(id, opts) {
 const centerX = CHART_W / 2;
 const col1 = 200;  // Vilmar
 const col2 = centerX; // IRIS H / Yannis
-const col3 = 700;  // Junior
+const col3 = 1000;  // Junior
 
 // Row 0 : Personnes physiques
 makeNode('yannis', { x: col2, y: 0, delay: 0.1, name: 'Yannis Benbaouali (TNS)', person: true, subtitle: 'Actionnaire unique IRIS H' });
@@ -167,12 +167,12 @@ makeNode('vilmar', { x: col1, y: 0, delay: 0.15, name: 'Vilmar Filho', person: t
 makeNode('junior', { x: col3, y: 0, delay: 0.2, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
 
 // Row 1 : Holdings
-makeNode('irisH', { x: col2, y: 130, delay: 0.3, name: 'IRIS H', forme: 'SASU', capital: '100 €', activity: 'Holding active', dark: true, cartes: ['Carte T', 'Carte G'] });
-makeNode('vfh', { x: col1, y: 130, delay: 0.35, name: 'VF H', forme: 'SASU', capital: '100 €' });
-makeNode('jbh', { x: col3, y: 130, delay: 0.4, name: 'JB H', forme: 'SASU', capital: '100 €' });
+makeNode('irisH', { x: col2, y: 160, delay: 0.3, name: 'IRIS H', forme: 'SASU', capital: '100 €', activity: 'Holding active', dark: true, cartes: ['Carte T', 'Carte G'] });
+makeNode('vfh', { x: col1, y: 160, delay: 0.35, name: 'VF H', forme: 'SASU', capital: '100 €' });
+makeNode('jbh', { x: col3, y: 160, delay: 0.4, name: 'JB H', forme: 'SASU', capital: '100 €' });
 
 // Row 2 : BYM
-makeNode('bym', { x: centerX, y: 320, delay: 0.6, name: 'BYM Construction', forme: 'SAS', capital: '1 500 €', activity: 'Rénovation', pending: true });
+makeNode('bym', { x: centerX, y: 420, delay: 0.6, name: 'BYM Construction', forme: 'SAS', capital: '1 500 €', activity: 'Rénovation', pending: true });
 
 // ---- DRAW LINES ----
 function drawLine(x1, y1, x2, y2, cls) {
