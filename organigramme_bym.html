@@ -219,28 +219,38 @@ setTimeout(() => {
   drawLine(from.x, from.y, to.x, to.y, '');
   drawPctOnLine('100 %', from, to, 0.5, 0, 'grey');
 
+  const bT = topC('bym');
+
   // IRIS H -> BYM (33%)
-  const iB = botC('irisH'), bT = topC('bym');
+  const iB = botC('irisH');
   drawLine(iB.x, iB.y, bT.x, bT.y, 'dashed');
   drawPctOnLine('33 %', iB, bT, 0.5, 0, 'orange');
 
-  // VF H -> BYM (33%)
+  // VF H -> BYM (17%)
   const vB = botC('vfh');
   drawLine(vB.x, vB.y, bT.x, bT.y, 'dashed');
-  drawPctOnLine('33 %', vB, bT, 0.5, -30, 'orange');
+  drawPctOnLine('17 %', vB, bT, 0.5, -25, 'orange');
 
-  // JB H -> BYM (33%)
+  // JB H -> BYM (16,5%)
   const jB = botC('jbh');
   drawLine(jB.x, jB.y, bT.x, bT.y, 'dashed');
-  drawPctOnLine('33 %', jB, bT, 0.5, 30, 'orange');
+  drawPctOnLine('16,5 %', jB, bT, 0.5, 25, 'orange');
+
+  // Vilmar -> BYM direct (17%)
+  const vilB = botC('vilmar');
+  drawLine(vilB.x, vilB.y, bT.x, bT.y, 'dashed');
+  drawPctOnLine('17 %', vilB, bT, 0.35, -40, 'orange');
+
+  // Junior -> BYM direct (16,5%)
+  const junB = botC('junior');
+  drawLine(junB.x, junB.y, bT.x, bT.y, 'dashed');
+  drawPctOnLine('16,5 %', junB, bT, 0.35, 40, 'orange');
 
   // Vilmar -> BYM (prestation de services, blue dashed)
-  const vilB = botC('vilmar');
-  drawLine(vilB.x, vilB.y, bT.x, bT.y, 'blue-dashed');
+  drawLine(vilB.x + 10, vilB.y, bT.x - 40, bT.y, 'blue-dashed');
 
   // Junior -> BYM (prestation de services, blue dashed)
-  const junB = botC('junior');
-  drawLine(junB.x, junB.y, bT.x, bT.y, 'blue-dashed');
+  drawLine(junB.x - 10, junB.y, bT.x + 40, bT.y, 'blue-dashed');
 
 }, 100);
 </script>
