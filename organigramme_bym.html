@@ -158,14 +158,15 @@ function makeNode(id, opts) {
 
 // Positions
 const centerX = CHART_W / 2;
-const col1 = 250;  // Junior / JB H (gauche)
-const col2 = centerX; // Vilmar / VF H (centre)
-const col3 = 950;  // Yannis / IRIS H (droite)
+const col1 = 250;  // JB H (gauche)
+const col2 = centerX; // VF H (centre)
+const col3 = 950;  // IRIS H (droite)
+const off = 60; // décalage personnes vers la droite
 
-// Row 0 : Personnes physiques
-makeNode('junior', { x: col1, y: 0, delay: 0.1, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
-makeNode('vilmar', { x: col2, y: 0, delay: 0.15, name: 'Vilmar Filho', person: true, subtitle: 'Associé Gérant' });
-makeNode('yannis', { x: col3, y: 0, delay: 0.2, name: 'Yannis Benbaouali (TNS)', person: true, subtitle: 'Actionnaire unique IRIS H' });
+// Row 0 : Personnes physiques (décalées à droite de leur holding)
+makeNode('junior', { x: col1 + off, y: 0, delay: 0.1, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
+makeNode('vilmar', { x: col2 + off, y: 0, delay: 0.15, name: 'Vilmar Filho', person: true, subtitle: 'Associé Gérant' });
+makeNode('yannis', { x: col3 + off, y: 0, delay: 0.2, name: 'Yannis Benbaouali (TNS)', person: true, subtitle: 'Actionnaire unique IRIS H' });
 
 // Row 1 : Holdings (toutes en dark)
 makeNode('jbh', { x: col1, y: 160, delay: 0.3, name: 'JB H', forme: 'SASU', capital: '100 €', dark: true });
