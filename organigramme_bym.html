@@ -56,6 +56,7 @@
   .lines-svg { position: absolute; top: 0; left: 0; pointer-events: none; }
   .lines-svg line { stroke: var(--line); stroke-width: 1.5; }
   .lines-svg line.dashed { stroke-dasharray: 6 4; stroke: var(--pending-border); }
+  .lines-svg line.solid-orange { stroke: var(--pending-border); stroke-width: 2; }
   .lines-svg line.blue-dashed { stroke-dasharray: 6 4; stroke: var(--blue); }
 
   .node { position: absolute; transform: translateX(-50%); opacity: 0; animation: fadeIn 0.5s ease forwards; }
@@ -157,18 +158,18 @@ function makeNode(id, opts) {
 
 // Positions
 const centerX = CHART_W / 2;
-const col1 = 200;  // Vilmar
-const col2 = centerX; // Junior
-const col3 = 1000;  // Yannis / IRIS H
+const col1 = 250;  // Junior / JB H (gauche)
+const col2 = centerX; // Vilmar / VF H (centre)
+const col3 = 950;  // Yannis / IRIS H (droite)
 
 // Row 0 : Personnes physiques
-makeNode('vilmar', { x: col1, y: 0, delay: 0.1, name: 'Vilmar Filho', person: true, subtitle: 'Associé Gérant' });
-makeNode('junior', { x: col2, y: 0, delay: 0.15, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
+makeNode('junior', { x: col1, y: 0, delay: 0.1, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
+makeNode('vilmar', { x: col2, y: 0, delay: 0.15, name: 'Vilmar Filho', person: true, subtitle: 'Associé Gérant' });
 makeNode('yannis', { x: col3, y: 0, delay: 0.2, name: 'Yannis Benbaouali (TNS)', person: true, subtitle: 'Actionnaire unique IRIS H' });
 
 // Row 1 : Holdings (toutes en dark)
-makeNode('vfh', { x: col1, y: 160, delay: 0.3, name: 'VF H', forme: 'SASU', capital: '100 €', dark: true });
-makeNode('jbh', { x: col2, y: 160, delay: 0.35, name: 'JB H', forme: 'SASU', capital: '100 €', dark: true });
+makeNode('jbh', { x: col1, y: 160, delay: 0.3, name: 'JB H', forme: 'SASU', capital: '100 €', dark: true });
+makeNode('vfh', { x: col2, y: 160, delay: 0.35, name: 'VF H', forme: 'SASU', capital: '100 €', dark: true });
 makeNode('irisH', { x: col3, y: 160, delay: 0.4, name: 'IRIS H', forme: 'SASU', capital: '5 000 €', activity: 'Holding active', dark: true, cartes: ['Carte T', 'Carte G'] });
 
 // Row 2 : BYM
@@ -204,53 +205,47 @@ function drawPctOnLine(text, from, to, ratio, offsetX, colorCls) {
 }
 
 setTimeout(() => {
-  // Yannis -> IRIS H (100%)
+  // Le point d'arrivée unique : centre du sommet de BYM
+  const bT = topC('bym');
+
+  // Personnes -> Holdings (traits pleins gris, du bas centre de la personne au sommet centre de la holding)
   let from = botC('yannis'), to = topC('irisH');
   drawLine(from.x, from.y, to.x, to.y, '');
   drawPctOnLine('100 %', from, to, 0.5, 0, 'grey');
 
-  // Vilmar -> VF H (100%)
   from = botC('vilmar'); to = topC('vfh');
   drawLine(from.x, from.y, to.x, to.y, '');
   drawPctOnLine('100 %', from, to, 0.5, 0, 'grey');
 
-  // Junior -> JB H (100%)
   from = botC('junior'); to = topC('jbh');
   drawLine(from.x, from.y, to.x, to.y, '');
   drawPctOnLine('100 %', from, to, 0.5, 0, 'grey');
 
-  const bT = topC('bym');
-
-  // IRIS H -> BYM (33%)
+  // Holdings -> BYM (traits pleins orange, tous arrivent au centre sommet BYM)
   const iB = botC('irisH');
-  drawLine(iB.x, iB.y, bT.x, bT.y, 'dashed');
-  drawPctOnLine('33 %', iB, bT, 0.5, 0, 'orange');
+  drawLine(iB.x, iB.y, bT.x, bT.y, 'solid-orange');
+  drawPctOnLine('33 %', iB, bT, 0.4, 20, 'orange');
 
-  // VF H -> BYM (17%)
   const vB = botC('vfh');
-  drawLine(vB.x, vB.y, bT.x, bT.y, 'dashed');
-  drawPctOnLine('17 %', vB, bT, 0.5, -25, 'orange');
+  drawLine(vB.x, vB.y, bT.x, bT.y, 'solid-orange');
+  drawPctOnLine('17 %', vB, bT, 0.4, -20, 'orange');
 
-  // JB H -> BYM (16,5%)
   const jB = botC('jbh');
-  drawLine(jB.x, jB.y, bT.x, bT.y, 'dashed');
-  drawPctOnLine('16,5 %', jB, bT, 0.5, 25, 'orange');
+  drawLine(jB.x, jB.y, bT.x, bT.y, 'solid-orange');
+  drawPctOnLine('16,5 %', jB, bT, 0.4, -30, 'orange');
 
-  // Vilmar -> BYM direct (17%)
+  // Personnes physiques -> BYM direct (traits pleins orange, du bas centre personne au centre sommet BYM)
   const vilB = botC('vilmar');
-  drawLine(vilB.x, vilB.y, bT.x, bT.y, 'dashed');
-  drawPctOnLine('17 %', vilB, bT, 0.35, -40, 'orange');
+  drawLine(vilB.x, vilB.y, bT.x, bT.y, 'solid-orange');
+  drawPctOnLine('17 %', vilB, bT, 0.25, -35, 'orange');
 
-  // Junior -> BYM direct (16,5%)
   const junB = botC('junior');
-  drawLine(junB.x, junB.y, bT.x, bT.y, 'dashed');
-  drawPctOnLine('16,5 %', junB, bT, 0.35, 40, 'orange');
+  drawLine(junB.x, junB.y, bT.x, bT.y, 'solid-orange');
+  drawPctOnLine('16,5 %', junB, bT, 0.25, -40, 'orange');
 
-  // Vilmar -> BYM (prestation de services, blue dashed)
-  drawLine(vilB.x + 10, vilB.y, bT.x - 40, bT.y, 'blue-dashed');
-
-  // Junior -> BYM (prestation de services, blue dashed)
-  drawLine(junB.x - 10, junB.y, bT.x + 40, bT.y, 'blue-dashed');
+  // Prestation de services (bleu pointillé)
+  drawLine(vilB.x, vilB.y, bT.x, bT.y, 'blue-dashed');
+  drawLine(junB.x, junB.y, bT.x, bT.y, 'blue-dashed');
 
 }, 100);
 </script>
