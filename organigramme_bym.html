@@ -158,18 +158,18 @@ function makeNode(id, opts) {
 // Positions
 const centerX = CHART_W / 2;
 const col1 = 200;  // Vilmar
-const col2 = centerX; // IRIS H / Yannis
-const col3 = 1000;  // Junior
+const col2 = centerX; // Junior
+const col3 = 1000;  // Yannis / IRIS H
 
 // Row 0 : Personnes physiques
-makeNode('yannis', { x: col2, y: 0, delay: 0.1, name: 'Yannis Benbaouali (TNS)', person: true, subtitle: 'Actionnaire unique IRIS H' });
-makeNode('vilmar', { x: col1, y: 0, delay: 0.15, name: 'Vilmar Filho', person: true, subtitle: 'Associé Gérant' });
-makeNode('junior', { x: col3, y: 0, delay: 0.2, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
+makeNode('vilmar', { x: col1, y: 0, delay: 0.1, name: 'Vilmar Filho', person: true, subtitle: 'Associé Gérant' });
+makeNode('junior', { x: col2, y: 0, delay: 0.15, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
+makeNode('yannis', { x: col3, y: 0, delay: 0.2, name: 'Yannis Benbaouali (TNS)', person: true, subtitle: 'Actionnaire unique IRIS H' });
 
-// Row 1 : Holdings
-makeNode('irisH', { x: col2, y: 160, delay: 0.3, name: 'IRIS H', forme: 'SASU', capital: '100 €', activity: 'Holding active', dark: true, cartes: ['Carte T', 'Carte G'] });
-makeNode('vfh', { x: col1, y: 160, delay: 0.35, name: 'VF H', forme: 'SASU', capital: '100 €' });
-makeNode('jbh', { x: col3, y: 160, delay: 0.4, name: 'JB H', forme: 'SASU', capital: '100 €' });
+// Row 1 : Holdings (toutes en dark)
+makeNode('vfh', { x: col1, y: 160, delay: 0.3, name: 'VF H', forme: 'SASU', capital: '100 €', dark: true });
+makeNode('jbh', { x: col2, y: 160, delay: 0.35, name: 'JB H', forme: 'SASU', capital: '100 €', dark: true });
+makeNode('irisH', { x: col3, y: 160, delay: 0.4, name: 'IRIS H', forme: 'SASU', capital: '5 000 €', activity: 'Holding active', dark: true, cartes: ['Carte T', 'Carte G'] });
 
 // Row 2 : BYM
 makeNode('bym', { x: centerX, y: 420, delay: 0.6, name: 'BYM Construction', forme: 'SAS', capital: '1 500 €', activity: 'Rénovation', pending: true });
