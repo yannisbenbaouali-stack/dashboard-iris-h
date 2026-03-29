@@ -264,7 +264,7 @@
     <li>Christian Bonventre ne peut pas être DG (conflit obtention Carte T)</li>
   </ul>
 
-  <h4>GARV HOLDING / JB H</h4>
+  <h4>GARV HOLDING / BAGUETI JR H</h4>
   <ul>
     <li>SASU → EURL</li>
   </ul>
@@ -407,7 +407,7 @@ makeNode('vilmar', { x: vilX, y: Y.persons - 210, delay: 0.6, name: 'Vilmar Filh
 makeNode('junior', { x: junX, y: Y.persons - 210, delay: 0.62, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
 
 makeNode('vfh', { x: vilX, y: Y.holdings - 20, delay: 0.7, name: 'GARV HOLDING', forme: 'EURL', capital: '100 €' });
-makeNode('jbh', { x: junX, y: Y.holdings - 20, delay: 0.72, name: 'JB H', forme: 'EURL', capital: '100 €' });
+makeNode('jbh', { x: junX, y: Y.holdings - 20, delay: 0.72, name: 'BAGUETI JR H', forme: 'EURL', capital: '100 €' });
 
 // ---- DRAW ----
 function drawLine(x1, y1, x2, y2, cls) {
@@ -502,7 +502,7 @@ setTimeout(() => {
   drawLine(from.x, from.y, to.x, to.y, '');
   drawPctOnLine('100 %', from, to, 0.5, 30, 'grey');
 
-  // Junior → JB H (100%)
+  // Junior → BAGUETI JR H (100%)
   from = botC('junior'); to = topC('jbh');
   drawLine(from.x, from.y, to.x, to.y, '');
   drawPctOnLine('100 %', from, to, 0.5, 30, 'grey');
@@ -513,7 +513,7 @@ setTimeout(() => {
   drawLine(vfB.x, vfB.y, bymT.x, bymT.y, 'dashed');
   drawPctOnLine('34 %', vfB, bymT, 0.5, -30, 'orange');
 
-  // JB H → BYM (33%)
+  // BAGUETI JR H → BYM (33%)
   const jbB = botC('jbh');
   drawLine(jbB.x, jbB.y, bymT.x, bymT.y, 'dashed');
   drawPctOnLine('33 %', jbB, bymT, 0.5, 30, 'orange');
