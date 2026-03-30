@@ -607,7 +607,7 @@ function renderTodoRapport(){
   if(rapportView==='synthese'){
     // Grille synthèse avec pastilles colorées
     if(!deals.length){el.innerHTML='<div class="empty"><div class="empty-ico">📋</div><div class="empty-text">Aucun dossier</div></div>';return}
-    const eBadge=e=>{const m={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris',ARRISTO:'p-arristo',GALERIE_CARREZ:'p-gc',IRIS_H:'p-iris'};const l={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP',ARRISTO:'ARRISTO',GALERIE_CARREZ:'Galerie Carrez',IRIS_H:'IRIS H'};return e?`<span class="pill ${m[e]||'p-iris'}">${l[e]||e}</span>`:''};
+    const eBadge=e=>{const m={BYM:'p-bym',Urban Rise:'p-ur',IRIS REP:'p-iris',ARRISTO:'p-arristo',Galerie Carrez:'p-gc',IRIS H:'p-iris'};const l={BYM:'BYM',Urban Rise:'Urban Rise',IRIS REP:'IRIS REP',ARRISTO:'ARRISTO',Galerie Carrez:'Galerie Carrez',IRIS H:'IRIS H'};return e?`<span class="pill ${m[e]||'p-iris'}">${l[e]||e}</span>`:''};
     const etBadge=et=>{const st={dead:'background:#f8717118;color:#f87171',to_sell:'background:#fb923c18;color:#fb923c',cloture:'background:#41c98e18;color:#41c98e'};return`<span class="pill" style="font-size:9px;${st[et]||''}">${ETAPE_LABEL[et]||et||''}</span>`};
     const dot=c=>{const colors={vert:'#2ecc71',orange:'#f39c12',rouge:'#e74c3c',gris:'#d1d5e0'};return`<div style="width:12px;height:12px;border-radius:50%;background:${colors[c]||colors.gris};margin:0 auto"></div>`};
 
@@ -708,11 +708,11 @@ function renderDeals(){
     <div class="kpi"><div class="kpi-label">Volume total</div><div class="kpi-val">${fmt(vol)||'N/A'}</div></div>
     <div class="kpi"><div class="kpi-label">CA prévi</div><div class="kpi-val">${fmt(totalCA)||'N/A'}</div></div>
     <div class="kpi"><div class="kpi-label">En travaux</div><div class="kpi-val">${enTravaux}</div></div>`;
-  const eBadge=e=>{const m={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris',ARRISTO:'p-arristo',IRIS_H:'p-iris',GALERIE_CARREZ:'p-gc'};const l={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP',ARRISTO:'ARRISTO',IRIS_H:'IRIS H',GALERIE_CARREZ:'Galerie Carrez'};return`<span class="pill ${m[e]||'p-iris'}">${l[e]||e||''}</span>`};
+  const eBadge=e=>{const m={BYM:'p-bym',Urban Rise:'p-ur',IRIS REP:'p-iris',ARRISTO:'p-arristo',IRIS H:'p-iris',Galerie Carrez:'p-gc'};const l={BYM:'BYM',Urban Rise:'Urban Rise',IRIS REP:'IRIS REP',ARRISTO:'ARRISTO',IRIS H:'IRIS H',Galerie Carrez:'Galerie Carrez'};return`<span class="pill ${m[e]||'p-iris'}">${l[e]||e||''}</span>`};
   const etBadge=et=>{const st={dead:'background:#f8717118;color:#f87171;border:1px solid #f8717140',to_sell:'background:#fb923c18;color:#fb923c;border:1px solid #fb923c40',cloture:'background:#41c98e18;color:#41c98e;border:1px solid #41c98e40'};return`<span class="pill" style="font-size:9px;${st[et]||''}">${ETAPE_LABEL[et]||et||''}</span>`};
   const cols=[{k:'code',l:'Code'},{k:'nom',l:'Nom'},{k:'entite',l:'Entité'},{k:'type',l:'Type'},{k:'etape',l:'Étape'},{k:'montant',l:'Montant'},{k:'ca_previ',l:'CA Prévi'},{k:'resultat_previ',l:'Résultat'},{k:'adresse',l:'Adresse'},{k:'commentaire',l:'Commentaire'}];
-  const filtersHtml=`<div class="filters" style="margin-bottom:12px"><button class="fbtn deals-fbtn${dealsFilter==='all'?' on':''}" onclick="filterDeals(this,'all')">Tous</button><button class="fbtn deals-fbtn${dealsFilter==='BYM'?' on':''}" onclick="filterDeals(this,'BYM')">BYM</button><button class="fbtn deals-fbtn${dealsFilter==='URBAN_RISE'?' on':''}" onclick="filterDeals(this,'URBAN_RISE')">Urban Rise</button><button class="fbtn deals-fbtn${dealsFilter==='IRIS_REP'?' on':''}" onclick="filterDeals(this,'IRIS_REP')">IRIS REP</button><button class="fbtn deals-fbtn${dealsFilter==='ARRISTO'?' on':''}" onclick="filterDeals(this,'ARRISTO')">ARRISTO</button><button class="fbtn deals-fbtn${dealsFilter==='GALERIE_CARREZ'?' on':''}" onclick="filterDeals(this,'GALERIE_CARREZ')">Galerie Carrez</button></div>`;
-  const entIco=e=>({BYM:'🏗️',URBAN_RISE:'🏠',IRIS_REP:'🔍',ARRISTO:'🤝',IRIS_H:'🏛️',GALERIE_CARREZ:'🎨'}[e]||'📋');
+  const filtersHtml=`<div class="filters" style="margin-bottom:12px"><button class="fbtn deals-fbtn${dealsFilter==='all'?' on':''}" onclick="filterDeals(this,'all')">Tous</button><button class="fbtn deals-fbtn${dealsFilter==='BYM'?' on':''}" onclick="filterDeals(this,'BYM')">BYM</button><button class="fbtn deals-fbtn${dealsFilter==='Urban Rise'?' on':''}" onclick="filterDeals(this,'Urban Rise')">Urban Rise</button><button class="fbtn deals-fbtn${dealsFilter==='IRIS REP'?' on':''}" onclick="filterDeals(this,'IRIS REP')">IRIS REP</button><button class="fbtn deals-fbtn${dealsFilter==='ARRISTO'?' on':''}" onclick="filterDeals(this,'ARRISTO')">ARRISTO</button><button class="fbtn deals-fbtn${dealsFilter==='Galerie Carrez'?' on':''}" onclick="filterDeals(this,'Galerie Carrez')">Galerie Carrez</button></div>`;
+  const entIco=e=>({BYM:'🏗️',Urban Rise:'🏠',IRIS REP:'🔍',ARRISTO:'🤝',IRIS H:'🏛️',Galerie Carrez:'🎨'}[e]||'📋');
   document.getElementById('deals-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr>${cols.map(c=>{let cls='';if(dealsSortCol===c.k)cls=dealsSortDir==='asc'?' ▲':' ▼';return`<th style="cursor:pointer" onclick="sortDeals('${c.k}')">${c.l}${cls}</th>`}).join('')}</tr></thead><tbody>
   ${deals.length?deals.map(d=>`<tr><td><a href="#" onclick="goToTodoForDeal('${d.code||''}');return false" style="color:var(--blue);font-weight:600;text-decoration:none;font-size:12px" title="Voir les tâches ${d.code}">${d.code||''}</a></td><td class="td-name">${entIco(d.entite)} ${d.nom||''}</td><td>${eBadge(d.entite)}</td><td>${DL[d.type]||d.type||''}</td><td>${etBadge(d.etape)}</td><td style="color:var(--green);font-weight:500">${fmt(d.montant)}</td><td style="color:var(--blue)">${fmt(d.ca_previ)}</td><td style="color:var(--green)">${fmt(d.resultat_previ)}</td><td>${d.adresse||''}</td><td style="font-size:10px;color:var(--dim);font-style:italic;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${(d.commentaire||'').replace(/"/g,'&quot;')}">${d.commentaire||''}</td></tr>`).join(''):`<tr><td colspan="${cols.length}" style="text-align:center;padding:2rem;color:var(--dim)">Aucun deal</td></tr>`}
   </tbody></table>`;
@@ -739,14 +739,14 @@ async function renderProspects(){
     <div class="kpi"><div class="kpi-label">Actifs</div><div class="kpi-val">${actifs}</div></div>`;
   document.getElementById('nav-prospects-cnt').textContent=actifs;
 
-  const eMap={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris',ARRISTO:'p-arristo',GALERIE_CARREZ:'p-gc','IRIS REP':'p-iris'};
-  const eLabel={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP',ARRISTO:'ARRISTO',GALERIE_CARREZ:'Galerie Carrez','IRIS REP':'IRIS REP'};
+  const eMap={BYM:'p-bym',Urban Rise:'p-ur',IRIS REP:'p-iris',ARRISTO:'p-arristo',Galerie Carrez:'p-gc','IRIS REP':'p-iris'};
+  const eLabel={BYM:'BYM',Urban Rise:'Urban Rise',IRIS REP:'IRIS REP',ARRISTO:'ARRISTO',Galerie Carrez:'Galerie Carrez','IRIS REP':'IRIS REP'};
   const eBadge=e=>`<span class="pill ${eMap[e]||'p-iris'}">${eLabel[e]||e||''}</span>`;
   const csBadge=s=>{const m={a_prospecter:'background:var(--blue-bg);color:var(--blue)',en_cours:'background:var(--orange-bg);color:#b36d00',a_relancer:'background:#fce4ec;color:#c62828',valide:'background:var(--green-bg);color:#1a8a4a',dead:'background:#f5f5f5;color:#999'};const l={a_prospecter:'A prospecter',en_cours:'En cours',a_relancer:'A relancer',valide:'Validé',dead:'Dead'};return`<span class="pill" style="font-size:9px;${m[s]||''}">${l[s]||s||''}</span>`};
   const psBadge=s=>{const m={a_prospecter:'var(--blue-bg)',en_cours:'var(--orange-bg)',a_relancer:'#fce4ec',valide:'var(--green-bg)',dead:'#f5f5f5'};const mc={a_prospecter:'var(--blue)',en_cours:'#b36d00',a_relancer:'#c62828',valide:'#1a8a4a',dead:'#999'};const l={a_prospecter:'A prospecter',en_cours:'En cours',a_relancer:'A relancer',valide:'Validé',dead:'Dead'};return`<span style="font-size:9px;color:${mc[s]||'var(--dim)'};background:${m[s]||'var(--bg)'};padding:2px 6px;border-radius:4px;white-space:nowrap">${l[s]||s||''}</span>`};
   const fDate=d=>{if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})};
 
-  const filtersHtml=`<div class="filters" style="margin-bottom:12px"><button class="fbtn prosp-fbtn${prospectsFilter==='all'?' on':''}" onclick="filterProspects(this,'all')">Tous</button><button class="fbtn prosp-fbtn${prospectsFilter==='BYM'?' on':''}" onclick="filterProspects(this,'BYM')">BYM</button><button class="fbtn prosp-fbtn${prospectsFilter==='IRIS_REP'?' on':''}" onclick="filterProspects(this,'IRIS_REP')">IRIS REP</button><button class="fbtn prosp-fbtn${prospectsFilter==='URBAN_RISE'?' on':''}" onclick="filterProspects(this,'URBAN_RISE')">Urban Rise</button><button class="fbtn prosp-fbtn${prospectsFilter==='ARRISTO'?' on':''}" onclick="filterProspects(this,'ARRISTO')">ARRISTO</button><button class="fbtn prosp-fbtn${prospectsFilter==='GALERIE_CARREZ'?' on':''}" onclick="filterProspects(this,'GALERIE_CARREZ')">Galerie Carrez</button></div>`;
+  const filtersHtml=`<div class="filters" style="margin-bottom:12px"><button class="fbtn prosp-fbtn${prospectsFilter==='all'?' on':''}" onclick="filterProspects(this,'all')">Tous</button><button class="fbtn prosp-fbtn${prospectsFilter==='BYM'?' on':''}" onclick="filterProspects(this,'BYM')">BYM</button><button class="fbtn prosp-fbtn${prospectsFilter==='IRIS REP'?' on':''}" onclick="filterProspects(this,'IRIS REP')">IRIS REP</button><button class="fbtn prosp-fbtn${prospectsFilter==='Urban Rise'?' on':''}" onclick="filterProspects(this,'Urban Rise')">Urban Rise</button><button class="fbtn prosp-fbtn${prospectsFilter==='ARRISTO'?' on':''}" onclick="filterProspects(this,'ARRISTO')">ARRISTO</button><button class="fbtn prosp-fbtn${prospectsFilter==='Galerie Carrez'?' on':''}" onclick="filterProspects(this,'Galerie Carrez')">Galerie Carrez</button></div>`;
 
   // Charger les liaisons prospect_contacts avec les infos contact
   const allRows=await Promise.all(allPros.map(async p=>{
@@ -769,7 +769,7 @@ async function renderProspects(){
   const ef=prospectsFilter;
   const entMatch=(entites,f)=>{
     if(!entites||!entites.length)return false;
-    // Normaliser : "IRIS REP" et "IRIS_REP" doivent matcher
+    // Normaliser : "IRIS REP" et "IRIS REP" doivent matcher
     const norm=s=>(s||'').replace(/\s+/g,'_').toUpperCase();
     return entites.some(e=>norm(e)===norm(f));
   };
@@ -874,7 +874,7 @@ async function saveProspectNote(){
 // FINANCE
 // ════════════════════════════════════════
 function renderFinance(){
-  const entites=['BYM','URBAN_RISE','IRIS_REP'];const labels={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP'};
+  const entites=['BYM','Urban Rise','IRIS REP'];const labels={BYM:'BYM',Urban Rise:'Urban Rise',IRIS REP:'IRIS REP'};
   let tIn=0,tOut=0;
   entites.forEach(e=>{const rows=data.tresorerie.filter(t=>t.entite===e);tIn+=rows.filter(r=>r.type==='entrant').reduce((a,r)=>a+r.montant,0);tOut+=rows.filter(r=>r.type==='sortant').reduce((a,r)=>a+r.montant,0)});
   const net=tIn-tOut;
@@ -890,7 +890,7 @@ function renderFinance(){
   const sections=['budget','treso','synth','vilmar'];const sLabels={budget:'Budget Chantiers',treso:'Trésorerie',synth:'Synthèse',vilmar:'Vilmar'};
   document.getElementById('fin-nav').innerHTML=sections.map((s,i)=>`<button class="fin-nav-btn${i===0?' active':''}" onclick="document.querySelectorAll('.fin-section').forEach(x=>x.classList.remove('active'));document.getElementById('fin-${s}').classList.add('active');document.querySelectorAll('.fin-nav-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${sLabels[s]}</button>`).join('');
 
-  const eBadge=e=>{const m={BYM:'p-bym',URBAN_RISE:'p-ur',IRIS_REP:'p-iris'};const l={BYM:'BYM',URBAN_RISE:'Urban Rise',IRIS_REP:'IRIS REP'};return`<span class="pill ${m[e]||''}">${l[e]||e}</span>`};
+  const eBadge=e=>{const m={BYM:'p-bym',Urban Rise:'p-ur',IRIS REP:'p-iris'};const l={BYM:'BYM',Urban Rise:'Urban Rise',IRIS REP:'IRIS REP'};return`<span class="pill ${m[e]||''}">${l[e]||e}</span>`};
 
   let html=`<div class="fin-section active" id="fin-budget"><div class="tcard">`;
   if(!ch.length)html+='<div class="empty"><div class="empty-text">Aucun chantier avec budget</div></div>';
