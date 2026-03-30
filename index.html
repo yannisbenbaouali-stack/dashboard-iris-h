@@ -248,6 +248,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'memoire')"><span class="nav-dot"></span><span>Mémoire</span></button>
       <button class="nav-item" onclick="switchTab(this,'organigramme')"><span class="nav-dot"></span><span>Organigramme</span></button>
+      <button class="nav-item" onclick="switchTab(this,'outils')"><span class="nav-dot"></span><span>Outils</span></button>
     </div>
     <div class="sb-footer">
       <div>Supabase connecté</div>
@@ -313,6 +314,61 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
           <button class="fbtn" id="orga-btn-bym" onclick="switchOrga('organigramme_bym.html',this)">BYM</button>
         </div>
         <iframe id="organigramme-frame" src="organigramme.html?v=2" style="width:100%;height:calc(100vh - 160px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
+      </div>
+
+      <!-- OUTILS -->
+      <div class="tab" id="tab-outils">
+        <!-- PIN LOCK -->
+        <div id="outils-lock" style="display:flex;align-items:center;justify-content:center;height:60vh">
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem 2.5rem;max-width:360px;width:100%;text-align:center">
+            <div style="font-size:22px;margin-bottom:4px">🔒</div>
+            <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px" id="outils-lock-title">Accès restreint</div>
+            <div style="font-size:11px;color:var(--dim);margin-bottom:1.2rem" id="outils-lock-sub">Saisir le code PIN</div>
+            <input id="outils-pin-input" type="password" inputmode="numeric" maxlength="8" placeholder="Code PIN"
+              style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:16px;text-align:center;letter-spacing:4px;outline:none;font-family:var(--font);color:var(--navy)"
+              onkeydown="if(event.key==='Enter')outilsPinSubmit()">
+            <div id="outils-pin-err" style="font-size:11px;color:#e55;margin-top:6px;min-height:16px"></div>
+            <button onclick="outilsPinSubmit()" style="margin-top:12px;width:100%;background:var(--navy);border:none;border-radius:8px;padding:11px;font-family:var(--font);font-size:13px;font-weight:600;color:#fff;cursor:pointer">Valider</button>
+          </div>
+        </div>
+        <!-- CONTENT -->
+        <div id="outils-content" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div style="font-size:13px;color:var(--dim)">Identifiants et accès</div>
+            <div style="display:flex;gap:8px">
+              <button onclick="outilsShowAdd()" style="background:var(--navy);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:12px;font-weight:600;color:#fff;cursor:pointer">+ Ajouter</button>
+              <button onclick="outilsLock()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-family:var(--font);font-size:12px;color:var(--dim);cursor:pointer">Verrouiller</button>
+            </div>
+          </div>
+          <!-- ADD ROW FORM -->
+          <div id="outils-add-form" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px">
+            <div style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:12px">Nouveau</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:10px">
+              <input id="oa-plateforme" placeholder="Plateforme" style="padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-family:var(--font);font-size:12px;outline:none;color:var(--navy);background:var(--bg)">
+              <input id="oa-identifiant" placeholder="Identifiant" style="padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-family:var(--font);font-size:12px;outline:none;color:var(--navy);background:var(--bg)">
+              <input id="oa-mdp" placeholder="Mot de passe" style="padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-family:var(--font);font-size:12px;outline:none;color:var(--navy);background:var(--bg)">
+              <input id="oa-url" placeholder="URL (optionnel)" style="padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-family:var(--font);font-size:12px;outline:none;color:var(--navy);background:var(--bg)">
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end">
+              <button onclick="document.getElementById('outils-add-form').style.display='none'" style="background:none;border:1px solid var(--border);border-radius:7px;padding:6px 14px;font-family:var(--font);font-size:12px;cursor:pointer;color:var(--dim)">Annuler</button>
+              <button onclick="outilsSaveNew()" style="background:var(--navy);border:none;border-radius:7px;padding:6px 14px;font-family:var(--font);font-size:12px;font-weight:600;color:#fff;cursor:pointer">Enregistrer</button>
+            </div>
+          </div>
+          <!-- TABLE -->
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+            <table style="width:100%;border-collapse:collapse">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border);background:rgba(14,31,77,0.03)">
+                  <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--dim);letter-spacing:.5px;width:22%">PLATEFORME</th>
+                  <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--dim);letter-spacing:.5px;width:30%">IDENTIFIANT</th>
+                  <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--dim);letter-spacing:.5px;width:28%">MOT DE PASSE</th>
+                  <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--dim);letter-spacing:.5px;width:20%">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody id="outils-tbody"></tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -430,14 +486,14 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme'};
+  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',outils:'Outils'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
 }
 
 function renderCurrentTab(){
-  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire};
+  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils};
   if(m[currentTab])m[currentTab]();
 }
 
@@ -1066,6 +1122,159 @@ function boot(){
   if(cache){try{data=JSON.parse(cache).data;if(!data.fragments)data.fragments=[];if(!data.bible)data.bible=[];if(!data.taches_v2)data.taches_v2=[];if(!data.rec_suivi)data.rec_suivi=[];if(!data.skills)data.skills=[];if(!data.prospects)data.prospects=[];if(!data.rapport_hebdo)data.rapport_hebdo=[];if(!data.rapports_rediges)data.rapports_rediges=[];render()}catch(e){}}
   loadAll();
 }
+
+/* ===================== OUTILS ===================== */
+const OUTILS_PIN_KEY='iris_outils_pin_hash';
+const OUTILS_SESSION_KEY='iris_outils_unlocked';
+let outilsData=[];
+
+async function sha256(str){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function renderOutils(){
+  const unlocked=sessionStorage.getItem(OUTILS_SESSION_KEY)==='1';
+  const hasPin=!!localStorage.getItem(OUTILS_PIN_KEY);
+  if(unlocked){
+    document.getElementById('outils-lock').style.display='none';
+    document.getElementById('outils-content').style.display='block';
+    loadOutils();
+  } else {
+    document.getElementById('outils-lock').style.display='flex';
+    document.getElementById('outils-content').style.display='none';
+    if(!hasPin){
+      document.getElementById('outils-lock-title').textContent='Créer un code PIN';
+      document.getElementById('outils-lock-sub').textContent='Choisir un code PIN (4 à 8 chiffres)';
+    } else {
+      document.getElementById('outils-lock-title').textContent='Accès restreint';
+      document.getElementById('outils-lock-sub').textContent='Saisir le code PIN';
+    }
+    setTimeout(()=>{const i=document.getElementById('outils-pin-input');if(i)i.focus();},100);
+  }
+}
+
+async function outilsPinSubmit(){
+  const val=document.getElementById('outils-pin-input').value.trim();
+  const err=document.getElementById('outils-pin-err');
+  if(val.length<4){err.textContent='Minimum 4 caractères';return}
+  const hash=await sha256(val);
+  const stored=localStorage.getItem(OUTILS_PIN_KEY);
+  if(!stored){
+    localStorage.setItem(OUTILS_PIN_KEY,hash);
+    sessionStorage.setItem(OUTILS_SESSION_KEY,'1');
+    err.textContent='';
+    document.getElementById('outils-pin-input').value='';
+    document.getElementById('outils-lock').style.display='none';
+    document.getElementById('outils-content').style.display='block';
+    loadOutils();
+  } else {
+    if(hash===stored){
+      sessionStorage.setItem(OUTILS_SESSION_KEY,'1');
+      err.textContent='';
+      document.getElementById('outils-pin-input').value='';
+      document.getElementById('outils-lock').style.display='none';
+      document.getElementById('outils-content').style.display='block';
+      loadOutils();
+    } else {
+      err.textContent='Code incorrect';
+      document.getElementById('outils-pin-input').value='';
+    }
+  }
+}
+
+function outilsLock(){
+  sessionStorage.removeItem(OUTILS_SESSION_KEY);
+  document.getElementById('outils-content').style.display='none';
+  document.getElementById('outils-lock').style.display='flex';
+  document.getElementById('outils-lock-title').textContent='Accès restreint';
+  document.getElementById('outils-lock-sub').textContent='Saisir le code PIN';
+  document.getElementById('outils-pin-input').value='';
+  document.getElementById('outils-pin-err').textContent='';
+}
+
+async function loadOutils(){
+  if(!cfg)return;
+  try{
+    const r=await fetch(`${cfg.url}/rest/v1/outils?order=ordre.asc,plateforme.asc`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`}});
+    outilsData=await r.json();
+    renderOutilsTable();
+  }catch(e){console.error('outils load',e);}
+}
+
+function renderOutilsTable(){
+  const tbody=document.getElementById('outils-tbody');
+  if(!tbody)return;
+  if(!outilsData.length){
+    tbody.innerHTML='<tr><td colspan="4" style="padding:24px;text-align:center;font-size:12px;color:var(--dim)">Aucun outil enregistré</td></tr>';
+    return;
+  }
+  tbody.innerHTML=outilsData.map((o,i)=>`
+    <tr style="border-bottom:1px solid var(--border);transition:.1s" onmouseover="this.style.background='rgba(91,155,213,0.04)'" onmouseout="this.style.background=''">
+      <td style="padding:12px 16px">
+        <div style="display:flex;align-items:center;gap:8px">
+          ${o.url?`<img src="https://unavatar.io/${new URL(o.url).hostname}" onerror="this.style.display='none'" style="width:18px;height:18px;border-radius:4px;object-fit:cover" loading="lazy">`:''}
+          <span style="font-size:13px;font-weight:600;color:var(--navy)">${o.plateforme||''}</span>
+        </div>
+      </td>
+      <td style="padding:12px 16px">
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:12px;color:var(--navy);font-family:monospace">${o.identifiant||''}</span>
+          ${o.identifiant?`<button onclick="navigator.clipboard.writeText('${o.identifiant.replace(/'/g,"\\'")}');showToast('Copié')" title="Copier" style="background:none;border:none;cursor:pointer;color:var(--dim);font-size:11px;padding:2px 4px;border-radius:4px" onmouseover="this.style.color=\'var(--navy)\'" onmouseout="this.style.color=\'var(--dim)\'">⎘</button>`:''}
+        </div>
+      </td>
+      <td style="padding:12px 16px">
+        <div style="display:flex;align-items:center;gap:6px">
+          <span id="mdp-${o.id}" style="font-size:12px;color:var(--navy);font-family:monospace">••••••••</span>
+          <button onclick="outilsToggleMdp('${o.id}','${(o.mot_de_passe||'').replace(/'/g,"\\'")}')" title="Afficher" style="background:none;border:none;cursor:pointer;color:var(--dim);font-size:13px;padding:2px 4px" id="eye-${o.id}">👁</button>
+          ${o.mot_de_passe?`<button onclick="navigator.clipboard.writeText('${(o.mot_de_passe||'').replace(/'/g,"\\'")}');showToast('Copié')" title="Copier" style="background:none;border:none;cursor:pointer;color:var(--dim);font-size:11px;padding:2px 4px;border-radius:4px" onmouseover="this.style.color=\'var(--navy)\'" onmouseout="this.style.color=\'var(--dim)\'">⎘</button>`:''}
+        </div>
+      </td>
+      <td style="padding:12px 16px">
+        <div style="display:flex;align-items:center;gap:6px">
+          ${o.url?`<a href="${o.url}" target="_blank" style="font-size:11px;color:var(--blue);text-decoration:none;border:1px solid var(--blue);border-radius:5px;padding:3px 8px">Ouvrir</a>`:''}
+          <button onclick="outilsDelete('${o.id}')" style="background:none;border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:11px;color:var(--dim);cursor:pointer" onmouseover="this.style.borderColor='#e55';this.style.color='#e55'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--dim)'">Suppr.</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+let mdpVisible={};
+function outilsToggleMdp(id,mdp){
+  const span=document.getElementById('mdp-'+id);
+  if(!span)return;
+  mdpVisible[id]=!mdpVisible[id];
+  span.textContent=mdpVisible[id]?mdp:'••••••••';
+}
+
+function outilsShowAdd(){
+  const f=document.getElementById('outils-add-form');
+  f.style.display=f.style.display==='none'?'block':'none';
+}
+
+async function outilsSaveNew(){
+  const p=document.getElementById('oa-plateforme').value.trim();
+  if(!p){showToast('Plateforme requise');return}
+  const body={plateforme:p,identifiant:document.getElementById('oa-identifiant').value.trim(),mot_de_passe:document.getElementById('oa-mdp').value,url:document.getElementById('oa-url').value.trim(),ordre:outilsData.length+1};
+  try{
+    await fetch(`${cfg.url}/rest/v1/outils`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(body)});
+    document.getElementById('oa-plateforme').value='';document.getElementById('oa-identifiant').value='';document.getElementById('oa-mdp').value='';document.getElementById('oa-url').value='';
+    document.getElementById('outils-add-form').style.display='none';
+    showToast('Enregistré');
+    loadOutils();
+  }catch(e){showToast('Erreur');}
+}
+
+async function outilsDelete(id){
+  if(!confirm('Supprimer cet outil ?'))return;
+  try{
+    await fetch(`${cfg.url}/rest/v1/outils?id=eq.${id}`,{method:'DELETE',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Prefer':'return=minimal'}});
+    showToast('Supprimé');loadOutils();
+  }catch(e){showToast('Erreur');}
+}
+/* ===================== END OUTILS ===================== */
+
 boot();
 </script>
 </body>
