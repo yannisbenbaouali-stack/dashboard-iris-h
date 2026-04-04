@@ -972,9 +972,6 @@ function renderFinance(){
 
   // Tableau 1 : principal
   const v1TotalMontant = v1.reduce((a,r) => a + (parseFloat(r.montant)||0), 0);
-  const v1Total12 = v1.reduce((a,r) => a + (parseFloat(r.pct_12)||0), 0);
-  const v1TotalDebit = v1.reduce((a,r) => a + (parseFloat(r.debit_vilmar)||0), 0);
-  const v1TotalCredit = v1.reduce((a,r) => a + (parseFloat(r.credit_vilmar)||0), 0);
   const thStyle='font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;padding:6px 0;border-bottom:1px solid var(--border)';
   const tdStyle='padding:8px 0;font-size:13px;border-bottom:1px solid var(--bg)';
 
@@ -983,26 +980,17 @@ function renderFinance(){
         <thead><tr>
           <th style="text-align:left;${thStyle}">Libellé</th>
           <th style="text-align:right;${thStyle}">Montant</th>
-          <th style="text-align:right;${thStyle}">12%</th>
-          <th style="text-align:right;${thStyle}">Débit Vilmar</th>
-          <th style="text-align:right;${thStyle}">Crédit Vilmar</th>
-          <th style="text-align:left;${thStyle}">Où verser</th>
+          <th style="text-align:center;${thStyle}">Remboursé ?</th>
         </tr></thead>
         <tbody>
           ${v1.map(r=>`<tr>
             <td style="${tdStyle}">${r.libelle||''}</td>
             <td style="${tdStyle};text-align:right">${fmt(parseFloat(r.montant)||0)}</td>
-            <td style="${tdStyle};text-align:right;color:var(--blue)">${fmt(parseFloat(r.pct_12)||0)}</td>
-            <td style="${tdStyle};text-align:right;color:var(--red)">${parseFloat(r.debit_vilmar)?fmt(parseFloat(r.debit_vilmar)):''}</td>
-            <td style="${tdStyle};text-align:right;color:var(--green)">${parseFloat(r.credit_vilmar)?fmt(parseFloat(r.credit_vilmar)):''}</td>
-            <td style="${tdStyle};font-size:12px;color:var(--dim)">${r.ou_verser||''}</td>
+            <td style="${tdStyle};text-align:center;color:var(--dim)">${r.ou_verser||''}</td>
           </tr>`).join('')}
           <tr style="font-weight:700">
             <td style="padding:10px 0;font-size:13px">Total</td>
             <td style="padding:10px 0;font-size:13px;text-align:right">${fmt(v1TotalMontant)}</td>
-            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--blue)">${fmt(v1Total12)}</td>
-            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--red)">${v1TotalDebit?fmt(v1TotalDebit):''}</td>
-            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--green)">${v1TotalCredit?fmt(v1TotalCredit):''}</td>
             <td></td>
           </tr>
         </tbody></table></div>`
@@ -1012,11 +1000,12 @@ function renderFinance(){
   const v2TotalMontant = v2.reduce((a,r) => a + (parseFloat(r.montant)||0), 0);
   const v2TotalTtc = v2.reduce((a,r) => a + (parseFloat(r.pct_ttc)||0), 0);
   const v2TotalDebit = v2.reduce((a,r) => a + (parseFloat(r.debit_vilmar)||0), 0);
+  const v2Solde = v2TotalTtc - v2TotalDebit;
 
   const etatBadge=e=>{if(!e)return'';const m={'versé':'background:var(--green-bg);color:#1a8a4a','à faire':'background:var(--orange-bg);color:#b36d00'};return`<span class="pill" style="font-size:10px;${m[e]||''}">${e}</span>`};
 
   const vilmar2Html = v2.length
-    ? `<div style="overflow-x:auto;margin-top:20px"><table style="width:100%;border-collapse:collapse">
+    ? `<div style="overflow-x:auto;margin-top:24px;padding-top:20px;border-top:2px solid var(--border)"><table style="width:100%;border-collapse:collapse">
         <thead><tr>
           <th style="text-align:left;${thStyle}">Libellé</th>
           <th style="text-align:right;${thStyle}">Versement</th>
@@ -1032,11 +1021,16 @@ function renderFinance(){
             <td style="${tdStyle};text-align:right;color:var(--red)">${parseFloat(r.debit_vilmar)?fmt(parseFloat(r.debit_vilmar)):''}</td>
             <td style="${tdStyle};text-align:center">${etatBadge(r.etat)}</td>
           </tr>`).join('')}
-          <tr style="font-weight:700">
+          <tr style="font-weight:700;border-top:1px solid var(--border)">
             <td style="padding:10px 0;font-size:13px">Total</td>
             <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--dim)">${v2TotalMontant?fmt(v2TotalMontant):''}</td>
             <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--green)">${v2TotalTtc?fmt(v2TotalTtc):''}</td>
             <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--red)">${v2TotalDebit?fmt(v2TotalDebit):''}</td>
+            <td></td>
+          </tr>
+          <tr style="font-weight:700;background:var(--bg);border-radius:8px">
+            <td colspan="2" style="padding:12px 0;font-size:14px">Solde (% − Paiements)</td>
+            <td colspan="2" style="padding:12px 0;font-size:16px;text-align:center;color:${v2Solde>=0?'var(--green)':'var(--red)'}">${v2Solde>=0?'+':''}${fmt(Math.abs(v2Solde))}</td>
             <td></td>
           </tr>
         </tbody></table></div>`
