@@ -965,42 +965,87 @@ function renderFinance(){
     <div class="synth-item"><div class="synth-label">Deals actifs</div><div class="synth-value">${data.deals.filter(d=>d.etape!=='perdu').length}</div></div>
   </div></div>`;
 
-  // Section Vilmar
-  const vRows = data.vilmar || [];
-  const vTotalMontant = vRows.reduce((a,r) => a + (parseFloat(r.montant)||0), 0);
-  const vTotal12 = vRows.reduce((a,r) => a + (parseFloat(r.pct_12)||0), 0);
-  const vTotalDebit = vRows.reduce((a,r) => a + (parseFloat(r.debit_vilmar)||0), 0);
-  const vTotalCredit = vRows.reduce((a,r) => a + (parseFloat(r.credit_vilmar)||0), 0);
-  const vilmarHtml = vRows.length
+  // Section Vilmar : 2 tableaux
+  const vAll = data.vilmar || [];
+  const v1 = vAll.filter(r => (r.tableau||1) === 1);
+  const v2 = vAll.filter(r => r.tableau === 2);
+
+  // Tableau 1 : principal
+  const v1TotalMontant = v1.reduce((a,r) => a + (parseFloat(r.montant)||0), 0);
+  const v1Total12 = v1.reduce((a,r) => a + (parseFloat(r.pct_12)||0), 0);
+  const v1TotalDebit = v1.reduce((a,r) => a + (parseFloat(r.debit_vilmar)||0), 0);
+  const v1TotalCredit = v1.reduce((a,r) => a + (parseFloat(r.credit_vilmar)||0), 0);
+  const thStyle='font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;padding:6px 0;border-bottom:1px solid var(--border)';
+  const tdStyle='padding:8px 0;font-size:13px;border-bottom:1px solid var(--bg)';
+
+  let vilmarHtml = v1.length
     ? `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse">
-        <thead><tr style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px">
-          <th style="text-align:left;padding:6px 0;border-bottom:1px solid var(--border)">Libellé</th>
-          <th style="text-align:right;padding:6px 0;border-bottom:1px solid var(--border)">Montant</th>
-          <th style="text-align:right;padding:6px 0;border-bottom:1px solid var(--border)">12%</th>
-          <th style="text-align:right;padding:6px 0;border-bottom:1px solid var(--border)">Débit Vilmar</th>
-          <th style="text-align:right;padding:6px 0;border-bottom:1px solid var(--border)">Crédit Vilmar</th>
-          <th style="text-align:left;padding:6px 0;border-bottom:1px solid var(--border)">Où verser</th>
+        <thead><tr>
+          <th style="text-align:left;${thStyle}">Libellé</th>
+          <th style="text-align:right;${thStyle}">Montant</th>
+          <th style="text-align:right;${thStyle}">12%</th>
+          <th style="text-align:right;${thStyle}">Débit Vilmar</th>
+          <th style="text-align:right;${thStyle}">Crédit Vilmar</th>
+          <th style="text-align:left;${thStyle}">Où verser</th>
         </tr></thead>
         <tbody>
-          ${vRows.map(r=>`<tr>
-            <td style="padding:8px 0;font-size:13px;border-bottom:1px solid var(--bg)">${r.libelle||''}</td>
-            <td style="padding:8px 0;font-size:13px;text-align:right;border-bottom:1px solid var(--bg)">${fmt(parseFloat(r.montant)||0)}</td>
-            <td style="padding:8px 0;font-size:13px;text-align:right;color:var(--blue);border-bottom:1px solid var(--bg)">${fmt(parseFloat(r.pct_12)||0)}</td>
-            <td style="padding:8px 0;font-size:13px;text-align:right;color:var(--red);border-bottom:1px solid var(--bg)">${parseFloat(r.debit_vilmar)?fmt(parseFloat(r.debit_vilmar)):''}</td>
-            <td style="padding:8px 0;font-size:13px;text-align:right;color:var(--green);border-bottom:1px solid var(--bg)">${parseFloat(r.credit_vilmar)?fmt(parseFloat(r.credit_vilmar)):''}</td>
-            <td style="padding:8px 0;font-size:12px;color:var(--dim);border-bottom:1px solid var(--bg)">${r.ou_verser||''}</td>
+          ${v1.map(r=>`<tr>
+            <td style="${tdStyle}">${r.libelle||''}</td>
+            <td style="${tdStyle};text-align:right">${fmt(parseFloat(r.montant)||0)}</td>
+            <td style="${tdStyle};text-align:right;color:var(--blue)">${fmt(parseFloat(r.pct_12)||0)}</td>
+            <td style="${tdStyle};text-align:right;color:var(--red)">${parseFloat(r.debit_vilmar)?fmt(parseFloat(r.debit_vilmar)):''}</td>
+            <td style="${tdStyle};text-align:right;color:var(--green)">${parseFloat(r.credit_vilmar)?fmt(parseFloat(r.credit_vilmar)):''}</td>
+            <td style="${tdStyle};font-size:12px;color:var(--dim)">${r.ou_verser||''}</td>
           </tr>`).join('')}
           <tr style="font-weight:700">
             <td style="padding:10px 0;font-size:13px">Total</td>
-            <td style="padding:10px 0;font-size:13px;text-align:right">${fmt(vTotalMontant)}</td>
-            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--blue)">${fmt(vTotal12)}</td>
-            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--red)">${vTotalDebit?fmt(vTotalDebit):''}</td>
-            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--green)">${vTotalCredit?fmt(vTotalCredit):''}</td>
+            <td style="padding:10px 0;font-size:13px;text-align:right">${fmt(v1TotalMontant)}</td>
+            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--blue)">${fmt(v1Total12)}</td>
+            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--red)">${v1TotalDebit?fmt(v1TotalDebit):''}</td>
+            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--green)">${v1TotalCredit?fmt(v1TotalCredit):''}</td>
             <td></td>
           </tr>
         </tbody></table></div>`
-    : '<div class="empty"><div class="empty-text">Aucune donnée Vilmar</div></div>';
-  html+=`<div class="fin-section" id="fin-vilmar"><div class="tcard">${vilmarHtml}</div></div>`;
+    : '';
+
+  // Tableau 2 : % et factures
+  const v2TotalMontant = v2.reduce((a,r) => a + (parseFloat(r.montant)||0), 0);
+  const v2TotalTtc = v2.reduce((a,r) => a + (parseFloat(r.pct_ttc)||0), 0);
+  const v2TotalDebit = v2.reduce((a,r) => a + (parseFloat(r.debit_vilmar)||0), 0);
+  const v2TotalCredit = v2.reduce((a,r) => a + (parseFloat(r.credit_vilmar)||0), 0);
+
+  const vilmar2Html = v2.length
+    ? `<div style="overflow-x:auto;margin-top:20px"><table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th style="text-align:left;${thStyle}">Libellé</th>
+          <th style="text-align:right;${thStyle}">Montant</th>
+          <th style="text-align:right;${thStyle}">% (×1.12)</th>
+          <th style="text-align:right;${thStyle}">Débit Vilmar</th>
+          <th style="text-align:right;${thStyle}">Crédit Vilmar</th>
+          <th style="text-align:left;${thStyle}">Où verser</th>
+        </tr></thead>
+        <tbody>
+          ${v2.map(r=>`<tr>
+            <td style="${tdStyle}">${r.libelle||''}</td>
+            <td style="${tdStyle};text-align:right">${parseFloat(r.montant)?fmt(parseFloat(r.montant)):''}</td>
+            <td style="${tdStyle};text-align:right;color:var(--blue)">${parseFloat(r.pct_ttc)?fmt(parseFloat(r.pct_ttc)):''}</td>
+            <td style="${tdStyle};text-align:right;color:var(--red)">${parseFloat(r.debit_vilmar)?fmt(parseFloat(r.debit_vilmar)):''}</td>
+            <td style="${tdStyle};text-align:right;color:var(--green)">${parseFloat(r.credit_vilmar)?fmt(parseFloat(r.credit_vilmar)):''}</td>
+            <td style="${tdStyle};font-size:12px;color:var(--dim)">${r.ou_verser||''}</td>
+          </tr>`).join('')}
+          <tr style="font-weight:700">
+            <td style="padding:10px 0;font-size:13px">Total</td>
+            <td style="padding:10px 0;font-size:13px;text-align:right">${v2TotalMontant?fmt(v2TotalMontant):''}</td>
+            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--blue)">${v2TotalTtc?fmt(v2TotalTtc):''}</td>
+            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--red)">${v2TotalDebit?fmt(v2TotalDebit):''}</td>
+            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--green)">${v2TotalCredit?fmt(v2TotalCredit):''}</td>
+            <td></td>
+          </tr>
+        </tbody></table></div>`
+    : '';
+
+  const vilmarFinal = (vilmarHtml || vilmar2Html) ? vilmarHtml + vilmar2Html : '<div class="empty"><div class="empty-text">Aucune donnée Vilmar</div></div>';
+  html+=`<div class="fin-section" id="fin-vilmar"><div class="tcard">${vilmarFinal}</div></div>`;
   document.getElementById('fin-sections').innerHTML=html;
 }
 
