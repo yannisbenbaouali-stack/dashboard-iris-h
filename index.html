@@ -1012,33 +1012,31 @@ function renderFinance(){
   const v2TotalMontant = v2.reduce((a,r) => a + (parseFloat(r.montant)||0), 0);
   const v2TotalTtc = v2.reduce((a,r) => a + (parseFloat(r.pct_ttc)||0), 0);
   const v2TotalDebit = v2.reduce((a,r) => a + (parseFloat(r.debit_vilmar)||0), 0);
-  const v2TotalCredit = v2.reduce((a,r) => a + (parseFloat(r.credit_vilmar)||0), 0);
+
+  const etatBadge=e=>{if(!e)return'';const m={'versé':'background:var(--green-bg);color:#1a8a4a','à faire':'background:var(--orange-bg);color:#b36d00'};return`<span class="pill" style="font-size:10px;${m[e]||''}">${e}</span>`};
 
   const vilmar2Html = v2.length
     ? `<div style="overflow-x:auto;margin-top:20px"><table style="width:100%;border-collapse:collapse">
         <thead><tr>
           <th style="text-align:left;${thStyle}">Libellé</th>
-          <th style="text-align:right;${thStyle}">Crédit</th>
+          <th style="text-align:right;${thStyle}">Versement</th>
           <th style="text-align:right;${thStyle}">% (×1.12)</th>
           <th style="text-align:right;${thStyle}">Paiements</th>
-          <th style="text-align:right;${thStyle}">Crédit Vilmar</th>
-          <th style="text-align:left;${thStyle}">Où verser</th>
+          <th style="text-align:center;${thStyle}">État</th>
         </tr></thead>
         <tbody>
           ${v2.map(r=>`<tr>
             <td style="${tdStyle}">${r.libelle||''}</td>
-            <td style="${tdStyle};text-align:right;color:var(--green)">${parseFloat(r.montant)?fmt(parseFloat(r.montant)):''}</td>
-            <td style="${tdStyle};text-align:right;color:var(--blue)">${parseFloat(r.pct_ttc)?fmt(parseFloat(r.pct_ttc)):''}</td>
+            <td style="${tdStyle};text-align:right;color:var(--dim)">${parseFloat(r.montant)?fmt(parseFloat(r.montant)):''}</td>
+            <td style="${tdStyle};text-align:right;color:var(--green)">${parseFloat(r.pct_ttc)?fmt(parseFloat(r.pct_ttc)):''}</td>
             <td style="${tdStyle};text-align:right;color:var(--red)">${parseFloat(r.debit_vilmar)?fmt(parseFloat(r.debit_vilmar)):''}</td>
-            <td style="${tdStyle};text-align:right;color:var(--green)">${parseFloat(r.credit_vilmar)?fmt(parseFloat(r.credit_vilmar)):''}</td>
-            <td style="${tdStyle};font-size:12px;color:var(--dim)">${r.ou_verser||''}</td>
+            <td style="${tdStyle};text-align:center">${etatBadge(r.etat)}</td>
           </tr>`).join('')}
           <tr style="font-weight:700">
             <td style="padding:10px 0;font-size:13px">Total</td>
-            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--green)">${v2TotalMontant?fmt(v2TotalMontant):''}</td>
-            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--blue)">${v2TotalTtc?fmt(v2TotalTtc):''}</td>
+            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--dim)">${v2TotalMontant?fmt(v2TotalMontant):''}</td>
+            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--green)">${v2TotalTtc?fmt(v2TotalTtc):''}</td>
             <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--red)">${v2TotalDebit?fmt(v2TotalDebit):''}</td>
-            <td style="padding:10px 0;font-size:13px;text-align:right;color:var(--green)">${v2TotalCredit?fmt(v2TotalCredit):''}</td>
             <td></td>
           </tr>
         </tbody></table></div>`
