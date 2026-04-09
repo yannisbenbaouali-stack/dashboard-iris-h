@@ -1408,8 +1408,8 @@ function renderMandats(){
 
 function mandatsExportExcel(){
   if(typeof XLSX==='undefined'){showToast('SheetJS non chargé');return}
-  const src=(data.mandats||[]).filter(m=>m.statut==='Sign\u00e9');
-  if(!src.length){showToast('Aucun mandat sign\u00e9 \u00e0 exporter');return}
+  const src=(data.mandats||[]);
+  if(!src.length){showToast('Aucun mandat à exporter');return}
   const fDate=d=>{if(!d)return'';return new Date(d).toLocaleDateString('fr-FR')};
   const headers=['Num\u00e9ro','Date r\u00e9ception','Mandant','Nature','Objet','Bien','Prix HT (\u20ac)','Honoraires HT (\u20ac)','Charge','Dur\u00e9e','Date expiration','Renouvellement','Statut','Observations'];
   const rows=src.map(m=>[m.numero||'',fDate(m.date_reception),m.mandant||'',m.nature||'',m.objet||'',m.bien||'',m.prix_ht?parseFloat(m.prix_ht):'',m.honoraires_ht?parseFloat(m.honoraires_ht):'',m.charge||'',m.duree||'',fDate(m.date_expiration),m.renouvellement||'',m.statut||'',m.observations||'']);
