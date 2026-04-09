@@ -6,6 +6,7 @@
 <title>IRIS H · Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -249,6 +250,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'memoire')"><span class="nav-dot"></span><span>Mémoire</span></button>
       <button class="nav-item" onclick="switchTab(this,'organigramme')"><span class="nav-dot"></span><span>Organigramme</span></button>
       <button class="nav-item" onclick="switchTab(this,'outils')"><span class="nav-dot"></span><span>Outils</span></button>
+      <button class="nav-item" onclick="switchTab(this,'mandats')"><span class="nav-dot"></span><span>Registre Mandats</span><span class="nav-cnt" id="nav-mandats-cnt">0</span></button>
     </div>
     <div class="sb-footer">
       <div>Supabase connecté</div>
@@ -371,6 +373,17 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         </div>
       </div>
 
+      <!-- MANDATS IRIS REP -->
+      <div class="tab" id="tab-mandats">
+        <div class="kpis" id="mandats-kpis"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+          <input id="mandats-search" placeholder="Rechercher (numéro, mandant, bien...)" oninput="renderMandats()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;min-width:280px;flex:1;background:var(--card);color:var(--text)">
+          <button onclick="mandatsExportExcel()" style="background:var(--blue);border:none;border-radius:8px;padding:9px 18px;font-family:var(--font);font-size:12px;font-weight:600;color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:.15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">&#11015; Télécharger Excel</button>
+        </div>
+        <div id="mandats-filters"></div>
+        <div class="tcard"><div id="mandats-body"></div></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -406,7 +419,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 <script>
 const CFG_KEY='iris_h_cfg';
 let cfg=null;
-let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[],rapports_rediges:[],vilmar:[]};
+let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[],rapports_rediges:[],vilmar:[],mandats:[]};
 
 function getConfig(){try{const s=JSON.parse(localStorage.getItem(CFG_KEY));if(s&&s.url&&s.key)return s}catch(e){}return null}
 function saveConfig(){
@@ -432,7 +445,7 @@ async function supa(table,params='',fetchAll=false){
 
 async function loadAll(){
   const safe=async fn=>{try{return await fn()}catch(e){console.warn('Warning:',e);return[]}};
-  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar]=await Promise.all([
+  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats]=await Promise.all([
     safe(()=>supa('taches','order=created_at.desc')),
     safe(()=>supa('taches_v2','order=created_at.asc')),
     safe(()=>supa('taches_recurrentes_suivi','order=semaine.asc')),
@@ -445,10 +458,11 @@ async function loadAll(){
     safe(()=>supa('prospects','order=created_at.asc')),
     safe(()=>supa('rapport_hebdo_suivi','order=semaine.asc')),
     safe(()=>supa('rapports_hebdo','order=semaine.asc')),
-    safe(()=>supa('vilmar_comptabilite','order=created_at.asc'))
+    safe(()=>supa('vilmar_comptabilite','order=created_at.asc')),
+    safe(()=>supa('mandats_iris_rep','order=date_reception.desc'))
   ]);
   data.taches=taches;data.taches_v2=taches_v2;data.rec_suivi=rec_suivi;data.deals=deals;
-  data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;data.vilmar=vilmar;
+  data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;data.vilmar=vilmar;data.mandats=mandats;
   try{localStorage.setItem('iris_h_cache',JSON.stringify({data:{...data,contacts:[]},ts:Date.now()}))}catch(e){}
   render();
   const t=new Date();
@@ -478,6 +492,7 @@ function updateNavCounts(){
   document.getElementById('nav-todo-cnt').textContent=tv2.length;
   document.getElementById('nav-deals-cnt').textContent=data.deals.filter(d=>!['cloture','dead'].includes(d.etape)).length;
   document.getElementById('nav-crm-cnt').textContent=(data._crmTotal||data.contacts.length).toLocaleString();
+  document.getElementById('nav-mandats-cnt').textContent=(data.mandats||[]).length;
 }
 
 let currentTab='todo';
@@ -487,14 +502,14 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',outils:'Outils'};
+  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',outils:'Outils',mandats:'Registre Mandats · IRIS REP'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
 }
 
 function renderCurrentTab(){
-  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils};
+  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats};
   if(m[currentTab])m[currentTab]();
 }
 
@@ -1175,7 +1190,7 @@ function boot(){
   document.getElementById('app').style.display='flex';
   updateTopbar();
   const cache=localStorage.getItem('iris_h_cache');
-  if(cache){try{data=JSON.parse(cache).data;if(!data.fragments)data.fragments=[];if(!data.bible)data.bible=[];if(!data.taches_v2)data.taches_v2=[];if(!data.rec_suivi)data.rec_suivi=[];if(!data.skills)data.skills=[];if(!data.prospects)data.prospects=[];if(!data.rapport_hebdo)data.rapport_hebdo=[];if(!data.rapports_rediges)data.rapports_rediges=[];if(!data.vilmar)data.vilmar=[];render()}catch(e){}}
+  if(cache){try{data=JSON.parse(cache).data;if(!data.fragments)data.fragments=[];if(!data.bible)data.bible=[];if(!data.taches_v2)data.taches_v2=[];if(!data.rec_suivi)data.rec_suivi=[];if(!data.skills)data.skills=[];if(!data.prospects)data.prospects=[];if(!data.rapport_hebdo)data.rapport_hebdo=[];if(!data.rapports_rediges)data.rapports_rediges=[];if(!data.vilmar)data.vilmar=[];if(!data.mandats)data.mandats=[];render()}catch(e){}}
   loadAll();
 }
 
@@ -1330,6 +1345,83 @@ async function outilsDelete(id){
   }catch(e){showToast('Erreur');}
 }
 /* ===================== END OUTILS ===================== */
+
+/* ===================== MANDATS IRIS REP ===================== */
+let mandatsFilterStatut='all',mandatsSortCol='date_reception',mandatsSortDir='desc';
+
+function sortMandats(col){
+  if(mandatsSortCol===col)mandatsSortDir=mandatsSortDir==='asc'?'desc':'asc';
+  else{mandatsSortCol=col;mandatsSortDir='asc'}
+  renderMandats();
+}
+
+function renderMandats(){
+  const src=data.mandats||[];
+  const enCours=src.filter(m=>m.statut==='En cours').length;
+  const signes=src.filter(m=>m.statut==='Signé').length;
+  const expires=src.filter(m=>m.statut==='Expiré').length;
+  const annules=src.filter(m=>m.statut==='Annulé').length;
+  document.getElementById('mandats-kpis').innerHTML=`
+    <div class="kpi"><div class="kpi-label">Total mandats</div><div class="kpi-val">${src.length}</div></div>
+    <div class="kpi orange"><div class="kpi-label">En cours</div><div class="kpi-val">${enCours}</div></div>
+    <div class="kpi green"><div class="kpi-label">Signés</div><div class="kpi-val">${signes}</div></div>
+    <div class="kpi red"><div class="kpi-label">Expirés / Annulés</div><div class="kpi-val">${expires+annules}</div></div>`;
+  const statuts=['all','En cours','Signé','Expiré','Annulé'];
+  document.getElementById('mandats-filters').innerHTML=`<div class="filters" style="margin-bottom:12px">${statuts.map(s=>`<button class="fbtn${mandatsFilterStatut===s?' on':''}" onclick="mandatsFilterStatut='${s}';renderMandats()">${s==='all'?'Tous statuts':s}</button>`).join('')}</div>`;
+  let filtered=src.slice();
+  if(mandatsFilterStatut!=='all')filtered=filtered.filter(m=>m.statut===mandatsFilterStatut);
+  const q=(document.getElementById('mandats-search')?.value||'').toLowerCase().trim();
+  if(q)filtered=filtered.filter(m=>['numero','mandant','nature','objet','bien','charge','duree','statut','observations'].map(k=>m[k]||'').join(' ').toLowerCase().includes(q));
+  const dir=mandatsSortDir==='asc'?1:-1;
+  filtered.sort((a,b)=>{
+    let va=a[mandatsSortCol]||'',vb=b[mandatsSortCol]||'';
+    if(['prix_ht','honoraires_ht'].includes(mandatsSortCol)){va=parseFloat(va)||0;vb=parseFloat(vb)||0}
+    else{va=va.toString().toLowerCase();vb=vb.toString().toLowerCase()}
+    return va<vb?-1*dir:va>vb?1*dir:0;
+  });
+  const fDate=d=>{if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})};
+  const fMt=n=>{if(n===null||n===undefined||n==='')return'';return parseFloat(n).toLocaleString('fr-FR')+'\u00a0\u20ac'};
+  const statBadge=s=>{const m={'En cours':'p-med',Sign\u00e9:'p-done',Expir\u00e9:'p-urg',Annul\u00e9:'p-standby'};return`<span class="pill ${m[s]||'p-med'}">${s||''}</span>`};
+  const natureBadge=n=>{const m={Exclusif:'p-urg',Simple:'p-med','Co-exclusif':'p-high'};return`<span class="pill ${m[n]||'p-med'}">${n||''}</span>`};
+  const thS=k=>mandatsSortCol===k?(mandatsSortDir==='asc'?' \u25b2':' \u25bc'):'';
+  const cols=[{k:'numero',l:'N\u00b0'},{k:'date_reception',l:'Date'},{k:'mandant',l:'Mandant'},{k:'nature',l:'Nature'},{k:'objet',l:'Objet'},{k:'bien',l:'Bien'},{k:'prix_ht',l:'Prix HT'},{k:'honoraires_ht',l:'Honoraires HT'},{k:'charge',l:'Charge'},{k:'duree',l:'Dur\u00e9e'},{k:'date_expiration',l:'Expiration'},{k:'statut',l:'Statut'},{k:'observations',l:'Observations'}];
+  const el=document.getElementById('mandats-body');
+  if(!filtered.length){el.innerHTML='<div class="empty"><div class="empty-ico">\ud83d\udccb</div><div class="empty-text">Aucun mandat</div></div>';return}
+  el.innerHTML='<div style="overflow-x:auto"><table class="tbl"><thead><tr>'+cols.map(c=>`<th style="cursor:pointer;white-space:nowrap" onclick="sortMandats('${c.k}')">${c.l}${thS(c.k)}</th>`).join('')+'</tr></thead><tbody>'+
+  filtered.map((m,i)=>'<tr style="background:'+(i%2===0?'#fff':'#f8f9fc')+'">'+
+    '<td style="font-weight:700;color:var(--navy);white-space:nowrap;font-size:11px">'+(m.numero||'')+'</td>'+
+    '<td style="white-space:nowrap;font-size:11px">'+fDate(m.date_reception)+'</td>'+
+    '<td style="font-weight:500;font-size:12px">'+(m.mandant||'')+'</td>'+
+    '<td>'+natureBadge(m.nature)+'</td>'+
+    '<td><span class="pill p-iris" style="font-size:9px">'+(m.objet||'')+'</span></td>'+
+    '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px" title="'+escHtml(m.bien||'')+'">'+(m.bien||'')+'</td>'+
+    '<td style="color:var(--green);font-weight:600;text-align:right;white-space:nowrap;font-size:12px">'+fMt(m.prix_ht)+'</td>'+
+    '<td style="color:var(--blue);font-weight:600;text-align:right;white-space:nowrap;font-size:12px">'+fMt(m.honoraires_ht)+'</td>'+
+    '<td style="color:var(--dim);font-size:11px">'+(m.charge||'')+'</td>'+
+    '<td style="color:var(--dim);font-size:11px">'+(m.duree||'')+'</td>'+
+    '<td style="white-space:nowrap;font-size:11px">'+fDate(m.date_expiration)+'</td>'+
+    '<td>'+statBadge(m.statut)+'</td>'+
+    '<td style="max-width:200px;font-size:10px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+escHtml(m.observations||'')+'">'+(m.observations||'')+'</td>'+
+  '</tr>').join('')+
+  '</tbody></table></div>';
+}
+
+function mandatsExportExcel(){
+  if(typeof XLSX==='undefined'){showToast('SheetJS non chargé');return}
+  const src=(data.mandats||[]).filter(m=>m.statut==='Sign\u00e9');
+  if(!src.length){showToast('Aucun mandat sign\u00e9 \u00e0 exporter');return}
+  const fDate=d=>{if(!d)return'';return new Date(d).toLocaleDateString('fr-FR')};
+  const headers=['Num\u00e9ro','Date r\u00e9ception','Mandant','Nature','Objet','Bien','Prix HT (\u20ac)','Honoraires HT (\u20ac)','Charge','Dur\u00e9e','Date expiration','Renouvellement','Statut','Observations'];
+  const rows=src.map(m=>[m.numero||'',fDate(m.date_reception),m.mandant||'',m.nature||'',m.objet||'',m.bien||'',m.prix_ht?parseFloat(m.prix_ht):'',m.honoraires_ht?parseFloat(m.honoraires_ht):'',m.charge||'',m.duree||'',fDate(m.date_expiration),m.renouvellement||'',m.statut||'',m.observations||'']);
+  const ws=XLSX.utils.aoa_to_sheet([headers,...rows]);
+  const colWidths=headers.map((h,ci)=>{let w=h.length+2;rows.forEach(r=>{const v=String(r[ci]||'');if(v.length+2>w)w=v.length+2});return{wch:Math.min(w,50)}});
+  ws['!cols']=colWidths;
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,'Registre mandats',ws);
+  XLSX.writeFile(wb,'Registre_Mandats_IRIS_REP_'+new Date().toISOString().slice(0,10)+'.xlsx');
+  showToast('Export Excel t\u00e9l\u00e9charg\u00e9');
+}
+/* ===================== END MANDATS ===================== */
 
 boot();
 </script>
