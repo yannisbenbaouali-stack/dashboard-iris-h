@@ -1631,7 +1631,6 @@ async function activateVitrine(dealId,type){
   const isReactivation=!!existingV;
   const msg=isReactivation
     ?`Réactiver l'annonce ${typeLabel} de "${d.nom}" ?\n\nLes infos précédentes seront conservées.`
-    ?`Créer une annonce ${typeLabel} pour "${d.nom}" ?\n\nElle sera en brouillon jusqu'à publication.`
     :`Créer une annonce ${typeLabel} pour "${d.nom}" ?\n\nElle sera en brouillon jusqu'à publication.`;
   if(!confirm(msg))return;
   try{
@@ -1822,7 +1821,6 @@ async function vitrineDeactivate(){
     renderDeals();
   }catch(e){console.error(e);showToast('Erreur désactivation')}
 }
-
 
 // Auto-génération du slug quand on tape dans le titre (si slug vide)
 document.addEventListener('input',e=>{
