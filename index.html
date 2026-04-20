@@ -414,12 +414,104 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
     </div>
   </div>
 </div>
-<div id="toast"></div>
+<!-- MODALE VITRINE IRIS REP -->
+<div class="modal-overlay" id="vitrine-modal" onclick="if(event.target===this)closeVitrineModal()">
+  <div class="modal-box" style="max-width:880px;max-height:90vh;overflow-y:auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <div class="modal-title">Annonce vitrine IRIS REP</div>
+      <div id="vitrine-statut-pill" style="font-size:10px;padding:3px 10px;border-radius:20px;background:#eee;color:#666;font-weight:600">Brouillon</div>
+    </div>
+    <div class="modal-sub" id="vitrine-modal-sub"></div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
+      <div><label class="vlbl">Titre vitrine *</label><input type="text" id="v-titre" class="vinp" placeholder="Plateau de bureaux rénové" /></div>
+      <div><label class="vlbl">Slug URL *</label><input type="text" id="v-slug" class="vinp" placeholder="plateau-bureaux-paris-8" /></div>
+      <div><label class="vlbl">Catégorie *</label><select id="v-categorie" class="vinp"><option value="">Choisir...</option><option value="bureaux">Bureaux</option><option value="commerces">Commerces</option><option value="entrepots">Entrepôts</option><option value="activite">Activité</option><option value="terrains">Terrains</option></select></div>
+      <div><label class="vlbl">Transaction *</label><select id="v-transaction" class="vinp"><option value="">Choisir...</option><option value="vente">Vente</option><option value="location">Location</option><option value="vente_location">Vente ou location</option></select></div>
+      <div><label class="vlbl">Ville</label><input type="text" id="v-ville" class="vinp" placeholder="Paris" /></div>
+      <div><label class="vlbl">Code postal</label><input type="text" id="v-code-postal" class="vinp" placeholder="75008" /></div>
+      <div><label class="vlbl">Quartier</label><input type="text" id="v-quartier" class="vinp" placeholder="Champs Élysées" /></div>
+      <div><label class="vlbl">Disponibilité</label><input type="text" id="v-disponibilite" class="vinp" placeholder="Immédiate ou T2 2026" /></div>
+    </div>
+
+    <div class="vsect">Conditions financières</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+      <div><label class="vlbl">Prix vente (€)</label><input type="number" id="v-prix-vente" class="vinp" placeholder="3200000" /></div>
+      <div><label class="vlbl">Loyer mensuel (€)</label><input type="number" id="v-loyer-mensuel" class="vinp" placeholder="285000" /></div>
+      <div><label class="vlbl">Loyer annuel €/m²</label><input type="number" id="v-loyer-annuel" class="vinp" placeholder="650" /></div>
+      <div><label class="vlbl">Charges €/m²/an</label><input type="number" id="v-charges" class="vinp" placeholder="85" /></div>
+      <div style="grid-column:span 2"><label class="vlbl">Honoraires</label><input type="text" id="v-honoraires" class="vinp" placeholder="15% HT du loyer annuel à la charge preneur" /></div>
+    </div>
+
+    <div class="vsect">Caractéristiques techniques</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px">
+      <div><label class="vlbl">Surface min divisible (m²)</label><input type="number" id="v-surface-min" class="vinp" placeholder="120" /></div>
+      <div><label class="vlbl">Divisible</label><select id="v-divisible" class="vinp"><option value="false">Non</option><option value="true">Oui</option></select></div>
+      <div><label class="vlbl">DPE</label><select id="v-dpe" class="vinp"><option value="">--</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option value="NC">NC</option></select></div>
+      <div><label class="vlbl">GES</label><select id="v-ges" class="vinp"><option value="">--</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option value="NC">NC</option></select></div>
+      <div><label class="vlbl">Année construction</label><input type="number" id="v-annee" class="vinp" placeholder="1998" /></div>
+      <div><label class="vlbl">Étages</label><input type="text" id="v-etages" class="vinp" placeholder="R+5" /></div>
+      <div><label class="vlbl">Parkings</label><input type="number" id="v-parking" class="vinp" placeholder="12" /></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px">
+      <div><label class="vlbl">Points forts (séparés par virgule)</label><input type="text" id="v-points-forts" class="vinp" placeholder="Vue dégagée, 100% rénové, terrasse" /></div>
+      <div><label class="vlbl">Équipements (séparés par virgule)</label><input type="text" id="v-equipements" class="vinp" placeholder="Climatisation, fibre, douches" /></div>
+    </div>
+
+    <div class="vsect">Contenu marketing</div>
+    <div><label class="vlbl">Description courte (cards, 160 car max)</label><textarea id="v-desc-courte" class="vtxt" maxlength="160" rows="2" placeholder="Phrase d'accroche affichée sur les cards du site..."></textarea></div>
+    <div style="margin-top:10px"><label class="vlbl">Description longue (page détail)</label><textarea id="v-desc-longue" class="vtxt" rows="5" placeholder="Présentation détaillée du bien..."></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px">
+      <div><label class="vlbl">Meta title (SEO)</label><input type="text" id="v-meta-title" class="vinp" placeholder="Bureaux 420 m² Paris 8 à louer | IRIS REP" /></div>
+      <div><label class="vlbl">Meta description (SEO, 155 car)</label><input type="text" id="v-meta-desc" class="vinp" maxlength="160" placeholder="Plateau de bureaux 420 m²..." /></div>
+    </div>
+
+    <div class="vsect">Photos</div>
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px">
+      <input type="file" id="v-photos-upload" accept="image/jpeg,image/png,image/webp" multiple style="display:none" onchange="vitrineUploadPhotos(event)" />
+      <button class="fbtn" onclick="document.getElementById('v-photos-upload').click()">📷 Ajouter des photos</button>
+      <span id="v-upload-status" style="font-size:11px;color:var(--dim)"></span>
+    </div>
+    <div id="v-photos-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px"></div>
+
+    <div class="vsect">Publication</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+      <div><label class="vlbl">Statut</label><select id="v-statut" class="vinp"><option value="brouillon">Brouillon (non publié)</option><option value="publie">Publié (visible sur site)</option><option value="archive">Archivé</option></select></div>
+      <div><label class="vlbl">À la une</label><select id="v-alaune" class="vinp"><option value="false">Non</option><option value="true">Oui</option></select></div>
+      <div><label class="vlbl">Ordre affichage (plus petit = premier)</label><input type="number" id="v-ordre" class="vinp" placeholder="100" /></div>
+    </div>
+
+    <div class="modal-loading" id="vitrine-loading">Enregistrement...</div>
+    <div class="modal-actions" style="margin-top:20px;justify-content:space-between">
+      <button class="modal-btn" style="background:#fee;color:#c62828;border-color:#f5c6c6" onclick="vitrineDeactivate()">🗑️ Désactiver la vitrine</button>
+      <div style="display:flex;gap:8px">
+        <button class="modal-btn modal-btn-cancel" onclick="closeVitrineModal()">Fermer</button>
+        <button class="modal-btn modal-btn-save" onclick="vitrineSave()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+.vlbl{display:block;font-size:10px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.vinp{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-family:var(--font);font-size:12px;color:var(--text);outline:none;box-sizing:border-box}
+.vinp:focus{border-color:var(--blue)}
+.vtxt{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;font-family:var(--font);font-size:12px;color:var(--text);outline:none;box-sizing:border-box;resize:vertical;line-height:1.5}
+.vtxt:focus{border-color:var(--blue)}
+.vsect{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.8px;margin:22px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.vphoto-thumb{position:relative;aspect-ratio:4/3;border-radius:6px;overflow:hidden;border:2px solid var(--border);cursor:pointer}
+.vphoto-thumb.main{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue-bg)}
+.vphoto-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.vphoto-actions{position:absolute;top:4px;right:4px;display:flex;gap:3px}
+.vphoto-btn{background:rgba(0,0,0,0.65);color:#fff;border:none;border-radius:4px;padding:3px 6px;font-size:10px;cursor:pointer}
+.vphoto-btn:hover{background:rgba(0,0,0,0.85)}
+.vphoto-main-badge{position:absolute;bottom:4px;left:4px;background:var(--blue);color:#fff;font-size:9px;padding:2px 6px;border-radius:3px;font-weight:600}
+</style>
+
 
 <script>
 const CFG_KEY='iris_h_cfg';
 let cfg=null;
-let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[],rapports_rediges:[],vilmar:[],mandats:[]};
+let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[],rapports_rediges:[],vilmar:[],mandats:[],vitrines:[]};
 
 function getConfig(){try{const s=JSON.parse(localStorage.getItem(CFG_KEY));if(s&&s.url&&s.key)return s}catch(e){}return null}
 function saveConfig(){
@@ -445,7 +537,7 @@ async function supa(table,params='',fetchAll=false){
 
 async function loadAll(){
   const safe=async fn=>{try{return await fn()}catch(e){console.warn('Warning:',e);return[]}};
-  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats]=await Promise.all([
+  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats,vitrines]=await Promise.all([
     safe(()=>supa('taches','order=created_at.desc')),
     safe(()=>supa('taches_v2','order=created_at.asc')),
     safe(()=>supa('taches_recurrentes_suivi','order=semaine.asc')),
@@ -459,10 +551,11 @@ async function loadAll(){
     safe(()=>supa('rapport_hebdo_suivi','order=semaine.asc')),
     safe(()=>supa('rapports_hebdo','order=semaine.asc')),
     safe(()=>supa('vilmar_comptabilite','order=created_at.asc')),
-    safe(()=>supa('mandats_iris_rep','order=date_reception.desc'))
+    safe(()=>supa('mandats_iris_rep','order=date_reception.desc')),
+    safe(()=>supa('deals_vitrine','order=created_at.desc'))
   ]);
   data.taches=taches;data.taches_v2=taches_v2;data.rec_suivi=rec_suivi;data.deals=deals;
-  data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;data.vilmar=vilmar;data.mandats=mandats;
+  data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;data.vilmar=vilmar;data.mandats=mandats;data.vitrines=vitrines;
   try{localStorage.setItem('iris_h_cache',JSON.stringify({data:{...data,contacts:[]},ts:Date.now()}))}catch(e){}
   render();
   const t=new Date();
@@ -767,8 +860,18 @@ function filterDeals(btn,v){document.querySelectorAll('.deals-fbtn').forEach(b=>
 function sortDeals(c){if(dealsSortCol===c)dealsSortDir=dealsSortDir==='asc'?'desc':'asc';else{dealsSortCol=c;dealsSortDir='asc'}renderDeals()}
 function fmt(n){if(!n)return'';return n.toLocaleString('fr-FR')+'€'}
 
+// Préfixes de code par entité (source de vérité du filtrage)
+const DEAL_PREFIXES=[{k:'BYM',label:'BYM',prefix:'BYM'},{k:'UR',label:'Urban Rise',prefix:'UR'},{k:'IR',label:'IRIS REP',prefix:'IR'},{k:'AR',label:'ARRISTO',prefix:'AR'},{k:'GC',label:'Galerie Carrez',prefix:'GC'}];
+function dealMatchesFilter(d,filter){
+  if(filter==='all')return true;
+  const def=DEAL_PREFIXES.find(x=>x.k===filter);
+  if(!def)return false;
+  return (d.code||'').toUpperCase().startsWith(def.prefix);
+}
+function isVitrinable(d){const c=(d.code||'').toUpperCase();return c.startsWith('IR')||c.startsWith('GC')}
+
 function renderDeals(){
-  let deals=dealsFilter==='all'?[...data.deals]:data.deals.filter(d=>d.entite===dealsFilter);
+  let deals=dealsFilter==='all'?[...data.deals]:data.deals.filter(d=>dealMatchesFilter(d,dealsFilter));
   const dir=dealsSortDir==='asc'?1:-1;
   deals.sort((a,b)=>{let va,vb;if(dealsSortCol==='etape'){va=ETAPE_ORDER[a.etape]??99;vb=ETAPE_ORDER[b.etape]??99}else if(['montant','ca_previ','resultat_previ'].includes(dealsSortCol)){va=a[dealsSortCol]||0;vb=b[dealsSortCol]||0}else{va=(a[dealsSortCol]||'').toString().toLowerCase();vb=(b[dealsSortCol]||'').toString().toLowerCase()}return va<vb?-1*dir:va>vb?1*dir:0});
   const actifs=deals.filter(d=>!['cloture','dead'].includes(d.etape));
@@ -780,13 +883,14 @@ function renderDeals(){
     <div class="kpi"><div class="kpi-label">Volume total</div><div class="kpi-val">${fmt(vol)||'N/A'}</div></div>
     <div class="kpi"><div class="kpi-label">CA prévi</div><div class="kpi-val">${fmt(totalCA)||'N/A'}</div></div>
     <div class="kpi"><div class="kpi-label">En travaux</div><div class="kpi-val">${enTravaux}</div></div>`;
-  const eBadge=e=>{const m={BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',ARRISTO:'p-arristo','IRIS H':'p-iris','Galerie Carrez':'p-gc'};const l={BYM:'BYM','Urban Rise':'Urban Rise','IRIS REP':'IRIS REP',ARRISTO:'ARRISTO','IRIS H':'IRIS H','Galerie Carrez':'Galerie Carrez'};return`<span class="pill ${m[e]||'p-iris'}">${l[e]||e||''}</span>`};
+  const eBadge=e=>{const m={BYM:'p-bym','Urban Rise':'p-ur',URBAN_RISE:'p-ur','IRIS REP':'p-iris',IRIS_REP:'p-iris',ARRISTO:'p-arristo','IRIS H':'p-iris',IRIS_H:'p-iris','Galerie Carrez':'p-gc',GALERIE_CARREZ:'p-gc'};const l={BYM:'BYM','Urban Rise':'Urban Rise',URBAN_RISE:'Urban Rise','IRIS REP':'IRIS REP',IRIS_REP:'IRIS REP',ARRISTO:'ARRISTO','IRIS H':'IRIS H',IRIS_H:'IRIS H','Galerie Carrez':'Galerie Carrez',GALERIE_CARREZ:'Galerie Carrez'};return`<span class="pill ${m[e]||'p-iris'}">${l[e]||e||''}</span>`};
   const etBadge=et=>{const st={dead:'background:#f8717118;color:#f87171;border:1px solid #f8717140',to_sell:'background:#fb923c18;color:#fb923c;border:1px solid #fb923c40',cloture:'background:#41c98e18;color:#41c98e;border:1px solid #41c98e40'};return`<span class="pill" style="font-size:9px;${st[et]||''}">${ETAPE_LABEL[et]||et||''}</span>`};
-  const cols=[{k:'code',l:'Code'},{k:'nom',l:'Nom'},{k:'entite',l:'Entité'},{k:'type',l:'Type'},{k:'etape',l:'Étape'},{k:'montant',l:'Montant'},{k:'ca_previ',l:'CA Prévi'},{k:'resultat_previ',l:'Résultat'},{k:'adresse',l:'Adresse'},{k:'commentaire',l:'Commentaire'}];
-  const filtersHtml=`<div class="filters" style="margin-bottom:12px"><button class="fbtn deals-fbtn${dealsFilter==='all'?' on':''}" onclick="filterDeals(this,'all')">Tous</button><button class="fbtn deals-fbtn${dealsFilter==='BYM'?' on':''}" onclick="filterDeals(this,'BYM')">BYM</button><button class="fbtn deals-fbtn${dealsFilter==='Urban Rise'?' on':''}" onclick="filterDeals(this,'Urban Rise')">Urban Rise</button><button class="fbtn deals-fbtn${dealsFilter==='IRIS REP'?' on':''}" onclick="filterDeals(this,'IRIS REP')">IRIS REP</button><button class="fbtn deals-fbtn${dealsFilter==='ARRISTO'?' on':''}" onclick="filterDeals(this,'ARRISTO')">ARRISTO</button><button class="fbtn deals-fbtn${dealsFilter==='Galerie Carrez'?' on':''}" onclick="filterDeals(this,'Galerie Carrez')">Galerie Carrez</button></div>`;
-  const entIco=e=>({BYM:'🏗️','Urban Rise':'🏠','IRIS REP':'🔍',ARRISTO:'🤝','IRIS H':'🏛️','Galerie Carrez':'🎨'}[e]||'📋');
+  const cols=[{k:'code',l:'Code'},{k:'nom',l:'Nom'},{k:'entite',l:'Entité'},{k:'type',l:'Type'},{k:'etape',l:'Étape'},{k:'montant',l:'Montant'},{k:'ca_previ',l:'CA Prévi'},{k:'resultat_previ',l:'Résultat'},{k:'adresse',l:'Adresse'},{k:'commentaire',l:'Commentaire'},{k:'vitrine',l:'Vitrine'}];
+  const filterBtns=[{k:'all',l:'Tous'}].concat(DEAL_PREFIXES.map(x=>({k:x.k,l:x.label})));
+  const filtersHtml=`<div class="filters" style="margin-bottom:12px">${filterBtns.map(b=>`<button class="fbtn deals-fbtn${dealsFilter===b.k?' on':''}" onclick="filterDeals(this,'${b.k}')">${b.l}</button>`).join('')}</div>`;
+  const entIco=e=>({BYM:'🏗️','Urban Rise':'🏠',URBAN_RISE:'🏠','IRIS REP':'🔍',IRIS_REP:'🔍',ARRISTO:'🤝','IRIS H':'🏛️',IRIS_H:'🏛️','Galerie Carrez':'🎨',GALERIE_CARREZ:'🎨'}[e]||'📋');
   document.getElementById('deals-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr>${cols.map(c=>{let cls='';if(dealsSortCol===c.k)cls=dealsSortDir==='asc'?' ▲':' ▼';return`<th style="cursor:pointer" onclick="sortDeals('${c.k}')">${c.l}${cls}</th>`}).join('')}</tr></thead><tbody>
-  ${deals.length?deals.map(d=>`<tr><td><a href="#" onclick="goToTodoForDeal('${d.code||''}');return false" style="color:var(--blue);font-weight:600;text-decoration:none;font-size:12px" title="Voir les tâches ${d.code}">${d.code||''}</a></td><td class="td-name">${entIco(d.entite)} ${d.nom||''}</td><td>${eBadge(d.entite)}</td><td>${DL[d.type]||d.type||''}</td><td>${etBadge(d.etape)}</td><td style="color:var(--green);font-weight:500">${fmt(d.montant)}</td><td style="color:var(--blue)">${fmt(d.ca_previ)}</td><td style="color:var(--green)">${fmt(d.resultat_previ)}</td><td>${d.adresse||''}</td><td style="font-size:10px;color:var(--dim);font-style:italic;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${(d.commentaire||'').replace(/"/g,'&quot;')}">${d.commentaire||''}</td></tr>`).join(''):`<tr><td colspan="${cols.length}" style="text-align:center;padding:2rem;color:var(--dim)">Aucun deal</td></tr>`}
+  ${deals.length?deals.map(d=>{const canVitrine=isVitrinable(d);let vCell='';if(canVitrine){const vVente=(data.vitrines||[]).find(x=>x.deal_id===d.id&&x.annonce_type==='vente');const vCommer=(data.vitrines||[]).find(x=>x.deal_id===d.id&&x.annonce_type==='commercialisation');const statDot=(v,lbl)=>{if(!v)return'';const c={brouillon:'#999',publie:'#41c98e',archive:'#fb923c'}[v.statut_publication]||'#999';const sl={brouillon:'Brouillon',publie:'Publié',archive:'Archivé'}[v.statut_publication]||'?';return`<span style=\"width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;flex-shrink:0\" title=\"${lbl} · ${sl}\"></span>`};const btnVente=d.vitrine_vente_actif?`<div style=\"display:flex;align-items:center;gap:3px\">${statDot(vVente,'Vente')}<button class=\"fbtn\" style=\"font-size:10px;padding:2px 6px;color:#0C447C\" onclick=\"openVitrineModal('${d.id}','vente')\" title=\"Éditer annonce vente\">Vente ✏️</button><button class=\"fbtn\" style=\"font-size:10px;padding:2px 5px;background:#fee;color:#c62828;border-color:#f5c6c6\" onclick=\"quickDeactivateVitrine('${d.id}','vente')\">🔕</button></div>`:`<button class=\"fbtn\" style=\"font-size:10px;padding:2px 8px;background:rgba(91,155,213,0.1);color:var(--blue);border-color:var(--blue)\" onclick=\"activateVitrine('${d.id}','vente')\">Vente</button>`;const btnCommer=d.vitrine_commer_actif?`<div style=\"display:flex;align-items:center;gap:3px\">${statDot(vCommer,'Commerc.')}<button class=\"fbtn\" style=\"font-size:10px;padding:2px 6px;color:#3C3489\" onclick=\"openVitrineModal('${d.id}','commercialisation')\" title=\"Éditer annonce commercialisation\">Commerc. ✏️</button><button class=\"fbtn\" style=\"font-size:10px;padding:2px 5px;background:#fee;color:#c62828;border-color:#f5c6c6\" onclick=\"quickDeactivateVitrine('${d.id}','commercialisation')\">🔕</button></div>`:`<button class=\"fbtn\" style=\"font-size:10px;padding:2px 8px;background:rgba(127,119,221,0.1);color:#3C3489;border-color:#a095e0\" onclick=\"activateVitrine('${d.id}','commercialisation')\">Commerc.</button>`;vCell=`<div style=\"display:flex;flex-direction:column;gap:4px\">${btnVente}${btnCommer}</div>`}return`<tr><td><a href=\"#\" onclick=\"goToTodoForDeal('${d.code||''}');return false\" style=\"color:var(--blue);font-weight:600;text-decoration:none;font-size:12px\" title=\"Voir les tâches ${d.code}\">${d.code||''}</a></td><td class=\"td-name\">${entIco(d.entite)} ${d.nom||''}</td><td>${eBadge(d.entite)}</td><td>${DL[d.type]||d.type||''}</td><td>${etBadge(d.etape)}</td><td style=\"color:var(--green);font-weight:500\">${fmt(d.montant)}</td><td style=\"color:var(--blue)\">${fmt(d.ca_previ)}</td><td style=\"color:var(--green)\">${fmt(d.resultat_previ)}</td><td>${d.adresse||''}</td><td style=\"font-size:10px;color:var(--dim);font-style:italic;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap\" title=\"${(d.commentaire||'').replace(/\"/g,'&quot;')}\">${d.commentaire||''}</td><td style=\"min-width:130px\">${vCell}</td></tr>`}).join(''):`<tr><td colspan=\"${cols.length}\" style=\"text-align:center;padding:2rem;color:var(--dim)\">Aucun deal</td></tr>`}
   </tbody></table>`;
 }
 
@@ -794,6 +898,8 @@ function renderDeals(){
 // DEALFLOW PROSPECTS
 // ════════════════════════════════════════
 let prospectsFilter='all';
+let irisRepSubTab='preneur';
+function setIrisRepTab(t){irisRepSubTab=t;renderProspects();}
 function filterProspects(btn,v){document.querySelectorAll('.prosp-fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');prospectsFilter=v;renderProspects()}
 
 async function renderProspects(){
@@ -818,7 +924,8 @@ async function renderProspects(){
   const psBadge=s=>{const m={a_prospecter:'var(--blue-bg)',en_cours:'var(--orange-bg)',a_relancer:'#fce4ec',valide:'var(--green-bg)',dead:'#f5f5f5'};const mc={a_prospecter:'var(--blue)',en_cours:'#b36d00',a_relancer:'#c62828',valide:'#1a8a4a',dead:'#999'};const l={a_prospecter:'A prospecter',en_cours:'En cours',a_relancer:'A relancer',valide:'Validé',dead:'Dead'};return`<span style="font-size:9px;color:${mc[s]||'var(--dim)'};background:${m[s]||'var(--bg)'};padding:2px 6px;border-radius:4px;white-space:nowrap">${l[s]||s||''}</span>`};
   const fDate=d=>{if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})};
 
-  const filtersHtml=`<div class="filters" style="margin-bottom:12px"><button class="fbtn prosp-fbtn${prospectsFilter==='all'?' on':''}" onclick="filterProspects(this,'all')">Tous</button><button class="fbtn prosp-fbtn${prospectsFilter==='BYM'?' on':''}" onclick="filterProspects(this,'BYM')">BYM</button><button class="fbtn prosp-fbtn${prospectsFilter==='IRIS REP'?' on':''}" onclick="filterProspects(this,'IRIS REP')">IRIS REP</button><button class="fbtn prosp-fbtn${prospectsFilter==='Urban Rise'?' on':''}" onclick="filterProspects(this,'Urban Rise')">Urban Rise</button><button class="fbtn prosp-fbtn${prospectsFilter==='ARRISTO'?' on':''}" onclick="filterProspects(this,'ARRISTO')">ARRISTO</button><button class="fbtn prosp-fbtn${prospectsFilter==='Galerie Carrez'?' on':''}" onclick="filterProspects(this,'Galerie Carrez')">Galerie Carrez</button></div>`;
+  const irisRepSubNav=prospectsFilter==='IRIS REP'?`<div style="display:flex;gap:6px;margin-top:8px;margin-bottom:4px;padding-left:2px"><button class="fbtn${irisRepSubTab==='preneur'?' on':''}" style="font-size:11px;padding:4px 12px" onclick="setIrisRepTab('preneur')">Preneur</button><button class="fbtn${irisRepSubTab==='investisseur'?' on':''}" style="font-size:11px;padding:4px 12px" onclick="setIrisRepTab('investisseur')">Investisseur</button></div>`:'';
+  const filtersHtml=`<div class="filters" style="margin-bottom:12px"><button class="fbtn prosp-fbtn${prospectsFilter==='all'?' on':''}" onclick="filterProspects(this,'all')">Tous</button><button class="fbtn prosp-fbtn${prospectsFilter==='BYM'?' on':''}" onclick="filterProspects(this,'BYM')">BYM</button><button class="fbtn prosp-fbtn${prospectsFilter==='IRIS REP'?' on':''}" onclick="filterProspects(this,'IRIS REP')">IRIS REP</button><button class="fbtn prosp-fbtn${prospectsFilter==='Urban Rise'?' on':''}" onclick="filterProspects(this,'Urban Rise')">Urban Rise</button><button class="fbtn prosp-fbtn${prospectsFilter==='ARRISTO'?' on':''}" onclick="filterProspects(this,'ARRISTO')">ARRISTO</button><button class="fbtn prosp-fbtn${prospectsFilter==='Galerie Carrez'?' on':''}" onclick="filterProspects(this,'Galerie Carrez')">Galerie Carrez</button></div>${irisRepSubNav}`;
 
   // Charger les liaisons prospect_contacts avec les infos contact
   const allRows=await Promise.all(allPros.map(async p=>{
@@ -891,9 +998,94 @@ async function renderProspects(){
     }).join('')}</div>`;
   };
 
+  // Bloc IRIS REP Preneur / Investisseur
+  if(prospectsFilter==='IRIS REP'){
+    const irisRepBlock=irisRepSubTab==='preneur'?renderIrisRepPreneur():`<div style="padding:2rem;text-align:center;color:var(--dim)"><div style="font-size:32px;margin-bottom:12px">🏦</div><div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:6px">Prospects Investisseurs</div><div style="font-size:12px">Aucun prospect investisseur pour le moment.</div></div>`;
+    document.getElementById('prospects-body').innerHTML=filtersHtml+irisRepBlock;
+    return;
+  }
   document.getElementById('prospects-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr><th style="width:80px"></th><th style="width:110px;text-align:center">Entreprise</th><th>Contacts CRM</th></tr></thead><tbody>
   ${rows.map(p=>`<tr style="vertical-align:top"><td>${logoCell(p)}</td><td style="vertical-align:top;padding-top:10px;text-align:center"><div class="td-name" style="font-size:12px">${p.nom_entreprise||''}</div></td><td>${contactsBlock(p.pcs)}</td></tr>`).join('')}
   </tbody></table>`;
+}
+
+function renderIrisRepPreneur(){
+  const PROS=[
+    {n:"STEF TRANSPORT TOURS",v:"Parcay-Meslay",e:"200-249 sal.",ev:200,ca:59134966,naf:"49.41A"},
+    {n:"PRO LOGICS LABORIZON",v:"Loches",e:"50-99 sal.",ev:50,ca:null,naf:"49.41A"},
+    {n:"ELS PRIMEVER TOURS",v:"Tours",e:"50-99 sal.",ev:50,ca:9120094,naf:"49.41B"},
+    {n:"PRO LOGICS CENTRE",v:"La Membrolle-sur-Choisille",e:"50-99 sal.",ev:50,ca:null,naf:"49.41A"},
+    {n:"NOUVELLE FABRIQUE INDRE ET LOIRE",v:"La Riche",e:"50-99 sal.",ev:50,ca:null,naf:"49.41B"},
+    {n:"STEF LOGISTIQUE ST PIERRE DES CORPS",v:"Saint-Pierre-des-Corps",e:"50-99 sal.",ev:50,ca:null,naf:"52.10B"},
+    {n:"TRANSPORTS COUTANT",v:"Chambray-lès-Tours",e:"50-99 sal.",ev:50,ca:15237513,naf:"49.41B"},
+    {n:"SOCIETE GENILLOISE D'ENTREPOT",v:"Genillé",e:"50-99 sal.",ev:50,ca:null,naf:"52.10B"},
+    {n:"T.F.M. EKLEO",v:"Montlouis-sur-Loire",e:"50-99 sal.",ev:50,ca:null,naf:"49.41A"},
+    {n:"ACTIVE COURSES LOCATIONS",v:"Notre-Dame-d'Oé",e:"50-99 sal.",ev:50,ca:null,naf:"49.41B"},
+    {n:"TRANSERVICE EXPRESS 37",v:"Ballan-Miré",e:"50-99 sal.",ev:50,ca:null,naf:"49.41B"},
+    {n:"FA37 LOGISTIQUE",v:"Notre-Dame-d'Oé",e:"20-49 sal.",ev:20,ca:null,naf:"49.41A"},
+    {n:"EURL TRANSPORTS CHRISTIAN BENINGA",v:"Veigné",e:"20-49 sal.",ev:20,ca:3404731,naf:"49.41A"},
+    {n:"CHALLENGE TRANSPORTS",v:"Ballan-Miré",e:"20-49 sal.",ev:20,ca:5860460,naf:"49.41B"},
+    {n:"AD'COF EXPRESS",v:"Mettray",e:"20-49 sal.",ev:20,ca:null,naf:"49.41A"},
+    {n:"COLISDEME TRANSPORT (CDT)",v:"Luynes",e:"20-49 sal.",ev:20,ca:null,naf:"49.41B"},
+    {n:"TOURAINE ACHEMINEMENT",v:"Notre-Dame-d'Oé",e:"20-49 sal.",ev:20,ca:null,naf:"49.41B"},
+    {n:"TRANSPORTS LE BERRE",v:"Joué-les-Tours",e:"20-49 sal.",ev:20,ca:null,naf:"49.41A"},
+    {n:"RTMD RESEAU TRANSPORT MAUDUIT DISTRIBUTION",v:"Château-Renault",e:"20-49 sal.",ev:20,ca:8563834,naf:"49.41B"},
+    {n:"FRANCK JUNG TRANSPORTS VAL DE LOIRE",v:"Chargé",e:"20-49 sal.",ev:20,ca:6051023,naf:"49.41A"},
+    {n:"LES ETABLISSEMENTS MAROLLEAU",v:"Braslou",e:"20-49 sal.",ev:20,ca:null,naf:"52.10B"},
+    {n:"ALLO LES COURSIERS REUNIS",v:"Saint-Avertin",e:"20-49 sal.",ev:20,ca:null,naf:"49.41B"},
+    {n:"MTJ LOGISTIQUE",v:"Château-Renault",e:"20-49 sal.",ev:20,ca:3015447,naf:"49.41A"},
+    {n:"ARCHAMBAULT FRET",v:"La Roche-Clermault",e:"20-49 sal.",ev:20,ca:5257570,naf:"49.41A"},
+    {n:"RACING COURSES",v:"La Ville-aux-Dames",e:"20-49 sal.",ev:20,ca:3598832,naf:"49.41A"},
+    {n:"SOC. D'EXPLOITATION TRANSPORTS VERNEAU ET FILS",v:"Château-la-Vallière",e:"20-49 sal.",ev:20,ca:null,naf:"49.41A"},
+    {n:"AVANTI",v:"Tours",e:"10-19 sal.",ev:10,ca:null,naf:"49.41B"},
+    {n:"SHAM",v:"Parcay-Meslay",e:"10-19 sal.",ev:10,ca:1729636,naf:"52.10B"},
+    {n:"LUDO EXPRESS",v:"Montbazon",e:"10-19 sal.",ev:10,ca:null,naf:"49.41B"},
+    {n:"LEROY SCHNEIDER",v:"Cinq-Mars-la-Pile",e:"10-19 sal.",ev:10,ca:null,naf:"49.41A"},
+    {n:"TOURAINE TRANSPORT",v:"Joué-les-Tours",e:"10-19 sal.",ev:10,ca:null,naf:"49.41A"},
+    {n:"ENTREPRISE MARAIS PERE ET FILS",v:"Joué-les-Tours",e:"10-19 sal.",ev:10,ca:null,naf:"49.41B"},
+    {n:"STE D'EXPLOITATION DES ETS LE COZ",v:"Loches",e:"10-19 sal.",ev:10,ca:null,naf:"49.41A"},
+    {n:"ADANCO TRANSPORTS",v:"Mettray",e:"10-19 sal.",ev:10,ca:null,naf:"49.41B"},
+    {n:"JKB TRANS",v:"Saint-Genouph",e:"10-19 sal.",ev:10,ca:null,naf:"49.41A"},
+    {n:"ITT INTERNATIONAL TOURAINE TRANSPORTS",v:"Pouzay",e:"10-19 sal.",ev:10,ca:null,naf:"49.41A"},
+    {n:"TOURS POIDS LOURDS EXPRESS",v:"La Ville-aux-Dames",e:"10-19 sal.",ev:10,ca:null,naf:"49.41B"},
+    {n:"SELTOUR",v:"Chouze-sur-Loire",e:"10-19 sal.",ev:10,ca:2590998,naf:"49.41A"},
+    {n:"TRANSPORT-NEWS",v:"Joué-les-Tours",e:"10-19 sal.",ev:10,ca:null,naf:"49.41A"},
+    {n:"TRANSPORTS MERY",v:"Cléré-les-Pins",e:"10-19 sal.",ev:10,ca:null,naf:"49.41A"},
+    {n:"N.S.T.E NATIONAL SERVICE TRANS EXPRESS",v:"Joué-les-Tours",e:"10-19 sal.",ev:10,ca:null,naf:"49.41A"},
+    {n:"BUSINESS NK.M",v:"Joué-les-Tours",e:"10-19 sal.",ev:10,ca:null,naf:"49.41B"},
+    {n:"SARL PRO LOGICS",v:"La Membrolle-sur-Choisille",e:"10-19 sal.",ev:10,ca:null,naf:"49.41B"},
+    {n:"LIMS",v:"Montbazon",e:"10-19 sal.",ev:10,ca:null,naf:"49.41B"},
+    {n:"TCFL T.C.F.L.",v:"Saint-Pierre-des-Corps",e:"10-19 sal.",ev:10,ca:1223796,naf:"49.41A"},
+    {n:"LES TRANSPORTS MALINS",v:"Tours",e:"10-19 sal.",ev:10,ca:426468,naf:"49.41A"},
+    {n:"KOMBALOC",v:"Tours",e:"10-19 sal.",ev:10,ca:null,naf:"49.41B"},
+    {n:"STTP",v:"Tauxigny-Saint-Bauld",e:"10-19 sal.",ev:10,ca:null,naf:"49.41B"},
+    {n:"PRESTATIONS-COLIS-SERVICES",v:"La Riche",e:"10-19 sal.",ev:10,ca:null,naf:"49.41A"},
+    {n:"TRANSPORTS ARNOUX",v:"Loches",e:"10-19 sal.",ev:10,ca:1437227,naf:"49.41A"},
+    {n:"TJM",v:"Genillé",e:"10-19 sal.",ev:10,ca:null,naf:"49.41A"},
+    {n:"CAILLER",v:"Château-Renault",e:"10-19 sal.",ev:10,ca:null,naf:"49.41A"},
+    {n:"(Non diffusable)",v:"Reignac-sur-Indre",e:"10-19 sal.",ev:10,ca:null,naf:"49.41A"},
+    {n:"LESAGE TRANSPORTS ET CIE",v:"Saint-Pierre-des-Corps",e:"10-19 sal.",ev:10,ca:null,naf:"49.41A"},
+    {n:"MARL LOGISTICS",v:"Tours",e:"10-19 sal.",ev:10,ca:null,naf:"49.41B"}
+  ];
+  const fmt=n=>n?new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n):'<span style="color:var(--dim2);font-size:10px">n/d</span>';
+  const effBadge=ev=>{
+    if(ev>=200)return'<span style="font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(91,155,213,0.15);color:var(--blue);font-weight:600">200+ sal.</span>';
+    if(ev>=50)return'<span style="font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(91,155,213,0.1);color:var(--blue)">50-99 sal.</span>';
+    if(ev>=20)return'<span style="font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(34,197,94,0.1);color:#1a8a4a">20-49 sal.</span>';
+    return'<span style="font-size:9px;padding:2px 7px;border-radius:4px;background:var(--bg);color:var(--dim)">10-19 sal.</span>';
+  };
+  const totalCA=PROS.reduce((s,p)=>s+(p.ca||0),0);
+  const withCA=PROS.filter(p=>p.ca).length;
+  const prior=PROS.filter(p=>p.ev>=50).length;
+  const kpis=`<div class="kpis" style="margin-bottom:16px">
+    <div class="kpi"><div class="kpi-label">Prospects Preneur</div><div class="kpi-val">${PROS.length}</div></div>
+    <div class="kpi"><div class="kpi-label">CA agrégé déclaré</div><div class="kpi-val" style="font-size:18px">${new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0,notation:'compact'}).format(totalCA)}</div></div>
+    <div class="kpi green"><div class="kpi-label">Cibles prioritaires (50+)</div><div class="kpi-val">${prior}</div></div>
+    <div class="kpi"><div class="kpi-label">Comptes publiés</div><div class="kpi-val">${withCA}</div></div>
+  </div>`;
+  const tag=`<div style="display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--dim);background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:3px 8px;margin-bottom:12px">🔍 Logistique froid · Dept. 37 · 10+ sal. · NAF 49.41A/B, 52.10B</div>`;
+  const rows=PROS.map((p,i)=>`<tr><td style="font-size:11px;color:var(--dim);text-align:center">${i+1}</td><td><div class="td-name" style="font-size:12px">${p.n}</div></td><td style="font-size:11px;color:var(--dim)">${p.v}</td><td>${effBadge(p.ev)}</td><td style="font-size:11px;text-align:right">${fmt(p.ca)}</td><td><span style="font-size:9px;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 5px;color:var(--dim)">${p.naf}</span></td></tr>`).join('');
+  return kpis+tag+`<table class="tbl"><thead><tr><th style="width:24px">#</th><th>Société</th><th>Ville</th><th>Effectif</th><th style="text-align:right">CA déclaré</th><th>NAF</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 let currentPcId=null;
@@ -1423,6 +1615,224 @@ function mandatsExportExcel(){
   showToast('Export Excel t\u00e9l\u00e9charg\u00e9');
 }
 /* ===================== END MANDATS ===================== */
+
+/* ===================== VITRINE IRIS REP ===================== */
+let vitrineCurrent={dealId:null,vitrineId:null,photos:[],photoPrincipale:null};
+
+function vitrineSlugify(s){return(s||'').toString().toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').substring(0,80)}
+
+async function activateVitrine(dealId,type){
+  const d=data.deals.find(x=>x.id===dealId);
+  if(!d){showToast('Deal introuvable');return}
+  const typeLabel=type==='vente'?'Vente':'Commercialisation';
+  const transact=type==='vente'?'vente':'location';
+  const flagField=type==='vente'?'vitrine_vente_actif':'vitrine_commer_actif';
+  const existingV=(data.vitrines||[]).find(x=>x.deal_id===dealId&&x.annonce_type===type);
+  const isReactivation=!!existingV;
+  const msg=isReactivation
+    ?`Réactiver l'annonce ${typeLabel} de "${d.nom}" ?\n\nLes infos précédentes seront conservées.`
+    ?`Créer une annonce ${typeLabel} pour "${d.nom}" ?\n\nElle sera en brouillon jusqu'à publication.`
+    :`Créer une annonce ${typeLabel} pour "${d.nom}" ?\n\nElle sera en brouillon jusqu'à publication.`;
+  if(!confirm(msg))return;
+  try{
+    const patch={};patch[flagField]=true;
+    await fetch(`${cfg.url}/rest/v1/deals?id=eq.${dealId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(patch)});
+    if(!isReactivation){
+      const slug=vitrineSlugify((d.nom||'')+'-'+(d.code||dealId.substring(0,8))+'-'+type);
+      const body={deal_id:dealId,slug,titre_vitrine:d.nom||'Sans titre',categorie:'bureaux',transaction:transact,annonce_type:type,statut_publication:'brouillon',ordre_affichage:100};
+      await fetch(`${cfg.url}/rest/v1/deals_vitrine`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(body)});
+      const newVs=await supa('deals_vitrine',`deal_id=eq.${dealId}`);
+      if(newVs){data.vitrines=data.vitrines.filter(v=>v.deal_id!==dealId);newVs.forEach(v=>data.vitrines.push(v))}
+    }
+    d[flagField]=true;
+    renderDeals();
+    openVitrineModal(dealId,type);
+    showToast(isReactivation?`Annonce ${typeLabel} réactivée`:`Annonce ${typeLabel} créée. Remplis les infos puis publie.`);
+  }catch(e){console.error(e);showToast('Erreur activation')}
+}
+
+async function quickDeactivateVitrine(dealId,type){
+  const d=data.deals.find(x=>x.id===dealId);
+  if(!d)return;
+  const typeLabel=type==='vente'?'Vente':'Commercialisation';
+  const flagField=type==='vente'?'vitrine_vente_actif':'vitrine_commer_actif';
+  if(!confirm(`Désactiver l'annonce ${typeLabel} de "${d.nom}" ?\n\nLes infos sont conservées, tu pourras réactiver en 1 clic.`))return;
+  try{
+    const patch={};patch[flagField]=false;
+    await fetch(`${cfg.url}/rest/v1/deals?id=eq.${dealId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(patch)});
+    d[flagField]=false;
+    showToast(`Annonce ${typeLabel} désactivée`);
+    renderDeals();
+  }catch(e){console.error(e);showToast('Erreur désactivation')}
+}
+
+function openVitrineModal(dealId,type){
+  const anType=type||'vente';
+  const d=data.deals.find(x=>x.id===dealId);
+  const v=(data.vitrines||[]).find(x=>x.deal_id===dealId&&x.annonce_type===anType);
+  if(!d||!v){showToast('Données introuvables');return}
+  vitrineCurrent={dealId,vitrineId:v.id,annonceType:anType,photos:v.photos||[],photoPrincipale:v.photo_principale||null};
+
+  document.getElementById('vitrine-modal-sub').textContent=`${d.code||''} · ${d.nom||''} · ${d.adresse||''} · ${d.surface_m2?d.surface_m2+' m²':''}`;
+
+  const setVal=(id,val)=>{const el=document.getElementById(id);if(el)el.value=(val===null||val===undefined)?'':val};
+  setVal('v-titre',v.titre_vitrine);
+  setVal('v-slug',v.slug);
+  setVal('v-categorie',v.categorie||'');
+  setVal('v-transaction',v.transaction||'');
+  setVal('v-ville',v.ville);
+  setVal('v-code-postal',v.code_postal);
+  setVal('v-quartier',v.quartier);
+  setVal('v-disponibilite',v.disponibilite);
+  setVal('v-prix-vente',v.prix_vente);
+  setVal('v-loyer-mensuel',v.loyer_mensuel);
+  setVal('v-loyer-annuel',v.loyer_annuel_m2);
+  setVal('v-charges',v.charges_annuelles_m2);
+  setVal('v-honoraires',v.honoraires);
+  setVal('v-surface-min',v.surface_min_m2);
+  setVal('v-divisible',v.divisible?'true':'false');
+  setVal('v-dpe',v.dpe||'');
+  setVal('v-ges',v.ges||'');
+  setVal('v-annee',v.annee_construction);
+  setVal('v-etages',v.etages);
+  setVal('v-parking',v.parking);
+  setVal('v-points-forts',(v.points_forts||[]).join(', '));
+  setVal('v-equipements',(v.equipements||[]).join(', '));
+  setVal('v-desc-courte',v.description_courte);
+  setVal('v-desc-longue',v.description_longue);
+  setVal('v-meta-title',v.meta_title);
+  setVal('v-meta-desc',v.meta_description);
+  setVal('v-statut',v.statut_publication||'brouillon');
+  setVal('v-alaune',v.a_la_une?'true':'false');
+  setVal('v-ordre',v.ordre_affichage);
+
+  const pill=document.getElementById('vitrine-statut-pill');
+  const pMap={brouillon:{bg:'#eee',c:'#666',l:'Brouillon'},publie:{bg:'#e8f7ee',c:'#1a8a4a',l:'Publié'},archive:{bg:'#fff3e5',c:'#b36d00',l:'Archivé'}};
+  const p=pMap[v.statut_publication]||pMap.brouillon;
+  pill.style.background=p.bg;pill.style.color=p.c;pill.textContent=p.l;
+
+  renderVitrinePhotos();
+  document.getElementById('vitrine-modal').classList.add('open');
+}
+
+function closeVitrineModal(){document.getElementById('vitrine-modal').classList.remove('open');vitrineCurrent={dealId:null,vitrineId:null,photos:[],photoPrincipale:null}}
+
+function renderVitrinePhotos(){
+  const grid=document.getElementById('v-photos-grid');
+  if(!grid)return;
+  const all=[...(vitrineCurrent.photos||[])];
+  if(vitrineCurrent.photoPrincipale&&!all.includes(vitrineCurrent.photoPrincipale))all.unshift(vitrineCurrent.photoPrincipale);
+  if(!all.length){grid.innerHTML='<div style="grid-column:span 4;text-align:center;padding:30px;color:var(--dim);font-size:11px;border:2px dashed var(--border);border-radius:8px">Aucune photo. Clique sur « Ajouter des photos » ci-dessus.</div>';return}
+  grid.innerHTML=all.map(url=>{const isMain=url===vitrineCurrent.photoPrincipale;return`<div class="vphoto-thumb${isMain?' main':''}"><img src="${url}" loading="lazy"/>${isMain?'<div class="vphoto-main-badge">PRINCIPALE</div>':''}<div class="vphoto-actions">${!isMain?`<button class="vphoto-btn" onclick="vitrineSetMain('${url.replace(/'/g,"\\'")}')" title="Définir comme principale">★</button>`:''}<button class="vphoto-btn" onclick="vitrineDeletePhoto('${url.replace(/'/g,"\\'")}')" title="Supprimer">✕</button></div></div>`}).join('');
+}
+
+function vitrineSetMain(url){vitrineCurrent.photoPrincipale=url;renderVitrinePhotos();showToast('Photo principale définie. Enregistre pour valider.')}
+
+async function vitrineDeletePhoto(url){
+  if(!confirm('Supprimer cette photo ?'))return;
+  vitrineCurrent.photos=vitrineCurrent.photos.filter(p=>p!==url);
+  if(vitrineCurrent.photoPrincipale===url)vitrineCurrent.photoPrincipale=vitrineCurrent.photos[0]||null;
+  try{
+    const m=url.match(/deals-vitrine\/(.+)$/);
+    if(m&&m[1]){await fetch(`${cfg.url}/storage/v1/object/deals-vitrine/${m[1]}`,{method:'DELETE',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`}})}
+  }catch(e){console.warn('Suppression storage :',e)}
+  renderVitrinePhotos();
+}
+
+async function vitrineUploadPhotos(ev){
+  const files=ev.target.files;if(!files||!files.length)return;
+  const slug=document.getElementById('v-slug').value.trim()||vitrineCurrent.vitrineId;
+  if(!slug){showToast('Renseigne le slug avant d\'uploader');return}
+  const status=document.getElementById('v-upload-status');
+  let ok=0,fail=0;
+  for(let i=0;i<files.length;i++){
+    const f=files[i];
+    status.textContent=`Upload ${i+1}/${files.length}...`;
+    const ext=(f.name.split('.').pop()||'jpg').toLowerCase();
+    const ts=Date.now()+'-'+i;
+    const path=`${slug}/${ts}.${ext}`;
+    try{
+      const r=await fetch(`${cfg.url}/storage/v1/object/deals-vitrine/${path}`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':f.type,'x-upsert':'true'},body:f});
+      if(!r.ok)throw new Error(r.status);
+      const publicUrl=`${cfg.url}/storage/v1/object/public/deals-vitrine/${path}`;
+      vitrineCurrent.photos.push(publicUrl);
+      if(!vitrineCurrent.photoPrincipale)vitrineCurrent.photoPrincipale=publicUrl;
+      ok++;
+    }catch(e){console.error('Upload échoué :',e);fail++}
+  }
+  status.textContent=`${ok} photo(s) ajoutée(s)${fail?` · ${fail} échec(s)`:''}`;
+  ev.target.value='';
+  renderVitrinePhotos();
+}
+
+async function vitrineSave(){
+  if(!vitrineCurrent.vitrineId){showToast('Aucune vitrine active');return}
+  const val=id=>{const el=document.getElementById(id);return el?el.value.trim():''};
+  const num=id=>{const v=val(id);return v===''?null:Number(v)};
+  const bool=id=>val(id)==='true';
+  const arr=id=>{const v=val(id);return v?v.split(',').map(s=>s.trim()).filter(Boolean):[]};
+
+  const titre=val('v-titre'),slug=val('v-slug'),cat=val('v-categorie'),tr=val('v-transaction');
+  if(!titre||!slug||!cat||!tr){showToast('Titre, slug, catégorie et transaction sont obligatoires');return}
+
+  const body={
+    titre_vitrine:titre,slug,categorie:cat,transaction:tr,
+    ville:val('v-ville')||null,code_postal:val('v-code-postal')||null,quartier:val('v-quartier')||null,
+    disponibilite:val('v-disponibilite')||null,
+    prix_vente:num('v-prix-vente'),loyer_mensuel:num('v-loyer-mensuel'),loyer_annuel_m2:num('v-loyer-annuel'),charges_annuelles_m2:num('v-charges'),
+    honoraires:val('v-honoraires')||null,
+    surface_min_m2:num('v-surface-min'),divisible:bool('v-divisible'),
+    dpe:val('v-dpe')||null,ges:val('v-ges')||null,
+    annee_construction:num('v-annee'),etages:val('v-etages')||null,parking:num('v-parking')||0,
+    points_forts:arr('v-points-forts'),equipements:arr('v-equipements'),
+    description_courte:val('v-desc-courte')||null,description_longue:val('v-desc-longue')||null,
+    meta_title:val('v-meta-title')||null,meta_description:val('v-meta-desc')||null,
+    photos:vitrineCurrent.photos,photo_principale:vitrineCurrent.photoPrincipale,
+    statut_publication:val('v-statut')||'brouillon',a_la_une:bool('v-alaune'),ordre_affichage:num('v-ordre')||100
+  };
+
+  document.getElementById('vitrine-loading').style.display='block';
+  try{
+    const r=await fetch(`${cfg.url}/rest/v1/deals_vitrine?id=eq.${vitrineCurrent.vitrineId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(body)});
+    if(!r.ok)throw new Error(r.status);
+    const updated=await supa('deals_vitrine',`id=eq.${vitrineCurrent.vitrineId}`);
+    if(updated&&updated[0]){data.vitrines=data.vitrines.filter(v=>v.id!==vitrineCurrent.vitrineId);data.vitrines.push(updated[0])}
+    document.getElementById('vitrine-loading').style.display='none';
+    showToast(body.statut_publication==='publie'?'Publié sur le site':'Enregistré');
+    closeVitrineModal();
+    renderDeals();
+  }catch(e){
+    document.getElementById('vitrine-loading').style.display='none';
+    console.error(e);showToast('Erreur : '+(e.message||'sauvegarde'));
+  }
+}
+
+async function vitrineDeactivate(){
+  if(!vitrineCurrent.dealId){return}
+  const type=vitrineCurrent.annonceType||'vente';
+  const typeLabel=type==='vente'?'Vente':'Commercialisation';
+  const flagField=type==='vente'?'vitrine_vente_actif':'vitrine_commer_actif';
+  if(!confirm(`Désactiver l'annonce ${typeLabel} ?\n\nLe bien disparaîtra du site mais les infos sont conservées.`))return;
+  try{
+    const patch={};patch[flagField]=false;
+    await fetch(`${cfg.url}/rest/v1/deals?id=eq.${vitrineCurrent.dealId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(patch)});
+    const d=data.deals.find(x=>x.id===vitrineCurrent.dealId);if(d)d[flagField]=false;
+    showToast(`Annonce ${typeLabel} désactivée`);
+    closeVitrineModal();
+    renderDeals();
+  }catch(e){console.error(e);showToast('Erreur désactivation')}
+}
+
+
+// Auto-génération du slug quand on tape dans le titre (si slug vide)
+document.addEventListener('input',e=>{
+  if(e.target&&e.target.id==='v-titre'){
+    const slugInp=document.getElementById('v-slug');
+    if(slugInp&&(!slugInp.dataset.touched||slugInp.value==='')){slugInp.value=vitrineSlugify(e.target.value)}
+  }
+  if(e.target&&e.target.id==='v-slug'){e.target.dataset.touched='1';e.target.value=vitrineSlugify(e.target.value)}
+});
+/* ===================== END VITRINE ===================== */
 
 boot();
 </script>
