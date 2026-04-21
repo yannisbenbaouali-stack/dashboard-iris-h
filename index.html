@@ -251,6 +251,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'organigramme')"><span class="nav-dot"></span><span>Organigramme</span></button>
       <button class="nav-item" onclick="switchTab(this,'outils')"><span class="nav-dot"></span><span>Outils</span></button>
       <button class="nav-item" onclick="switchTab(this,'mandats')"><span class="nav-dot"></span><span>Registre Mandats</span><span class="nav-cnt" id="nav-mandats-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'audit')"><span class="nav-dot"></span><span>Audit Drive</span><span class="nav-cnt" id="nav-audit-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
     </div>
     <div class="sb-footer">
       <div>Supabase connecté</div>
@@ -382,6 +383,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         </div>
         <div id="mandats-filters"></div>
         <div class="tcard"><div id="mandats-body"></div></div>
+      </div>
+
+      <!-- AUDIT DRIVE -->
+      <div class="tab" id="tab-audit">
+        <div id="audit-body"></div>
       </div>
 
     </div>
@@ -595,14 +601,14 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',outils:'Outils',mandats:'Registre Mandats · IRIS REP'};
+  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',outils:'Outils',mandats:'Registre Mandats · IRIS REP',audit:'Audit Drive'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
 }
 
 function renderCurrentTab(){
-  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats};
+  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,audit:renderAudit};
   if(m[currentTab])m[currentTab]();
 }
 
@@ -1537,6 +1543,197 @@ async function outilsDelete(id){
   }catch(e){showToast('Erreur');}
 }
 /* ===================== END OUTILS ===================== */
+
+
+/* ===================== AUDIT DRIVE ===================== */
+
+const AUDIT_DATA = {
+  generated: '2026-04-22',
+  bym: [
+    {code:'BYM02',drive:'BYM02 - 260316 - 72, rue de Bourgogne, 45000 Orléans',adresse_ref:'72, rue de Bourgogne, 45000 Orléans',etape:'travaux',statut:'ok',note:''},
+    {code:'BYM03',drive:'BYM03 - 250930 - 20, rue Saint Barthélemy, 37100 Tours (Loft)',adresse_ref:'20, rue Saint Barthélemy, 37100 Tours',etape:'compromis',statut:'ok',note:''},
+    {code:'BYM04',drive:'BYM04 - 250730 - 20, rue Saint Barthélemy, 37100 Tours (Maison)',adresse_ref:'20, rue Saint Barthélemy, 37100 Tours',etape:'travaux',statut:'ok',note:''},
+    {code:'BYM05',drive:'BYM05 - 260322 - 78, rue de Bourgogne, 45000 Orléans (Immeuble)',adresse_ref:'78, rue de Bourgogne, 45000 Orléans',etape:'dead',statut:'warn',note:'Deal dead · dossier Drive conservé'},
+    {code:'BYM06',drive:'Absent',adresse_ref:'78, rue de Bourgogne, 45000 Orléans',etape:'dead',statut:'info',note:'Dead · archivé (attendu)'},
+    {code:'BYM07',drive:'Absent',adresse_ref:'78, rue de Bourgogne, 45000 Orléans',etape:'dead',statut:'info',note:'Dead · archivé (attendu)'},
+    {code:'BYM08',drive:'BYM08 - 260322 - 78, rue de Bourgogne, 45000 Orléans (R+2)',adresse_ref:'78, rue de Bourgogne, 45000 Orléans',etape:'travaux',statut:'ok',note:''},
+    {code:'BYM09',drive:'Absent',adresse_ref:'7, bd du Sevrage, 37530 Nazelles-Négron',etape:'dead',statut:'info',note:'Dead · pas de dossier'},
+    {code:'BYM10',drive:'BYM10 - 250925 - 19, avenue Jean Jaurès, 94200 Ivry-sur-Seine',adresse_ref:'19, avenue Jean Jaurès, 94200 Ivry-sur-Seine',etape:'sourcing',statut:'ok',note:''},
+    {code:'BYM11',drive:'BYM11 - 251127 - 124, rue de Beaujardin, 37000 Tours',adresse_ref:'124, rue de Beaujardin, 37000 Tours',etape:'sourcing',statut:'ok',note:''},
+    {code:'BYM12',drive:'BYM12 - 260227 - 87, rue de Turenne, 75003 Paris',adresse_ref:'87, rue de Turenne, 75003 Paris',etape:'offre',statut:'ok',note:''},
+    {code:'BYM13',drive:'BYM13 - 260224 - 188, rue du Général de Gaulle, 45160 Olivet',adresse_ref:'188, rue du Général de Gaulle, 45160 Olivet',etape:'sourcing',statut:'ok',note:''},
+    {code:'BYM14',drive:'BYM14 - 260418 - 87, boulevard MacDonald, 75019 Paris',adresse_ref:'87, boulevard MacDonald, 75019 Paris',etape:'travaux',statut:'ok',note:''},
+    {code:'BYM15',drive:'BYM15 - 260418 - 122, rue du Faubourg Bannier, 45000 Orléans',adresse_ref:'122, rue du Faubourg Bannier, 45000 Orléans',etape:'travaux',statut:'ok',note:''},
+    {code:'BYM17',drive:'Absent',adresse_ref:'1, Allée des Amandiers, 37250 Montbazon',etape:'dead',statut:'info',note:'Dead · pas de dossier'}
+  ],
+  iris_rep: [
+    {code:'IR01',drive:'IR01 - 260222 - 122, rue du Faubourg Bannier, 45000 Orléans',adresse_ref:'122, rue du Faubourg Bannier, 45000 Orléans',etape:'commercialisation',statut:'ok',note:''},
+    {code:'IR02',drive:'IR02 - 250609 - Aéroport Nantes Atlantique, 44340 Bouguenais',adresse_ref:'Aéroport Nantes Atlantique, 44340 Bouguenais',etape:'cloture',statut:'ok',note:''},
+    {code:'IR05',drive:'IR05 - 260303 - 75, boulevard MacDonald, 75019 Paris',adresse_ref:'75, boulevard MacDonald, 75019 Paris',etape:'commercialisation',statut:'ok',note:''},
+    {code:'IR08',drive:'IR08 - 260420 - 13, rue Buffon, 37000 Tours',adresse_ref:'13, rue Buffon, 37000 Tours',etape:'sourcing',statut:'ok',note:''},
+    {code:'IR09',drive:'Absent',adresse_ref:'JCDecaux (adresse manquante)',etape:'sourcing',statut:'err',note:'Adresse manquante en base et pas de dossier Drive'},
+    {code:'IR10',drive:'IR10 - 250526 - Chemin de Longpré, 80000 Amiens',adresse_ref:'Chemin de Longpré, 80000 Amiens',etape:'commercialisation',statut:'ok',note:''},
+    {code:'IR11',drive:'Absent',adresse_ref:'122, rue du Faubourg Bannier (deal distinct IR01)',etape:'commercialisation',statut:'warn',note:'Même adresse qu\'IR01 · dossier commun ou à créer ?'},
+    {code:'IR13',drive:'Absent',adresse_ref:'Local Deshayes (adresse manquante)',etape:'commercialisation',statut:'err',note:'Adresse manquante en base et pas de dossier Drive'},
+    {code:'IR14',drive:'IR14 - 250331 - 57, rue du Colombier, 37700 Saint-Pierre-des-Corps',adresse_ref:'57, rue du Colombier, 37700 Saint-Pierre-des-Corps',etape:'sourcing',statut:'ok',note:''}
+  ],
+  gc: [
+    {code:'GC01',drive:'GC01 - 260421 - 188, rue du Général de Gaulle, 45160 Olivet [IRIS REP]\nGC01 - 260420 - 188, rue du Général de Gaulle, 45160 Olivet [GC Revente]',adresse_ref:'188, rue du Général de Gaulle, 45160 Olivet',etape:'sourcing',statut:'err',note:'DOUBLON : 2 dossiers GC01 dans 2 emplacements différents'},
+    {code:'GC02',drive:'Absent (dossier manquant dans GC Revente)',adresse_ref:'2265, rue Marcel Belot, 45160 Olivet',etape:'sourcing',statut:'err',note:'Aucun dossier GC02 dans Galerie Carrez · Revente'},
+    {code:'GC03',drive:'GC03 - 2026.04.17 - 45 route d\'Orléans... [IRIS REP]\npomade [IRIS REP]\nGC03 - 260420 - 47, route d\'Orléans... [GC Revente]',adresse_ref:'47, route d\'Orléans, 45380 La Chapelle Saint Mesmin',etape:'sourcing',statut:'err',note:'TRIPLE ANOMALIE : 3 dossiers GC03 · format date erroné (2026.04.17) · adresse "45" vs "47" · dossier "pomade" non renommé'},
+    {code:'GC04',drive:'GC04 - 250924 - 90, rue de Bourgogne, 45000 Orléans',adresse_ref:'90, rue de Bourgogne, 45000 Orléans',etape:'commercialisation',statut:'ok',note:''},
+    {code:'GC4',drive:'',adresse_ref:'90 rue de Bourgogne, 45000 Orléans',etape:'commercialisation',statut:'warn',note:'Code "GC4" en base sans zéro (devrait être GC04 · à normaliser)'},
+    {code:'GC5',drive:'GC05 - 2026.04.15 - TOME IV [IRIS REP]',adresse_ref:'Centre-Val de Loire',etape:'sourcing',statut:'err',note:'Dossier GC05 rangé dans IRIS REP Brokerage · devrait être dans GC Revente · format date erroné'}
+  ],
+  ur: [
+    {code:'UR01',drive:'Absent',adresse_ref:'105, rue de Rennes, 75006 Paris',etape:'dead',statut:'info',note:'Dead · pas de dossier'},
+    {code:'UR02',drive:'UR02 - 241003 - 72, rue Lamartine, 37000 Tours',adresse_ref:'72, rue Lamartine, 37000 Tours',etape:'to_sell',statut:'ok',note:''},
+    {code:'UR07',drive:'3. 240808 - Orléans - HOTEL DE COLIGNY (à confirmer)',adresse_ref:'7, Cloître Saint-Aignan, 45000 Orléans',etape:'sourcing',statut:'warn',note:'Hôtel de Coligny = Cloître Saint-Aignan ? À confirmer avant renommage'},
+    {code:'',drive:'2. 78 rue de Bourgogne 45000 Orléans',adresse_ref:'',etape:'',statut:'err',note:'Dossier orphelin · UR06 supprimé · à archiver'},
+    {code:'',drive:'Nouveau dossier (vide)',adresse_ref:'',etape:'',statut:'err',note:'Dossier vide sans nom · à supprimer'}
+  ],
+  mandats_vs_deals: [
+    {numero:'001',code_mandat:'GC01',code_deal:'GC01',mandant:'Catherine MIMAULT',bien:'188, rue du Général de Gaulle, 45160 Olivet',statut:'ok',note:''},
+    {numero:'002',code_mandat:'GC02',code_deal:'GC02',mandant:'Jean Raymond DUBOIS / Nadine TOUZEAU',bien:'2265, rue Marcel Belot, 45160 Olivet',statut:'ok',note:''},
+    {numero:'003',code_mandat:'GC03',code_deal:'GC03',mandant:'Bernard POMADE',bien:'47, route d\'Orléans, 45380 La Chapelle Saint Mesmin',statut:'ok',note:''},
+    {numero:'004',code_mandat:'GC4',code_deal:'GC4',mandant:'Société SENAQ',bien:'90, rue de Bourgogne, 45000 Orléans',statut:'warn',note:'Code "GC4" au lieu de "GC04" · à normaliser en base'},
+    {numero:'005',code_mandat:'GC5',code_deal:'GC5',mandant:'Société TOME IV',bien:'Centre-Val de Loire',statut:'warn',note:'Code "GC5" au lieu de "GC05" · à normaliser en base'},
+  ],
+  autocad: [
+    {projet:'0. Commun',fichier:'250930 - BASE DE TRAVAIL.dwg',anomalie:'Base de travail non rattachée à un projet',statut:'warn'},
+    {projet:'BYM03 Saint-Barthélemy Loft',fichier:'260114 - PLANS.dwg (x2 emplacements)',anomalie:'Fichier dupliqué dans 2 sous-dossiers · version active indéterminée',statut:'err'},
+    {projet:'BYM03 Saint-Barthélemy Loft',fichier:'250818 - stbarth.dwg (x4 copies)',anomalie:'4 copies avec 2 tailles différentes (3,8 Mo et 4,1 Mo)',statut:'err'},
+    {projet:'BYM03 Saint-Barthélemy Loft',fichier:'Aucun fichier "BASE DE TRAVAIL"',anomalie:'Pas de fichier de référence nommé BASE DE TRAVAIL',statut:'warn'},
+    {projet:'BYM12 Turenne',fichier:'P24128_87 rue de Turenne 75003_*.dwg (9 fichiers)',anomalie:'Plans architecte externes · pas de base de travail interne',statut:'warn'},
+    {projet:'BYM13 Olivet',fichier:'APD PLAN 25 04 2025.dwg',anomalie:'Nomenclature non conforme (pas de code deal + date)',statut:'warn'},
+    {projet:'UR02 Lamartine',fichier:'250930 - BASE DE TRAVAIL.dwg',anomalie:'Conforme',statut:'ok'},
+  ]
+};
+
+function renderAudit() {
+  const el = document.getElementById('audit-body');
+
+  const totalErr = [
+    ...AUDIT_DATA.bym,...AUDIT_DATA.iris_rep,...AUDIT_DATA.gc,...AUDIT_DATA.ur
+  ].filter(r=>r.statut==='err').length +
+  AUDIT_DATA.mandats_vs_deals.filter(r=>r.statut!=='ok').length +
+  AUDIT_DATA.autocad.filter(r=>r.statut==='err').length;
+
+  const totalWarn = [
+    ...AUDIT_DATA.bym,...AUDIT_DATA.iris_rep,...AUDIT_DATA.gc,...AUDIT_DATA.ur
+  ].filter(r=>r.statut==='warn').length +
+  AUDIT_DATA.autocad.filter(r=>r.statut==='warn').length;
+
+  document.getElementById('nav-audit-cnt').textContent = totalErr + totalWarn;
+
+  const kpis = `<div class="kpis" style="margin-bottom:20px">
+    <div class="kpi red"><div class="kpi-label">Anomalies critiques</div><div class="kpi-val">${totalErr}</div><div class="kpi-sub">à corriger</div></div>
+    <div class="kpi orange"><div class="kpi-label">Avertissements</div><div class="kpi-val">${totalWarn}</div><div class="kpi-sub">à vérifier</div></div>
+    <div class="kpi"><div class="kpi-label">Dernière maj</div><div class="kpi-val" style="font-size:16px">${AUDIT_DATA.generated}</div></div>
+    <div class="kpi green"><div class="kpi-label">Conformes</div><div class="kpi-val">${[...AUDIT_DATA.bym,...AUDIT_DATA.iris_rep,...AUDIT_DATA.gc,...AUDIT_DATA.ur].filter(r=>r.statut==='ok').length}</div></div>
+  </div>`;
+
+  const sB = (s) => {
+    if(s==='ok') return '<span class="pill p-done" style="font-size:9px">OK</span>';
+    if(s==='err') return '<span class="pill p-urg" style="font-size:9px">Anomalie</span>';
+    if(s==='warn') return '<span class="pill p-high" style="font-size:9px">Alerte</span>';
+    if(s==='info') return '<span class="pill p-standby" style="font-size:9px">Info</span>';
+    return '';
+  };
+  const rowBg = (s) => {
+    if(s==='ok') return '#fff';
+    if(s==='err') return 'rgba(231,76,60,0.05)';
+    if(s==='warn') return 'rgba(243,156,18,0.05)';
+    return '#fafafa';
+  };
+
+  const makeTable = (rows, cols) => `<div style="overflow-x:auto"><table class="tbl"><thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
+
+  const secTitle = (t, icon) => `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:6px 10px;background:var(--navy);color:#fff;border-radius:4px;margin:20px 0 8px;display:flex;align-items:center;gap:6px">${icon} ${t}</div>`;
+
+  // BYM
+  const bymRows = AUDIT_DATA.bym.map(r=>`<tr style="background:${rowBg(r.statut)}">
+    <td><span class="pill p-bym" style="font-size:9px">${r.code}</span></td>
+    <td style="font-size:11px">${r.drive}</td>
+    <td style="font-size:11px;color:var(--dim)">${r.adresse_ref}</td>
+    <td><span class="pill ${r.etape==='dead'?'p-standby':r.etape==='travaux'?'p-iris':'p-med'}" style="font-size:9px">${r.etape}</span></td>
+    <td>${sB(r.statut)}</td>
+    <td style="font-size:10px;color:var(--dim)">${r.note}</td>
+  </tr>`).join('');
+
+  // IRIS REP
+  const irRows = AUDIT_DATA.iris_rep.map(r=>`<tr style="background:${rowBg(r.statut)}">
+    <td><span class="pill p-iris" style="font-size:9px">${r.code}</span></td>
+    <td style="font-size:11px">${r.drive}</td>
+    <td style="font-size:11px;color:var(--dim)">${r.adresse_ref}</td>
+    <td><span class="pill p-med" style="font-size:9px">${r.etape}</span></td>
+    <td>${sB(r.statut)}</td>
+    <td style="font-size:10px;color:var(--dim)">${r.note}</td>
+  </tr>`).join('');
+
+  // GC
+  const gcRows = AUDIT_DATA.gc.map(r=>`<tr style="background:${rowBg(r.statut)}">
+    <td><span class="pill p-gc" style="font-size:9px">${r.code}</span></td>
+    <td style="font-size:11px;white-space:pre-line">${r.drive}</td>
+    <td style="font-size:11px;color:var(--dim)">${r.adresse_ref}</td>
+    <td><span class="pill p-med" style="font-size:9px">${r.etape}</span></td>
+    <td>${sB(r.statut)}</td>
+    <td style="font-size:10px;color:var(--red);font-weight:${r.statut==='err'?'600':'400'}">${r.note}</td>
+  </tr>`).join('');
+
+  // UR
+  const urRows = AUDIT_DATA.ur.map(r=>`<tr style="background:${rowBg(r.statut)}">
+    <td><span class="pill p-ur" style="font-size:9px">${r.code||'?'}</span></td>
+    <td style="font-size:11px">${r.drive}</td>
+    <td style="font-size:11px;color:var(--dim)">${r.adresse_ref}</td>
+    <td><span class="pill p-med" style="font-size:9px">${r.etape}</span></td>
+    <td>${sB(r.statut)}</td>
+    <td style="font-size:10px;color:var(--dim)">${r.note}</td>
+  </tr>`).join('');
+
+  // MANDATS
+  const mandatRows = AUDIT_DATA.mandats_vs_deals.map(r=>`<tr style="background:${rowBg(r.statut)}">
+    <td style="font-weight:700;font-size:11px">${r.numero}</td>
+    <td><span class="pill p-gc" style="font-size:9px">${r.code_mandat}</span></td>
+    <td><span class="pill p-gc" style="font-size:9px">${r.code_deal}</span></td>
+    <td style="font-size:11px">${r.mandant}</td>
+    <td style="font-size:11px;color:var(--dim)">${r.bien}</td>
+    <td>${sB(r.statut)}</td>
+    <td style="font-size:10px;color:var(--dim)">${r.note}</td>
+  </tr>`).join('');
+
+  // AUTOCAD
+  const dwgRows = AUDIT_DATA.autocad.map(r=>`<tr style="background:${rowBg(r.statut)}">
+    <td style="font-size:11px;font-weight:500">${r.projet}</td>
+    <td style="font-size:11px;font-family:monospace">${r.fichier}</td>
+    <td style="font-size:11px;color:var(--dim)">${r.anomalie}</td>
+    <td>${sB(r.statut)}</td>
+  </tr>`).join('');
+
+  const cols6 = ['Code','Dossier Drive','Adresse référentiel','Étape','Statut','Note'];
+  const colsM = ['N°','Code mandat','Code deal','Mandant','Bien','Statut','Note'];
+  const colsDwg = ['Projet','Fichier DWG','Anomalie','Statut'];
+
+  el.innerHTML = kpis
+    + `<div class="tcard">`
+    + secTitle('BYM · Projets travaux','🏗️')
+    + makeTable(bymRows, cols6)
+    + secTitle('IRIS REP · Projets brokerage','🔍')
+    + makeTable(irRows, cols6)
+    + secTitle('Galerie Carrez · Projets de revente','🎨')
+    + makeTable(gcRows, cols6)
+    + secTitle('Urban Rise · Projets d\'investissement','🏠')
+    + makeTable(urRows, cols6)
+    + `</div><div class="tcard" style="margin-top:16px">`
+    + secTitle('Registre des mandats vs deals dashboard','📋')
+    + makeTable(mandatRows, colsM)
+    + `</div><div class="tcard" style="margin-top:16px">`
+    + secTitle('Fichiers AutoCAD · base de travail','📐')
+    + makeTable(dwgRows, colsDwg)
+    + `<div style="font-size:10px;color:var(--dim);padding:10px;margin-top:8px;background:var(--bg);border-radius:6px">Convention attendue : <code style="background:var(--card);padding:1px 5px;border-radius:3px">[CODE]-BASE-DE-TRAVAIL-[AAAAMMJJ].dwg</code> · anciennes versions dans sous-dossier <code>old/</code></div>`
+    + `</div>`;
+}
+/* ===================== END AUDIT ===================== */
 
 /* ===================== MANDATS IRIS REP ===================== */
 let mandatsFilterStatut='all',mandatsSortCol='date_reception',mandatsSortDir='desc';
