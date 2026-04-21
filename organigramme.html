@@ -394,13 +394,13 @@ makeNode('klepic', { x: fX.rir, y: Y.persons, delay: 0.5, name: 'Vélibor Klepic
 makeNode('cahen', { x: fX.cd1, y: Y.persons, delay: 0.52, name: 'Julien Cahen', person: true });
 
 const bonvX = (fX.gc + fX.c2c) / 2;
-makeNode('bonventre', { x: bonvX, y: Y.persons + 80, delay: 0.54, name: 'Christian Bonventre', person: true });
+makeNode('bonventre', { x: bonvX - 60, y: Y.persons + 80, delay: 0.54, name: 'Christian Bonventre', person: true });
 
 const poisX = fX.c2c;
-makeNode('poissonnier', { x: poisX, y: Y.persons + 80, delay: 0.56, name: 'Laurent Poissonnier', person: true });
+makeNode('poissonnier', { x: poisX + 60, y: Y.persons + 80, delay: 0.56, name: 'Laurent Poissonnier', person: true });
 
 const vilX = colX(NUM_COLS - 1) + COL_W * 0.7;
-const junX = colX(NUM_COLS - 1) + COL_W * 0.7 + 160;
+const junX = colX(NUM_COLS - 1) + COL_W * 0.7 + 220;
 makeNode('vilmar', { x: vilX, y: Y.persons - 210, delay: 0.6, name: 'Vilmar Filho', person: true, subtitle: 'Associé Gérant' });
 makeNode('junior', { x: junX, y: Y.persons - 210, delay: 0.62, name: 'Junior Bageti', person: true, subtitle: 'Associé Gérant' });
 
