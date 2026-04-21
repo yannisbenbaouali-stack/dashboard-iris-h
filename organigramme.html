@@ -387,7 +387,7 @@ fX['c2c'] = colX(4);
 makeNode('c2c', { x: colX(4), y: Y.filiales, delay: 0.8, name: 'C2C.FR', forme: 'SCI à l\'IS', capital: '1 500 €', activity: 'Détention immobilière' });
 
 fX['bym'] = colX(5);
-makeNode('bym', { x: colX(5), y: Y.filiales, delay: 0.9, name: 'BYM Construction', forme: 'SAS', capital: '1 500 €', activity: 'Rénovation', pending: true });
+makeNode('bym', { x: colX(5), y: Y.filiales, delay: 0.9, name: 'BYM Construction', forme: 'SAS', capital: '1 500 €', activity: 'Rénovation' });
 
 // ---- PERSONS ----
 
@@ -451,7 +451,7 @@ setTimeout(() => {
     { id: 'gc', pct: '51 %', p: false },
     { id: 'buybuy', pct: '51 %', p: false },
     { id: 'c2c', pct: '33 %', p: false },
-    { id: 'bym', pct: '33 %', p: true },
+    { id: 'bym', pct: '33 %', p: false },
   ];
 
   links.forEach(l => {
@@ -510,13 +510,13 @@ setTimeout(() => {
   // GARV HOLDING → BYM (34%)
   const vfB = botC('vfh');
   const bymT = topC('bym');
-  drawLine(vfB.x, vfB.y, bymT.x, bymT.y, 'dashed');
-  drawPctOnLine('34 %', vfB, bymT, 0.5, -30, 'orange');
+  drawLine(vfB.x, vfB.y, bymT.x, bymT.y, '');
+  drawPctOnLine('34 %', vfB, bymT, 0.5, -30, 'grey');
 
   // BAGUETI JR H → BYM (33%)
   const jbB = botC('jbh');
-  drawLine(jbB.x, jbB.y, bymT.x, bymT.y, 'dashed');
-  drawPctOnLine('33 %', jbB, bymT, 0.5, 30, 'orange');
+  drawLine(jbB.x, jbB.y, bymT.x, bymT.y, '');
+  drawPctOnLine('33 %', jbB, bymT, 0.5, 30, 'grey');
 
   const vilB = botC('vilmar');
 
