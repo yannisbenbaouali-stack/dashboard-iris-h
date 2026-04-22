@@ -1549,189 +1549,220 @@ async function outilsDelete(id){
 
 const AUDIT_DATA = {
   generated: '2026-04-22',
+  // check: cohérent | absent_dashboard | absent_drive | incohérence | doublon | à_créer | autre
+  // nomenclature: ok | format_date | mauvais_emplacement | non_conforme | doublon_dossier
   bym: [
-    {code:'BYM02',drive:'BYM02 - 260316 - 72, rue de Bourgogne, 45000 Orléans',adresse_ref:'72, rue de Bourgogne, 45000 Orléans',etape:'travaux',statut:'ok',note:''},
-    {code:'BYM03',drive:'BYM03 - 250930 - 20, rue Saint Barthélemy, 37100 Tours (Loft)',adresse_ref:'20, rue Saint Barthélemy, 37100 Tours',etape:'compromis',statut:'ok',note:''},
-    {code:'BYM04',drive:'BYM04 - 250730 - 20, rue Saint Barthélemy, 37100 Tours (Maison)',adresse_ref:'20, rue Saint Barthélemy, 37100 Tours',etape:'travaux',statut:'ok',note:''},
-    {code:'BYM05',drive:'BYM05 - 260322 - 78, rue de Bourgogne, 45000 Orléans (Immeuble)',adresse_ref:'78, rue de Bourgogne, 45000 Orléans',etape:'dead',statut:'warn',note:'Deal dead · dossier Drive conservé'},
-    {code:'BYM06',drive:'Absent',adresse_ref:'78, rue de Bourgogne, 45000 Orléans',etape:'dead',statut:'info',note:'Dead · archivé (attendu)'},
-    {code:'BYM07',drive:'Absent',adresse_ref:'78, rue de Bourgogne, 45000 Orléans',etape:'dead',statut:'info',note:'Dead · archivé (attendu)'},
-    {code:'BYM08',drive:'BYM08 - 260322 - 78, rue de Bourgogne, 45000 Orléans (R+2)',adresse_ref:'78, rue de Bourgogne, 45000 Orléans',etape:'travaux',statut:'ok',note:''},
-    {code:'BYM09',drive:'Absent',adresse_ref:'7, bd du Sevrage, 37530 Nazelles-Négron',etape:'dead',statut:'info',note:'Dead · pas de dossier'},
-    {code:'BYM10',drive:'BYM10 - 250925 - 19, avenue Jean Jaurès, 94200 Ivry-sur-Seine',adresse_ref:'19, avenue Jean Jaurès, 94200 Ivry-sur-Seine',etape:'sourcing',statut:'ok',note:''},
-    {code:'BYM11',drive:'BYM11 - 251127 - 124, rue de Beaujardin, 37000 Tours',adresse_ref:'124, rue de Beaujardin, 37000 Tours',etape:'sourcing',statut:'ok',note:''},
-    {code:'BYM12',drive:'BYM12 - 260227 - 87, rue de Turenne, 75003 Paris',adresse_ref:'87, rue de Turenne, 75003 Paris',etape:'offre',statut:'ok',note:''},
-    {code:'BYM13',drive:'BYM13 - 260224 - 188, rue du Général de Gaulle, 45160 Olivet',adresse_ref:'188, rue du Général de Gaulle, 45160 Olivet',etape:'sourcing',statut:'ok',note:''},
-    {code:'BYM14',drive:'BYM14 - 260418 - 87, boulevard MacDonald, 75019 Paris',adresse_ref:'87, boulevard MacDonald, 75019 Paris',etape:'travaux',statut:'ok',note:''},
-    {code:'BYM15',drive:'BYM15 - 260418 - 122, rue du Faubourg Bannier, 45000 Orléans',adresse_ref:'122, rue du Faubourg Bannier, 45000 Orléans',etape:'travaux',statut:'ok',note:''},
-    {code:'BYM17',drive:'Absent',adresse_ref:'1, Allée des Amandiers, 37250 Montbazon',etape:'dead',statut:'info',note:'Dead · pas de dossier'}
+    {code:'BYM02',check:'cohérent',drive:'BYM02 - 260316 - 72, rue de Bourgogne, 45000 Orléans',nomenclature:'ok',adresse_ref:'72, rue de Bourgogne, 45000 Orléans',etape:'travaux',statut:'ok',note:''},
+    {code:'BYM03',check:'cohérent',drive:'BYM03 - 250930 - 20, rue Saint Barthélemy, 37100 Tours (Loft)',nomenclature:'ok',adresse_ref:'20, rue Saint Barthélemy, 37100 Tours',etape:'compromis',statut:'ok',note:''},
+    {code:'BYM04',check:'cohérent',drive:'BYM04 - 250730 - 20, rue Saint Barthélemy, 37100 Tours (Maison)',nomenclature:'ok',adresse_ref:'20, rue Saint Barthélemy, 37100 Tours',etape:'travaux',statut:'ok',note:''},
+    {code:'BYM05',check:'cohérent',drive:'BYM05 - 260322 - 78, rue de Bourgogne, 45000 Orléans (Immeuble)',nomenclature:'ok',adresse_ref:'78, rue de Bourgogne, 45000 Orléans',etape:'dead',statut:'warn',note:'Deal dead · dossier conservé'},
+    {code:'BYM06',check:'absent_drive',drive:'Absent',nomenclature:'',adresse_ref:'78, rue de Bourgogne, 45000 Orléans',etape:'dead',statut:'info',note:'Dead · archivé'},
+    {code:'BYM07',check:'absent_drive',drive:'Absent',nomenclature:'',adresse_ref:'78, rue de Bourgogne, 45000 Orléans',etape:'dead',statut:'info',note:'Dead · archivé'},
+    {code:'BYM08',check:'cohérent',drive:'BYM08 - 260322 - 78, rue de Bourgogne, 45000 Orléans (R+2)',nomenclature:'ok',adresse_ref:'78, rue de Bourgogne, 45000 Orléans',etape:'travaux',statut:'ok',note:''},
+    {code:'BYM09',check:'absent_drive',drive:'Absent',nomenclature:'',adresse_ref:'7, bd du Sevrage, 37530 Nazelles-Négron',etape:'dead',statut:'info',note:'Dead · pas de dossier'},
+    {code:'BYM10',check:'cohérent',drive:'BYM10 - 250925 - 19, avenue Jean Jaurès, 94200 Ivry-sur-Seine',nomenclature:'ok',adresse_ref:'19, avenue Jean Jaurès, 94200 Ivry-sur-Seine',etape:'sourcing',statut:'ok',note:''},
+    {code:'BYM11',check:'cohérent',drive:'BYM11 - 251127 - 124, rue de Beaujardin, 37000 Tours',nomenclature:'ok',adresse_ref:'124, rue de Beaujardin, 37000 Tours',etape:'sourcing',statut:'ok',note:''},
+    {code:'BYM12',check:'cohérent',drive:'BYM12 - 260227 - 87, rue de Turenne, 75003 Paris',nomenclature:'ok',adresse_ref:'87, rue de Turenne, 75003 Paris',etape:'offre',statut:'ok',note:''},
+    {code:'BYM13',check:'cohérent',drive:'BYM13 - 260224 - 188, rue du Général de Gaulle, 45160 Olivet',nomenclature:'ok',adresse_ref:'188, rue du Général de Gaulle, 45160 Olivet',etape:'sourcing',statut:'ok',note:''},
+    {code:'BYM14',check:'cohérent',drive:'BYM14 - 260418 - 87, boulevard MacDonald, 75019 Paris',nomenclature:'ok',adresse_ref:'87, boulevard MacDonald, 75019 Paris',etape:'travaux',statut:'ok',note:''},
+    {code:'BYM15',check:'cohérent',drive:'BYM15 - 260418 - 122, rue du Faubourg Bannier, 45000 Orléans',nomenclature:'ok',adresse_ref:'122, rue du Faubourg Bannier, 45000 Orléans',etape:'travaux',statut:'ok',note:''},
+    {code:'BYM17',check:'absent_drive',drive:'Absent',nomenclature:'',adresse_ref:'1, Allée des Amandiers, 37250 Montbazon',etape:'dead',statut:'info',note:'Dead · pas de dossier'}
   ],
   iris_rep: [
-    {code:'IR01',drive:'IR01 - 260222 - 122, rue du Faubourg Bannier, 45000 Orléans',adresse_ref:'122, rue du Faubourg Bannier, 45000 Orléans',etape:'commercialisation',statut:'ok',note:''},
-    {code:'IR02',drive:'IR02 - 250609 - Aéroport Nantes Atlantique, 44340 Bouguenais',adresse_ref:'Aéroport Nantes Atlantique, 44340 Bouguenais',etape:'cloture',statut:'ok',note:''},
-    {code:'IR05',drive:'IR05 - 260303 - 75, boulevard MacDonald, 75019 Paris',adresse_ref:'75, boulevard MacDonald, 75019 Paris',etape:'commercialisation',statut:'ok',note:''},
-    {code:'IR08',drive:'IR08 - 260420 - 13, rue Buffon, 37000 Tours',adresse_ref:'13, rue Buffon, 37000 Tours',etape:'sourcing',statut:'ok',note:''},
-    {code:'IR09',drive:'Absent',adresse_ref:'JCDecaux (adresse manquante)',etape:'sourcing',statut:'err',note:'Adresse manquante en base et pas de dossier Drive'},
-    {code:'IR10',drive:'IR10 - 250526 - Chemin de Longpré, 80000 Amiens',adresse_ref:'Chemin de Longpré, 80000 Amiens',etape:'commercialisation',statut:'ok',note:''},
-    {code:'IR11',drive:'Absent',adresse_ref:'122, rue du Faubourg Bannier (deal distinct IR01)',etape:'commercialisation',statut:'warn',note:'Même adresse qu\'IR01 · dossier commun ou à créer ?'},
-    {code:'IR13',drive:'Absent',adresse_ref:'Local Deshayes (adresse manquante)',etape:'commercialisation',statut:'err',note:'Adresse manquante en base et pas de dossier Drive'},
-    {code:'IR14',drive:'IR14 - 250331 - 57, rue du Colombier, 37700 Saint-Pierre-des-Corps',adresse_ref:'57, rue du Colombier, 37700 Saint-Pierre-des-Corps',etape:'sourcing',statut:'ok',note:''}
+    {code:'IR01',check:'cohérent',drive:'IR01 - 260222 - 122, rue du Faubourg Bannier, 45000 Orléans',nomenclature:'ok',adresse_ref:'122, rue du Faubourg Bannier, 45000 Orléans',etape:'commercialisation',statut:'ok',note:''},
+    {code:'IR02',check:'cohérent',drive:'IR02 - 250609 - Aéroport Nantes Atlantique, 44340 Bouguenais',nomenclature:'ok',adresse_ref:'Aéroport Nantes Atlantique, 44340 Bouguenais',etape:'cloture',statut:'ok',note:''},
+    {code:'IR05',check:'cohérent',drive:'IR05 - 260303 - 75, boulevard MacDonald, 75019 Paris',nomenclature:'ok',adresse_ref:'75, boulevard MacDonald, 75019 Paris',etape:'commercialisation',statut:'ok',note:''},
+    {code:'IR08',check:'cohérent',drive:'IR08 - 260420 - 13, rue Buffon, 37000 Tours',nomenclature:'ok',adresse_ref:'13, rue Buffon, 37000 Tours',etape:'sourcing',statut:'ok',note:''},
+    {code:'IR09',check:'absent_drive',drive:'Absent',nomenclature:'',adresse_ref:'Adresse manquante en base',etape:'sourcing',statut:'err',note:'Adresse inconnue et pas de dossier Drive'},
+    {code:'IR10',check:'cohérent',drive:'IR10 - 250526 - Chemin de Longpré, 80000 Amiens',nomenclature:'ok',adresse_ref:'Chemin de Longpré, 80000 Amiens',etape:'commercialisation',statut:'ok',note:''},
+    {code:'IR11',check:'absent_drive',drive:'Absent',nomenclature:'',adresse_ref:'122, rue du Faubourg Bannier (deal distinct d\'IR01)',etape:'commercialisation',statut:'warn',note:'Même adresse qu\'IR01 · sous-dossier à créer ?'},
+    {code:'IR13',check:'absent_drive',drive:'Absent',nomenclature:'',adresse_ref:'Adresse manquante en base',etape:'commercialisation',statut:'err',note:'Adresse inconnue et pas de dossier Drive'},
+    {code:'IR14',check:'cohérent',drive:'IR14 - 250331 - 57, rue du Colombier, 37700 Saint-Pierre-des-Corps',nomenclature:'ok',adresse_ref:'57, rue du Colombier, 37700 Saint-Pierre-des-Corps',etape:'sourcing',statut:'ok',note:''}
   ],
   gc: [
-    {code:'GC01',drive:'GC01 - 260421 - 188, rue du Général de Gaulle, 45160 Olivet [IRIS REP]\nGC01 - 260420 - 188, rue du Général de Gaulle, 45160 Olivet [GC Revente]',adresse_ref:'188, rue du Général de Gaulle, 45160 Olivet',etape:'sourcing',statut:'err',note:'DOUBLON : 2 dossiers GC01 dans 2 emplacements différents'},
-    {code:'GC02',drive:'Absent (dossier manquant dans GC Revente)',adresse_ref:'2265, rue Marcel Belot, 45160 Olivet',etape:'sourcing',statut:'err',note:'Aucun dossier GC02 dans Galerie Carrez · Revente'},
-    {code:'GC03',drive:'GC03 - 2026.04.17 - 45 route d\'Orléans... [IRIS REP]\npomade [IRIS REP]\nGC03 - 260420 - 47, route d\'Orléans... [GC Revente]',adresse_ref:'47, route d\'Orléans, 45380 La Chapelle Saint Mesmin',etape:'sourcing',statut:'err',note:'TRIPLE ANOMALIE : 3 dossiers GC03 · format date erroné (2026.04.17) · adresse "45" vs "47" · dossier "pomade" non renommé'},
-    {code:'GC04',drive:'GC04 - 250924 - 90, rue de Bourgogne, 45000 Orléans',adresse_ref:'90, rue de Bourgogne, 45000 Orléans',etape:'commercialisation',statut:'ok',note:''},
-    {code:'GC4',drive:'',adresse_ref:'90 rue de Bourgogne, 45000 Orléans',etape:'commercialisation',statut:'warn',note:'Code "GC4" en base sans zéro (devrait être GC04 · à normaliser)'},
-    {code:'GC5',drive:'GC05 - 2026.04.15 - TOME IV [IRIS REP]',adresse_ref:'Centre-Val de Loire',etape:'sourcing',statut:'err',note:'Dossier GC05 rangé dans IRIS REP Brokerage · devrait être dans GC Revente · format date erroné'}
+    {code:'GC01',check:'doublon',drive:'GC01 - 260421 - 188, rue du Général de Gaulle [dans IRIS REP]\nGC01 - 260420 - 188, rue du Général de Gaulle [dans GC Revente]',nomenclature:'doublon_dossier',adresse_ref:'188, rue du Général de Gaulle, 45160 Olivet',etape:'sourcing',statut:'err',mandat:'001 · Signé · Catherine MIMAULT',note:'2 dossiers identiques dans 2 emplacements différents'},
+    {code:'GC02',check:'absent_drive',drive:'Absent de GC Revente',nomenclature:'',adresse_ref:'2265, rue Marcel Belot, 45160 Olivet',etape:'sourcing',statut:'err',mandat:'002 · En cours · DUBOIS / TOUZEAU',note:'Aucun dossier GC02 dans Galerie Carrez Revente'},
+    {code:'GC03',check:'doublon',drive:'GC03 - 2026.04.17 - 45 route d\'Orléans... [IRIS REP]\npomade [IRIS REP · non renommé]\nGC03 - 260420 - 47, route d\'Orléans... [GC Revente]',nomenclature:'non_conforme',adresse_ref:'47, route d\'Orléans, 45380 La Chapelle Saint Mesmin',etape:'sourcing',statut:'err',mandat:'003 · En cours · Bernard POMADE',note:'3 dossiers · date "2026.04.17" format invalide · adresse "45 route" ≠ "47 route" · "pomade" non renommé'},
+    {code:'GC04',check:'cohérent',drive:'GC04 - 250924 - 90, rue de Bourgogne, 45000 Orléans',nomenclature:'ok',adresse_ref:'90, rue de Bourgogne, 45000 Orléans',etape:'commercialisation',statut:'ok',mandat:'004 · En cours · SENAQ',note:'Code "GC4" en base à normaliser en "GC04"'},
+    {code:'GC4',check:'incohérence',drive:'',nomenclature:'',adresse_ref:'90 rue de Bourgogne, 45000 Orléans',etape:'commercialisation',statut:'warn',mandat:'004 · code "GC4" ≠ "GC04"',note:'Code en base non normalisé · doublon de GC04'},
+    {code:'GC5',check:'incohérence',drive:'GC05 - 2026.04.15 - TOME IV [rangé dans IRIS REP]',nomenclature:'mauvais_emplacement',adresse_ref:'Centre-Val de Loire',etape:'sourcing',statut:'err',mandat:'005 · En cours · TOME IV · code "GC5" ≠ "GC05"',note:'Dossier rangé dans IRIS REP · devrait être dans GC · date format invalide'}
   ],
   ur: [
-    {code:'UR01',drive:'Absent',adresse_ref:'105, rue de Rennes, 75006 Paris',etape:'dead',statut:'info',note:'Dead · pas de dossier'},
-    {code:'UR02',drive:'UR02 - 241003 - 72, rue Lamartine, 37000 Tours',adresse_ref:'72, rue Lamartine, 37000 Tours',etape:'to_sell',statut:'ok',note:''},
-    {code:'UR07',drive:'3. 240808 - Orléans - HOTEL DE COLIGNY (à confirmer)',adresse_ref:'7, Cloître Saint-Aignan, 45000 Orléans',etape:'sourcing',statut:'warn',note:'Hôtel de Coligny = Cloître Saint-Aignan ? À confirmer avant renommage'},
-    {code:'',drive:'2. 78 rue de Bourgogne 45000 Orléans',adresse_ref:'',etape:'',statut:'err',note:'Dossier orphelin · UR06 supprimé · à archiver'},
-    {code:'',drive:'Nouveau dossier (vide)',adresse_ref:'',etape:'',statut:'err',note:'Dossier vide sans nom · à supprimer'}
-  ],
-  mandats_vs_deals: [
-    {numero:'001',code_mandat:'GC01',code_deal:'GC01',mandant:'Catherine MIMAULT',bien:'188, rue du Général de Gaulle, 45160 Olivet',statut:'ok',note:''},
-    {numero:'002',code_mandat:'GC02',code_deal:'GC02',mandant:'Jean Raymond DUBOIS / Nadine TOUZEAU',bien:'2265, rue Marcel Belot, 45160 Olivet',statut:'ok',note:''},
-    {numero:'003',code_mandat:'GC03',code_deal:'GC03',mandant:'Bernard POMADE',bien:'47, route d\'Orléans, 45380 La Chapelle Saint Mesmin',statut:'ok',note:''},
-    {numero:'004',code_mandat:'GC4',code_deal:'GC4',mandant:'Société SENAQ',bien:'90, rue de Bourgogne, 45000 Orléans',statut:'warn',note:'Code "GC4" au lieu de "GC04" · à normaliser en base'},
-    {numero:'005',code_mandat:'GC5',code_deal:'GC5',mandant:'Société TOME IV',bien:'Centre-Val de Loire',statut:'warn',note:'Code "GC5" au lieu de "GC05" · à normaliser en base'},
+    {code:'UR01',check:'absent_drive',drive:'Absent',nomenclature:'',adresse_ref:'105, rue de Rennes, 75006 Paris',etape:'dead',statut:'info',note:'Dead · pas de dossier'},
+    {code:'UR02',check:'cohérent',drive:'UR02 - 241003 - 72, rue Lamartine, 37000 Tours',nomenclature:'ok',adresse_ref:'72, rue Lamartine, 37000 Tours',etape:'to_sell',statut:'ok',note:''},
+    {code:'UR07',check:'incohérence',drive:'3. 240808 - Orléans - HOTEL DE COLIGNY (non renommé)',nomenclature:'non_conforme',adresse_ref:'7, Cloître Saint-Aignan, 45000 Orléans',etape:'sourcing',statut:'warn',note:'Hôtel de Coligny = Cloître Saint-Aignan ? Confirmer avant renommage en UR07 - 240808 - 7, Cloître Saint-Aignan, 45000 Orléans'},
+    {code:'',check:'absent_dashboard',drive:'2. 78 rue de Bourgogne 45000 Orléans',nomenclature:'non_conforme',adresse_ref:'',etape:'',statut:'err',note:'Orphelin · UR06 supprimé · à archiver'},
+    {code:'',check:'absent_dashboard',drive:'Nouveau dossier (vide)',nomenclature:'non_conforme',adresse_ref:'',etape:'',statut:'err',note:'Dossier vide sans nom · à supprimer'}
   ],
   autocad: [
-    {projet:'0. Commun',fichier:'250930 - BASE DE TRAVAIL.dwg',anomalie:'Base de travail non rattachée à un projet',statut:'warn'},
-    {projet:'BYM03 Saint-Barthélemy Loft',fichier:'260114 - PLANS.dwg (x2 emplacements)',anomalie:'Fichier dupliqué dans 2 sous-dossiers · version active indéterminée',statut:'err'},
-    {projet:'BYM03 Saint-Barthélemy Loft',fichier:'250818 - stbarth.dwg (x4 copies)',anomalie:'4 copies avec 2 tailles différentes (3,8 Mo et 4,1 Mo)',statut:'err'},
-    {projet:'BYM03 Saint-Barthélemy Loft',fichier:'Aucun fichier "BASE DE TRAVAIL"',anomalie:'Pas de fichier de référence nommé BASE DE TRAVAIL',statut:'warn'},
-    {projet:'BYM12 Turenne',fichier:'P24128_87 rue de Turenne 75003_*.dwg (9 fichiers)',anomalie:'Plans architecte externes · pas de base de travail interne',statut:'warn'},
-    {projet:'BYM13 Olivet',fichier:'APD PLAN 25 04 2025.dwg',anomalie:'Nomenclature non conforme (pas de code deal + date)',statut:'warn'},
-    {projet:'UR02 Lamartine',fichier:'250930 - BASE DE TRAVAIL.dwg',anomalie:'Conforme',statut:'ok'},
+    {projet:'UR02 · 72, rue Lamartine',chemin:'UR02.../9. Plans, surfaces/1. Plans Yannis',fichier:'260127 - Plans lamartine.dwg',taille:'22,9 Mo',date_modif:'20/04/2026',note:'Plan de travail actif'},
+    {projet:'UR02 · 72, rue Lamartine',chemin:'UR02.../9. Plans, surfaces/3. Plans géomètre/DWG 2025',fichier:'SVG LAMARTINE.dwg',taille:'9 Mo',date_modif:'24/07/2025',note:'Plan géomètre 2025'},
+    {projet:'UR02 · 72, rue Lamartine',chemin:'UR02.../9. Plans, surfaces/3. Plans géomètre/DWG 2025',fichier:'25067-Rdc.dwg',taille:'163 Ko',date_modif:'28/02/2025',note:'Doublon : existe aussi dans DWG 2026'},
+    {projet:'UR02 · 72, rue Lamartine',chemin:'UR02.../9. Plans, surfaces/3. Plans géomètre/DWG 2026',fichier:'25067-Rdc.dwg',taille:'165 Ko',date_modif:'20/04/2026',note:'Doublon : existe aussi dans DWG 2025'},
+    {projet:'UR02 · 72, rue Lamartine',chemin:'UR02.../9. Plans, surfaces/3. Plans géomètre/DWG 2026',fichier:'25067-1er.dwg',taille:'136 Ko',date_modif:'20/04/2026',note:'Plans géomètre 1er étage'},
+    {projet:'0. Commun · Autocad (référence transverse)',chemin:'0. Commun/3. Autocad',fichier:'250930 - BASE DE TRAVAIL.dwg',taille:'561 Ko',date_modif:'27/01/2026',note:'Seul fichier nommé BASE DE TRAVAIL · non rattaché à un projet'},
+    {projet:'BYM03 · Saint-Barthélemy Loft',chemin:'BYM03.../9. Plans, surfaces/2. Plans Autocad [dossier 1]',fichier:'260114 - PLANS.dwg',taille:'6,5 Mo',date_modif:'14/01/2026',note:'DOUBLON : même fichier dans 2 sous-dossiers différents'},
+    {projet:'BYM03 · Saint-Barthélemy Loft',chemin:'BYM03.../9. Plans, surfaces/2. Plans Autocad [dossier 1]',fichier:'260115 - PLANS.dwg',taille:'7,6 Mo',date_modif:'15/01/2026',note:'DOUBLON'},
+    {projet:'BYM03 · Saint-Barthélemy Loft',chemin:'BYM03.../9. Plans, surfaces/2. Plans Autocad [dossier 1]',fichier:'251230 - PLANS.dwg',taille:'8,2 Mo',date_modif:'14/01/2026',note:'DOUBLON'},
+    {projet:'BYM03 · Saint-Barthélemy Loft',chemin:'BYM03.../9. Plans, surfaces/2. Plans Autocad [dossier 2]',fichier:'260114 - PLANS.dwg',taille:'6,5 Mo',date_modif:'14/01/2026',note:'DOUBLON · version 2'},
+    {projet:'BYM03 · Saint-Barthélemy Loft',chemin:'BYM03.../9. Plans, surfaces/2. Plans Autocad [dossier 2]',fichier:'260115 - PLANS.dwg',taille:'7,6 Mo',date_modif:'15/01/2026',note:'DOUBLON · version 2'},
+    {projet:'BYM03 · Saint-Barthélemy Loft',chemin:'BYM03.../9. Plans, surfaces/2. Plans Autocad [dossier 2]',fichier:'251230 - PLANS.dwg',taille:'8,2 Mo',date_modif:'14/01/2026',note:'DOUBLON · version 2'},
+    {projet:'BYM03 · Saint-Barthélemy Loft',chemin:'BYM03.../9. Plans, surfaces/2. Plans Autocad [dossier 2]',fichier:'Ouvertures façades est.dwg',taille:'36 Ko',date_modif:'20/03/2026',note:''},
+    {projet:'BYM03 · Saint-Barthélemy Loft',chemin:'BYM03.../old [x4 copies]',fichier:'250818 - stbarth.dwg',taille:'3,8 Mo ou 4,1 Mo',date_modif:'30/12/2025',note:'4 copies · 2 tailles différentes (3,8 et 4,1 Mo) · version active indéterminée'},
+    {projet:'BYM03 · Saint-Barthélemy Loft',chemin:'BYM03.../old [x2 copies]',fichier:'252307 - stbarth - old.dwg',taille:'3,2 Mo',date_modif:'01/08/2025',note:'2 copies identiques'},
+    {projet:'BYM03 · Saint-Barthélemy Loft',chemin:'BYM03.../old [x2 copies]',fichier:'v 4caps.dwg',taille:'12 Mo',date_modif:'24/07/2025',note:'2 copies identiques · sans date dans le nom'},
+    {projet:'BYM03 · Saint-Barthélemy Loft',chemin:'BYM03.../old [x2 copies]',fichier:'250601 - Plan - V_4caps.dwg',taille:'8 Mo',date_modif:'04/10/2025',note:'2 copies identiques'},
+    {projet:'BYM03 · Saint-Barthélemy Loft',chemin:'BYM03.../old',fichier:'es_02.dwg',taille:'290 Ko',date_modif:'15/03/2026',note:'Nomenclature non conforme'},
+    {projet:'BYM03 · Saint-Barthélemy Loft',chemin:'BYM03.../old',fichier:'25-0536 transmit.dwg',taille:'230 Ko',date_modif:'30/10/2025',note:'Document transmis par tiers'},
+    {projet:'BYM12 · 87 rue de Turenne',chemin:'BYM12.../DWG',fichier:'P24128_87 rue de Turenne 75003_R00.dwg',taille:'882 Ko',date_modif:'08/04/2024',note:'Plans architecte externe · RdC'},
+    {projet:'BYM12 · 87 rue de Turenne',chemin:'BYM12.../DWG',fichier:'P24128_87 rue de Turenne 75003_R01.dwg',taille:'840 Ko',date_modif:'08/04/2024',note:'Plans architecte · R+1'},
+    {projet:'BYM12 · 87 rue de Turenne',chemin:'BYM12.../DWG',fichier:'P24128_87 rue de Turenne 75003_R02_indB.dwg',taille:'836 Ko',date_modif:'11/10/2024',note:'Plans architecte · R+2 ind B'},
+    {projet:'BYM12 · 87 rue de Turenne',chemin:'BYM12.../DWG',fichier:'P24128_87 rue de Turenne 75003_R03.dwg',taille:'842 Ko',date_modif:'08/04/2024',note:'Plans architecte · R+3'},
+    {projet:'BYM12 · 87 rue de Turenne',chemin:'BYM12.../DWG',fichier:'P24128_87 rue de Turenne 75003_R03+_indA.dwg',taille:'811 Ko',date_modif:'11/10/2024',note:'Plans architecte · R+3 ind A'},
+    {projet:'BYM12 · 87 rue de Turenne',chemin:'BYM12.../DWG',fichier:'P24128_87 rue de Turenne 75003_R04.dwg',taille:'824 Ko',date_modif:'08/04/2024',note:'Plans architecte · R+4'},
+    {projet:'BYM12 · 87 rue de Turenne',chemin:'BYM12.../DWG',fichier:'P24128_87 rue de Turenne 75003_Toiture.dwg',taille:'826 Ko',date_modif:'08/04/2024',note:'Plans architecte · Toiture'},
+    {projet:'BYM12 · 87 rue de Turenne',chemin:'BYM12.../DWG',fichier:'P24128_87 rue de Turenne 75003_S01.dwg',taille:'786 Ko',date_modif:'08/04/2024',note:'Plans architecte · Structure'},
+    {projet:'BYM12 · 87 rue de Turenne',chemin:'BYM12.../DWG',fichier:'P24128_87 rue de Turenne 75003_Façades.dwg',taille:'1 Mo',date_modif:'08/04/2024',note:'Plans architecte · Façades'},
+    {projet:'BYM12 · 87 rue de Turenne',chemin:'BYM12.../DWG',fichier:'P24128_87 rue de Turenne 75003_Plan Masse.dwg',taille:'849 Ko',date_modif:'08/04/2024',note:'Plans architecte · Plan masse'},
+    {projet:'BYM13 · 188 rue du Général de Gaulle',chemin:'BYM13...',fichier:'APD PLAN 25 04 2025.dwg',taille:'990 Ko',date_modif:'24/02/2026',note:'Plan APD · nomenclature non conforme'},
+    {projet:'BYM13 · 188 rue du Général de Gaulle',chemin:'BYM13...',fichier:'25091 Projet amenagement_18-02-2026_ind4.dwg',taille:'268 Ko',date_modif:'24/02/2026',note:'Plan aménagement ind 4'},
+    {projet:'BYM14 · MacDonald Paris 19',chemin:'BYM14.../DWG',fichier:'260114 - PLANS.dwg',taille:'6,5 Mo',date_modif:'17/03/2026',note:''},
+    {projet:'GC01 · 188 rue du Général de Gaulle',chemin:'GC01...',fichier:'Plano de Arquitectura Elevacion & Cortes.dwg',taille:'6,8 Mo',date_modif:'24/02/2026',note:'Plans en espagnol · probablement référence externe'},
+    {projet:'GC01 · 188 rue du Général de Gaulle',chemin:'GC01...',fichier:'Plano de Estructuras.dwg',taille:'3,6 Mo',date_modif:'24/02/2026',note:''},
+    {projet:'GC01 · 188 rue du Général de Gaulle',chemin:'GC01...',fichier:'Plano de Cimientos.dwg',taille:'3,6 Mo',date_modif:'24/02/2026',note:''},
+    {projet:'GC01 · 188 rue du Général de Gaulle',chemin:'GC01...',fichier:'Plano de Instalaciones Sanitarias - Desagüe.dwg',taille:'3,6 Mo',date_modif:'24/02/2026',note:''},
+    {projet:'GC01 · 188 rue du Général de Gaulle',chemin:'GC01...',fichier:'Plano de Instalaciones Sanitarias - Agua.dwg',taille:'413 Ko',date_modif:'24/02/2026',note:''},
+    {projet:'GC01 · 188 rue du Général de Gaulle',chemin:'GC01...',fichier:'Planos de Instalaciones Electricas.dwg',taille:'333 Ko',date_modif:'24/02/2026',note:''},
+    {projet:'GC01 · 188 rue du Général de Gaulle',chemin:'GC01...',fichier:'CASA 7.00 X 21.00 MTS.dwg',taille:'6,6 Mo',date_modif:'24/02/2026',note:'Plan masse général'},
+    {projet:'GC03 · La Chapelle Saint Mesmin',chemin:'GC03/pomade...',fichier:'cdr20.dwg',taille:'72 Ko',date_modif:'09/03/2026',note:'Doublon : 2 copies'},
+    {projet:'GC03 · La Chapelle Saint Mesmin',chemin:'GC03/pomade...',fichier:'BM-Wnd-Sld_AR.dwg',taille:'66 Ko',date_modif:'24/02/2026',note:'Blocs menuiseries'},
+    {projet:'GC03 · La Chapelle Saint Mesmin',chemin:'GC03/pomade...',fichier:'BM-Wnd-Mlp_AD-x.dwg',taille:'61 Ko',date_modif:'24/02/2026',note:'Blocs menuiseries'},
+    {projet:'GC03 · La Chapelle Saint Mesmin',chemin:'GC03/pomade...',fichier:'Sculptures-Dwgfree.com_.dwg',taille:'19,8 Mo',date_modif:'24/02/2026',note:'Bibliothèque générique non liée au projet'},
+    {projet:'Bibliothèque générique',chemin:'BYM14 ou commun',fichier:'06-04-blocsautocad-com-double-et-large-portes-elevation.dwg',taille:'372 Ko',date_modif:'19/02/2026',note:'Bloc générique'},
+    {projet:'Bibliothèque générique',chemin:'BYM14 ou commun',fichier:'06-02-blocsautocad-com-portes-elevation-01.dwg',taille:'273 Ko',date_modif:'19/02/2026',note:'Bloc générique'},
+    {projet:'Archive · 360 MATFOR (ancien projet)',chemin:'0. Commun/old/360 MATFOR',fichier:'DOE MATFOR - Rdc / R+1 / R+2 - Indice 0.dwg (×3)',taille:'0,7 à 1,3 Mo',date_modif:'12/11/2013',note:'Archive historique · projet terminé 2013'},
+    {projet:'Archive · Projet XREF / TIV (ancien)',chemin:'0. Commun/old',fichier:'XREF- 20132203 - Niv01.dwg + Niv02.dwg',taille:'161-175 Ko',date_modif:'05/11/2013',note:'Archive historique'},
+    {projet:'Archive · Projet TIV Parcours (ancien)',chemin:'0. Commun/old',fichier:'10281_DOE_TIV_PARCOURS_*.dwg (×3)',taille:'0,6 à 1,4 Mo',date_modif:'06/11/2013',note:'Archive historique · projet 2013'},
+    {projet:'Archive · Projet électricité (ancien)',chemin:'0. Commun/old',fichier:'BUREAU PC-FORCE / ECLAIRAGE / CHEMIN DE CABLE / BAIE INFO / PLAN INCENDIE (×5+)',taille:'0,8 à 6,5 Mo',date_modif:'07/05/2014',note:'Archive DOE électricité · projet 2014'},
+    {projet:'Archive · Projet structure (ancien)',chemin:'0. Commun/old',fichier:'PLAN GENERALISTE / MACONNERIES / DALLAGE / IMPLANTATION (×12+)',taille:'0,6 à 1,8 Mo',date_modif:'06/08/2013',note:'Archive structure · projet 2013'},
+    {projet:'Archive · Projet VRD (ancien)',chemin:'0. Commun/old/DWG',fichier:'CCR LAVOISIER DOE VRD03 reseaux souples.dwg',taille:'161 Ko',date_modif:'17/12/2013',note:'Archive VRD · projet 2013'}
   ]
 };
 
 function renderAudit() {
   const el = document.getElementById('audit-body');
 
-  const totalErr = [
-    ...AUDIT_DATA.bym,...AUDIT_DATA.iris_rep,...AUDIT_DATA.gc,...AUDIT_DATA.ur
-  ].filter(r=>r.statut==='err').length +
-  AUDIT_DATA.mandats_vs_deals.filter(r=>r.statut!=='ok').length +
-  AUDIT_DATA.autocad.filter(r=>r.statut==='err').length;
-
-  const totalWarn = [
-    ...AUDIT_DATA.bym,...AUDIT_DATA.iris_rep,...AUDIT_DATA.gc,...AUDIT_DATA.ur
-  ].filter(r=>r.statut==='warn').length +
-  AUDIT_DATA.autocad.filter(r=>r.statut==='warn').length;
-
+  const allDeals = [...AUDIT_DATA.bym,...AUDIT_DATA.iris_rep,...AUDIT_DATA.gc,...AUDIT_DATA.ur];
+  const totalErr = allDeals.filter(r=>r.statut==='err').length + AUDIT_DATA.autocad.filter(r=>r.fichier.includes('DOUBLON')||r.note.includes('DOUBLON')).length;
+  const totalWarn = allDeals.filter(r=>r.statut==='warn').length;
+  const totalOk = allDeals.filter(r=>r.statut==='ok').length;
   document.getElementById('nav-audit-cnt').textContent = totalErr + totalWarn;
 
-  const kpis = `<div class="kpis" style="margin-bottom:20px">
-    <div class="kpi red"><div class="kpi-label">Anomalies critiques</div><div class="kpi-val">${totalErr}</div><div class="kpi-sub">à corriger</div></div>
-    <div class="kpi orange"><div class="kpi-label">Avertissements</div><div class="kpi-val">${totalWarn}</div><div class="kpi-sub">à vérifier</div></div>
-    <div class="kpi"><div class="kpi-label">Dernière maj</div><div class="kpi-val" style="font-size:16px">${AUDIT_DATA.generated}</div></div>
-    <div class="kpi green"><div class="kpi-label">Conformes</div><div class="kpi-val">${[...AUDIT_DATA.bym,...AUDIT_DATA.iris_rep,...AUDIT_DATA.gc,...AUDIT_DATA.ur].filter(r=>r.statut==='ok').length}</div></div>
-  </div>`;
-
-  const sB = (s) => {
-    if(s==='ok') return '<span class="pill p-done" style="font-size:9px">OK</span>';
-    if(s==='err') return '<span class="pill p-urg" style="font-size:9px">Anomalie</span>';
-    if(s==='warn') return '<span class="pill p-high" style="font-size:9px">Alerte</span>';
-    if(s==='info') return '<span class="pill p-standby" style="font-size:9px">Info</span>';
-    return '';
+  const sB = s => ({ok:'<span class="pill p-done" style="font-size:9px">OK</span>',err:'<span class="pill p-urg" style="font-size:9px">Anomalie</span>',warn:'<span class="pill p-high" style="font-size:9px">Alerte</span>',info:'<span class="pill p-standby" style="font-size:9px">Info</span>'}[s]||'');
+  const cB = c => {
+    const mp = {cohérent:'background:#EAF3DE;color:#27500A',absent_dashboard:'background:#FCEBEB;color:#791F1F',absent_drive:'background:#F1EFE8;color:#5F5E5A',incohérence:'background:#FAEEDA;color:#633806',doublon:'background:#FCEBEB;color:#791F1F','à_créer':'background:#E6F1FB;color:#0C447C',autre:'background:#F1EFE8;color:#666'};
+    return `<span style="font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px;white-space:nowrap;${mp[c]||''}">${c||''}</span>`;
   };
-  const rowBg = (s) => {
-    if(s==='ok') return '#fff';
-    if(s==='err') return 'rgba(231,76,60,0.05)';
-    if(s==='warn') return 'rgba(243,156,18,0.05)';
-    return '#fafafa';
+  const nB = n => {
+    if(!n) return '';
+    const mp = {ok:'<span style="font-size:9px;color:#1a8a4a">✓ conforme</span>',non_conforme:'<span style="font-size:9px;color:#e74c3c">✗ non conforme</span>',format_date:'<span style="font-size:9px;color:#f39c12">⚠ date invalide</span>',mauvais_emplacement:'<span style="font-size:9px;color:#f39c12">⚠ mauvais dossier</span>',doublon_dossier:'<span style="font-size:9px;color:#e74c3c">✗ doublon</span>'};
+    return mp[n]||`<span style="font-size:9px;color:var(--dim)">${n}</span>`;
   };
+  const rb = s => ({ok:'#fff',err:'rgba(231,76,60,0.04)',warn:'rgba(243,156,18,0.04)',info:'#fafafa'}[s]||'#fff');
+  const secTitle = (t,ico) => `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:6px 10px;background:var(--navy);color:#fff;border-radius:4px;margin:20px 0 8px">${ico} ${t}</div>`;
 
-  const makeTable = (rows, cols) => `<div style="overflow-x:auto"><table class="tbl"><thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
-
-  const secTitle = (t, icon) => `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:6px 10px;background:var(--navy);color:#fff;border-radius:4px;margin:20px 0 8px;display:flex;align-items:center;gap:6px">${icon} ${t}</div>`;
+  const makeTable = (rows,cols,widths) => `<div style="overflow-x:auto"><table class="tbl" style="table-layout:fixed"><thead><tr>${cols.map((c,i)=>`<th style="width:${widths[i]}">${c}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
 
   // BYM
-  const bymRows = AUDIT_DATA.bym.map(r=>`<tr style="background:${rowBg(r.statut)}">
+  const bymRows = AUDIT_DATA.bym.map(r=>`<tr style="background:${rb(r.statut)}">
     <td><span class="pill p-bym" style="font-size:9px">${r.code}</span></td>
-    <td style="font-size:11px">${r.drive}</td>
-    <td style="font-size:11px;color:var(--dim)">${r.adresse_ref}</td>
+    <td>${cB(r.check)}</td>
+    <td style="font-size:11px;word-break:break-word">${r.drive}</td>
+    <td>${nB(r.nomenclature)}</td>
+    <td style="font-size:10px;color:var(--dim)">${r.adresse_ref}</td>
     <td><span class="pill ${r.etape==='dead'?'p-standby':r.etape==='travaux'?'p-iris':'p-med'}" style="font-size:9px">${r.etape}</span></td>
     <td>${sB(r.statut)}</td>
     <td style="font-size:10px;color:var(--dim)">${r.note}</td>
   </tr>`).join('');
 
   // IRIS REP
-  const irRows = AUDIT_DATA.iris_rep.map(r=>`<tr style="background:${rowBg(r.statut)}">
+  const irRows = AUDIT_DATA.iris_rep.map(r=>`<tr style="background:${rb(r.statut)}">
     <td><span class="pill p-iris" style="font-size:9px">${r.code}</span></td>
-    <td style="font-size:11px">${r.drive}</td>
-    <td style="font-size:11px;color:var(--dim)">${r.adresse_ref}</td>
+    <td>${cB(r.check)}</td>
+    <td style="font-size:11px;word-break:break-word">${r.drive}</td>
+    <td>${nB(r.nomenclature)}</td>
+    <td style="font-size:10px;color:var(--dim)">${r.adresse_ref}</td>
     <td><span class="pill p-med" style="font-size:9px">${r.etape}</span></td>
     <td>${sB(r.statut)}</td>
     <td style="font-size:10px;color:var(--dim)">${r.note}</td>
   </tr>`).join('');
 
   // GC
-  const gcRows = AUDIT_DATA.gc.map(r=>`<tr style="background:${rowBg(r.statut)}">
+  const gcRows = AUDIT_DATA.gc.map(r=>`<tr style="background:${rb(r.statut)}">
     <td><span class="pill p-gc" style="font-size:9px">${r.code}</span></td>
-    <td style="font-size:11px;white-space:pre-line">${r.drive}</td>
-    <td style="font-size:11px;color:var(--dim)">${r.adresse_ref}</td>
+    <td>${cB(r.check)}</td>
+    <td style="font-size:11px;word-break:break-word;white-space:pre-line">${r.drive}</td>
+    <td>${nB(r.nomenclature)}</td>
+    <td style="font-size:10px;color:var(--dim)">${r.adresse_ref}</td>
     <td><span class="pill p-med" style="font-size:9px">${r.etape}</span></td>
+    <td style="font-size:10px">${r.mandat||''}</td>
     <td>${sB(r.statut)}</td>
-    <td style="font-size:10px;color:var(--red);font-weight:${r.statut==='err'?'600':'400'}">${r.note}</td>
+    <td style="font-size:10px;color:var(--red)">${r.note}</td>
   </tr>`).join('');
 
   // UR
-  const urRows = AUDIT_DATA.ur.map(r=>`<tr style="background:${rowBg(r.statut)}">
+  const urRows = AUDIT_DATA.ur.map(r=>`<tr style="background:${rb(r.statut)}">
     <td><span class="pill p-ur" style="font-size:9px">${r.code||'?'}</span></td>
-    <td style="font-size:11px">${r.drive}</td>
-    <td style="font-size:11px;color:var(--dim)">${r.adresse_ref}</td>
+    <td>${cB(r.check)}</td>
+    <td style="font-size:11px;word-break:break-word">${r.drive}</td>
+    <td>${nB(r.nomenclature)}</td>
+    <td style="font-size:10px;color:var(--dim)">${r.adresse_ref}</td>
     <td><span class="pill p-med" style="font-size:9px">${r.etape}</span></td>
-    <td>${sB(r.statut)}</td>
-    <td style="font-size:10px;color:var(--dim)">${r.note}</td>
-  </tr>`).join('');
-
-  // MANDATS
-  const mandatRows = AUDIT_DATA.mandats_vs_deals.map(r=>`<tr style="background:${rowBg(r.statut)}">
-    <td style="font-weight:700;font-size:11px">${r.numero}</td>
-    <td><span class="pill p-gc" style="font-size:9px">${r.code_mandat}</span></td>
-    <td><span class="pill p-gc" style="font-size:9px">${r.code_deal}</span></td>
-    <td style="font-size:11px">${r.mandant}</td>
-    <td style="font-size:11px;color:var(--dim)">${r.bien}</td>
     <td>${sB(r.statut)}</td>
     <td style="font-size:10px;color:var(--dim)">${r.note}</td>
   </tr>`).join('');
 
   // AUTOCAD
-  const dwgRows = AUDIT_DATA.autocad.map(r=>`<tr style="background:${rowBg(r.statut)}">
-    <td style="font-size:11px;font-weight:500">${r.projet}</td>
+  const dwgRows = AUDIT_DATA.autocad.map(r=>`<tr style="${r.note.includes('DOUBLON')||r.note.includes('non conforme')?'background:rgba(243,156,18,0.04)':r.note.includes('Archive')||r.note.includes('historique')?'background:#fafafa':''}">
+    <td style="font-size:11px;font-weight:500;color:var(--navy)">${r.projet}</td>
+    <td style="font-size:10px;color:var(--dim)">${r.chemin}</td>
     <td style="font-size:11px;font-family:monospace">${r.fichier}</td>
-    <td style="font-size:11px;color:var(--dim)">${r.anomalie}</td>
-    <td>${sB(r.statut)}</td>
+    <td style="font-size:10px;text-align:right;color:var(--dim)">${r.taille}</td>
+    <td style="font-size:10px;color:var(--dim)">${r.date_modif}</td>
+    <td style="font-size:10px;color:${r.note.includes('DOUBLON')?'var(--red)':r.note.includes('non conforme')?'var(--orange)':'var(--dim)'}">${r.note}</td>
   </tr>`).join('');
 
-  const cols6 = ['Code','Dossier Drive','Adresse référentiel','Étape','Statut','Note'];
-  const colsM = ['N°','Code mandat','Code deal','Mandant','Bien','Statut','Note'];
-  const colsDwg = ['Projet','Fichier DWG','Anomalie','Statut'];
+  const colsStd = ['Code','Check dashboard','Dossier Drive','Nomenclature','Adresse ref','Étape','Statut','Note'];
+  const wStd = ['6%','11%','22%','10%','18%','8%','6%','19%'];
+  const colsGC = ['Code','Check','Dossier Drive','Nomenclature','Adresse ref','Étape','Cohérence mandat','Statut','Note'];
+  const wGC = ['5%','10%','20%','9%','15%','6%','15%','5%','15%'];
+  const colsDwg = ['Projet','Chemin','Fichier .dwg','Taille','Modifié','Note'];
+  const wDwg = ['16%','18%','22%','6%','8%','30%'];
 
-  el.innerHTML = kpis
-    + `<div class="tcard">`
-    + secTitle('BYM · Projets travaux','🏗️')
-    + makeTable(bymRows, cols6)
-    + secTitle('IRIS REP · Projets brokerage','🔍')
-    + makeTable(irRows, cols6)
-    + secTitle('Galerie Carrez · Projets de revente','🎨')
-    + makeTable(gcRows, cols6)
-    + secTitle('Urban Rise · Projets d\'investissement','🏠')
-    + makeTable(urRows, cols6)
-    + `</div><div class="tcard" style="margin-top:16px">`
-    + secTitle('Registre des mandats vs deals dashboard','📋')
-    + makeTable(mandatRows, colsM)
-    + `</div><div class="tcard" style="margin-top:16px">`
-    + secTitle('Fichiers AutoCAD · base de travail','📐')
-    + makeTable(dwgRows, colsDwg)
-    + `<div style="font-size:10px;color:var(--dim);padding:10px;margin-top:8px;background:var(--bg);border-radius:6px">Convention attendue : <code style="background:var(--card);padding:1px 5px;border-radius:3px">[CODE]-BASE-DE-TRAVAIL-[AAAAMMJJ].dwg</code> · anciennes versions dans sous-dossier <code>old/</code></div>`
-    + `</div>`;
+  el.innerHTML = `<div class="kpis" style="margin-bottom:20px">
+    <div class="kpi red"><div class="kpi-label">Anomalies critiques</div><div class="kpi-val">${totalErr}</div></div>
+    <div class="kpi orange"><div class="kpi-label">Alertes</div><div class="kpi-val">${totalWarn}</div></div>
+    <div class="kpi green"><div class="kpi-label">Conformes</div><div class="kpi-val">${totalOk}</div></div>
+    <div class="kpi"><div class="kpi-label">Fichiers DWG</div><div class="kpi-val">${AUDIT_DATA.autocad.length}</div><div class="kpi-sub">dans le Drive</div></div>
+  </div>
+  <div style="font-size:11px;padding:8px 12px;background:var(--bg);border-radius:6px;margin-bottom:16px;color:var(--dim)">
+    Convention nomenclature : <code style="background:var(--card);padding:1px 6px;border-radius:3px;font-size:11px">[CODE] - [AAMMJJ] - [adresse postale complète]</code> · Mise à jour : ${AUDIT_DATA.generated}
+  </div>
+  <div class="tcard">
+  ${secTitle('BYM · Projets travaux','🏗️')}
+  ${makeTable(bymRows,colsStd,wStd)}
+  ${secTitle('IRIS REP · Projets brokerage','🔍')}
+  ${makeTable(irRows,colsStd,wStd)}
+  ${secTitle('Galerie Carrez · Projets de revente','🎨')}
+  ${makeTable(gcRows,colsGC,wGC)}
+  ${secTitle('Urban Rise · Projets d\'investissement','🏠')}
+  ${makeTable(urRows,colsStd,wStd)}
+  </div>
+  <div class="tcard" style="margin-top:16px">
+  ${secTitle('Inventaire complet des fichiers AutoCAD (.dwg) · Drive IRIS H','📐')}
+  <div style="font-size:10px;color:var(--dim);padding:6px 0 10px">${AUDIT_DATA.autocad.length} fichiers détectés · Convention attendue pour les bases de travail actives : <code style="background:var(--bg);padding:1px 5px;border-radius:3px">[CODE]-BASE-DE-TRAVAIL-[AAMMJJ].dwg</code> · anciennes versions dans sous-dossier <code>old/</code></div>
+  ${makeTable(dwgRows,colsDwg,wDwg)}
+  </div>`;
 }
 /* ===================== END AUDIT ===================== */
 
