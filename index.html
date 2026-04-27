@@ -279,6 +279,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <!-- DEALS -->
       <div class="tab" id="tab-deals">
         <div class="kpis" id="deals-kpis"></div>
+        <input id="deals-search" placeholder="Rechercher un deal (code, nom, adresse, commentaire...)" oninput="renderDeals()" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;background:var(--card);color:var(--text);margin-bottom:12px">
         <div id="deals-body"></div>
       </div>
 
@@ -879,6 +880,8 @@ function isVitrinable(d){const c=(d.code||'').toUpperCase();return c.startsWith(
 
 function renderDeals(){
   let deals=dealsFilter==='all'?[...data.deals]:data.deals.filter(d=>dealMatchesFilter(d,dealsFilter));
+  const q=(document.getElementById('deals-search')?.value||'').toLowerCase().trim();
+  if(q)deals=deals.filter(d=>['code','nom','adresse','commentaire','type','etape','entite'].map(k=>d[k]||'').join(' ').toLowerCase().includes(q));
   const dir=dealsSortDir==='asc'?1:-1;
   deals.sort((a,b)=>{let va,vb;if(dealsSortCol==='etape'){va=ETAPE_ORDER[a.etape]??99;vb=ETAPE_ORDER[b.etape]??99}else if(['montant','ca_previ','resultat_previ'].includes(dealsSortCol)){va=a[dealsSortCol]||0;vb=b[dealsSortCol]||0}else{va=(a[dealsSortCol]||'').toString().toLowerCase();vb=(b[dealsSortCol]||'').toString().toLowerCase()}return va<vb?-1*dir:va>vb?1*dir:0});
   const actifs=deals.filter(d=>!['cloture','dead'].includes(d.etape));
