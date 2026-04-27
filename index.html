@@ -1805,7 +1805,7 @@ function renderMandats(){
   const statBadge=s=>{const m={'En cours':'p-med',Sign\u00e9:'p-done',Expir\u00e9:'p-urg',Annul\u00e9:'p-standby'};return`<span class="pill ${m[s]||'p-med'}">${s||''}</span>`};
   const natureBadge=n=>{const m={Exclusif:'p-urg',Simple:'p-med','Co-exclusif':'p-high'};return`<span class="pill ${m[n]||'p-med'}">${n||''}</span>`};
   const thS=k=>mandatsSortCol===k?(mandatsSortDir==='asc'?' \u25b2':' \u25bc'):'';
-  const cols=[{k:'code_projet',l:'Code'},{k:'numero',l:'N\u00b0'},{k:'date_reception',l:'Date'},{k:'mandant',l:'Mandant'},{k:'nature',l:'Nature'},{k:'objet',l:'Objet'},{k:'bien',l:'Bien'},{k:'prix_ht',l:'Prix HT'},{k:'honoraires_ht',l:'Honoraires HT'},{k:'charge',l:'Charge'},{k:'duree',l:'Dur\u00e9e'},{k:'date_expiration',l:'Expiration'},{k:'statut',l:'Statut'},{k:'observations',l:'Observations'}];
+  const cols=[{k:'code_projet',l:'Code'},{k:'numero',l:'N\u00b0'},{k:'date_reception',l:'Date'},{k:'statut',l:'Statut'},{k:'mandant',l:'Mandant'},{k:'nature',l:'Nature'},{k:'objet',l:'Objet'},{k:'bien',l:'Bien'},{k:'prix_ht',l:'Prix HT'},{k:'honoraires_ht',l:'Honoraires HT'},{k:'charge',l:'Charge'},{k:'duree',l:'Dur\u00e9e'},{k:'date_expiration',l:'Expiration'},{k:'observations',l:'Observations'}];
   const el=document.getElementById('mandats-body');
   if(!filtered.length){el.innerHTML='<div class="empty"><div class="empty-ico">\ud83d\udccb</div><div class="empty-text">Aucun mandat</div></div>';return}
   el.innerHTML='<div style="overflow-x:auto"><table class="tbl"><thead><tr>'+cols.map(c=>`<th style="cursor:pointer;white-space:nowrap" onclick="sortMandats('${c.k}')">${c.l}${thS(c.k)}</th>`).join('')+'</tr></thead><tbody>'+
@@ -1813,6 +1813,7 @@ function renderMandats(){
     '<td style="font-weight:700;color:var(--blue);white-space:nowrap;font-size:11px">'+(m.code_projet||'')+'</td>'+
     '<td style="font-weight:600;color:var(--navy);white-space:nowrap;font-size:12px">'+(m.numero?String(m.numero).padStart(3,'0'):'')+'</td>'+
     '<td style="white-space:nowrap;font-size:11px">'+fDate(m.date_reception)+'</td>'+
+    '<td>'+statBadge(m.statut)+'</td>'+
     '<td style="font-weight:500;font-size:12px">'+(m.mandant||'')+'</td>'+
     '<td>'+natureBadge(m.nature)+'</td>'+
     '<td><span class="pill p-iris" style="font-size:9px">'+(m.objet||'')+'</span></td>'+
@@ -1822,7 +1823,6 @@ function renderMandats(){
     '<td style="color:var(--dim);font-size:11px">'+(m.charge||'')+'</td>'+
     '<td style="color:var(--dim);font-size:11px">'+(m.duree||'')+'</td>'+
     '<td style="white-space:nowrap;font-size:11px">'+fDate(m.date_expiration)+'</td>'+
-    '<td>'+statBadge(m.statut)+'</td>'+
     '<td style="max-width:200px;font-size:10px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+escHtml(m.observations||'')+'">'+(m.observations||'')+'</td>'+
   '</tr>').join('')+
   '</tbody></table></div>';
