@@ -376,6 +376,29 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         </div>
       </div>
 
+      <!-- PARTENAIRES -->
+      <div style="margin-top:24px">
+        <div class="tcard">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--navy)">🤝 Partenaires</div>
+            <button onclick="openPartenaireModal()" style="background:var(--blue);border:none;border-radius:8px;padding:8px 16px;font-family:var(--font);font-size:12px;font-weight:600;color:#fff;cursor:pointer">+ Ajouter</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="tbl" style="table-layout:fixed">
+              <thead><tr>
+                <th style="width:18%">Nom</th>
+                <th style="width:18%">Société</th>
+                <th style="width:13%">Métier</th>
+                <th style="width:15%">Téléphone</th>
+                <th style="width:22%">Email</th>
+                <th style="width:14%">Notes</th>
+              </tr></thead>
+              <tbody id="partenaires-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <!-- MANDATS IRIS REP -->
       <div class="tab" id="tab-mandats">
         <div class="kpis" id="mandats-kpis"></div>
@@ -545,7 +568,7 @@ async function supa(table,params='',fetchAll=false){
 
 async function loadAll(){
   const safe=async fn=>{try{return await fn()}catch(e){console.warn('Warning:',e);return[]}};
-  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats,vitrines]=await Promise.all([
+  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats,vitrines,partenaires]=await Promise.all([
     safe(()=>supa('taches','order=created_at.desc')),
     safe(()=>supa('taches_v2','order=created_at.asc')),
     safe(()=>supa('taches_recurrentes_suivi','order=semaine.asc')),
@@ -560,10 +583,11 @@ async function loadAll(){
     safe(()=>supa('rapports_hebdo','order=semaine.asc')),
     safe(()=>supa('vilmar_comptabilite','order=created_at.asc')),
     safe(()=>supa('mandats_iris_rep','order=date_reception.desc')),
-    safe(()=>supa('deals_vitrine','order=created_at.desc'))
+    safe(()=>supa('deals_vitrine','order=created_at.desc')),
+    safe(()=>supa('partenaires','order=nom.asc'))
   ]);
   data.taches=taches;data.taches_v2=taches_v2;data.rec_suivi=rec_suivi;data.deals=deals;
-  data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;data.vilmar=vilmar;data.mandats=mandats;data.vitrines=vitrines;
+  data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;data.vilmar=vilmar;data.mandats=mandats;data.partenaires=partenaires;data.vitrines=vitrines;data.vitrines=vitrines;
   try{localStorage.setItem('iris_h_cache',JSON.stringify({data:{...data,contacts:[]},ts:Date.now()}))}catch(e){}
   render();
   const t=new Date();
@@ -1392,7 +1416,7 @@ function boot(){
   document.getElementById('app').style.display='flex';
   updateTopbar();
   const cache=localStorage.getItem('iris_h_cache');
-  if(cache){try{data=JSON.parse(cache).data;if(!data.fragments)data.fragments=[];if(!data.bible)data.bible=[];if(!data.taches_v2)data.taches_v2=[];if(!data.rec_suivi)data.rec_suivi=[];if(!data.skills)data.skills=[];if(!data.prospects)data.prospects=[];if(!data.rapport_hebdo)data.rapport_hebdo=[];if(!data.rapports_rediges)data.rapports_rediges=[];if(!data.vilmar)data.vilmar=[];if(!data.mandats)data.mandats=[];render()}catch(e){}}
+  if(cache){try{data=JSON.parse(cache).data;if(!data.fragments)data.fragments=[];if(!data.bible)data.bible=[];if(!data.taches_v2)data.taches_v2=[];if(!data.rec_suivi)data.rec_suivi=[];if(!data.skills)data.skills=[];if(!data.prospects)data.prospects=[];if(!data.rapport_hebdo)data.rapport_hebdo=[];if(!data.rapports_rediges)data.rapports_rediges=[];if(!data.vilmar)data.vilmar=[];if(!data.mandats)data.mandats=[];if(!data.partenaires)data.partenaires=[];render()}catch(e){}}
   loadAll();
 }
 
@@ -1410,6 +1434,7 @@ function renderOutils(){
   const unlocked=sessionStorage.getItem(OUTILS_SESSION_KEY)==='1';
   const hasPin=!!localStorage.getItem(OUTILS_PIN_KEY);
   if(unlocked){
+    renderPartenaires();
     document.getElementById('outils-lock').style.display='none';
     document.getElementById('outils-content').style.display='block';
     loadOutils();
@@ -1545,6 +1570,39 @@ async function outilsDelete(id){
     await fetch(`${cfg.url}/rest/v1/outils?id=eq.${id}`,{method:'DELETE',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Prefer':'return=minimal'}});
     showToast('Supprimé');loadOutils();
   }catch(e){showToast('Erreur');}
+}
+/* ===================== PARTENAIRES ===================== */
+function renderPartenaires(){
+  const src=data.partenaires||[];
+  const tbody=document.getElementById('partenaires-tbody');
+  if(!tbody)return;
+  if(!src.length){tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:1.5rem;color:var(--dim)">Aucun partenaire</td></tr>`;return}
+  tbody.innerHTML=src.map((p,i)=>`<tr style="background:${i%2===0?'#fff':'#f8f9fc'}">
+    <td style="font-weight:600;font-size:12px">${p.prenom||''} ${p.nom||''}</td>
+    <td style="font-size:11px;color:var(--dim)">${p.societe||''}</td>
+    <td style="font-size:11px">${p.metier||''}</td>
+    <td style="font-size:11px"><a href="tel:${p.telephone||''}" style="color:var(--blue);text-decoration:none">${p.telephone||''}</a></td>
+    <td style="font-size:11px"><a href="mailto:${p.email||''}" style="color:var(--blue);text-decoration:none;word-break:break-all">${p.email||''}</a></td>
+    <td style="font-size:10px;color:var(--dim)">${p.notes||''}</td>
+  </tr>`).join('');
+}
+
+function openPartenaireModal(){
+  const nom=prompt('Nom complet (Prénom Nom) :');if(!nom)return;
+  const societe=prompt('Société :');
+  const metier=prompt('Métier :');
+  const tel=prompt('Téléphone :');
+  const email=prompt('Email :');
+  const notes=prompt('Notes :');
+  const parts=nom.trim().split(' ');
+  const prenom=parts.slice(0,-1).join(' ')||'';
+  const nomFam=parts[parts.length-1]||nom;
+  const cfg=getConfig();
+  fetch(`${cfg.url}/rest/v1/partenaires`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},
+    body:JSON.stringify({nom:nomFam,prenom,societe:societe||null,metier:metier||null,telephone:tel||null,email:email||null,notes:notes||null})})
+  .then(r=>r.json()).then(rows=>{
+    if(rows&&rows[0]){data.partenaires=[...data.partenaires,rows[0]].sort((a,b)=>a.nom.localeCompare(b.nom));renderPartenaires();showToast('Partenaire ajouté');}
+  }).catch(()=>showToast('Erreur'));
 }
 /* ===================== END OUTILS ===================== */
 
