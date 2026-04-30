@@ -924,7 +924,8 @@ function renderDeals(){
   const filtersHtml=`<div class="filters" style="margin-bottom:12px">${filterBtns.map(b=>`<button class="fbtn deals-fbtn${dealsFilter===b.k?' on':''}" onclick="filterDeals(this,'${b.k}')">${b.l}</button>`).join('')}</div>`;
   const entIco=e=>({BYM:'🏗️','Urban Rise':'🏠',URBAN_RISE:'🏠','IRIS REP':'🔍',IRIS_REP:'🔍',ARRISTO:'🤝','IRIS H':'🏛️',IRIS_H:'🏛️','Galerie Carrez':'🎨',GALERIE_CARREZ:'🎨',RIR:'⚡'}[e]||'📋');
   document.getElementById('deals-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr>${cols.map(c=>{let cls='';if(dealsSortCol===c.k)cls=dealsSortDir==='asc'?' ▲':' ▼';return`<th style="cursor:pointer" onclick="sortDeals('${c.k}')">${c.l}${cls}</th>`}).join('')}</tr></thead><tbody>
-  ${deals.length?deals.map(d=>{const canVitrine=isVitrinable(d);let vCell='';if(canVitrine){const vVente=(data.vitrines||[]).find(x=>x.deal_id===d.id&&x.annonce_type==='vente');const vCommer=(data.vitrines||[]).find(x=>x.deal_id===d.id&&x.annonce_type==='commercialisation');const statDot=(v,lbl)=>{if(!v)return'';const c={brouillon:'#999',publie:'#41c98e',archive:'#fb923c'}[v.statut_publication]||'#999';const sl={brouillon:'Brouillon',publie:'Publié',archive:'Archivé'}[v.statut_publication]||'?';return`<span style=\"width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;flex-shrink:0\" title=\"${lbl} · ${sl}\"></span>`};const btnVente=d.vitrine_vente_actif?`<div style=\"display:flex;align-items:center;gap:3px\">${statDot(vVente,'Vente')}<button class=\"fbtn\" style=\"font-size:10px;padding:2px 6px;background:var(--green-bg);color:#1a8a4a;border-color:#c5e8d1\" onclick=\"openVitrineModal('${d.id}','vente')\" title=\"Éditer annonce vente\">Vente ✏️</button><button class=\"fbtn\" style=\"font-size:10px;padding:2px 5px;background:#fee;color:#c62828;border-color:#f5c6c6\" onclick=\"quickDeactivateVitrine('${d.id}','vente')\">🔕</button></div>`:`<button class=\"fbtn\" style=\"font-size:10px;padding:2px 8px;background:rgba(91,155,213,0.1);color:var(--blue);border-color:var(--blue)\" onclick=\"activateVitrine('${d.id}','vente')\">Vente</button>`;const btnCommer=d.vitrine_commer_actif?`<div style=\"display:flex;align-items:center;gap:3px\">${statDot(vCommer,'Commerc.')}<button class=\"fbtn\" style=\"font-size:10px;padding:2px 6px;color:#3C3489\" onclick=\"openVitrineModal('${d.id}','commercialisation')\" title=\"Éditer annonce commercialisation\">Commerc. ✏️</button><button class=\"fbtn\" style=\"font-size:10px;padding:2px 5px;background:#fee;color:#c62828;border-color:#f5c6c6\" onclick=\"quickDeactivateVitrine('${d.id}','commercialisation')\">🔕</button></div>`:`<button class=\"fbtn\" style=\"font-size:10px;padding:2px 8px;background:rgba(127,119,221,0.1);color:#3C3489;border-color:#a095e0\" onclick=\"activateVitrine('${d.id}','commercialisation')\">Commerc.</button>`;vCell=`<div style=\"display:flex;flex-direction:column;gap:4px\">${btnVente}${btnCommer}</div>`}return`<tr><td><a href=\"#\" onclick=\"goToTodoForDeal('${d.code||''}');return false\" style=\"color:var(--blue);font-weight:600;text-decoration:none;font-size:12px\" title=\"Voir les tâches ${d.code}\">${d.code||''}</a></td><td class=\"td-name\">${entIco(d.entite)} ${d.nom||''}</td><td>${eBadge(d.entite)}</td><td>${DL[d.type]||d.type||''}</td><td>${etBadge(d.etape)}</td><td style=\"color:var(--green);font-weight:500\">${fmt(d.montant)}</td><td style=\"color:var(--blue)\">${fmt(d.ca_previ)}</td><td style=\"color:var(--green)\">${fmt(d.resultat_previ)}</td><td>${d.adresse||''}</td><td style=\"font-size:10px;color:var(--dim);font-style:italic;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap\" title=\"${(d.commentaire||'').replace(/\"/g,'&quot;')}\">${d.commentaire||''}</td><td style=\"min-width:130px\">${vCell}</td></tr>`}).join(''):`<tr><td colspan=\"${cols.length}\" style=\"text-align:center;padding:2rem;color:var(--dim)\">Aucun deal</td></tr>`}
+  ${deals.length?deals.map(d=>{const canVitrine=isVitrinable(d);let vCell='';if(canVitrine){const vVente=(data.vitrines||[]).find(x=>x.deal_id===d.id&&x.annonce_type==='vente');const vCommer=(data.vitrines||[]).find(x=>x.deal_id===d.id&&x.annonce_type==='commercialisation');const statDot=(v,lbl)=>{if(!v)return'';const c={brouillon:'#999',publie:'#41c98e',archive:'#fb923c'}[v.statut_publication]||'#999';const sl={brouillon:'Brouillon',publie:'Publié',archive:'Archivé'}[v.statut_publication]||'?';return`<span style=\"width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;flex-shrink:0\" title=\"${lbl} · ${sl}\"></span>`};const btnVente=d.vitrine_vente_actif?`<div style=\"display:flex;align-items:center;gap:3px\">${statDot(vVente,'Vente')}<button class=\"fbtn\" style=\"font-size:10px;padding:2px 6px;background:var(--green-bg);color:#1a8a4a;border-color:#c5e8d1\" onclick=\"openVitrineModal('${d.id}','vente')\" title=\"Éditer annonce vente\">Vente ✏️</button><button class=\"fbtn\" style=\"font-size:10px;padding:2px 5px;background:#fee;color:#c62828;border-color:#f5c6c6\" onclick=\"quickDeactivateVitrine('${d.id}','vente')\">🔕</button></div>`:`<button class=\"fbtn\" style=\"font-size:10px;padding:2px 8px;background:rgba(91,155,213,0.1);color:var(--blue);border-color:var(--blue)\" onclick=\"activateVitrine('${d.id}','vente')\">Vente</button>`;const btnCommer=d.vitrine_commer_actif?`<div style=\"display:flex;align-items:center;gap:3px\">${statDot(vCommer,'Commerc.')}<button class=\"fbtn\" style=\"font-size:10px;padding:2px 6px;color:#3C3489\" onclick=\"openVitrineModal('${d.id}','commercialisation')\" title=\"Éditer annonce commercialisation\">Commerc. ✏️</button><button class=\"fbtn\" style=\"font-size:10px;padding:2px 5px;background:#fee;color:#c62828;border-color:#f5c6c6\" onclick=\"quickDeactivateVitrine('${d.id}','commercialisation')\">🔕</button></div>`:`<button class=\"fbtn\" style=\"font-size:10px;padding:2px 8px;background:rgba(127,119,221,0.1);color:#3C3489;border-color:#a095e0\" onclick=\"activateVitrine('${d.id}','commercialisation')\">Commerc.</button>`;vCell=`<div style=\"display:flex;flex-direction:column;gap:4px\">${btnVente}${btnCommer}</div>`}const isBymChantier=d.entite==='BYM'&&d.etape==='travaux';
+return`<tr style=\"background:${isBymChantier?'rgba(91,155,213,0.04)':''};\" ${isBymChantier?`onclick=\"openChantierModal('${d.code}','${(d.nom||'').replace(/\"/g,'').replace(/`/g,'')}')\" title=\"Cliquer pour ouvrir la fiche chantier\"`:''} ><td><a href=\"#\" onclick=\"goToTodoForDeal('${d.code||''}');return false\" style=\"color:var(--blue);font-weight:600;text-decoration:none;font-size:12px\" title=\"Voir les tâches ${d.code}\">${d.code||''}</a></td><td class=\"td-name\">${entIco(d.entite)} ${d.nom||''}</td><td>${eBadge(d.entite)}</td><td>${DL[d.type]||d.type||''}</td><td>${etBadge(d.etape)}</td><td style=\"color:var(--green);font-weight:500\">${fmt(d.montant)}</td><td style=\"color:var(--blue)\">${fmt(d.ca_previ)}</td><td style=\"color:var(--green)\">${fmt(d.resultat_previ)}</td><td>${d.adresse||''}</td><td style=\"font-size:10px;color:var(--dim);font-style:italic;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap\" title=\"${(d.commentaire||'').replace(/\"/g,'&quot;')}\">${d.commentaire||''}</td><td style=\"min-width:130px\">${vCell}</td></tr>`}).join(''):`<tr><td colspan=\"${cols.length}\" style=\"text-align:center;padding:2rem;color:var(--dim)\">Aucun deal</td></tr>`}
   </tbody></table>`;
 }
 
@@ -2122,7 +2123,194 @@ document.addEventListener('input',e=>{
 });
 /* ===================== END VITRINE ===================== */
 
+
+/* ===================== FICHE CHANTIER ===================== */
+let chCurrentCode='';
+let chData={planning:[],budget:[],questions:[],todos:[]};
+let chCurrentTab='planning';
+
+function switchChTab(btn,tab){
+  document.querySelectorAll('.ch-tab').forEach(b=>{b.style.color='var(--dim)';b.style.borderBottomColor='transparent'});
+  btn.style.color='var(--navy)';btn.style.borderBottomColor='var(--blue)';
+  chCurrentTab=tab;renderChContent();
+}
+
+async function openChantierModal(code,nom){
+  chCurrentCode=code;
+  document.getElementById('ch-title').textContent=nom||code;
+  document.getElementById('chantier-modal').style.display='block';
+  document.body.style.overflow='hidden';
+  const cfg=getConfig();
+  const headers={'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`};
+  const [pl,bu,qu,td]=await Promise.all([
+    fetch(`${cfg.url}/rest/v1/chantier_planning?deal_code=eq.${code}&order=ordre.asc`,{headers}).then(r=>r.json()),
+    fetch(`${cfg.url}/rest/v1/chantier_budget?deal_code=eq.${code}&order=ordre.asc`,{headers}).then(r=>r.json()),
+    fetch(`${cfg.url}/rest/v1/chantier_questions?deal_code=eq.${code}&order=created_at.asc`,{headers}).then(r=>r.json()),
+    fetch(`${cfg.url}/rest/v1/taches_v2?code_projet=eq.${code}&type_tache=eq.classique&order=created_at.asc`,{headers}).then(r=>r.json()),
+  ]);
+  chData={planning:pl||[],budget:bu||[],questions:qu||[],todos:td||[]};
+  // reset tabs
+  document.querySelectorAll('.ch-tab').forEach((b,i)=>{b.style.color=i===0?'var(--navy)':'var(--dim)';b.style.borderBottomColor=i===0?'var(--blue)':'transparent'});
+  chCurrentTab='planning';
+  renderChContent();
+}
+
+function closeChantierModal(){
+  document.getElementById('chantier-modal').style.display='none';
+  document.body.style.overflow='';
+}
+
+function renderChContent(){
+  const el=document.getElementById('ch-content');
+  const cfg=getConfig();
+  const fDate=d=>d?new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'}):'';
+  const fMt=n=>n!=null&&n!==''?parseFloat(n).toLocaleString('fr-FR')+' €':'';
+
+  if(chCurrentTab==='planning'){
+    const statColor={'a_faire':'#E6F1FB','en_cours':'#FAEEDA','fait':'#EAF3DE','bloque':'#FCEBEB'};
+    const statLabel={'a_faire':'À faire','en_cours':'En cours','fait':'Fait','bloque':'Bloqué'};
+    el.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:13px;font-weight:600;color:var(--navy)">Planning des phases</div>
+        <button onclick="addChPhase()" style="background:var(--blue);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Phase</button>
+      </div>
+      ${chData.planning.length?`<table class="tbl"><thead><tr><th style="width:5%">N°</th><th style="width:30%">Phase</th><th style="width:14%">Début</th><th style="width:14%">Fin</th><th style="width:12%">Statut</th><th style="width:15%">Responsable</th><th style="width:10%">Notes</th></tr></thead><tbody>
+      ${chData.planning.map((p,i)=>`<tr style="background:${i%2===0?'#fff':'#f8f9fc'}">
+        <td style="font-size:11px;color:var(--dim)">${p.ordre||i+1}</td>
+        <td style="font-weight:500;font-size:12px">${p.phase}</td>
+        <td style="font-size:11px">${fDate(p.date_debut)}</td>
+        <td style="font-size:11px">${fDate(p.date_fin)}</td>
+        <td><span style="font-size:9px;padding:2px 7px;border-radius:10px;background:${statColor[p.statut]||'#f4f4f4'};font-weight:600">${statLabel[p.statut]||p.statut}</span></td>
+        <td style="font-size:11px;color:var(--dim)">${p.responsable||''}</td>
+        <td style="font-size:10px;color:var(--dim)">${p.notes||''}</td>
+      </tr>`).join('')}
+      </tbody></table>`:`<div style="text-align:center;padding:3rem;color:var(--dim)"><div style="font-size:2rem;margin-bottom:8px">📅</div><div>Aucune phase planifiée</div><div style="font-size:11px;margin-top:6px">Cliquez sur "+ Phase" pour commencer</div></div>`}`;
+  }
+
+  else if(chCurrentTab==='budget'){
+    const totalPrevu=chData.budget.reduce((s,b)=>s+(b.montant_prevu||0),0);
+    const totalReel=chData.budget.reduce((s,b)=>s+(b.montant_reel||0),0);
+    const ecart=totalReel-totalPrevu;
+    el.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:13px;font-weight:600;color:var(--navy)">Budget chantier</div>
+        <button onclick="addChBudget()" style="background:var(--blue);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Poste</button>
+      </div>
+      <div style="display:flex;gap:12px;margin-bottom:16px">
+        <div style="flex:1;background:var(--bg);border-radius:8px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--dim);margin-bottom:4px">Prévu</div><div style="font-size:18px;font-weight:700;color:var(--navy)">${fMt(totalPrevu)}</div></div>
+        <div style="flex:1;background:var(--bg);border-radius:8px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--dim);margin-bottom:4px">Réel</div><div style="font-size:18px;font-weight:700;color:var(--blue)">${fMt(totalReel)}</div></div>
+        <div style="flex:1;background:${ecart>0?'rgba(231,76,60,.08)':'rgba(65,201,142,.08)'};border-radius:8px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--dim);margin-bottom:4px">Écart</div><div style="font-size:18px;font-weight:700;color:${ecart>0?'var(--red)':'var(--green)'}">${ecart>0?'+':''}${fMt(ecart)}</div></div>
+      </div>
+      ${chData.budget.length?`<table class="tbl"><thead><tr><th style="width:35%">Poste</th><th style="width:20%;text-align:right">Prévu</th><th style="width:20%;text-align:right">Réel</th><th style="width:15%;text-align:right">Écart</th><th style="width:10%">Notes</th></tr></thead><tbody>
+      ${chData.budget.map((b,i)=>{const e=(b.montant_reel||0)-(b.montant_prevu||0);return`<tr style="background:${i%2===0?'#fff':'#f8f9fc'}">
+        <td style="font-weight:500;font-size:12px">${b.poste}</td>
+        <td style="text-align:right;font-size:12px;color:var(--dim)">${fMt(b.montant_prevu)}</td>
+        <td style="text-align:right;font-size:12px;font-weight:600;color:var(--blue)">${fMt(b.montant_reel)}</td>
+        <td style="text-align:right;font-size:11px;color:${e>0?'var(--red)':'var(--green)'};font-weight:600">${e!==0?(e>0?'+':'')+fMt(e):''}</td>
+        <td style="font-size:10px;color:var(--dim)">${b.notes||''}</td>
+      </tr>`}).join('')}
+      </tbody></table>`:`<div style="text-align:center;padding:3rem;color:var(--dim)"><div style="font-size:2rem;margin-bottom:8px">💶</div><div>Aucun poste budgétaire</div></div>`}`;
+  }
+
+  else if(chCurrentTab==='questions'){
+    const ouvertes=chData.questions.filter(q=>q.statut==='ouverte').length;
+    el.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:13px;font-weight:600;color:var(--navy)">Questions <span style="font-size:11px;font-weight:400;color:var(--dim)">(${ouvertes} ouverte${ouvertes>1?'s':''})</span></div>
+        <button onclick="addChQuestion()" style="background:var(--blue);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Question</button>
+      </div>
+      ${chData.questions.length?chData.questions.map((q,i)=>`
+        <div style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;background:${q.statut==='resolue'?'rgba(65,201,142,.04)':'#fff'}">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px">${i+1}. ${q.question}</div>
+              ${q.reponse?`<div style="font-size:11px;color:var(--dim);background:var(--bg);border-radius:6px;padding:8px;margin-top:6px">💬 ${q.reponse}</div>`:''}
+            </div>
+            <span style="font-size:9px;padding:3px 8px;border-radius:10px;font-weight:600;white-space:nowrap;background:${q.statut==='resolue'?'#EAF3DE':'#FFF3CD'};color:${q.statut==='resolue'?'#27500A':'#856404'}">${q.statut==='resolue'?'Résolue':'Ouverte'}</span>
+          </div>
+        </div>`).join(''):`<div style="text-align:center;padding:3rem;color:var(--dim)"><div style="font-size:2rem;margin-bottom:8px">❓</div><div>Aucune question enregistrée</div></div>`}`;
+  }
+
+  else if(chCurrentTab==='todo'){
+    const done=chData.todos.filter(t=>t.statut==='fait').length;
+    el.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:13px;font-weight:600;color:var(--navy)">Todo chantier <span style="font-size:11px;font-weight:400;color:var(--dim)">${done}/${chData.todos.length} fait${done>1?'s':''}</span></div>
+        <button onclick="addChTodo()" style="background:var(--blue);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Tâche</button>
+      </div>
+      ${chData.todos.length?chData.todos.map(t=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;margin-bottom:6px;background:${t.statut==='fait'?'rgba(65,201,142,.06)':'#fff'};border:1px solid var(--border)">
+          <span style="font-size:16px">${t.statut==='fait'?'✅':'⬜'}</span>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:500;color:${t.statut==='fait'?'var(--dim)':'var(--navy)'};${t.statut==='fait'?'text-decoration:line-through':''}">${t.titre}</div>
+            ${t.attente_de?`<div style="font-size:10px;color:var(--orange);margin-top:2px">⏳ En attente de ${t.attente_de}</div>`:''}
+          </div>
+          <span style="font-size:9px;padding:2px 6px;border-radius:10px;background:${{urgente:'#FCEBEB',haute:'#FAEEDA',moyenne:'#E6F1FB',standby:'#F4F4F4'}[t.priorite]||'#F4F4F4'};color:${{urgente:'#791F1F',haute:'#633806',moyenne:'#0C447C',standby:'#999'}[t.priorite]||'#999'}">${t.priorite||''}</span>
+        </div>`).join(''):`<div style="text-align:center;padding:3rem;color:var(--dim)"><div style="font-size:2rem;margin-bottom:8px">✅</div><div>Aucune tâche sur ce chantier</div></div>`}`;
+  }
+}
+
+async function addChPhase(){
+  const phase=prompt('Nom de la phase (ex: Démolition, Plomberie, Électricité...) :');if(!phase)return;
+  const debut=prompt('Date de début (JJ/MM/AAAA) :');
+  const fin=prompt('Date de fin (JJ/MM/AAAA) :');
+  const resp=prompt('Responsable :');
+  const parseDate=s=>{if(!s)return null;const p=s.split('/');return p.length===3?`${p[2]}-${p[1]}-${p[0]}`:null};
+  const cfg=getConfig();
+  const body={deal_code:chCurrentCode,phase,date_debut:parseDate(debut),date_fin:parseDate(fin),responsable:resp||null,ordre:(chData.planning.length+1)};
+  const r=await fetch(`${cfg.url}/rest/v1/chantier_planning`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});
+  const rows=await r.json();if(rows&&rows[0]){chData.planning.push(rows[0]);renderChContent();showToast('Phase ajoutée');}
+}
+
+async function addChBudget(){
+  const poste=prompt('Intitulé du poste (ex: Maçonnerie, Électricité...) :');if(!poste)return;
+  const prevu=parseFloat(prompt('Montant prévu (€) :')||'0');
+  const cfg=getConfig();
+  const body={deal_code:chCurrentCode,poste,montant_prevu:prevu||0,montant_reel:0,ordre:(chData.budget.length+1)};
+  const r=await fetch(`${cfg.url}/rest/v1/chantier_budget`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});
+  const rows=await r.json();if(rows&&rows[0]){chData.budget.push(rows[0]);renderChContent();showToast('Poste ajouté');}
+}
+
+async function addChQuestion(){
+  const q=prompt('Question :');if(!q)return;
+  const cfg=getConfig();
+  const r=await fetch(`${cfg.url}/rest/v1/chantier_questions`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify({deal_code:chCurrentCode,question:q,statut:'ouverte'})});
+  const rows=await r.json();if(rows&&rows[0]){chData.questions.push(rows[0]);renderChContent();showToast('Question ajoutée');}
+}
+
+async function addChTodo(){
+  const titre=prompt('Titre de la tâche :');if(!titre)return;
+  const cfg=getConfig();
+  const body={titre,entite:'BYM',priorite:'moyenne',statut:'a_faire',type_tache:'classique',code_projet:chCurrentCode};
+  const r=await fetch(`${cfg.url}/rest/v1/taches_v2`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});
+  const rows=await r.json();if(rows&&rows[0]){chData.todos.push(rows[0]);renderChContent();showToast('Tâche ajoutée');}
+}
+/* ===================== END FICHE CHANTIER ===================== */
+
 boot();
 </script>
+
+<!-- MODALE FICHE CHANTIER -->
+<div id="chantier-modal" style="display:none;position:fixed;inset:0;background:rgba(10,20,50,.7);z-index:9999;overflow-y:auto">
+  <div style="background:var(--card);border-radius:12px;max-width:1100px;margin:2rem auto;padding:0;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+    <!-- Header -->
+    <div style="background:var(--navy);padding:20px 28px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:11px;color:#90B8D8;font-weight:600;letter-spacing:.08em;margin-bottom:4px">FICHE CHANTIER · BYM</div>
+        <div id="ch-title" style="font-size:18px;font-weight:700;color:#fff"></div>
+      </div>
+      <button onclick="closeChantierModal()" style="background:rgba(255,255,255,.1);border:none;border-radius:8px;width:36px;height:36px;font-size:18px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <!-- Tabs -->
+    <div style="display:flex;border-bottom:1px solid var(--border);background:var(--bg)">
+      <button class="ch-tab active" onclick="switchChTab(this,'planning')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--navy);border-bottom:2px solid var(--blue)">📅 Planning</button>
+      <button class="ch-tab" onclick="switchChTab(this,'budget')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">💶 Budget</button>
+      <button class="ch-tab" onclick="switchChTab(this,'questions')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">❓ Questions</button>
+      <button class="ch-tab" onclick="switchChTab(this,'todo')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">✅ Todo chantier</button>
+    </div>
+    <!-- Content -->
+    <div style="padding:24px 28px;min-height:400px" id="ch-content"></div>
+  </div>
+</div>
 </body>
 </html>
