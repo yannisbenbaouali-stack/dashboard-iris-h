@@ -2201,6 +2201,7 @@ function renderChContent(){
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
         <div style="font-size:13px;font-weight:600;color:var(--navy)">Planning des consignes <span style="font-size:11px;font-weight:400;color:var(--dim)">(${chData.planning.length} consigne${chData.planning.length>1?'s':''}, du ${dMin.toLocaleDateString('fr-FR')} au ${dMax.toLocaleDateString('fr-FR')})</span></div>
         <div style="display:flex;gap:8px">
+          <button onclick="copyChPlanningTexte()" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:var(--navy);cursor:pointer">📋 CC</button>
           <button onclick="exportChPlanningPDF()" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:var(--navy);cursor:pointer">📄 PDF</button>
           <button onclick="addChPhase()" style="background:var(--blue);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Consigne</button>
         </div>
@@ -2306,6 +2307,53 @@ function renderChContent(){
           <span style="font-size:9px;padding:2px 6px;border-radius:10px;background:${{urgente:'#FCEBEB',haute:'#FAEEDA',moyenne:'#E6F1FB',standby:'#F4F4F4'}[t.priorite]||'#F4F4F4'};color:${{urgente:'#791F1F',haute:'#633806',moyenne:'#0C447C',standby:'#999'}[t.priorite]||'#999'}">${t.priorite||''}</span>
         </div>`).join(''):`<div style="text-align:center;padding:3rem;color:var(--dim)"><div style="font-size:2rem;margin-bottom:8px">✅</div><div>Aucune tâche sur ce chantier</div></div>`}`;
   }
+}
+
+function copyChPlanningTexte(){
+  if(!chData.planning.length){showToast('Aucune consigne à copier');return;}
+  const titre=chData.titre||chCurrentCode;
+  const dates=chData.planning.flatMap(p=>[p.date_debut,p.date_fin]).filter(Boolean).map(s=>new Date(s));
+  const dMin=new Date(Math.min(...dates.map(d=>d.getTime())));
+  const dMax=new Date(Math.max(...dates.map(d=>d.getTime())));
+  const fmt=s=>{if(!s)return '';const d=new Date(s);return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});};
+  const sep='════════════════════════════════════════════════════════════';
+  const lignes=[];
+  lignes.push(sep);
+  lignes.push(`PLANNING CHANTIER — ${titre}`);
+  lignes.push(`Du ${dMin.toLocaleDateString('fr-FR')} au ${dMax.toLocaleDateString('fr-FR')} — ${chData.planning.length} consignes`);
+  lignes.push(sep);
+  lignes.push('');
+  // Tri chronologique par date de début
+  const tri=[...chData.planning].sort((a,b)=>{const da=a.date_debut||'9999';const db=b.date_debut||'9999';return da.localeCompare(db);});
+  tri.forEach((p,i)=>{
+    const num=String(i+1).padStart(2,'0');
+    const dateStr=p.date_debut?(p.date_fin&&p.date_fin!==p.date_debut?`${fmt(p.date_debut)} → ${fmt(p.date_fin)}`:fmt(p.date_debut)):'date à définir';
+    lignes.push(`${num}. ${(p.phase||'').toUpperCase()}`);
+    lignes.push(`    📅 ${dateStr}`);
+    if(p.notes){
+      lignes.push('');
+      const desc=p.notes.split('\n').map(l=>'    '+l.trim()).join('\n');
+      lignes.push(desc);
+    }
+    lignes.push('');
+    lignes.push('────────────────────────────────────────────────────────────');
+    lignes.push('');
+  });
+  const texte=lignes.join('\n');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(texte).then(()=>showToast('Liste copiée dans le presse-papiers')).catch(()=>fallbackCopy(texte));
+  } else {
+    fallbackCopy(texte);
+  }
+}
+
+function fallbackCopy(texte){
+  const ta=document.createElement('textarea');
+  ta.value=texte;ta.style.position='fixed';ta.style.left='-9999px';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');showToast('Liste copiée dans le presse-papiers');}
+  catch(e){showToast('Erreur copie — sélectionner manuellement');}
+  document.body.removeChild(ta);
 }
 
 function exportChPlanningPDF(){
