@@ -2148,7 +2148,7 @@ async function openChantierModal(code,nom){
     fetch(`${cfg.url}/rest/v1/chantier_questions?deal_code=eq.${code}&order=created_at.asc`,{headers}).then(r=>r.json()),
     fetch(`${cfg.url}/rest/v1/taches_v2?code_projet=eq.${code}&type_tache=eq.classique&order=created_at.asc`,{headers}).then(r=>r.json()),
   ]);
-  chData={planning:pl||[],budget:bu||[],questions:qu||[],todos:td||[]};
+  chData={planning:pl||[],budget:bu||[],questions:qu||[],todos:td||[],titre:nom||code};
   // reset tabs
   document.querySelectorAll('.ch-tab').forEach((b,i)=>{b.style.color=i===0?'var(--navy)':'var(--dim)';b.style.borderBottomColor=i===0?'var(--blue)':'transparent'});
   chCurrentTab='planning';
@@ -2200,7 +2200,10 @@ function renderChContent(){
     el.innerHTML=`
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
         <div style="font-size:13px;font-weight:600;color:var(--navy)">Planning des consignes <span style="font-size:11px;font-weight:400;color:var(--dim)">(${chData.planning.length} consigne${chData.planning.length>1?'s':''}, du ${dMin.toLocaleDateString('fr-FR')} au ${dMax.toLocaleDateString('fr-FR')})</span></div>
-        <button onclick="addChPhase()" style="background:var(--blue);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Consigne</button>
+        <div style="display:flex;gap:8px">
+          <button onclick="exportChPlanningPDF()" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:var(--navy);cursor:pointer">📄 PDF</button>
+          <button onclick="addChPhase()" style="background:var(--blue);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Consigne</button>
+        </div>
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;font-size:10px">
         ${couleursPresentes.map(c=>`<div style="display:flex;align-items:center;gap:5px"><span style="display:inline-block;width:14px;height:14px;background:${c};border-radius:3px"></span><span style="color:var(--dim)">${legendeMap[c]||c}</span></div>`).join('')}
@@ -2303,6 +2306,69 @@ function renderChContent(){
           <span style="font-size:9px;padding:2px 6px;border-radius:10px;background:${{urgente:'#FCEBEB',haute:'#FAEEDA',moyenne:'#E6F1FB',standby:'#F4F4F4'}[t.priorite]||'#F4F4F4'};color:${{urgente:'#791F1F',haute:'#633806',moyenne:'#0C447C',standby:'#999'}[t.priorite]||'#999'}">${t.priorite||''}</span>
         </div>`).join(''):`<div style="text-align:center;padding:3rem;color:var(--dim)"><div style="font-size:2rem;margin-bottom:8px">✅</div><div>Aucune tâche sur ce chantier</div></div>`}`;
   }
+}
+
+function exportChPlanningPDF(){
+  if(!chData.planning.length){showToast('Aucune consigne à exporter');return;}
+  const dates=chData.planning.flatMap(p=>[p.date_debut,p.date_fin]).filter(Boolean).map(s=>new Date(s));
+  const dMin=new Date(Math.min(...dates.map(d=>d.getTime())));
+  const dMax=new Date(Math.max(...dates.map(d=>d.getTime())));
+  const allDays=[];
+  let cur=new Date(dMin);
+  while(cur<=dMax){allDays.push(new Date(cur));cur.setDate(cur.getDate()+1);}
+  const moisFr=['JAN','FEV','MAR','AVR','MAI','JUIN','JUIL','AOUT','SEPT','OCT','NOV','DEC'];
+  const jourFr=['D','L','M','M','J','V','S'];
+  const monthGroups=[];
+  allDays.forEach(d=>{const k=`${d.getFullYear()}-${d.getMonth()}`;const last=monthGroups[monthGroups.length-1];if(!last||last.key!==k){monthGroups.push({key:k,label:`${moisFr[d.getMonth()]} ${d.getFullYear()}`,count:1});}else last.count++;});
+  const toStr=d=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),j=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${j}`;};
+  const couleursPresentes=[...new Set(chData.planning.map(p=>p.couleur).filter(Boolean))];
+  const legendeMap={'#808080':'Déposes / démolitions','#C00000':'Étayage / sécurisation','#87CEEB':'Plomberie neuve','#FFC000':'Verrière','#8B4513':'Travaux du trou (sous-sol)','#7030A0':'Structure porteuse + sol fond','#70AD47':'Électricité neuve'};
+  const titre=chData.titre||chCurrentCode;
+  const dateGen=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+  const html=`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Planning chantier ${titre}</title>
+<style>
+@page{size:A3 landscape;margin:10mm}
+*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:0;color:#222}
+.header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #0e1f4d;padding-bottom:8px;margin-bottom:10px}
+.header h1{margin:0;font-size:16px;color:#0e1f4d}
+.header .meta{font-size:10px;color:#666;text-align:right}
+.legende{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:8px;font-size:9px}
+.legende span.dot{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:middle;margin-right:4px}
+table{border-collapse:collapse;width:100%;font-size:9px;table-layout:fixed}
+th,td{border:1px solid #bfbfbf;padding:0}
+thead th{background:#0e1f4d;color:#fff;font-weight:700;text-align:center}
+thead th.consigne{text-align:left;padding:6px 8px;width:240px;min-width:240px;font-size:10px}
+thead th.mois{padding:4px;font-size:9px}
+thead th.jour{padding:2px 0;font-size:7px;line-height:1.1;width:14px;min-width:14px}
+thead th.we{background:#595959}
+td.consigne{padding:6px 8px;vertical-align:top;width:240px;min-width:240px}
+td.consigne .titre{font-weight:700;color:#0e1f4d;font-size:10px;margin-bottom:3px;line-height:1.25}
+td.consigne .desc{font-size:8.5px;color:#333;line-height:1.4}
+td.we{background:#e8e8e8}
+td.day{width:14px;min-width:14px}
+tr.even td{background:#f8f9fc}
+tr.even td.we{background:#dcdcdc}
+tr.even td.consigne{background:#f8f9fc}
+.footer{margin-top:10px;font-size:8px;color:#888;text-align:center;border-top:1px solid #ddd;padding-top:6px}
+</style></head><body>
+<div class="header">
+<div><h1>Planning chantier — ${titre}</h1><div style="font-size:10px;color:#555;margin-top:3px">${chData.planning.length} consignes — du ${dMin.toLocaleDateString('fr-FR')} au ${dMax.toLocaleDateString('fr-FR')}</div></div>
+<div class="meta">Document généré le ${dateGen}<br>Groupe IRIS H — BYM Construction</div>
+</div>
+<div class="legende">${couleursPresentes.map(c=>`<div><span class="dot" style="background:${c}"></span>${legendeMap[c]||c}</div>`).join('')}</div>
+<table><thead>
+<tr><th rowspan="2" class="consigne">Consigne</th>${monthGroups.map(m=>`<th colspan="${m.count}" class="mois">${m.label}</th>`).join('')}</tr>
+<tr>${allDays.map(d=>{const we=d.getDay()===0||d.getDay()===6;return `<th class="jour ${we?'we':''}">${jourFr[d.getDay()]}<br>${d.getDate().toString().padStart(2,'0')}</th>`;}).join('')}</tr>
+</thead><tbody>
+${chData.planning.map((p,i)=>{const evenCls=i%2?'even':'';return `<tr class="${evenCls}"><td class="consigne"><div class="titre">${p.phase||''}</div><div class="desc">${p.notes||''}</div></td>${allDays.map(d=>{const we=d.getDay()===0||d.getDay()===6;const dStr=toStr(d);const inRange=p.date_debut&&p.date_fin&&dStr>=p.date_debut&&dStr<=p.date_fin;if(inRange){return `<td class="day" style="background:${p.couleur||'#1F77B4'}"></td>`;}return `<td class="day ${we?'we':''}"></td>`;}).join('')}</tr>`;}).join('')}
+</tbody></table>
+<div class="footer">IRIS H — Planning ${titre} — Généré le ${dateGen}</div>
+<script>window.onload=()=>{setTimeout(()=>window.print(),300);};</script>
+</body></html>`;
+  const w=window.open('','_blank');
+  if(!w){showToast('Pop-up bloqué — autorisez les pop-ups pour exporter');return;}
+  w.document.open();w.document.write(html);w.document.close();
 }
 
 async function addChPhase(){
