@@ -2143,9 +2143,9 @@ async function openChantierModal(code,nom){
   const cfg=getConfig();
   const headers={'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`};
   const [pl,bu,qu,td]=await Promise.all([
-    fetch(`${cfg.url}/rest/v1/chantier_planning?code_deal=eq.${code}&order=ordre.asc`,{headers}).then(r=>r.json()),
-    fetch(`${cfg.url}/rest/v1/chantier_budget?code_deal=eq.${code}&order=ordre.asc`,{headers}).then(r=>r.json()),
-    fetch(`${cfg.url}/rest/v1/chantier_questions?code_deal=eq.${code}&order=created_at.asc`,{headers}).then(r=>r.json()),
+    fetch(`${cfg.url}/rest/v1/chantier_planning?deal_code=eq.${code}&order=ordre.asc`,{headers}).then(r=>r.json()),
+    fetch(`${cfg.url}/rest/v1/chantier_budget?deal_code=eq.${code}&order=ordre.asc`,{headers}).then(r=>r.json()),
+    fetch(`${cfg.url}/rest/v1/chantier_questions?deal_code=eq.${code}&order=created_at.asc`,{headers}).then(r=>r.json()),
     fetch(`${cfg.url}/rest/v1/taches_v2?code_projet=eq.${code}&type_tache=eq.classique&order=created_at.asc`,{headers}).then(r=>r.json()),
   ]);
   chData={planning:pl||[],budget:bu||[],questions:qu||[],todos:td||[]};
@@ -2213,22 +2213,34 @@ function renderChContent(){
   }
 
   else if(chCurrentTab==='questions'){
-    const ouvertes=chData.questions.filter(q=>q.statut==='ouverte').length;
+    const linkify=t=>(t||'').replace(/(https?:\/\/[^\s]+)/g,'<a href="$1" target="_blank" rel="noopener" style="color:var(--blue);word-break:break-all">$1</a>');
+    const questions=chData.questions.filter(q=>(q.type||'question')==='question');
+    const notes=chData.questions.filter(q=>q.type==='note');
+    const ouvertes=questions.filter(q=>q.statut==='ouverte').length;
     el.innerHTML=`
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div style="font-size:13px;font-weight:600;color:var(--navy)">Questions <span style="font-size:11px;font-weight:400;color:var(--dim)">(${ouvertes} ouverte${ouvertes>1?'s':''})</span></div>
-        <button onclick="addChQuestion()" style="background:var(--blue);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Question</button>
+        <div style="font-size:13px;font-weight:600;color:var(--navy)">Questions et notes <span style="font-size:11px;font-weight:400;color:var(--dim)">(${questions.length} question${questions.length>1?'s':''}, ${notes.length} note${notes.length>1?'s':''})</span></div>
+        <div style="display:flex;gap:8px">
+          <button onclick="addChQuestion()" style="background:var(--blue);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Question</button>
+          <button onclick="addChNote()" style="background:var(--navy);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Note</button>
+        </div>
       </div>
-      ${chData.questions.length?chData.questions.map((q,i)=>`
+      ${questions.length?`<div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Questions <span style="color:var(--orange)">(${ouvertes} ouverte${ouvertes>1?'s':''})</span></div>${questions.map((q,i)=>`
         <div style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;background:${q.statut==='resolue'?'rgba(65,201,142,.04)':'#fff'}">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
             <div style="flex:1">
-              <div style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px">${i+1}. ${q.question}</div>
-              ${q.reponse?`<div style="font-size:11px;color:var(--dim);background:var(--bg);border-radius:6px;padding:8px;margin-top:6px">💬 ${q.reponse}</div>`:''}
+              <div style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px">${i+1}. ${linkify(q.question)}</div>
+              ${q.reponse?`<div style="font-size:11px;color:var(--dim);background:var(--bg);border-radius:6px;padding:8px;margin-top:6px">💬 ${linkify(q.reponse)}</div>`:''}
             </div>
             <span style="font-size:9px;padding:3px 8px;border-radius:10px;font-weight:600;white-space:nowrap;background:${q.statut==='resolue'?'#EAF3DE':'#FFF3CD'};color:${q.statut==='resolue'?'#27500A':'#856404'}">${q.statut==='resolue'?'Résolue':'Ouverte'}</span>
           </div>
-        </div>`).join(''):`<div style="text-align:center;padding:3rem;color:var(--dim)"><div style="font-size:2rem;margin-bottom:8px">❓</div><div>Aucune question enregistrée</div></div>`}`;
+        </div>`).join('')}`:''}
+      ${notes.length?`<div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;margin:18px 0 8px">Notes diverses</div>${notes.map((n,i)=>`
+        <div style="border-left:3px solid var(--blue);background:#f8f9fc;border-radius:6px;padding:12px 14px;margin-bottom:8px">
+          ${n.titre?`<div style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:6px">📌 ${n.titre}</div>`:''}
+          <div style="font-size:11px;color:var(--navy);line-height:1.5">${linkify(n.question)}</div>
+        </div>`).join('')}`:''}
+      ${!chData.questions.length?`<div style="text-align:center;padding:3rem;color:var(--dim)"><div style="font-size:2rem;margin-bottom:8px">💬</div><div>Aucune question ni note</div></div>`:''}`;
   }
 
   else if(chCurrentTab==='todo'){
@@ -2274,8 +2286,16 @@ async function addChBudget(){
 async function addChQuestion(){
   const q=prompt('Question :');if(!q)return;
   const cfg=getConfig();
-  const r=await fetch(`${cfg.url}/rest/v1/chantier_questions`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify({deal_code:chCurrentCode,question:q,statut:'ouverte'})});
+  const r=await fetch(`${cfg.url}/rest/v1/chantier_questions`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify({deal_code:chCurrentCode,question:q,statut:'ouverte',type:'question'})});
   const rows=await r.json();if(rows&&rows[0]){chData.questions.push(rows[0]);renderChContent();showToast('Question ajoutée');}
+}
+
+async function addChNote(){
+  const titre=prompt('Titre court de la note :');if(!titre)return;
+  const contenu=prompt('Contenu de la note (lien, info, etc.) :');if(!contenu)return;
+  const cfg=getConfig();
+  const r=await fetch(`${cfg.url}/rest/v1/chantier_questions`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify({deal_code:chCurrentCode,titre,question:contenu,statut:'info',type:'note'})});
+  const rows=await r.json();if(rows&&rows[0]){chData.questions.push(rows[0]);renderChContent();showToast('Note ajoutée');}
 }
 
 async function addChTodo(){
@@ -2305,7 +2325,7 @@ boot();
     <div style="display:flex;border-bottom:1px solid var(--border);background:var(--bg)">
       <button class="ch-tab active" onclick="switchChTab(this,'planning')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--navy);border-bottom:2px solid var(--blue)">📅 Planning</button>
       <button class="ch-tab" onclick="switchChTab(this,'budget')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">💶 Budget</button>
-      <button class="ch-tab" onclick="switchChTab(this,'questions')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">❓ Questions</button>
+      <button class="ch-tab" onclick="switchChTab(this,'questions')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">💬 Questions et notes</button>
       <button class="ch-tab" onclick="switchChTab(this,'todo')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">✅ Todo chantier</button>
     </div>
     <!-- Content -->
