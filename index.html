@@ -2364,7 +2364,7 @@ tr.even td.consigne{background:#f8f9fc}
 ${chData.planning.map((p,i)=>{const evenCls=i%2?'even':'';return `<tr class="${evenCls}"><td class="consigne"><div class="titre">${p.phase||''}</div><div class="desc">${p.notes||''}</div></td>${allDays.map(d=>{const we=d.getDay()===0||d.getDay()===6;const dStr=toStr(d);const inRange=p.date_debut&&p.date_fin&&dStr>=p.date_debut&&dStr<=p.date_fin;if(inRange){return `<td class="day" style="background:${p.couleur||'#1F77B4'}"></td>`;}return `<td class="day ${we?'we':''}"></td>`;}).join('')}</tr>`;}).join('')}
 </tbody></table>
 <div class="footer">IRIS H — Planning ${titre} — Généré le ${dateGen}</div>
-<script>window.onload=()=>{setTimeout(()=>window.print(),300);};</script>
+<scr`+`ipt>window.onload=()=>{setTimeout(()=>window.print(),300);};</scr`+`ipt>
 </body></html>`;
   const w=window.open('','_blank');
   if(!w){showToast('Pop-up bloqué — autorisez les pop-ups pour exporter');return;}
