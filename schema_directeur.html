@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schéma directeur – Groupe IRIS H</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f3f0;
+    --card-bg: #ffffff;
+    --card-border: #e0ddd8;
+    --dark: #1a1a1a;
+    --accent: #b8860b;
+    --text: #3a3a3a;
+    --text-light: #888;
+    --line: #c0bdb8;
+    --shadow: 0 2px 16px rgba(0,0,0,0.06);
+    --b1: #faead0;
+    --b2: #d8e4f3;
+    --b3: #d8eee5;
+    --b4: #e7dcf5;
+    --b5: #f5dcd3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    background: var(--bg); color: var(--text);
+    min-height: 100vh;
+    padding: 40px 20px 60px;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 48px 56px;
+    box-shadow: var(--shadow);
+  }
+  .doc-header {
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+  }
+  .doc-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .doc-header .meta {
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+  .content { line-height: 1.7; font-size: 15px; }
+  .content h1 { font-size: 24px; font-weight: 700; color: var(--dark); margin: 36px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--card-border); letter-spacing: -0.3px; }
+  .content h2 { font-size: 20px; font-weight: 700; color: var(--dark); margin: 32px 0 14px; letter-spacing: -0.2px; }
+  .content h3 { font-size: 17px; font-weight: 600; color: var(--accent); margin: 24px 0 10px; }
+  .content h4 { font-size: 15px; font-weight: 600; color: var(--dark); margin: 18px 0 8px; }
+  .content p { margin-bottom: 14px; }
+  .content strong { color: var(--dark); font-weight: 700; }
+  .content em { font-style: italic; color: var(--text-light); }
+  .content ul, .content ol { margin: 12px 0 18px 28px; }
+  .content li { margin-bottom: 6px; }
+  .content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0 24px;
+    font-size: 14px;
+    background: #fafaf8;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .content th {
+    background: var(--dark);
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .content td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--card-border);
+    vertical-align: top;
+  }
+  .content tr:last-child td { border-bottom: none; }
+  .content tr:nth-child(even) td { background: rgba(184, 134, 11, 0.025); }
+  .content hr { border: none; border-top: 1px solid var(--card-border); margin: 32px 0; }
+  .content code {
+    background: #f5f3f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 13px;
+  }
+  .content blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 8px 18px;
+    margin: 16px 0;
+    background: rgba(184, 134, 11, 0.04);
+    color: var(--text-light);
+    font-style: italic;
+  }
+  .loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-light);
+  }
+  /* Coloration des sections par brique */
+  .content h3:has(+ p:contains("M0 à M12")), 
+  .content h3:has(+ p:contains("Brique 1")) { border-left: 4px solid #ef9f27; padding-left: 12px; }
+  @media (max-width: 768px) {
+    body { padding: 20px 12px; }
+    .container { padding: 24px 20px; }
+    .doc-header h1 { font-size: 22px; }
+    .content { font-size: 14px; }
+    .content table { font-size: 12px; }
+    .content th, .content td { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="doc-header">
+      <h1>Schéma directeur, IRIS REP métier 2 asset management</h1>
+      <div class="meta">
+        Version 2 consolidée du 8 mai 2026<br>
+        Roadmap brique par brique pour l'ajout du métier asset management dans IRIS REP<br>
+        Cible stratégique, devenir l'équivalent CVL d'Aalto REIM puis investisseur pour compte de tiers façon Valor Real Estate
+      </div>
+    </div>
+    <div id="content" class="content">
+      <div class="loading">Chargement du schéma directeur...</div>
+    </div>
+  </div>
+
+<script>
+const SUPABASE_URL = 'https://kkznkuwoxoxvapejzytv.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtrenpubnV3b3hveHZhcGVqenl0diIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzMwOTczMzc4LCJleHAiOjIwNDY1NDkzNzh9.placeholder';
+
+const MD_CONTENT = `# IRIS REP, MÉTIER 2 ASSET MANAGEMENT, AUDIT ET ROADMAP
+
+Version 2 consolidée du 8 mai 2026
+
+---
+
+## 1. Positionnement du métier 2 dans IRIS REP
+
+IRIS REP exerce déjà deux métiers structurés. L'asset management vient compléter le triptyque pour faire d'IRIS REP un acteur full chain de l'immobilier tertiaire en Centre Val de Loire et Île-de-France.
+
+### Métier 1, Brokerage (existant)
+Transaction tertiaire (cession, location, capital markets), conseil acquéreur et bailleur, structuration de transactions. Carte T détenue. Cible CA fin année 1 (cumulé) 150 000 euros, fin année 5 (cumulé) 1 500 000 euros.
+
+### Métier 2, Asset Management (NOUVEAU)
+Asset advisory, property management, facility management en délégation, fund management AMF, et investisseur pour compte de tiers à terme. Cinq briques séquentielles. Cible CA fin année 1 150 000 euros, fin année 5 5 000 000 euros.
+
+### Métier 3, Promotion et montage d'opérations (existant)
+Structuration d'opérations immobilières, marchand de biens, montages financiers, co-promotion. Cible CA fin année 1 300 000 euros, fin année 5 3 000 000 euros.
+
+### Pourquoi ce triptyque
+La chaîne brokerage / asset / promotion permet de capter trois revenus distincts sur le même actif : commission à l'acquisition, honoraires récurrents pendant la détention, commission à l'arbitrage et marge sur l'opération de repositionnement.
+
+---
+
+## 2. Stratégie de marque hybride en trois temps
+
+### Phase 1, M0 à M36, marque unique IRIS REP
+Une seule marque IRIS REP avec trois lines of business :
+- IRIS REP Brokerage, commercialisation et transaction tertiaire
+- IRIS REP Asset Services, asset, property et facility management
+- IRIS REP Développement, promotion et montage d'opérations
+
+### Phase 2, M36 à M60, IRIS REP plus IRIS REIM
+Filialisation obligatoire pour AMF. La SGP devient IRIS REIM (SAS dédiée détenue par IRIS REP).
+
+### Phase 3, M60 et plus, ajout d'IRIS Capital Partners
+Pour les véhicules dédiés institutionnels internationaux (LP nord américains, fonds souverains, family offices européens majeurs).
+
+---
+
+## 3. Roadmap brique par brique
+
+### BRIQUE 1, ASSET ADVISORY PUR (M0 à M12)
+
+| Période | Action principale | Premier client cible |
+|---|---|---|
+| M0 à M1 | Statuts modifiés, plaquette ombrelle, grille tarifaire | Préparation pipeline |
+| M2 à M3 | Premier mandat audit signé | Family office tourangeau réseau ARRISTO (12 000 euros HT) |
+| M4 à M6 | 2 mandats récurrents, livre blanc T2 | 2 family offices CVL ou 1 propriétaire occupant |
+| M7 à M12 | Approche institutionnelle | Sofidy ou Crédit Agricole Touraine Poitou |
+
+**KPI fin de phase :** 30 000 000 euros AUM advisory, 150 000 euros CA, 1 à 2 personnes.
+
+### BRIQUE 2, PROPERTY MANAGEMENT (M12 à M24)
+
+| Période | Action principale | Premier client cible |
+|---|---|---|
+| M12 à M14 | Dépôt carte G, recrutement PM senior | Préparation pipeline PM |
+| M14 à M15 | Carte G obtenue, garantie Galian, séquestre | Bascule premier mandat advisory en PM |
+| M15 à M18 | Premier mandat PM, reporting mensuel | CA Touraine Poitou ou portefeuille CVL Sofidy |
+| M19 à M24 | Équipe à 5 personnes, 30 à 50 immeubles | 3 clients institutionnels structurants |
+
+**KPI fin de phase :** 80 000 000 euros AUM, 500 000 euros CA cumulé AM, 3 à 5 personnes.
+
+### BRIQUE 3, FACILITY MANAGEMENT EN DÉLÉGATION (M24 à M36)
+
+| Période | Action principale | Premier client cible |
+|---|---|---|
+| M24 à M26 | Recrutement responsable technique senior, GMAO | Préparation offre FM |
+| M26 à M30 | Premier mandat FM intégré, contrats cadres FM | Worldline Tours ou Thales Tours |
+| M30 à M33 | Industrialisation FM, marge 5 à 15 pourcent | 2 clients FM intégrés |
+| M34 à M36 | 150 000 000 euros AUM, prep dossier AMF | 5 mandats FM intégrés |
+
+**KPI fin de phase :** 150 000 000 euros AUM, 1 500 000 euros CA cumulé AM, 6 à 10 personnes.
+
+### BRIQUE 4, FUND MANAGEMENT AGRÉÉ AMF (M36 à M60)
+
+| Période | Action principale | Premier client cible |
+|---|---|---|
+| M36 à M42 | Filialisation IRIS REIM, recrutement RCCI | Préparation programme d'activité |
+| M42 à M48 | Dépôt dossier AMF, instruction 9 à 12 mois | Pré-engagements CGP régionaux |
+| M48 à M54 | Agrément AMF, premier closing club deal 20 à 30 millions | Réseau CGP CVL et family offices |
+| M54 à M60 | Track record 1er fonds, 250 millions AUM | 2e véhicule en préparation |
+
+**KPI fin de phase :** 250 000 000 euros AUM, 5 000 000 euros CA, 12 à 20 personnes.
+
+### BRIQUE 5, INVESTISSEUR POUR COMPTE DE TIERS (M60 et plus)
+
+| Période | Action principale | Premier client cible |
+|---|---|---|
+| M60 à M72 | GP commitment 1 million, structuration JV LP/GP | Assureurs français (Axa IM, CNP) |
+| M72 à M84 | Levée premier véhicule LP 100 à 200 millions | LP français première vague |
+| M84 à M96 | Track record validé, 2e véhicule LP | LP nord américains, family offices européens |
+| M96 et plus | 500 millions à 1 milliard AUM | Fonds souverains et fonds de fonds |
+
+**KPI fin de phase :** 500 000 000 à 1 000 000 000 euros AUM, 15 000 000 euros CA, 25 à 40 personnes.
+
+---
+
+## 4. Concurrents et clients par brique
+
+### BRIQUE 1, Asset Advisory pur
+
+**Concurrents :** Cushman Strategic Consulting, JLL Strategic Consulting, BNP Paribas RE Advisory, Catella Asset Management, Theop.
+
+**Clients CVL :** Family offices tourangeaux réseau ARRISTO, Crédit Agricole Touraine Poitou, STMicroelectronics Tours, family offices vinicoles Loire (Bouvet Ladubay, Ackerman, Henri Bourgeois, Langlois Château), EDF DPN sites nucléaires CVL.
+
+### BRIQUE 2, Property Management
+
+**Concurrents :** Septime PM (groupe Pelloux), Ares Property (groupe Lamotte), Avelim, Yxime (groupe CMA), Moison Gestion Immobilière.
+
+**Clients CVL :** Sofidy (groupe Tikehau), Aestiam Pierre Rendement, Cap Foncières et Territoires (groupe AXTOM), Atlantique Murs Régions et SCPI régionalistes, foncières familiales tourangelles et orléanaises.
+
+### BRIQUE 3, Facility Management
+
+**Concurrents :** Atalian Facility Solutions, Vinci Facilities, Samsic Facility, Onet Facility, Equans Services.
+
+**Clients CVL :** Worldline Tours et Blois, Thales Tours, mutuelles MAIF / MGEN / MACSF, centres commerciaux et retail parks CVL, foncières santé (Icade Santé, Healthcare Activos, Cofinimmo).
+
+### BRIQUE 4, Fund Management AMF
+
+**Concurrents :** Aalto REIM (Rennes), Foncière Magellan, Mata Capital IM, Theoreim, Foncières et Territoires (groupe AXTOM).
+
+**Cibles investisseurs :** Réseau CGP régional CVL, family offices tourangeaux et orléanais, banques régionales, caisses de retraite et institutions de prévoyance, plateformes en ligne (Iroko, Louve Invest, La Centrale des SCPI, Linxea).
+
+### BRIQUE 5, Investisseur pour compte de tiers
+
+**Concurrents :** Valor Real Estate Partners, Tristan Capital Partners, Mata Capital IM, Aermont Capital, Patrizia France.
+
+**Cibles LP :** Assureurs français (Axa IM, Generali RE, Allianz RE, BNP Paribas Cardif, CNP Assurances), fonds de pension nord américains (Quadreal, OMERS, Ivanhoé Cambridge), fonds souverains (GIC, ADIA, Mubadala), family offices européens majeurs, fonds de fonds immobiliers (Partners Group, Adams Street, Hamilton Lane).
+
+---
+
+## 5. Étapes clés réglementaires
+
+| Étape | Brique | Coût | Délai |
+|---|---|---|---|
+| Modification statuts IRIS REP | Brique 1 | 300 euros | 2 semaines |
+| Avenant RC pro extension AM | Brique 1 | 500 à 2 000 euros par an | 1 semaine |
+| Carte G CCI | Brique 2 | 160 euros plus 2 500 euros par an | 6 à 8 semaines |
+| Garantie financière 110 000 euros Galian | Brique 2 | 1 500 à 3 500 euros par an | 2 semaines |
+| RC pro renforcée | Brique 2 | 2 500 à 5 000 euros par an | 1 semaine |
+| Logiciel Immofacile | Brique 2 | 300 à 500 euros par mois | 3 à 6 semaines |
+| Recrutement responsable technique | Brique 3 | 60 000 à 80 000 euros par an | 3 à 6 mois |
+| Recrutement RCCI | Brique 4 | 60 000 à 120 000 euros par an | 3 à 9 mois |
+| Filialisation IRIS REIM SAS | Brique 4 | 5 000 euros | 1 mois |
+| Agrément AMF SGP | Brique 4 | 50 000 à 150 000 euros frais conseil | 9 à 18 mois |
+| Premier closing club deal | Brique 4 | 30 000 à 80 000 euros | 6 à 12 mois |
+| Création marque IRIS Capital Partners | Brique 5 | 50 000 euros | 3 mois |
+| GP commitment JV institutionnel | Brique 5 | 1 000 000 euros capital | 12 à 24 mois |
+
+---
+
+## 6. Synergies inter-métiers et avec le groupe IRIS H
+
+### Synergies internes IRIS REP entre les trois métiers
+
+**Sourcing deals.** Brokerage (M1) identifie un actif vendu, propose au client de retenir IRIS REP en AM (M2) post acquisition.
+
+**Mandat AM vers promotion.** L'AM (M2) identifie un repositionnement value add, propose une opération co montée par le pôle promotion (M3).
+
+**Cession arbitrage.** L'AM (M2) décide d'arbitrer un actif, le brokerage IRIS REP (M1) commercialise.
+
+**Club deal investisseur.** Le pôle promotion (M3) source des opportunités pour les véhicules gérés en AM (M2 brique 4).
+
+### Synergies avec les autres entités du groupe IRIS H
+
+**BYM Construction.** Partenaire travaux privilégié pour les capex et travaux de repositionnement pilotés par IRIS REP AM.
+
+**Urban Rise et RIR.** Métier marchand de biens, peuvent à terme devenir co investisseurs sur les opérations IRIS REP AM en brique 5.
+
+**IRIS H (holding).** Pourra à terme co investir en GP commitment dans les véhicules brique 4 et 5.
+
+**Cybelcity.** À évaluer selon évolution de l'activité.
+
+---
+
+## 7. Plan d'action 90 premiers jours
+
+| Semaine | Action |
+|---|---|
+| S1 | AGE IRIS H et modification statuts IRIS REP |
+| S1 | Avenant RC pro Galian |
+| S2 | Plaquette ombrelle IRIS REP avec 3 fiches métier |
+| S2 | Grille tarifaire publique IRIS REP Asset Services |
+| S3 | Template convention d'honoraires asset advisory |
+| S3 | Mise à jour table prospects Supabase (segment AM) |
+| S4 | Premier rendez vous family office tourangeau réseau ARRISTO |
+| S4 | Page web IRIS REP métier 2 publiée |
+| S5 à S8 | Tournée 5 family offices CVL plus 3 propriétaires occupants |
+| S5 à S8 | Approche Sofidy direction immobilière |
+| S9 à S12 | Approche Crédit Agricole Touraine Poitou |
+| S9 à S12 | Premier mandat asset advisory signé |
+| S10 | Lancement livre blanc trimestriel marché tertiaire CVL |
+| S12 | Bilan trimestre 1, ajustement plan |
+`;
+
+document.getElementById('content').innerHTML = marked.parse(MD_CONTENT);
+</script>
+</body>
+</html>

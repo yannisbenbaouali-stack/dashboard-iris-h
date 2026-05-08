@@ -249,7 +249,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'finance')"><span class="nav-dot"></span><span>Finance</span></button>
       <button class="nav-item" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'memoire')"><span class="nav-dot"></span><span>Mémoire</span></button>
-      <button class="nav-item" onclick="switchTab(this,'organigramme')"><span class="nav-dot"></span><span>Organigramme</span></button>
+      <button class="nav-item" onclick="switchTab(this,'organigramme')"><span class="nav-dot"></span><span>Structuration</span></button>
       <button class="nav-item" onclick="switchTab(this,'outils')"><span class="nav-dot"></span><span>Outils</span></button>
       <button class="nav-item" onclick="switchTab(this,'mandats')"><span class="nav-dot"></span><span>Registre Mandats</span><span class="nav-cnt" id="nav-mandats-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'audit')"><span class="nav-dot"></span><span>Audit Drive</span><span class="nav-cnt" id="nav-audit-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
@@ -313,13 +313,27 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div id="memo-skills-view" style="display:none"></div>
       </div>
 
-      <!-- ORGANIGRAMME -->
+      <!-- STRUCTURATION (ex ORGANIGRAMME) -->
       <div class="tab" id="tab-organigramme">
+        <!-- Onglets de niveau 1 : Organigramme / Schéma directeur -->
         <div class="filters" style="margin-bottom:12px">
-          <button class="fbtn on" id="orga-btn-tout" onclick="switchOrga('organigramme.html',this)">Tout</button>
-          <button class="fbtn" id="orga-btn-bym" onclick="switchOrga('organigramme_bym.html',this)">BYM</button>
+          <button class="fbtn struct-btn on" id="struct-btn-orga" onclick="switchStruct('orga',this)">Organigramme</button>
+          <button class="fbtn struct-btn" id="struct-btn-schema" onclick="switchStruct('schema',this)">Schéma directeur</button>
         </div>
-        <iframe id="organigramme-frame" src="organigramme.html?v=2" style="width:100%;height:calc(100vh - 160px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
+
+        <!-- Section Organigramme avec sous-onglets Tout / BYM -->
+        <div id="struct-section-orga">
+          <div class="filters" style="margin-bottom:12px">
+            <button class="fbtn on" id="orga-btn-tout" onclick="switchOrga('organigramme.html',this)">Tout</button>
+            <button class="fbtn" id="orga-btn-bym" onclick="switchOrga('organigramme_bym.html',this)">BYM</button>
+          </div>
+          <iframe id="organigramme-frame" src="organigramme.html?v=2" style="width:100%;height:calc(100vh - 220px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
+        </div>
+
+        <!-- Section Schéma directeur -->
+        <div id="struct-section-schema" style="display:none">
+          <iframe id="schema-frame" src="schema_directeur.html?v=1" style="width:100%;height:calc(100vh - 200px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
+        </div>
       </div>
 
       <!-- OUTILS -->
@@ -643,7 +657,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',outils:'Outils',mandats:'Registre Mandats · IRIS REP',audit:'Audit Drive'};
+  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',audit:'Audit Drive'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
@@ -1514,8 +1528,19 @@ async function saveTaskDetail(){
 
 function switchOrga(src,btn){
   document.getElementById('organigramme-frame').src=src+'?v='+Date.now();
-  document.querySelectorAll('#tab-organigramme .fbtn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('#struct-section-orga .fbtn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
+}
+
+function switchStruct(section,btn){
+  document.querySelectorAll('.struct-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('struct-section-orga').style.display=section==='orga'?'block':'none';
+  document.getElementById('struct-section-schema').style.display=section==='schema'?'block':'none';
+  if(section==='schema'){
+    const f=document.getElementById('schema-frame');
+    f.src='schema_directeur.html?v='+Date.now();
+  }
 }
 
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)}
