@@ -253,6 +253,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'outils')"><span class="nav-dot"></span><span>Outils</span></button>
       <button class="nav-item" onclick="switchTab(this,'mandats')"><span class="nav-dot"></span><span>Registre Mandats</span><span class="nav-cnt" id="nav-mandats-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'audit')"><span class="nav-dot"></span><span>Audit Drive</span><span class="nav-cnt" id="nav-audit-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'histoire')"><span class="nav-dot"></span><span>Histoire</span><span class="nav-cnt" id="nav-histoire-cnt">0</span></button>
     </div>
     <div class="sb-footer">
       <div>Supabase connecté</div>
@@ -415,6 +416,15 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div id="audit-body"></div>
       </div>
 
+      <!-- HISTOIRE -->
+      <div class="tab" id="tab-histoire">
+        <div class="memo-toggle" id="histoire-toggle"></div>
+        <div id="histoire-bible-view"></div>
+        <div id="histoire-personnages-view" style="display:none"></div>
+        <div id="histoire-chapitres-view" style="display:none"></div>
+        <div id="histoire-indices-view" style="display:none"></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -568,7 +578,7 @@ async function supa(table,params='',fetchAll=false){
 
 async function loadAll(){
   const safe=async fn=>{try{return await fn()}catch(e){console.warn('Warning:',e);return[]}};
-  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats,vitrines,partenaires]=await Promise.all([
+  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats,vitrines,partenaires,h_bible,h_persos,h_chap,h_indices]=await Promise.all([
     safe(()=>supa('taches','order=created_at.desc')),
     safe(()=>supa('taches_v2','order=created_at.asc')),
     safe(()=>supa('taches_recurrentes_suivi','order=semaine.asc')),
@@ -584,10 +594,15 @@ async function loadAll(){
     safe(()=>supa('vilmar_comptabilite','order=created_at.asc')),
     safe(()=>supa('mandats_iris_rep','order=date_reception.desc')),
     safe(()=>supa('deals_vitrine','order=created_at.desc')),
-    safe(()=>supa('partenaires','order=nom.asc'))
+    safe(()=>supa('partenaires','order=nom.asc')),
+    safe(()=>supa('histoire_bible','order=ordre.asc')),
+    safe(()=>supa('histoire_personnages','order=categorie.asc,nom.asc')),
+    safe(()=>supa('histoire_chapitres','order=saison.asc,numero.asc')),
+    safe(()=>supa('histoire_indices','order=saison_seme.asc,id.asc'))
   ]);
   data.taches=taches;data.taches_v2=taches_v2;data.rec_suivi=rec_suivi;data.deals=deals;
   data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;data.vilmar=vilmar;data.mandats=mandats;data.partenaires=partenaires;data.vitrines=vitrines;data.vitrines=vitrines;
+  data.h_bible=h_bible;data.h_persos=h_persos;data.h_chap=h_chap;data.h_indices=h_indices;
   try{localStorage.setItem('iris_h_cache',JSON.stringify({data:{...data,contacts:[]},ts:Date.now()}))}catch(e){}
   render();
   const t=new Date();
@@ -1316,6 +1331,65 @@ function renderFragments(){
 }
 
 function escHtml(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}
+
+// ════════════════════════════════════════
+// HISTOIRE
+// ════════════════════════════════════════
+let histView='bible',histPersoCat='all',histChapSaison=1,histIndStatut='all';
+
+function renderHistoire(){
+  document.getElementById('histoire-toggle').innerHTML=`<button class="memo-toggle-btn${histView==='bible'?' active':''}" onclick="histView='bible';renderHistoire()">Bible</button><button class="memo-toggle-btn${histView==='personnages'?' active':''}" onclick="histView='personnages';renderHistoire()">Personnages</button><button class="memo-toggle-btn${histView==='chapitres'?' active':''}" onclick="histView='chapitres';renderHistoire()">Chapitres</button><button class="memo-toggle-btn${histView==='indices'?' active':''}" onclick="histView='indices';renderHistoire()">Indices</button>`;
+  document.getElementById('histoire-bible-view').style.display=histView==='bible'?'block':'none';
+  document.getElementById('histoire-personnages-view').style.display=histView==='personnages'?'block':'none';
+  document.getElementById('histoire-chapitres-view').style.display=histView==='chapitres'?'block':'none';
+  document.getElementById('histoire-indices-view').style.display=histView==='indices'?'block':'none';
+  if(histView==='bible')renderHistBible();
+  else if(histView==='personnages')renderHistPersos();
+  else if(histView==='chapitres')renderHistChapitres();
+  else renderHistIndices();
+  const cnt=(data.h_chap||[]).length;
+  const ne=document.getElementById('nav-histoire-cnt');if(ne)ne.textContent=cnt;
+}
+
+function renderHistBible(){
+  const el=document.getElementById('histoire-bible-view');
+  const items=data.h_bible||[];
+  if(!items.length){el.innerHTML='<div class="empty"><div class="empty-ico">📖</div><div class="empty-text">Bible vide</div></div>';return}
+  el.innerHTML=items.map(b=>`<div class="bible-chapter active" style="margin-bottom:14px"><div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">${escHtml(b.titre)}</div><div class="bible-content">${escHtml(b.contenu)}</div><div class="bible-meta"><span>Section : ${escHtml(b.section)}</span><span>${b.updated_at?'Maj : '+fmtDt(b.updated_at):''}</span></div></div>`).join('');
+}
+
+function renderHistPersos(){
+  const el=document.getElementById('histoire-personnages-view');
+  const persos=data.h_persos||[];
+  if(!persos.length){el.innerHTML='<div class="empty"><div class="empty-ico">👥</div><div class="empty-text">Aucun personnage</div></div>';return}
+  const cats=['all',...new Set(persos.map(p=>p.categorie).filter(Boolean))];
+  const labels={all:'Tous',protagoniste:'Protagoniste',famille:'Famille',orleans:'Orléans',sorbonne:'Sorbonne',mentor:'Mentors',romance:'Romance',mystere:'Mystère',antagoniste:'Antagonistes',compere:'Compères'};
+  const filt=histPersoCat==='all'?persos:persos.filter(p=>p.categorie===histPersoCat);
+  el.innerHTML=`<div class="filters" style="margin-bottom:12px">${cats.map(c=>`<button class="fbtn${histPersoCat===c?' on':''}" onclick="histPersoCat='${c}';renderHistPersos()">${labels[c]||c}</button>`).join('')}</div>`+
+    filt.map(p=>`<div class="tcard" style="margin-bottom:8px;padding:14px"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px"><div><div style="font-size:14px;font-weight:700;color:var(--navy)">${escHtml(p.nom)}${p.age_initial?' <span style="color:var(--dim);font-weight:400">· '+p.age_initial+' ans</span>':''}</div><div style="font-size:12px;color:var(--dim);margin-top:2px">${escHtml(p.role||'')}</div></div><span class="pill p-med">${escHtml(p.categorie||'')}</span></div><div style="font-size:13px;color:var(--navy);line-height:1.5;margin-top:6px">${escHtml(p.description||'')}</div>${p.saisons_cle?`<div style="font-size:11px;color:var(--dim);margin-top:8px">Saisons : ${escHtml(p.saisons_cle)}</div>`:''}</div>`).join('');
+}
+
+function renderHistChapitres(){
+  const el=document.getElementById('histoire-chapitres-view');
+  const chap=data.h_chap||[];
+  if(!chap.length){el.innerHTML='<div class="empty"><div class="empty-ico">📝</div><div class="empty-text">Aucun chapitre planifié</div></div>';return}
+  const saisons=[...new Set(chap.map(c=>c.saison))].sort((a,b)=>a-b);
+  const filt=chap.filter(c=>c.saison===histChapSaison);
+  const stPill={planifie:'p-med',redige:'p-high',publie:'p-done'};
+  el.innerHTML=`<div class="filters" style="margin-bottom:12px">${saisons.map(s=>`<button class="fbtn${histChapSaison===s?' on':''}" onclick="histChapSaison=${s};renderHistChapitres()">Saison ${s}</button>`).join('')}</div>`+
+    (filt.length?filt.map(c=>`<div class="tcard" style="margin-bottom:8px;padding:14px"><div style="display:flex;justify-content:space-between;gap:12px;margin-bottom:4px"><div style="font-size:13px;font-weight:700;color:var(--navy)">S${c.saison} · Chapitre ${c.numero}${c.titre?' · '+escHtml(c.titre):''}</div><span class="pill ${stPill[c.statut]||'p-med'}">${escHtml(c.statut||'')}</span></div><div style="font-size:11px;color:var(--dim);margin-bottom:6px">${c.date_publication?'Publication prévue : '+c.date_publication:''}${c.mots_cible?' · '+c.mots_cible+' mots cible':''}</div>${c.pitch?`<div style="font-size:13px;color:var(--navy);line-height:1.5;margin-top:4px">${escHtml(c.pitch)}</div>`:''}${c.contenu?`<details style="margin-top:8px"><summary style="cursor:pointer;font-size:12px;color:var(--blue);font-weight:600">Voir le contenu rédigé</summary><div style="margin-top:8px;padding:10px;background:var(--bg);border-radius:8px;font-size:13px;line-height:1.6;white-space:pre-wrap">${escHtml(c.contenu)}</div></details>`:''}</div>`).join(''):'<div class="empty"><div class="empty-ico">📝</div><div class="empty-text">Aucun chapitre dans cette saison</div></div>');
+}
+
+function renderHistIndices(){
+  const el=document.getElementById('histoire-indices-view');
+  const ind=data.h_indices||[];
+  if(!ind.length){el.innerHTML='<div class="empty"><div class="empty-ico">🔍</div><div class="empty-text">Aucun indice</div></div>';return}
+  const filt=histIndStatut==='all'?ind:ind.filter(i=>i.statut===histIndStatut);
+  const sts=['all','a_semer','seme','paye'];
+  const lbl={all:'Tous',a_semer:'À semer',seme:'Semé',paye:'Payé'};
+  el.innerHTML=`<div class="filters" style="margin-bottom:12px">${sts.map(s=>`<button class="fbtn${histIndStatut===s?' on':''}" onclick="histIndStatut='${s}';renderHistIndices()">${lbl[s]}</button>`).join('')}</div>`+
+    filt.map(i=>`<div class="tcard" style="margin-bottom:8px;padding:14px"><div style="display:flex;justify-content:space-between;gap:12px;margin-bottom:4px"><div style="font-size:13px;font-weight:700;color:var(--navy);flex:1">${escHtml(i.indice)}</div><span class="pill p-med">${i.saison_seme?'Semé S'+i.saison_seme:''}${i.saison_paye?' → Payé S'+i.saison_paye:''}</span></div>${i.description?`<div style="font-size:13px;color:var(--navy);line-height:1.5;margin-top:6px">${escHtml(i.description)}</div>`:''}</div>`).join('');
+}
 
 function renderSkills(){
   const el=document.getElementById('memo-skills-view');
