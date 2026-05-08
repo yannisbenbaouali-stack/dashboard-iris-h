@@ -423,6 +423,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div id="histoire-personnages-view" style="display:none"></div>
         <div id="histoire-chapitres-view" style="display:none"></div>
         <div id="histoire-indices-view" style="display:none"></div>
+        <div id="histoire-chronologie-view" style="display:none"></div>
       </div>
 
     </div>
@@ -1338,15 +1339,17 @@ function escHtml(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'
 let histView='bible',histPersoCat='all',histChapSaison=1,histIndStatut='all';
 
 function renderHistoire(){
-  document.getElementById('histoire-toggle').innerHTML=`<button class="memo-toggle-btn${histView==='bible'?' active':''}" onclick="histView='bible';renderHistoire()">Bible</button><button class="memo-toggle-btn${histView==='personnages'?' active':''}" onclick="histView='personnages';renderHistoire()">Personnages</button><button class="memo-toggle-btn${histView==='chapitres'?' active':''}" onclick="histView='chapitres';renderHistoire()">Chapitres</button><button class="memo-toggle-btn${histView==='indices'?' active':''}" onclick="histView='indices';renderHistoire()">Indices</button>`;
+  document.getElementById('histoire-toggle').innerHTML=`<button class="memo-toggle-btn${histView==='bible'?' active':''}" onclick="histView='bible';renderHistoire()">Bible</button><button class="memo-toggle-btn${histView==='personnages'?' active':''}" onclick="histView='personnages';renderHistoire()">Personnages</button><button class="memo-toggle-btn${histView==='chapitres'?' active':''}" onclick="histView='chapitres';renderHistoire()">Chapitres</button><button class="memo-toggle-btn${histView==='indices'?' active':''}" onclick="histView='indices';renderHistoire()">Indices</button><button class="memo-toggle-btn${histView==='chronologie'?' active':''}" onclick="histView='chronologie';renderHistoire()">Chronologie</button>`;
   document.getElementById('histoire-bible-view').style.display=histView==='bible'?'block':'none';
   document.getElementById('histoire-personnages-view').style.display=histView==='personnages'?'block':'none';
   document.getElementById('histoire-chapitres-view').style.display=histView==='chapitres'?'block':'none';
   document.getElementById('histoire-indices-view').style.display=histView==='indices'?'block':'none';
+  document.getElementById('histoire-chronologie-view').style.display=histView==='chronologie'?'block':'none';
   if(histView==='bible')renderHistBible();
   else if(histView==='personnages')renderHistPersos();
   else if(histView==='chapitres')renderHistChapitres();
-  else renderHistIndices();
+  else if(histView==='indices')renderHistIndices();
+  else renderHistChronologie();
   const cnt=(data.h_chap||[]).length;
   const ne=document.getElementById('nav-histoire-cnt');if(ne)ne.textContent=cnt;
 }
@@ -1389,6 +1392,39 @@ function renderHistIndices(){
   const lbl={all:'Tous',a_semer:'À semer',seme:'Semé',paye:'Payé'};
   el.innerHTML=`<div class="filters" style="margin-bottom:12px">${sts.map(s=>`<button class="fbtn${histIndStatut===s?' on':''}" onclick="histIndStatut='${s}';renderHistIndices()">${lbl[s]}</button>`).join('')}</div>`+
     filt.map(i=>`<div class="tcard" style="margin-bottom:8px;padding:14px"><div style="display:flex;justify-content:space-between;gap:12px;margin-bottom:4px"><div style="font-size:13px;font-weight:700;color:var(--navy);flex:1">${escHtml(i.indice)}</div><span class="pill p-med">${i.saison_seme?'Semé S'+i.saison_seme:''}${i.saison_paye?' → Payé S'+i.saison_paye:''}</span></div>${i.description?`<div style="font-size:13px;color:var(--navy);line-height:1.5;margin-top:6px">${escHtml(i.description)}</div>`:''}</div>`).join('');
+}
+
+function renderHistChronologie(){
+  const el=document.getElementById('histoire-chronologie-view');
+  const chap=data.h_chap||[];
+  const ind=data.h_indices||[];
+  const bib=data.h_bible||[];
+  if(!chap.length){el.innerHTML='<div class="empty"><div class="empty-ico">🕒</div><div class="empty-text">Chronologie vide</div></div>';return}
+  const tomes={1:'Le Cahier de Thomas',2:'L\u0027Inscription Latine',3:'Vincent',4:'Cambridge',5:'L\u0027Abbaye',6:'La Singularité',7:'La Dérive',8:'Élise',9:'La Guerre Discrète',10:'La Lignée',11:'La Divergence',12:'La Fermeture'};
+  const ages={1:'18 à 19 ans',2:'19 à 20 ans',3:'20 à 21 ans',4:'21 à 22 ans',5:'22 à 23 ans',6:'23 à 24 ans',7:'24 à 25 ans',8:'25 à 26 ans',9:'26 à 27 ans',10:'27 à 28 ans',11:'28 à 29 ans',12:'29 à 30 ans'};
+  const saisons=[...new Set(chap.map(c=>c.saison))].sort((a,b)=>a-b);
+  let html='<div style="position:relative;padding:8px 0 8px 32px"><div style="position:absolute;left:12px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--blue),var(--navy))"></div>';
+  saisons.forEach(s=>{
+    const chapS=chap.filter(c=>c.saison===s).sort((a,b)=>a.numero-b.numero);
+    if(!chapS.length)return;
+    const indSemes=ind.filter(i=>i.saison_seme===s);
+    const indPayes=ind.filter(i=>i.saison_paye===s);
+    const dateDeb=chapS[0].date_publication;const dateFin=chapS[chapS.length-1].date_publication;
+    html+=`<div style="position:relative;margin-bottom:24px"><div style="position:absolute;left:-26px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--blue);border:3px solid var(--card)"></div><div class="tcard" style="padding:16px;border-left:3px solid var(--blue)"><div style="font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px">Tome ${s} · ${ages[s]||''}</div><div style="font-size:18px;font-weight:700;color:var(--navy);margin:4px 0 8px">"${tomes[s]||'Saison '+s}"</div><div style="font-size:12px;color:var(--dim);margin-bottom:12px">${dateDeb} → ${dateFin} · ${chapS.length} chapitres</div>`;
+    chapS.forEach(c=>{
+      const isKey=c.titre&&(c.numero===1||c.numero===chapS.length||(c.pitch&&c.pitch.toUpperCase().includes('REVELATION'))||(c.pitch&&c.pitch.toUpperCase().includes('RÉVÉLATION')));
+      html+=`<div style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><div style="flex-shrink:0;color:var(--dim);width:90px">${c.date_publication||''}</div><div style="flex-shrink:0;color:var(--blue);font-weight:600;width:40px">Ch.${c.numero}</div><div style="flex:1;color:${isKey?'var(--navy);font-weight:600':'var(--text)'}">${escHtml(c.titre||'(sans titre)')}</div></div>`;
+    });
+    if(indSemes.length||indPayes.length){
+      html+='<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">';
+      if(indSemes.length)html+=`<span class="pill p-med">${indSemes.length} indice${indSemes.length>1?'s':''} semé${indSemes.length>1?'s':''}</span>`;
+      if(indPayes.length)html+=`<span class="pill p-done">${indPayes.length} indice${indPayes.length>1?'s':''} payé${indPayes.length>1?'s':''}</span>`;
+      html+='</div>';
+    }
+    html+='</div></div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
 }
 
 function renderSkills(){
