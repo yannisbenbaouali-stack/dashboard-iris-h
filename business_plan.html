@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Plan et Communication · IRIS H</title>
+<style>
+  :root {
+    --bg: #f5f3f0;
+    --card-bg: #ffffff;
+    --card-border: #e0ddd8;
+    --dark: #1a1a1a;
+    --accent: #b8860b;
+    --text: #3a3a3a;
+    --text-light: #888;
+    --line: #c0bdb8;
+    --shadow: 0 2px 16px rgba(0,0,0,0.06);
+    --iris: #4a8db5;
+    --bym: #c9772a;
+    --arristo: #5b8a4f;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 20px 60px;
+  }
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  
+  .page-header {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 28px 36px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .page-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: -0.4px;
+    margin-bottom: 8px;
+  }
+  .page-header .lead {
+    font-size: 14px;
+    color: var(--text-light);
+    line-height: 1.55;
+    max-width: 800px;
+  }
+
+  .volet-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .volet-tab {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 14px 22px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-light);
+    transition: all 0.15s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .volet-tab:hover {
+    color: var(--dark);
+    border-color: var(--accent);
+  }
+  .volet-tab.active {
+    background: var(--dark);
+    color: #fff;
+    border-color: var(--dark);
+  }
+  .volet-tab .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .volet-tab.iris .dot { background: var(--iris); }
+  .volet-tab.bym .dot { background: var(--bym); }
+  .volet-tab.arristo .dot { background: var(--arristo); }
+
+  .volet-section { display: none; }
+  .volet-section.active { display: block; }
+
+  .volet-header {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-left: 5px solid var(--accent);
+    border-radius: 12px;
+    padding: 22px 28px;
+    margin-bottom: 18px;
+  }
+  .volet-header.iris { border-left-color: var(--iris); }
+  .volet-header.bym { border-left-color: var(--bym); }
+  .volet-header.arristo { border-left-color: var(--arristo); }
+  .volet-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 4px;
+  }
+  .volet-header .sub {
+    font-size: 13px;
+    color: var(--text-light);
+  }
+
+  .doc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 768px) {
+    .doc-grid { grid-template-columns: 1fr; }
+  }
+
+  .doc-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 22px 26px;
+    transition: all 0.15s;
+    display: flex;
+    flex-direction: column;
+  }
+  .doc-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.07);
+  }
+  .doc-card .doc-type {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .doc-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .doc-card .doc-status {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .doc-card .status-existant {
+    background: #e2efe1;
+    color: #2c7a4e;
+  }
+  .doc-card .status-pending {
+    background: #faecd9;
+    color: #b8860b;
+  }
+  .doc-card .status-todo {
+    background: #ededed;
+    color: #888;
+  }
+  .doc-card .doc-desc {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.55;
+    margin-bottom: 14px;
+    flex-grow: 1;
+  }
+  .doc-card .doc-meta {
+    font-size: 11px;
+    color: var(--text-light);
+    border-top: 1px solid var(--card-border);
+    padding-top: 12px;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  .doc-card .doc-meta strong {
+    color: var(--dark);
+  }
+  .doc-card .doc-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .doc-card .doc-action {
+    background: var(--dark);
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-family: inherit;
+  }
+  .doc-card .doc-action:hover {
+    background: var(--accent);
+  }
+  .doc-card .doc-action.ghost {
+    background: transparent;
+    color: var(--dark);
+    border: 1px solid var(--card-border);
+  }
+  .doc-card .doc-action.ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .key-points {
+    background: #faf6ed;
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+  }
+  .key-points .label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .key-points h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 10px;
+  }
+  .key-points ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .key-points li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .key-points li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    font-weight: 700;
+    margin: 22px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 24px;
+    background: var(--card-bg);
+    border: 1px dashed var(--card-border);
+    border-radius: 12px;
+    color: var(--text-light);
+    font-size: 14px;
+    font-style: italic;
+  }
+  .empty-state strong {
+    display: block;
+    color: var(--dark);
+    font-style: normal;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  .progress-bar {
+    background: #ededed;
+    border-radius: 6px;
+    height: 8px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+  .progress-fill.iris { background: var(--iris); }
+  .progress-fill.bym { background: var(--bym); }
+  .progress-fill.arristo { background: var(--arristo); }
+</style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="page-header">
+      <h1>Business Plan et Communication</h1>
+      <div class="lead">Cœur du réacteur entrepreneurial du groupe IRIS H. Trois axes stratégiques en développement, chacun avec son book mentor brique par brique et son plan de communication 12 mois. Documents de base, à enrichir au fur et à mesure de leurs avancées.</div>
+    </div>
+
+    <div class="volet-tabs">
+      <button class="volet-tab iris active" onclick="switchVolet('iris',this)"><span class="dot"></span>IRIS REP</button>
+      <button class="volet-tab bym" onclick="switchVolet('bym',this)"><span class="dot"></span>BYM Construction</button>
+      <button class="volet-tab arristo" onclick="switchVolet('arristo',this)"><span class="dot"></span>Urban Rise et ARRISTO</button>
+    </div>
+
+    <!-- VOLET IRIS REP -->
+    <div class="volet-section active" id="volet-iris">
+
+      <div class="volet-header iris">
+        <h2>IRIS REP, métier 2 asset management vers IRIS REIM</h2>
+        <div class="sub">Devenir gestionnaire d'actifs tertiaires en Centre Val de Loire. Cinq briques séquentielles, dix ans, agrément AMF à M48.</div>
+      </div>
+
+      <div class="key-points">
+        <div class="label">Points clés stratégiques</div>
+        <h4>Trajectoire pure player CVL avec plafond AUM 300 à 400 millions d'euros à 10 ans</h4>
+        <ul>
+          <li>Brique 1 (M0 à M12), Asset Advisory pur, 5 Packs commerciaux (Audit, Pilotage, Acquisition, Patrimonial, ESG), 30 millions AUM, 150 000 euros CA</li>
+          <li>Brique 2 (M12 à M24), Property Management, carte G, garantie Galian 110 000 euros, 80 millions AUM, 500 000 euros CA</li>
+          <li>Brique 3 (M24 à M36), Facility Management en délégation, 150 millions AUM, 1,5 million CA</li>
+          <li>Brique 4 (M36 à M60), Filialisation IRIS REIM SAS, agrément AMF SGP, premier FIA Loire Value Add I, 250 millions AUM</li>
+          <li>Brique 5 (M60+), Investisseur compte de tiers, JV institutionnelles, 300 à 400 millions AUM, 18 à 25 personnes</li>
+          <li>Stratégie de marque : IRIS REP unique M0-M36, ajout IRIS REIM filialisée à M36 (catégorie réglementaire AMF distincte)</li>
+        </ul>
+      </div>
+
+      <div class="section-title">Book stratégique</div>
+      <div class="doc-grid">
+        <div class="doc-card">
+          <div class="doc-type">Book mentor</div>
+          <h3>Le book IRIS REP v3</h3>
+          <span class="doc-status status-existant">Disponible v3</span>
+          <div class="doc-desc">Roadmap brique par brique en mode mentor. 42 pages format A4 fond blanc imprimable. Audit critique du site irisrep.com, clarification REP versus REIM, 5 briques séquentielles avec catalogues de Packs, scoring client, partenaires obligatoires, organigrammes évolutifs, exemples concrets de réussites et d'échecs.</div>
+          <div class="doc-meta">
+            <strong>Format</strong> PDF · 42 pages<br>
+            <strong>Statut</strong> Document de base, à enrichir<br>
+            <strong>Mise à jour</strong> Mai 2026, version 3<br>
+            <strong>Progression</strong>
+            <div class="progress-bar"><div class="progress-fill iris" style="width:75%"></div></div>
+          </div>
+          <div class="doc-actions">
+            <a href="#" class="doc-action" onclick="openDoc('le_book_iris_rep_v3.pdf'); return false;">Ouvrir</a>
+            <a href="#" class="doc-action ghost" onclick="alert('Demander à Claude la version v4 enrichie'); return false;">Enrichir</a>
+          </div>
+        </div>
+
+        <div class="doc-card">
+          <div class="doc-type">Document complémentaire</div>
+          <h3>Audit et roadmap (markdown)</h3>
+          <span class="doc-status status-existant">Disponible</span>
+          <div class="doc-desc">Document markdown source du book v2. Version texte structurée pour intégration dashboard et synchronisation avec l'onglet Structuration / Schéma directeur.</div>
+          <div class="doc-meta">
+            <strong>Format</strong> Markdown<br>
+            <strong>Statut</strong> Synchronisé avec onglet Structuration<br>
+            <strong>Mise à jour</strong> Mai 2026
+          </div>
+          <div class="doc-actions">
+            <a href="schema_directeur.html" class="doc-action">Ouvrir</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Plan de communication 12 mois</div>
+      <div class="doc-grid">
+        <div class="doc-card">
+          <div class="doc-type">Plan de com</div>
+          <h3>Plan de communication IRIS REP brique 1</h3>
+          <span class="doc-status status-pending">Prompt prêt, à produire</span>
+          <div class="doc-desc">Plan de communication 12 mois sur la brique 1 (Asset Advisory). Audit communication concurrents (Aalto, Theop, Foncières et Territoires), stratégie éditoriale 4 piliers, calendrier production mois par mois, stratégie LinkedIn personnel et corporate, livre blanc trimestriel marché tertiaire CVL, KPI 4 typologies. Prompt prêt à copier-coller dans nouvelle conversation Claude.</div>
+          <div class="doc-meta">
+            <strong>Format</strong> À produire en HTML puis PDF<br>
+            <strong>Statut</strong> Prompt structurant prêt<br>
+            <strong>Action</strong> Lancer dans nouvelle conversation Claude<br>
+            <strong>Progression</strong>
+            <div class="progress-bar"><div class="progress-fill iris" style="width:25%"></div></div>
+          </div>
+          <div class="doc-actions">
+            <a href="#" class="doc-action" onclick="alert('Le prompt est dans la conversation Claude actuelle. Copie-colle dans une nouvelle conversation pour produire le plan.'); return false;">Voir prompt</a>
+          </div>
+        </div>
+
+        <div class="doc-card">
+          <div class="doc-type">Plaquette commerciale</div>
+          <h3>Plaquette ombrelle IRIS REP</h3>
+          <span class="doc-status status-existant">Draft v1 disponible</span>
+          <div class="doc-desc">Plaquette HTML 4 pages A4 (cover, Brokerage, Asset Services, Développement). À convertir en Canva pour édition par l'équipe. Présente les 3 lignes de service et la grille tarifaire indicative des Packs.</div>
+          <div class="doc-meta">
+            <strong>Format</strong> HTML · 4 pages A4<br>
+            <strong>Statut</strong> Draft v1, à finaliser sous Canva<br>
+            <strong>Mise à jour</strong> Mai 2026
+          </div>
+          <div class="doc-actions">
+            <a href="#" class="doc-action" onclick="openDoc('IRIS_REP_plaquette_ombrelle.html'); return false;">Ouvrir</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Documents complémentaires</div>
+      <div class="doc-grid">
+        <div class="doc-card">
+          <div class="doc-type">Tableur stratégique</div>
+          <h3>IRIS REP métier 2, roadmap Excel</h3>
+          <span class="doc-status status-existant">Disponible</span>
+          <div class="doc-desc">Fichier Excel multi onglets, 7 feuilles : vue d'ensemble 3 métiers, roadmap 5 briques, concurrents par brique, clients CVL par brique, tarification benchmarkée, étapes réglementaires, plan 90 jours.</div>
+          <div class="doc-meta">
+            <strong>Format</strong> XLSX · 7 onglets<br>
+            <strong>Statut</strong> Source de pilotage stratégique
+          </div>
+          <div class="doc-actions">
+            <a href="#" class="doc-action ghost" onclick="alert('Fichier disponible dans documents_claude id 17'); return false;">Voir détail</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VOLET BYM -->
+    <div class="volet-section" id="volet-bym">
+
+      <div class="volet-header bym">
+        <h2>BYM Construction, entreprise de rénovation et construction</h2>
+        <div class="sub">Devenir une entreprise BTP permettant à ses 3 dirigeants (Yannis, Vilmar, Junior) de se verser 10 000 euros nets mensuels chacun. Trajectoire en 4 briques avec obtention RGE, marchés publics, et chantiers d'ampleur.</div>
+      </div>
+
+      <div class="key-points">
+        <div class="label">Points clés stratégiques</div>
+        <h4>Trois holdings actionnaires : IRIS H 33%, GARV HOLDING 34%, BAGUETI JR H 33%</h4>
+        <ul>
+          <li>Brique A, Stabilisation TCE résidentiel CVL : 15 chantiers en permanence, 2 à 3 millions CA, 12 à 15 compagnons, RGE obtenu</li>
+          <li>Brique B, Industrialisation et tertiaire CVL : 30 chantiers, 4 à 6 millions CA, partenariat formalisé avec IRIS REP Asset Services pour les capex</li>
+          <li>Brique C, Marchés publics et grands chantiers : capacité réponse appel d'offres jusqu'à 5 millions par marché</li>
+          <li>Brique D, Plein régime : 6 à 10 millions CA, EBITDA 1 million, objectif 10 000 euros nets mensuels par dirigeant atteint</li>
+          <li>Statut RGE obligatoire pour MaPrimeRénov' et CEE, à obtenir en priorité brique A</li>
+          <li>Synergies fortes avec IRIS REP Asset Services (capex tertiaires) et Urban Rise / RIR (opérations marchand de biens)</li>
+        </ul>
+      </div>
+
+      <div class="section-title">Book stratégique</div>
+      <div class="doc-grid">
+        <div class="doc-card">
+          <div class="doc-type">Book mentor</div>
+          <h3>Le book BYM Construction</h3>
+          <span class="doc-status status-pending">Prompt prêt, à produire</span>
+          <div class="doc-desc">Roadmap brique par brique en mode mentor pour BYM Construction. Calqué sur la méthodologie du book IRIS REP v3. 16 chapitres prévus dont règle du jeu BTP, état des lieux, briques A à D, statut RGE et MaPrimeRénov', trésorerie BTP, sous-traitance, scoring client et sous-traitants, marchés publics, synergies groupe IRIS, pièges qui tuent les BTP, modélisation financière 5 ans. Prompt structurant prêt à copier-coller.</div>
+          <div class="doc-meta">
+            <strong>Format</strong> À produire en HTML puis PDF<br>
+            <strong>Statut</strong> Prompt structurant prêt<br>
+            <strong>Action</strong> Lancer dans nouvelle conversation Claude<br>
+            <strong>Progression</strong>
+            <div class="progress-bar"><div class="progress-fill bym" style="width:15%"></div></div>
+          </div>
+          <div class="doc-actions">
+            <a href="#" class="doc-action" onclick="alert('Le prompt est dans la conversation Claude actuelle. Avant de lancer, réponds aux 6 questions de cadrage : qualifications BTP des dirigeants, état actuel BYM en chiffres, horizon temporel pour les 10 000 euros nets, charte BYM, position sous-traitance vs internalisation, géographie chantiers.'); return false;">Voir prompt</a>
+          </div>
+        </div>
+
+        <div class="doc-card">
+          <div class="doc-type">Document existant</div>
+          <h3>Organigramme BYM</h3>
+          <span class="doc-status status-existant">Disponible</span>
+          <div class="doc-desc">Organigramme actuel de BYM Construction, intégré au dashboard via l'onglet Structuration. Sera enrichi à mesure du recrutement des conducteurs de travaux, compagnons et encadrants.</div>
+          <div class="doc-meta">
+            <strong>Format</strong> HTML interactif<br>
+            <strong>Statut</strong> Synchronisé dashboard
+          </div>
+          <div class="doc-actions">
+            <a href="organigramme_bym.html" class="doc-action">Ouvrir</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Plan de communication 12 mois</div>
+      <div class="doc-grid">
+        <div class="doc-card">
+          <div class="doc-type">Plan de com</div>
+          <h3>Plan de communication BYM</h3>
+          <span class="doc-status status-todo">À produire</span>
+          <div class="doc-desc">Plan de communication 12 mois pour BYM Construction. Audit communication concurrents BTP locaux et nationaux, stratégie éditoriale particuliers puis tertiaire, présence Google Maps et Houzz, avis Trustpilot, partenariats agents immobiliers, plaquette dédiée RGE et MaPrimeRénov'. Sera produit après finalisation du book BYM, sur le même modèle que le plan IRIS REP.</div>
+          <div class="doc-meta">
+            <strong>Format</strong> À produire après book BYM<br>
+            <strong>Statut</strong> En attente de prompt dédié<br>
+            <strong>Progression</strong>
+            <div class="progress-bar"><div class="progress-fill bym" style="width:5%"></div></div>
+          </div>
+          <div class="doc-actions">
+            <a href="#" class="doc-action ghost" onclick="alert('À démarrer après production du book BYM. Demander à Claude un prompt plan de com BYM 12 mois.'); return false;">Briefer</a>
+          </div>
+        </div>
+
+        <div class="doc-card">
+          <div class="doc-type">Plaquette commerciale</div>
+          <h3>Plaquette commerciale BYM</h3>
+          <span class="doc-status status-todo">À produire</span>
+          <div class="doc-desc">Plaquette commerciale dédiée BYM Construction, format A4, segmentée par typologie de client (particuliers résidentiel, tertiaire, marchés publics). À produire après obtention du statut RGE.</div>
+          <div class="doc-meta">
+            <strong>Format</strong> Canva éditable<br>
+            <strong>Statut</strong> À démarrer
+          </div>
+          <div class="doc-actions">
+            <a href="#" class="doc-action ghost" onclick="alert('À produire après book BYM et obtention RGE'); return false;">Briefer</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VOLET URBAN RISE / ARRISTO -->
+    <div class="volet-section" id="volet-arristo">
+
+      <div class="volet-header arristo">
+        <h2>Urban Rise et ARRISTO</h2>
+        <div class="sub">Le marchand de biens du groupe (Urban Rise, IRIS H 100%) et le réseau professionnel (ARRISTO). Volet à structurer en lien avec les deux autres axes.</div>
+      </div>
+
+      <div class="key-points">
+        <div class="label">Points clés stratégiques</div>
+        <h4>Activités complémentaires aux briques 4 et 5 d'IRIS REP et aux briques B et C de BYM</h4>
+        <ul>
+          <li>Urban Rise, marchand de biens IRIS H 100%, opportunités sur le tissu CVL et IDF Sud</li>
+          <li>Synergies brique 4 et 5 IRIS REIM : Urban Rise et RIR pourront devenir co-investisseurs sur les opérations IRIS REIM (LP ou GP des club deals à terme)</li>
+          <li>Synergies BYM : Urban Rise commande à BYM les travaux de repositionnement de ses opérations marchand de biens</li>
+          <li>ARRISTO comme réseau professionnel facilitateur d'apport d'affaires multi-entités</li>
+          <li>RIR (49% IRIS H, 51% Vélibor Klepic) : marchand de biens et conseil rénovation énergétique, à articuler avec Urban Rise</li>
+          <li>Périmètre exact ARRISTO et modèle économique à préciser</li>
+        </ul>
+      </div>
+
+      <div class="section-title">Book stratégique</div>
+      <div class="doc-grid">
+        <div class="doc-card">
+          <div class="doc-type">Book mentor</div>
+          <h3>Le book Urban Rise et ARRISTO</h3>
+          <span class="doc-status status-todo">À cadrer</span>
+          <div class="doc-desc">Roadmap brique par brique pour Urban Rise et ARRISTO. À cadrer ensemble avant production. Périmètre, objectifs, ambition financière, articulation entre Urban Rise (marchand de biens), RIR (marchand de biens et conseil rénovation énergétique), ARRISTO (réseau pro). Mode mentor identique aux books IRIS REP et BYM.</div>
+          <div class="doc-meta">
+            <strong>Format</strong> À produire en HTML puis PDF<br>
+            <strong>Statut</strong> En attente de cadrage stratégique<br>
+            <strong>Action</strong> Définir avec Yannis le périmètre et l'ambition<br>
+            <strong>Progression</strong>
+            <div class="progress-bar"><div class="progress-fill arristo" style="width:5%"></div></div>
+          </div>
+          <div class="doc-actions">
+            <a href="#" class="doc-action ghost" onclick="alert('Cadrage stratégique à faire : périmètre Urban Rise vs ARRISTO vs RIR, ambition financière, horizon temporel, articulation entre les 3 entités.'); return false;">Cadrer</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Plan de communication 12 mois</div>
+      <div class="doc-grid">
+        <div class="doc-card">
+          <div class="doc-type">Plan de com</div>
+          <h3>Plan de communication Urban Rise et ARRISTO</h3>
+          <span class="doc-status status-todo">À produire</span>
+          <div class="doc-desc">Plan de communication à structurer après cadrage du book. Approche probable : positionnement marchand de biens premium CVL pour Urban Rise, communication réseau professionnel et événements pour ARRISTO.</div>
+          <div class="doc-meta">
+            <strong>Format</strong> À produire après book Urban Rise et ARRISTO<br>
+            <strong>Statut</strong> En attente de prompt dédié<br>
+            <strong>Progression</strong>
+            <div class="progress-bar"><div class="progress-fill arristo" style="width:0%"></div></div>
+          </div>
+          <div class="doc-actions">
+            <a href="#" class="doc-action ghost" onclick="alert('À démarrer après cadrage du book Urban Rise et ARRISTO'); return false;">Briefer</a>
+          </div>
+        </div>
+
+        <div class="doc-card">
+          <div class="doc-type">Note de cadrage</div>
+          <h3>Cadrage stratégique préalable</h3>
+          <span class="doc-status status-todo">À écrire</span>
+          <div class="doc-desc">Note de cadrage stratégique avant tout livrable. Définir précisément : 1) Le périmètre exact d'Urban Rise (marchand de biens, géographie, segments visés), 2) Le modèle ARRISTO (membre payant, événementiel, apport d'affaires), 3) L'articulation avec RIR, 4) L'ambition financière à 5 ans, 5) L'organigramme cible.</div>
+          <div class="doc-meta">
+            <strong>Format</strong> Note structurante<br>
+            <strong>Statut</strong> À démarrer
+          </div>
+          <div class="doc-actions">
+            <a href="#" class="doc-action" onclick="alert('Premier livrable à produire avant tout autre document Urban Rise et ARRISTO. Demander à Claude une note de cadrage en 5 questions structurantes.'); return false;">Démarrer</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+<script>
+function switchVolet(name, btn) {
+  document.querySelectorAll('.volet-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.volet-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('volet-' + name).classList.add('active');
+}
+
+const SUPABASE_URL = 'https://kkznkuwoxoxvapejzytv.supabase.co';
+const SUPABASE_ANON = window.parent && window.parent.SUPABASE_ANON ? window.parent.SUPABASE_ANON : null;
+
+async function openDoc(filename) {
+  if (!SUPABASE_ANON) {
+    alert('Le document "' + filename + '" est enregistré dans la table documents_claude. Demander à Claude de te le présenter à nouveau, ou consulter la table Supabase.');
+    return;
+  }
+  try {
+    const r = await fetch(SUPABASE_URL + '/rest/v1/documents_claude?filename=eq.' + encodeURIComponent(filename) + '&select=*', {
+      headers: { apikey: SUPABASE_ANON, Authorization: 'Bearer ' + SUPABASE_ANON }
+    });
+    const data = await r.json();
+    if (data && data.length > 0 && data[0].drive_url) {
+      window.open(data[0].drive_url, '_blank');
+    } else {
+      alert('Document "' + filename + '" trouvé en base mais sans URL Drive. Demander à Claude de te le présenter.');
+    }
+  } catch (e) {
+    alert('Erreur lors de la récupération. Demander à Claude.');
+  }
+}
+</script>
+</body>
+</html>
