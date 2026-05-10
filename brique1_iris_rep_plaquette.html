@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plaquette commerciale IRIS REP, Brique 1</title>
+<style>
+/* ========================================
+   CHARTE IRIS REP, plaquette A3 paysage plié
+   Page extérieure (couverture + dos) : feuille 1 recto
+   Page intérieure (double page ouverte) : feuille 1 verso
+   Une fois imprimé recto verso et plié en deux, on obtient :
+   - Page 1 : couverture
+   - Pages 2 et 3 : double page intérieure
+   - Page 4 : dos (couverture arrière)
+   ======================================== */
+
+:root {
+  --or: #b8860b;
+  --or-clair: #d4a64a;
+  --or-fond: #faf6ed;
+  --noir: #1a1a1a;
+  --gris-fonce: #2a2a2a;
+  --gris: #555;
+  --gris-clair: #888;
+  --ivoire: #f5f3f0;
+  --blanc: #ffffff;
+  --beige-fond: #efe8d8;
+  --line: #c0bdb8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@page {
+  size: A3 landscape;
+  margin: 0;
+}
+
+body {
+  background: #d0cec9;
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  color: var(--gris-fonce);
+  -webkit-font-smoothing: antialiased;
+  padding: 30px 20px;
+  min-height: 100vh;
+}
+
+.viewer-info {
+  max-width: 1180px;
+  margin: 0 auto 30px;
+  background: var(--blanc);
+  padding: 18px 28px;
+  border-radius: 10px;
+  border-left: 4px solid var(--or);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--gris);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.viewer-info h3 {
+  font-size: 15px;
+  color: var(--noir);
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+.viewer-info strong { color: var(--noir); }
+.print-btn {
+  display: inline-block;
+  margin-top: 10px;
+  background: var(--noir);
+  color: #fff;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.5px;
+}
+.print-btn:hover { background: var(--or); }
+
+/* ========================================
+   FEUILLES, format A3 paysage = 420x297 mm
+   À l'écran on simule à 1180px de large (ratio respecté)
+   ======================================== */
+.sheet {
+  width: 1180px;
+  height: 836px; /* 1180 * 297/420 = 834 */
+  margin: 0 auto 30px;
+  background: var(--ivoire);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  position: relative;
+  display: flex;
+  overflow: hidden;
+}
+
+.sheet::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(0,0,0,0.05);
+  z-index: 5;
+}
+
+.panel {
+  flex: 1;
+  position: relative;
+  padding: 50px 55px;
+  overflow: hidden;
+}
+
+/* ========================================
+   FEUILLE 1 RECTO : DOS + COUVERTURE
+   ======================================== */
+
+/* Panel gauche = DOS (page 4) */
+.dos {
+  background: var(--ivoire);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dos .dos-header {
+  display: flex;
+  flex-direction: column;
+}
+.dos-logo-small {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--noir);
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+.dos-logo-small em {
+  color: var(--or);
+  font-style: italic;
+  font-weight: 700;
+}
+.dos-tagline-small {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--or);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.dos-contact-section h3 {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--or);
+  font-weight: 700;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--or);
+}
+
+.dos-villes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 30px;
+  margin-bottom: 30px;
+}
+.dos-ville h4 {
+  font-family: Georgia, serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--noir);
+  margin-bottom: 5px;
+  letter-spacing: 0.2px;
+}
+.dos-ville p {
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--gris);
+}
+
+.dos-foot {
+  font-size: 9px;
+  color: var(--gris-clair);
+  letter-spacing: 1px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  line-height: 1.6;
+}
+.dos-foot strong { color: var(--noir); }
+
+.dos-qr {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.dos-qr-box {
+  width: 75px;
+  height: 75px;
+  border: 1.5px solid var(--noir);
+  background: repeating-conic-gradient(var(--noir) 0% 25%, transparent 0% 50%) 50% / 14px 14px;
+  flex-shrink: 0;
+  position: relative;
+}
+.dos-qr-box::after {
+  content: "QR";
+  position: absolute;
+  inset: 30%;
+  background: var(--ivoire);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--noir);
+}
+.dos-qr-text {
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--gris);
+}
+.dos-qr-text strong { color: var(--noir); display: block; margin-bottom: 3px; font-size: 11px; }
+
+/* Panel droit = COUVERTURE (page 1) */
+.couv {
+  background: linear-gradient(135deg, var(--noir) 0%, #0d0d0d 100%);
+  color: var(--ivoire);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 55px 60px 50px;
+  position: relative;
+}
+
+.couv::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: var(--or);
+}
+
+.couv-illustration {
+  position: absolute;
+  right: -80px;
+  bottom: -80px;
+  width: 480px;
+  height: 480px;
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+.couv-header {
+  position: relative;
+  z-index: 2;
+}
+.couv-tag {
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: var(--or);
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+.couv-logo {
+  font-family: Georgia, serif;
+  font-size: 38px;
+  font-weight: 400;
+  color: var(--ivoire);
+  letter-spacing: -0.5px;
+  line-height: 1.05;
+  margin-bottom: 8px;
+}
+.couv-logo em {
+  color: var(--or);
+  font-style: italic;
+  font-weight: 700;
+}
+.couv-name {
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: var(--ivoire);
+  opacity: 0.7;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+.couv-center {
+  position: relative;
+  z-index: 2;
+  padding: 0;
+}
+.couv-rule {
+  width: 70px;
+  height: 3px;
+  background: var(--or);
+  margin-bottom: 22px;
+}
+.couv-slogan {
+  font-family: Georgia, serif;
+  font-size: 44px;
+  line-height: 1.05;
+  color: var(--ivoire);
+  font-weight: 400;
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+.couv-slogan em {
+  color: var(--or);
+  font-style: italic;
+  font-weight: 700;
+}
+.couv-sub {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.55;
+  color: rgba(245, 243, 240, 0.85);
+  max-width: 460px;
+}
+
+.couv-foot {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: rgba(245, 243, 240, 0.5);
+  text-transform: uppercase;
+}
+.couv-foot strong { color: var(--or); font-weight: 700; letter-spacing: 2px; }
+
+/* ========================================
+   FEUILLE 1 VERSO : DOUBLE PAGE INTÉRIEURE
+   Panel gauche = Page 2 (Qui nous sommes)
+   Panel droit = Page 3 (Nos services)
+   ======================================== */
+
+/* Page 2 = QUI NOUS SOMMES */
+.qui {
+  background: var(--ivoire);
+  padding: 55px 55px 50px;
+}
+
+.qui-header {
+  margin-bottom: 28px;
+}
+.qui-section-num {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--or);
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.qui-title {
+  font-family: Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+  color: var(--noir);
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+.qui-title em {
+  color: var(--or);
+  font-style: italic;
+  font-weight: 700;
+}
+.qui-title-rule {
+  width: 50px;
+  height: 2px;
+  background: var(--or);
+  margin-top: 14px;
+}
+
+.qui-intro {
+  font-family: Georgia, serif;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--gris-fonce);
+  margin-bottom: 22px;
+  text-align: justify;
+  hyphens: auto;
+}
+.qui-intro strong { color: var(--noir); font-weight: 700; }
+
+.qui-piliers {
+  margin-bottom: 22px;
+}
+.qui-pilier {
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+.qui-pilier:last-child { border-bottom: none; }
+.qui-pilier-num {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--or);
+  font-style: italic;
+  flex-shrink: 0;
+  width: 30px;
+  line-height: 1;
+  padding-top: 2px;
+}
+.qui-pilier-content h4 {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--noir);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.qui-pilier-content p {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--gris);
+}
+
+.qui-citation {
+  background: var(--or-fond);
+  border-left: 3px solid var(--or);
+  padding: 16px 20px;
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--gris-fonce);
+  margin-top: auto;
+}
+.qui-citation strong {
+  display: block;
+  font-style: normal;
+  font-size: 11px;
+  color: var(--or);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+/* Page 3 = NOS SERVICES */
+.services {
+  background: var(--blanc);
+  padding: 55px 55px 50px;
+  position: relative;
+}
+
+.services-header {
+  margin-bottom: 22px;
+}
+.services-section-num {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--or);
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.services-title {
+  font-family: Georgia, serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--noir);
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+.services-title em {
+  color: var(--or);
+  font-style: italic;
+  font-weight: 700;
+}
+.services-title-rule {
+  width: 50px;
+  height: 2px;
+  background: var(--or);
+  margin-top: 12px;
+}
+
+.services-intro {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--gris);
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.lignes-services {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.ligne {
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+.ligne.principal {
+  background: var(--noir);
+  color: var(--ivoire);
+  border-color: var(--noir);
+}
+.ligne h4 {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+  color: var(--or);
+}
+.ligne.principal h4 { color: var(--or-clair); }
+.ligne p {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--gris);
+}
+.ligne.principal p { color: rgba(245, 243, 240, 0.85); }
+
+.missions {
+  border-top: 2px solid var(--or);
+  padding-top: 16px;
+}
+.missions-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--or);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.missions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.mission {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 8px 0;
+}
+.mission-num-box {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--or);
+  color: var(--blanc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  font-family: Georgia, serif;
+}
+.mission-text h5 {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--noir);
+  margin-bottom: 2px;
+  letter-spacing: 0.2px;
+}
+.mission-text p {
+  font-size: 10.5px;
+  line-height: 1.45;
+  color: var(--gris);
+}
+
+.services-cta {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.services-cta-text {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--gris-fonce);
+  max-width: 60%;
+}
+.services-cta-text strong { color: var(--noir); font-style: normal; }
+.services-cta-btn {
+  background: var(--or);
+  color: var(--blanc);
+  padding: 10px 18px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* ========================================
+   PRINT
+   ======================================== */
+@media print {
+  body { background: white; padding: 0; }
+  .viewer-info { display: none; }
+  .sheet {
+    width: 297mm;
+    height: 210mm;
+    margin: 0;
+    box-shadow: none;
+    page-break-after: always;
+  }
+  .sheet:last-child { page-break-after: avoid; }
+  .sheet::before { display: none; }
+  .panel { padding: 14mm 16mm; }
+}
+</style>
+</head>
+<body>
+
+<div class="viewer-info">
+  <h3>Plaquette commerciale IRIS REP, version A3 paysage plié 2 volets</h3>
+  <p>Format A3 paysage (420 × 297 mm), plié au milieu pour produire 4 pages A4. Feuille 1 recto (couverture extérieure plus dos arrière) et feuille 1 verso (double page intérieure ouverte). Cible patrimoniale : <strong>foncières familiales tertiaires CVL et family offices non structurés régionaux</strong>. Charte graphique IRIS REP, slogan "Real estate, real impact". Document évolutif, à enrichir avant impression. Pour imprimer en PDF, utilise le bouton ci-dessous (Ctrl/Cmd P fonctionne aussi). Pour la version finale chez l'imprimeur, exporter en PDF puis intégrer photos professionnelles via Canva Pro.</p>
+  <button class="print-btn" onclick="window.print()">Imprimer en PDF</button>
+</div>
+
+<!-- ========================================
+     FEUILLE 1 RECTO : DOS (gauche) + COUVERTURE (droite)
+     ======================================== -->
+<div class="sheet">
+
+  <!-- DOS, page arrière -->
+  <div class="panel dos">
+    <div class="dos-header">
+      <div class="dos-logo-small">IRIS <em>Real Estate Partners</em></div>
+      <div class="dos-tagline-small">Real estate, real impact</div>
+    </div>
+
+    <div class="dos-contact-section">
+      <h3>Nous rencontrer</h3>
+      <div class="dos-villes">
+        <div class="dos-ville">
+          <h4>Tours</h4>
+          <p>Adresse à compléter<br>37000 Tours<br>contact-tours@irisrep.com</p>
+        </div>
+        <div class="dos-ville">
+          <h4>Orléans</h4>
+          <p>Adresse à compléter<br>45000 Orléans<br>contact-orleans@irisrep.com</p>
+        </div>
+        <div class="dos-ville">
+          <h4>Paris</h4>
+          <p>120 boulevard de Grenelle<br>75015 Paris<br>contact@irisrep.com</p>
+        </div>
+        <div class="dos-ville">
+          <h4>Yannis Benbaouali</h4>
+          <p>Fondateur<br>Téléphone direct à insérer<br>yannis@irisrep.com</p>
+        </div>
+      </div>
+
+      <div class="dos-qr">
+        <div class="dos-qr-box"></div>
+        <div class="dos-qr-text">
+          <strong>Notre site</strong>
+          irisrep.com<br>
+          Découvrez nos missions et nos annonces.
+        </div>
+      </div>
+    </div>
+
+    <div class="dos-foot">
+      <strong>IRIS Real Estate Partners</strong>, SIREN à compléter. Carte T détenue. Filiale du groupe IRIS H, 120 boulevard de Grenelle, 75015 Paris.
+    </div>
+  </div>
+
+  <!-- COUVERTURE -->
+  <div class="panel couv">
+    <!-- Illustration vectorielle de fond, immeuble stylisé -->
+    <svg class="couv-illustration" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <rect x="80" y="60" width="240" height="340" fill="none" stroke="#b8860b" stroke-width="2"/>
+      <rect x="100" y="80" width="40" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="160" y="80" width="40" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="220" y="80" width="40" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="280" y="80" width="20" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="100" y="140" width="40" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="160" y="140" width="40" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="220" y="140" width="40" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="280" y="140" width="20" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="100" y="200" width="40" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="160" y="200" width="40" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="220" y="200" width="40" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="280" y="200" width="20" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="100" y="260" width="40" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="160" y="260" width="40" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="220" y="260" width="40" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="280" y="260" width="20" height="40" fill="none" stroke="#b8860b" stroke-width="1.5"/>
+      <rect x="160" y="320" width="80" height="80" fill="none" stroke="#b8860b" stroke-width="2"/>
+    </svg>
+
+    <div class="couv-header">
+      <div class="couv-tag">Asset Management Tertiaire</div>
+      <div class="couv-logo">IRIS <em>Real Estate Partners</em></div>
+      <div class="couv-name">Centre Val de Loire · Île-de-France</div>
+    </div>
+
+    <div class="couv-center">
+      <div class="couv-rule"></div>
+      <h1 class="couv-slogan">Real estate,<br><em>real impact</em>.</h1>
+      <p class="couv-sub">Acteur intégré de l'immobilier tertiaire en Centre Val de Loire et en Île-de-France. Au service des familles, des foncières et des institutions qui veulent une qualité d'analyse parisienne avec la proximité d'un partenaire local.</p>
+    </div>
+
+    <div class="couv-foot">
+      <span>Brique 1 · Mai 2026</span>
+      <span><strong>irisrep.com</strong></span>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================
+     FEUILLE 1 VERSO : QUI NOUS SOMMES + NOS SERVICES
+     ======================================== -->
+<div class="sheet">
+
+  <!-- PAGE 2 : QUI NOUS SOMMES -->
+  <div class="panel qui">
+    <div class="qui-header">
+      <div class="qui-section-num">Notre maison</div>
+      <h2 class="qui-title">Une signature <em>locale</em>,<br>une exigence institutionnelle.</h2>
+      <div class="qui-title-rule"></div>
+    </div>
+
+    <p class="qui-intro">
+      IRIS Real Estate Partners accompagne les <strong>familles patrimoniales, les foncières familiales et les investisseurs institutionnels</strong> détenteurs d'actifs tertiaires en région Centre Val de Loire. Notre métier consiste à pérenniser, rentabiliser et valoriser leur patrimoine, en cohérence avec leurs objectifs financiers, juridiques et fiscaux. Nous travaillons exclusivement sur l'immobilier tertiaire : bureaux, commerces, locaux d'activité, immobilier mixte et immobilier de santé.
+    </p>
+
+    <div class="qui-piliers">
+      <div class="qui-pilier">
+        <div class="qui-pilier-num">01</div>
+        <div class="qui-pilier-content">
+          <h4>L'ancrage régional</h4>
+          <p>Nous sommes implantés à Tours et à Orléans. Nous connaissons les actifs CVL un par un, les locataires, les notaires, les banques régionales. Aucun acteur national ne peut prétendre à cette intimité du marché local.</p>
+        </div>
+      </div>
+      <div class="qui-pilier">
+        <div class="qui-pilier-num">02</div>
+        <div class="qui-pilier-content">
+          <h4>L'intégration verticale</h4>
+          <p>Nos deux lignes Investment Management et Brokerage fonctionnent ensemble. Une seule équipe, un point de contact, un cycle complet du sourcing à l'arbitrage. Pour les travaux, notre partenaire BYM Construction prolonge l'engagement opérationnel.</p>
+        </div>
+      </div>
+      <div class="qui-pilier">
+        <div class="qui-pilier-num">03</div>
+        <div class="qui-pilier-content">
+          <h4>L'indépendance d'analyse</h4>
+          <p>IRIS REP est une société indépendante. Pas de conflit d'intérêts groupe imposant la priorité à des produits maison. Nos recommandations sont guidées par l'intérêt long terme du client. Point.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="qui-citation">
+      <strong>Notre engagement</strong>
+      Sur un actif détenu pendant une génération, la qualité de l'asset manager ne se mesure pas au trimestre. Elle se mesure à la confiance accumulée, à la transmission rendue plus simple, et à la valeur conservée quand le marché tangue.
+    </div>
+  </div>
+
+  <!-- PAGE 3 : NOS SERVICES -->
+  <div class="panel services">
+    <div class="services-header">
+      <div class="services-section-num">Nos services</div>
+      <h2 class="services-title">Deux lignes,<br><em>six missions</em>.</h2>
+      <div class="services-title-rule"></div>
+    </div>
+
+    <p class="services-intro">Du conseil ponctuel au mandat de pilotage long terme. Chaque mission répond à une situation patrimoniale précise.</p>
+
+    <div class="lignes-services">
+      <div class="ligne principal">
+        <h4>IRIS Investment Management</h4>
+        <p>Asset advisory et asset management pour compte de tiers. Notre métier principal, du diagnostic patrimonial au pilotage d'actifs sur la durée.</p>
+      </div>
+      <div class="ligne">
+        <h4>IRIS Brokerage</h4>
+        <p>Transaction tertiaire, location et capital markets régional. Sourcing off market via notre réseau ancré CVL : notaires, banques régionales, foncières familiales.</p>
+      </div>
+    </div>
+
+    <div class="missions">
+      <div class="missions-label">Les six missions Investment Management</div>
+      <div class="missions-grid">
+        <div class="mission">
+          <div class="mission-num-box">1</div>
+          <div class="mission-text">
+            <h5>Mission Audit</h5>
+            <p>Audit complet de portefeuille livré en 30 jours.</p>
+          </div>
+        </div>
+        <div class="mission">
+          <div class="mission-num-box">2</div>
+          <div class="mission-text">
+            <h5>Mission ESG</h5>
+            <p>Conformité Décret Tertiaire, plan énergétique 5 et 10 ans.</p>
+          </div>
+        </div>
+        <div class="mission">
+          <div class="mission-num-box">3</div>
+          <div class="mission-text">
+            <h5>Mission Travaux</h5>
+            <p>Pilotage capex et rénovation, partenariat BYM Construction.</p>
+          </div>
+        </div>
+        <div class="mission">
+          <div class="mission-num-box">4</div>
+          <div class="mission-text">
+            <h5>Mission Acquisition</h5>
+            <p>Sourcing off market, due diligence, structuration, négociation.</p>
+          </div>
+        </div>
+        <div class="mission">
+          <div class="mission-num-box">5</div>
+          <div class="mission-text">
+            <h5>Mission Patrimoniale</h5>
+            <p>Structuration juridique et fiscale, transmission, IFI.</p>
+          </div>
+        </div>
+        <div class="mission">
+          <div class="mission-num-box">6</div>
+          <div class="mission-text">
+            <h5>Mission Pilotage</h5>
+            <p>Mandat long terme, reporting trimestriel, asset manager dédié.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="services-cta">
+      <div class="services-cta-text">
+        <strong>Échangeons.</strong> Un audit n'engage à rien, c'est souvent la meilleure manière de comprendre ce que votre patrimoine pourrait devenir.
+      </div>
+      <div class="services-cta-btn">Prendre RDV</div>
+    </div>
+  </div>
+</div>
+
+<div class="viewer-info" style="margin-top: 30px;">
+  <h3>Notes de production</h3>
+  <p><strong>Zones à compléter avant impression</strong> : adresses Tours et Orléans, SIREN IRIS REP, téléphone direct Yannis, QR code pointant vers irisrep.com (à générer via qr-code-generator.com une fois le site refondu).<br>
+  <strong>Photos optionnelles à intégrer dans Canva Pro</strong> : remplacer l'illustration vectorielle de la couverture par une photo institutionnelle d'immeuble tertiaire CVL ou une vue urbaine de Tours ou Orléans (Cathédrale Saint-Gatien à Tours ou Place du Martroi à Orléans). Insertion en bandeau bas de la couverture, traité en bichromie noir et or pour cohérence charte. Pas de portrait du fondateur conformément à la consigne (positionnement institutionnel).<br>
+  <strong>Étapes après validation de cette version</strong> : 1) Tu valides ou tu demandes des ajustements ici, 2) Export HTML vers PDF via le bouton ci-dessus, 3) Import du PDF dans Canva Pro pour intégration photos et finitions, 4) Export final Canva en PDF print-ready, 5) Tirage chez imprimeur (CartonShop, Print24 ou imprimeur tourangeau local) en 250 g/m² mat avec vernis sélectif sur le logo.</p>
+</div>
+
+</body>
+</html>
