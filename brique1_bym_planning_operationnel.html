@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brique A BYM Construction, Planning opérationnel mois par mois</title>
+<link rel="stylesheet" href="brique1_styles.css">
+</head>
+<body>
+<div class="container">
+
+<div class="doc-cover">
+  <button class="print-btn" onclick="window.print()">Imprimer en PDF</button>
+  <div class="tag">Brique A BYM, Planning opérationnel, Mai 2026</div>
+  <h1>Le planning Brique A, <em>mois par mois</em></h1>
+  <div class="lead">Le planning opérationnel détaillé des 12 mois de la Brique A. Chaque mois, ses actions précises, ses propriétaires, ses livrables attendus, ses indicateurs de succès. Pas de zone grise. Si une action n'a pas de propriétaire dans ce document, elle ne sera pas faite.</div>
+  <div class="meta-line"><strong>Période</strong> Mai 2026 (M0) à avril 2027 (M12) · <strong>Pilotes</strong> Yannis, Vilmar, Junior · <strong>Rituel hebdomadaire</strong> Vendredi 17 heures, dashboard groupe IRIS H · <strong>Rituel mensuel</strong> Premier lundi du mois, point trimestriel avec Benjamin Pallaud</div>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 1</div>
+  <h2>Principes de pilotage Brique A</h2>
+  <div class="section-lead">5 principes non négociables qui structurent le pilotage opérationnel des 12 mois.</div>
+
+  <h3>Principe 1, un propriétaire par action</h3>
+  <p>Chaque action dans ce planning a un propriétaire unique nommé. Le propriétaire est responsable de l'exécution, du respect du délai, et de la remontée d'alerte en cas de blocage. Le co propriétaire intervient en soutien mais n'est pas responsable du résultat. Une action sans propriétaire est une action qui ne se fait pas.</p>
+
+  <h3>Principe 2, un livrable par action</h3>
+  <p>Chaque action produit un livrable concret : un document signé, une attestation reçue, un système opérationnel, un dossier déposé, un partenaire référencé. Pas de livrable conceptuel. Si une action n'a pas de livrable matérialisable, elle est mal formulée.</p>
+
+  <h3>Principe 3, alerte en moins de 7 jours</h3>
+  <p>Si une action prend du retard de plus de 7 jours par rapport à la date cible, le propriétaire alerte les 3 dirigeants au rituel hebdomadaire suivant. Pas d'alerte signifie pas de retard. Pas d'alerte avec retard caché est la faute la plus grave en Brique A.</p>
+
+  <h3>Principe 4, validation collective des décisions structurantes</h3>
+  <p>Les décisions structurantes (recrutements, contrats de plus de 50 000 euros, conventions de partenariat groupe, signatures de chantiers de plus de 300 000 euros, choix d'outils SaaS engageants) sont validées collectivement par les 3 dirigeants au rituel hebdomadaire. Aucune décision structurante prise unilatéralement.</p>
+
+  <h3>Principe 5, traçabilité dans Supabase</h3>
+  <p>Toutes les actions sont tracées dans la table taches_v2 du dashboard groupe IRIS H. Statut, propriétaire, échéance, dernière relance. Le rapport hebdomadaire automatique (table rapports_hebdo) consolide les avancements et les alertes. Pas de Notion, pas de fichiers Excel personnels qui se perdent.</p>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 2</div>
+  <h2>Vue d'ensemble Gantt simplifié sur 12 mois</h2>
+  <div class="section-lead">Lecture transverse des 8 chantiers structurants Brique A. Le chemin critique est l'obtention RGE qui conditionne tout le pipeline rénovation énergétique.</div>
+
+  <h3>Tableau Gantt synthétique</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Chantier structurant</th>
+        <th>M0 mai</th>
+        <th>M1 juin</th>
+        <th>M2 juil</th>
+        <th>M3 août</th>
+        <th>M4 sept</th>
+        <th>M5 oct</th>
+        <th>M6 nov</th>
+        <th>M7 déc</th>
+        <th>M8 jan</th>
+        <th>M9 fév</th>
+        <th>M10 mars</th>
+        <th>M11 avr</th>
+        <th>M12 mai</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Obtention RGE Qualibat</strong></td>
+        <td class="good">Lance</td><td class="good">Dossier</td><td class="good">Dépôt</td><td class="mid">Inst.</td><td class="mid">Inst.</td><td class="good">Reçu</td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="bad">Audit</td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td>
+      </tr>
+      <tr>
+        <td><strong>2. Audit social et benchmark assurance</strong></td>
+        <td class="good">Lance</td><td class="good">Audit</td><td class="good">Bench.</td><td class="good">Sign.</td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td>
+      </tr>
+      <tr>
+        <td><strong>3. Convention IRIS REP / BYM Mission 4</strong></td>
+        <td class="neutral"></td><td class="good">Lance</td><td class="good">Draft</td><td class="good">Sign.</td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td>
+      </tr>
+      <tr>
+        <td><strong>4. Site web et plaquette commerciale</strong></td>
+        <td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="good">Lance</td><td class="good">Build</td><td class="good">Live</td><td class="good">Maj</td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td>
+      </tr>
+      <tr>
+        <td><strong>5. Logiciel gestion d'affaires BTP</strong></td>
+        <td class="neutral"></td><td class="good">Bench.</td><td class="good">Choix</td><td class="good">Déploi.</td><td class="good">Adopt.</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td>
+      </tr>
+      <tr>
+        <td><strong>6. Mandataire MaPrimeRénov mixte</strong></td>
+        <td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="good">Iden.</td><td class="good">1er dos.</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td>
+      </tr>
+      <tr>
+        <td><strong>7. Recrutement renforcement effectif</strong></td>
+        <td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="good">Brief.</td><td class="good">Cand.</td><td class="good">CDT sen.</td><td class="good">Compa+1</td><td class="good">Compa+2</td><td class="good">Compa+3</td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="neutral"></td>
+      </tr>
+      <tr>
+        <td><strong>8. Pipeline commercial structuré</strong></td>
+        <td class="neutral"></td><td class="neutral"></td><td class="neutral"></td><td class="good">Setup</td><td class="good">Active</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="mid">Plein</td><td class="bad">Bilan</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="insight">
+    <div class="label">Lecture du Gantt</div>
+    <p>3 chantiers démarrent dès M0 (RGE, audit social et assurance, convention IRIS REP) parce qu'ils conditionnent tout le reste. Le RGE est le chemin critique : sans obtention M5, le pipeline rénovation énergétique ne peut pas démarrer en T3, ce qui dégrade la cible CA 2026. Les 5 autres chantiers s'enchaînent en cascade selon les prérequis livrés par les 3 premiers.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 3</div>
+  <h2>T1 2026, M0 à M3, fondations réglementaires et commerciales</h2>
+  <div class="section-lead">Phase la plus dense de la Brique A. 80 % du travail réglementaire et structurant se concentre ici. Si T1 dérape, toute la Brique A dérape.</div>
+
+  <h3>M0, mai 2026, structuration et lancement</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Action</th><th>Propriétaire</th><th>Livrable attendu</th><th>Échéance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Validation des qualifications BTP réelles de Vilmar et Junior (CAP, BEP, BP, expérience justifiable)</td><td>Yannis</td><td>Document écrit listant pour chaque dirigeant son diplôme initial, ses années d'expérience, ses attestations employeurs précédents</td><td>15 mai 2026</td></tr>
+      <tr><td>Choix des 4 qualifications RGE prioritaires et désignation des responsables techniques</td><td>Yannis avec Vilmar et Junior</td><td>Note décisionnelle signée par les 3 dirigeants</td><td>20 mai 2026</td></tr>
+      <tr><td>Inscription aux formations FEEBAT et RENOPERF des responsables techniques</td><td>Vilmar (gros œuvre), Junior (plomberie chauffage), Yannis (Qualifelec déjà couvert par CAP)</td><td>3 confirmations d'inscription en organisme agréé</td><td>25 mai 2026</td></tr>
+      <tr><td>Récupération du contrat d'assurance RC Décennale actuel et identification de la compagnie réelle</td><td>Yannis</td><td>Scan du contrat poussé sur Drive et table infos_admin Supabase</td><td>20 mai 2026</td></tr>
+      <tr><td>Identification et premier RDV avec 2 délégataires CEE candidats (Effy, Hellio)</td><td>Yannis</td><td>2 RDV calés en juin 2026</td><td>30 mai 2026</td></tr>
+      <tr><td>Position de trésorerie BYM au 1er janvier 2026 récupérée auprès de Benjamin Pallaud</td><td>Yannis</td><td>Note de position trésorerie validée par Benjamin Pallaud</td><td>20 mai 2026</td></tr>
+      <tr><td>Audit conformité IDCC 1596 lancé avec Benjamin Pallaud (1 jour)</td><td>Benjamin Pallaud, sponsor Yannis</td><td>Rapport d'audit social écrit</td><td>30 mai 2026</td></tr>
+    </tbody>
+  </table>
+
+  <h3>M1, juin 2026, dossier RGE et conventions groupe</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Action</th><th>Propriétaire</th><th>Livrable attendu</th><th>Échéance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Constitution du dossier Qualibat et Qualifelec (4 qualifications)</td><td>Yannis avec appui Benjamin Pallaud pour bilans</td><td>Dossier complet prêt à déposer</td><td>20 juin 2026</td></tr>
+      <tr><td>Formation FEEBAT et RENOPERF en cours d'exécution pour les 3 responsables techniques</td><td>Vilmar, Junior, Yannis</td><td>Modules en cours de validation</td><td>30 juin 2026</td></tr>
+      <tr><td>Benchmark courtier RC Décennale lancé (Cogirisk, April Pro, Batimut, Solly Azar)</td><td>Yannis</td><td>3 propositions courtier reçues, comparées</td><td>25 juin 2026</td></tr>
+      <tr><td>Convention IRIS REP / BYM Mission 4 Capex, première version draftée</td><td>Yannis (en double casquette IRIS H et BYM)</td><td>Draft v1 envoyé à un avocat des affaires (De Pardieu, Fidal ou Racine)</td><td>30 juin 2026</td></tr>
+      <tr><td>Convention de partenariat délégataire CEE négociée et signée (1 délégataire principal)</td><td>Yannis</td><td>Convention signée, accès plateforme délégataire opérationnel</td><td>30 juin 2026</td></tr>
+      <tr><td>Cartes BTP des 6 compagnons vérifiées et émises si manquantes via cartebtp.fr</td><td>Conducteur de travaux</td><td>6 cartes BTP en règle</td><td>15 juin 2026</td></tr>
+      <tr><td>Affiliations CIBTP Centre Ouest et CIBTP Île de France vérifiées et complétées si nécessaire</td><td>Benjamin Pallaud</td><td>Attestations d'affiliation à jour</td><td>30 juin 2026</td></tr>
+      <tr><td>Benchmark logiciel de gestion d'affaires BTP lancé (Batappli, ProGBat, Sage Bâtiment, Twimm)</td><td>Junior</td><td>4 démos planifiées, grille comparative initialisée</td><td>30 juin 2026</td></tr>
+    </tbody>
+  </table>
+
+  <h3>M2, juillet 2026, dépôt RGE et choix outils</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Action</th><th>Propriétaire</th><th>Livrable attendu</th><th>Échéance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Dépôt du dossier Qualibat et Qualifelec</td><td>Yannis</td><td>Récépissés de dépôt 4 dossiers</td><td>15 juillet 2026</td></tr>
+      <tr><td>Choix du logiciel de gestion d'affaires BTP et signature contrat</td><td>Junior avec validation Yannis et Vilmar</td><td>Contrat SaaS signé, déploiement programmé</td><td>20 juillet 2026</td></tr>
+      <tr><td>RC Décennale renégociée avec courtier sélectionné, plafond et corps d'état conformes aux qualifications RGE visées</td><td>Yannis</td><td>Nouveau contrat RC Décennale signé, attestation reçue</td><td>30 juillet 2026</td></tr>
+      <tr><td>Convention IRIS REP / BYM Mission 4 Capex finalisée et signée par les 2 entités</td><td>Yannis (signature en double casquette)</td><td>Convention signée, archivée Drive et Supabase</td><td>15 juillet 2026</td></tr>
+      <tr><td>Conventions Urban Rise / BYM et RIR / BYM draftées sur le même modèle</td><td>Yannis</td><td>Drafts v1 envoyés à Vélibor Klepic pour RIR</td><td>30 juillet 2026</td></tr>
+      <tr><td>Premiers chantiers en cours suivis dans le nouveau logiciel de gestion d'affaires (3 chantiers actuels migrés)</td><td>Conducteur de travaux avec Junior</td><td>3 chantiers actifs dans le logiciel, devis et factures émis depuis l'outil</td><td>30 juillet 2026</td></tr>
+    </tbody>
+  </table>
+
+  <h3>M3, août 2026, pipeline commercial et préparation site web</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Action</th><th>Propriétaire</th><th>Livrable attendu</th><th>Échéance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Pipeline commercial structuré dans la table prospects Supabase, segmenté par mission</td><td>Yannis</td><td>Pipeline opérationnel avec import des contacts existants</td><td>15 août 2026</td></tr>
+      <tr><td>Outil de scoring client Brique A actif (5 critères pondérés)</td><td>Yannis</td><td>Module de scoring intégré au pipeline Supabase</td><td>20 août 2026</td></tr>
+      <tr><td>Outil de scoring sous traitants actif (7 critères pondérés)</td><td>Junior</td><td>Module de scoring déployé, 5 sous traitants pré référencés</td><td>30 août 2026</td></tr>
+      <tr><td>Brief refonte site web bym.fr ou bymconstruction.fr lancé sur Lovable</td><td>Yannis</td><td>Wireframe et arborescence validés, démarrage build</td><td>30 août 2026</td></tr>
+      <tr><td>Brief plaquette commerciale BYM 4 pages lancé sur Canva Pro</td><td>Yannis</td><td>Maquette v1 produite</td><td>30 août 2026</td></tr>
+      <tr><td>Brief recrutement conducteur de travaux senior tertiaire envoyé à Michael Page Construction et Hays Construction</td><td>Yannis</td><td>2 cabinets de chasse briefés, fiche de poste validée</td><td>15 août 2026</td></tr>
+      <tr><td>Pool initial de sous traitants RGE par corps d'état (peinture, menuiserie, carrelage, sols, étanchéité, charpente) constitué</td><td>Junior</td><td>5 à 8 sous traitants référencés et scorés</td><td>30 août 2026</td></tr>
+      <tr><td>Audit RGE en instruction, suivi des éventuelles demandes de pièces complémentaires</td><td>Yannis</td><td>Réactivité maximale, réponses sous 5 jours</td><td>Continu</td></tr>
+    </tbody>
+  </table>
+
+  <div class="mentor">
+    <div class="label">Conseil de mentor T1</div>
+    <p>Ne te laisse pas distraire par les opportunités commerciales pendant T1. La tentation va être forte parce que le pipeline 2026 est déjà signé à 1 000 000 d'euros et que Vilmar et Junior vont vouloir signer plus de chantiers. Le travail T1 est invisible mais structurant. Si tu n'as pas le RGE, l'assurance recadrée, la convention IRIS REP, le logiciel BTP, et le pipeline structuré à fin août, T2 et T3 vont te rattraper. Ne signe pas plus que ce que tu peux livrer avec les 8 personnes actuelles.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 4</div>
+  <h2>T2 2026, M4 à M6, obtention RGE et industrialisation</h2>
+  <div class="section-lead">Le RGE arrive (espéré). Le site est en ligne. La machine commerciale rénovation énergétique se met en marche. Recrutement du conducteur de travaux senior.</div>
+
+  <h3>M4, septembre 2026, livraison site et premier process chantier</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Action</th><th>Propriétaire</th><th>Livrable attendu</th><th>Échéance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Site bym.fr en ligne, charte groupe IRIS H, formulaire devis qualifié</td><td>Yannis avec Lovable</td><td>Site live avec page Mission par Mission, page contact, formulaire devis</td><td>20 septembre 2026</td></tr>
+      <tr><td>Plaquette commerciale BYM 4 pages finalisée, version PDF diffusable</td><td>Yannis</td><td>Plaquette imprimable et diffusable digitalement</td><td>15 septembre 2026</td></tr>
+      <tr><td>Recrutement conducteur travaux senior en phase entretiens finaux</td><td>Yannis</td><td>3 candidats short list, entretiens en cours</td><td>30 septembre 2026</td></tr>
+      <tr><td>Référentiel de devis standardisés par typologie de prestation produit dans le logiciel BTP</td><td>Junior avec conducteur travaux</td><td>10 templates de devis types couvrant 80 % des cas</td><td>30 septembre 2026</td></tr>
+      <tr><td>Procédure d'acompte BTP standardisée appliquée systématiquement (30/30/30/10)</td><td>Vilmar</td><td>Note de procédure interne diffusée, formation des 3 dirigeants et du conducteur de travaux</td><td>15 septembre 2026</td></tr>
+      <tr><td>Reporting chantier hebdomadaire opérationnel pour les 3 chantiers en cours</td><td>Conducteur de travaux</td><td>Premier reporting envoyé chaque vendredi 17h aux 3 dirigeants</td><td>15 septembre 2026</td></tr>
+      <tr><td>Pipeline commercial avec 15 prospects qualifiés en Mission 1 (rénovation énergétique) en attente du RGE</td><td>Yannis</td><td>15 prospects scorés et qualifiés, en attente d'activation</td><td>30 septembre 2026</td></tr>
+      <tr><td>Suivi du dossier RGE Qualibat, instruction en cours commission</td><td>Yannis</td><td>Confirmation de complétude dossier, attente décision</td><td>Continu</td></tr>
+    </tbody>
+  </table>
+
+  <h3>M5, octobre 2026, obtention RGE et activation MaPrimeRénov</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Action</th><th>Propriétaire</th><th>Livrable attendu</th><th>Échéance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Obtention RGE Qualibat et Qualifelec sur les 4 qualifications visées</td><td>Yannis</td><td>4 attestations RGE reçues, inscription France Rénov automatique</td><td>15 octobre 2026 (scénario optimiste, sinon M6)</td></tr>
+      <tr><td>Identification BYM auprès de l'Anah comme mandataire mixte MaPrimeRénov</td><td>Yannis</td><td>Numéro de mandataire BYM attribué</td><td>30 octobre 2026</td></tr>
+      <tr><td>Attestations sur l'honneur des 3 dirigeants (absence condamnation pénale) signées</td><td>Yannis, Vilmar, Junior</td><td>3 attestations notariées ou sur l'honneur archivées</td><td>15 octobre 2026</td></tr>
+      <tr><td>Modèle de mandat MaPrimeRénov client conforme Anah finalisé</td><td>Yannis</td><td>Template de mandat intégré au flux commercial BYM</td><td>30 octobre 2026</td></tr>
+      <tr><td>Conducteur de travaux senior recruté, contrat signé</td><td>Yannis</td><td>Promesse d'embauche signée, démarrage planifié</td><td>30 octobre 2026</td></tr>
+      <tr><td>Activation des 15 prospects Mission 1 en attente, lancement séquence commerciale</td><td>Yannis avec conducteur de travaux</td><td>15 RDV programmés, 15 visites lancées</td><td>30 octobre 2026</td></tr>
+      <tr><td>Page LinkedIn entreprise BYM Construction publiée, posts d'annonce RGE diffusés</td><td>Yannis</td><td>Page LinkedIn live, 1 post d'annonce RGE Qualibat avec photos chantier</td><td>20 octobre 2026</td></tr>
+      <tr><td>Brief premier compagnon supplémentaire (passage de 6 à 7 compagnons)</td><td>Vilmar</td><td>Fiche de poste validée, 3 candidatures en cours</td><td>30 octobre 2026</td></tr>
+    </tbody>
+  </table>
+
+  <h3>M6, novembre 2026, premier dossier MaPrimeRénov et embauches</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Action</th><th>Propriétaire</th><th>Livrable attendu</th><th>Échéance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Premier dossier MaPrimeRénov en mandataire mixte déposé auprès de l'Anah</td><td>Yannis</td><td>Dossier déposé, accusé réception Anah</td><td>15 novembre 2026</td></tr>
+      <tr><td>Premiers chantiers Mission 1 (rénovation énergétique) signés (cible 3 à 5 sur le mois)</td><td>Yannis avec conducteur de travaux</td><td>3 à 5 marchés de travaux signés, acomptes 30 % encaissés</td><td>30 novembre 2026</td></tr>
+      <tr><td>Conducteur de travaux senior tertiaire opérationnel, prise en main du portefeuille chantiers</td><td>Yannis</td><td>Démarrage effectif, formation interne réalisée</td><td>15 novembre 2026</td></tr>
+      <tr><td>Premier compagnon supplémentaire (7e) recruté et démarré</td><td>Vilmar</td><td>Contrat signé, carte BTP émise, démarrage chantier</td><td>30 novembre 2026</td></tr>
+      <tr><td>Brief deuxième compagnon supplémentaire (8e)</td><td>Vilmar</td><td>Fiche de poste validée, candidatures en cours</td><td>30 novembre 2026</td></tr>
+      <tr><td>Convention de partenariat affactureur signée (Crédit Mutuel Factor, BNP Factor, Eurofactor ou Bibby) pour chantiers de plus de 100 000 euros</td><td>Yannis avec Benjamin Pallaud</td><td>Contrat affacturage signé, premier chantier factorisé</td><td>30 novembre 2026</td></tr>
+      <tr><td>Activation canal 1 (agences immobilières partenaires) lancée, 30 agences cibles approchées</td><td>Yannis</td><td>Liste de 30 agences scorées, 10 RDV calés</td><td>30 novembre 2026</td></tr>
+      <tr><td>Activation canal 2 (architectes intérieur et AMO) lancée, 15 archis approchés</td><td>Yannis</td><td>Liste de 15 archis et AMO, 5 cafés calés</td><td>30 novembre 2026</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warning">
+    <div class="label">Point de vigilance T2</div>
+    <p>Le RGE peut prendre 1 à 2 mois de plus que l'objectif M5. Si tu ne l'as pas fin novembre, ton pipeline rénovation énergétique est paralysé. Anticipe en restant en relation hebdomadaire avec Qualibat dès M3, en répondant sous 5 jours aux demandes complémentaires, et en activant le partenariat délégataire CEE dès M2 pour proposer au moins la prime CEE aux clients en attendant le RGE.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 5</div>
+  <h2>T3 2026, M7 à M9, accélération commerciale et premier tertiaire</h2>
+  <div class="section-lead">La machine tourne en plein régime sur le résidentiel. Premier chantier tertiaire light signé pour préparer la Brique B. Recrutements continuent.</div>
+
+  <h3>M7, décembre 2026, plein régime résidentiel</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Action</th><th>Propriétaire</th><th>Livrable attendu</th><th>Échéance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Pipeline Mission 1 atteint 8 chantiers actifs, dont 5 en exécution et 3 en signature</td><td>Yannis</td><td>État pipeline validé en revue mensuelle</td><td>15 décembre 2026</td></tr>
+      <tr><td>2e dossier MaPrimeRénov mandataire déposé, suivi instruction Anah</td><td>Yannis</td><td>Dossiers en cours, primes en attente d'encaissement</td><td>30 décembre 2026</td></tr>
+      <tr><td>Deuxième compagnon supplémentaire (8e) recruté, démarrage</td><td>Vilmar</td><td>Contrat signé, démarrage chantier</td><td>15 décembre 2026</td></tr>
+      <tr><td>Premier chantier Mission 4 (Capex IRIS REP) signé, pilotage MOE par IRIS REP</td><td>Yannis</td><td>Marché de travaux signé, démarrage planifié</td><td>30 décembre 2026</td></tr>
+      <tr><td>Activation canal 3 (plateformes RGE) effective, inscription Houzz Pro, Travaux.com, Habitatpresto</td><td>Yannis</td><td>3 plateformes actives, 5 demandes entrantes par semaine</td><td>30 décembre 2026</td></tr>
+      <tr><td>10 premiers avis Google récupérés sur les chantiers livrés en T2</td><td>Conducteur de travaux</td><td>10 avis 4,5 étoiles plus sur Google Business Profile</td><td>30 décembre 2026</td></tr>
+      <tr><td>Pré qualification d'une 1ère opportunité tertiaire light (commerce ou bureau, ticket inférieur à 1 000 000 d'euros)</td><td>Yannis avec IRIS REP</td><td>Prospect qualifié, devis chiffré envoyé</td><td>30 décembre 2026</td></tr>
+    </tbody>
+  </table>
+
+  <h3>M8, janvier 2027, signature premier tertiaire et embauche</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Action</th><th>Propriétaire</th><th>Livrable attendu</th><th>Échéance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Premier chantier Mission 6 (Tertiaire light) signé avec partenaire AMO ou IRIS REP en MOE</td><td>Yannis</td><td>Marché de travaux signé, ticket inférieur à 1 000 000 d'euros, démarrage planifié pour T2 2027</td><td>30 janvier 2027</td></tr>
+      <tr><td>Pipeline Mission 1 maintenu à 8 chantiers actifs, taux de conversion devis vers signature monitoré</td><td>Yannis</td><td>Taux de conversion suivi en revue mensuelle, cible 30 à 35 %</td><td>15 janvier 2027</td></tr>
+      <tr><td>Troisième compagnon supplémentaire (9e) recruté</td><td>Vilmar</td><td>Contrat signé</td><td>30 janvier 2027</td></tr>
+      <tr><td>Premier audit chantier RGE Qualibat sur le chantier numéro 1 livré en T3</td><td>Yannis avec conducteur de travaux</td><td>Audit programmé avec organisme COFRAC, dossier de chantier préparé</td><td>30 janvier 2027</td></tr>
+      <tr><td>Première prime MaPrimeRénov encaissée par BYM en mandataire mixte</td><td>Yannis</td><td>Prime perçue, déduite du devis client, écriture comptable validée</td><td>30 janvier 2027</td></tr>
+      <tr><td>Bilan T1 2026 BYM avec Benjamin Pallaud (clôture 2026 anticipée)</td><td>Yannis avec Benjamin Pallaud</td><td>Position trésorerie consolidée, écarts vs BP analysés</td><td>30 janvier 2027</td></tr>
+      <tr><td>Préparation des recrutements Brique B (compagnons supplémentaires, chef d'équipe, deuxième conducteur de travaux)</td><td>Yannis avec Vilmar</td><td>Plan de recrutement Brique B validé en revue dirigeants</td><td>30 janvier 2027</td></tr>
+    </tbody>
+  </table>
+
+  <h3>M9, février 2027, audit RGE et préparation passage Brique B</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Action</th><th>Propriétaire</th><th>Livrable attendu</th><th>Échéance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Audit chantier RGE Qualibat réalisé, conformité validée</td><td>Yannis</td><td>Rapport d'audit conforme, qualification confirmée</td><td>15 février 2027</td></tr>
+      <tr><td>30 prospects qualifiés en pipeline dont 10 en proposition active</td><td>Yannis</td><td>État pipeline validé en revue mensuelle, scorés et qualifiés</td><td>28 février 2027</td></tr>
+      <tr><td>Pipeline Mission 4 (Capex IRIS REP) à 2 chantiers signés et 1 en négociation</td><td>Yannis</td><td>État pipeline IRIS REP partagé avec direction IRIS REP</td><td>15 février 2027</td></tr>
+      <tr><td>Convention Urban Rise / BYM et RIR / BYM finalisées et signées</td><td>Yannis avec Vélibor Klepic</td><td>2 conventions signées</td><td>28 février 2027</td></tr>
+      <tr><td>Recrutement assistant administratif partagé BYM et IRIS REP, dédié au suivi des dossiers d'aides (MaPrimeRénov, CEE, éco PTZ)</td><td>Yannis</td><td>Fiche de poste validée, recrutement lancé</td><td>15 février 2027</td></tr>
+      <tr><td>Préparation de la première candidature Qualibat 1132 supérieur (Brique B)</td><td>Vilmar</td><td>Pré dossier constitué, références chantiers tertiaires light identifiées</td><td>28 février 2027</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 6</div>
+  <h2>T4 2026 prolongé sur 2027, M10 à M12, validation KPI et bilan Brique A</h2>
+  <div class="section-lead">Validation des 6 KPI durs de passage à la Brique B. Si validés, lancement Brique B. Sinon prolongation Brique A.</div>
+
+  <h3>M10, mars 2027, validation des références et premier audit Mission 6</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Action</th><th>Propriétaire</th><th>Livrable attendu</th><th>Échéance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Démarrage chantier Mission 6 (Tertiaire light)</td><td>Conducteur de travaux senior</td><td>Chantier en exécution, reporting hebdomadaire</td><td>15 mars 2027</td></tr>
+      <tr><td>Identification de 1 à 2 portefeuilles tertiaires CVL pour Brique B</td><td>Yannis avec direction IRIS REP</td><td>2 cibles tertiaires CVL identifiées, premiers contacts</td><td>30 mars 2027</td></tr>
+      <tr><td>Suivi du pipeline Mission 1 et 2, taux de conversion stabilisé à 35 % minimum</td><td>Yannis</td><td>Taux de conversion validé en revue mensuelle</td><td>30 mars 2027</td></tr>
+      <tr><td>Préparation du dossier de financement Brique B (banque traditionnelle, ligne court terme structurelle)</td><td>Yannis avec Benjamin Pallaud</td><td>Dossier financier consolidé, RDV banques programmés</td><td>30 mars 2027</td></tr>
+      <tr><td>Sortie de capacité de cautionnement bancaire négociée pour Brique C (préparation à 18 mois)</td><td>Yannis avec Benjamin Pallaud</td><td>Pré accord cautionnement obtenu</td><td>30 mars 2027</td></tr>
+    </tbody>
+  </table>
+
+  <h3>M11, avril 2027, bilan financier et arbitrages 2027</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Action</th><th>Propriétaire</th><th>Livrable attendu</th><th>Échéance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Clôture comptable 2026 finalisée avec Benjamin Pallaud</td><td>Benjamin Pallaud</td><td>Comptes 2026 arrêtés, bilan, compte de résultat, annexes</td><td>30 avril 2027</td></tr>
+      <tr><td>Bilan financier Brique A vs business plan : écarts CA, marge brute, EBITDA, REM dirigeants</td><td>Yannis</td><td>Note d'écarts détaillée, partagée avec Vilmar et Junior</td><td>15 avril 2027</td></tr>
+      <tr><td>Validation des 6 KPI durs de passage à la Brique B (CA supérieur à 2 000 000, RGE acquis, 1 référence tertiaire light, trésorerie 6 mois charges, marge brute 28 % minimum, conducteur travaux senior recruté)</td><td>Yannis avec Vilmar et Junior</td><td>Note de validation collégiale signée</td><td>30 avril 2027</td></tr>
+      <tr><td>Arbitrages REM dirigeants 2027 (passage de 3 500 à 5 000 euros nets mensuels par dirigeant)</td><td>Yannis avec Vilmar et Junior</td><td>Décision collégiale validée, mise en œuvre paie à partir de mai 2027</td><td>30 avril 2027</td></tr>
+      <tr><td>Préparation de la bascule éventuelle vers IDCC 1597 (si effectif ouvriers proche de 11)</td><td>Benjamin Pallaud</td><td>Note de cadrage juridique préparée</td><td>30 avril 2027</td></tr>
+    </tbody>
+  </table>
+
+  <h3>M12, mai 2027, lancement Brique B</h3>
+  <table>
+    <thead>
+      <tr><th style="width:30%">Action</th><th>Propriétaire</th><th>Livrable attendu</th><th>Échéance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Décision officielle de passage en Brique B (sous réserve KPI validés)</td><td>Yannis avec Vilmar et Junior</td><td>Note de décision groupe IRIS H, communication interne</td><td>15 mai 2027</td></tr>
+      <tr><td>Lancement de la roadmap Brique B (équivalent brique2_bym_roadmap.html)</td><td>Yannis</td><td>Brief de production en nouvelle conversation Claude</td><td>30 mai 2027</td></tr>
+      <tr><td>Mise à jour du dashboard groupe IRIS H, archivage des documents Brique A en lecture seule</td><td>Yannis</td><td>Dashboard à jour, volet BYM Brique B initialisé</td><td>30 mai 2027</td></tr>
+      <tr><td>Communication externe : annonce RGE Qualibat acquis, premières références tertiaire, montée en puissance équipe, sur LinkedIn et site web</td><td>Yannis</td><td>3 posts LinkedIn diffusés, page actualités site bym.fr mise à jour</td><td>30 mai 2027</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 7</div>
+  <h2>Jalons critiques et points de validation</h2>
+  <div class="section-lead">5 jalons critiques sur 12 mois. Chaque jalon est un point de passage obligé pour la suite. Pas de jalon validé, pas de poursuite de la Brique A sans replanification.</div>
+
+  <div class="mission-card">
+    <div><span class="mission-num">1</span><span class="mission-name">Jalon J1, RGE Qualibat acquis</span><span class="mission-tag">M5 à M6, octobre à novembre 2026</span></div>
+    <div class="mission-content">Décision favorable de la commission Qualibat sur les 4 qualifications visées. Inscription automatique sur l'annuaire France Rénov. Sans ce jalon, le pipeline Mission 1 (rénovation énergétique) reste en attente, la perte de chiffre d'affaires est estimée à 600 000 à 800 000 euros sur l'année. Plan de mitigation en cas de retard : poursuite du partenariat délégataire CEE seul (sans MaPrimeRénov), focus accentué sur Mission 2 (TCE résidentielle) et Mission 4 (Capex IRIS REP).</div>
+    <div class="mission-meta"><strong>Propriétaire</strong> Yannis · <strong>Livrable</strong> 4 attestations RGE reçues · <strong>Conséquence si non atteint</strong> Replanification T3 et T4, prolongation Brique A possible</div>
+  </div>
+
+  <div class="mission-card">
+    <div><span class="mission-num">2</span><span class="mission-name">Jalon J2, conducteur de travaux senior tertiaire recruté et opérationnel</span><span class="mission-tag">M5 à M6, octobre à novembre 2026</span></div>
+    <div class="mission-content">Profil senior expérience tertiaire de plus de 5 ans, capable de piloter 5 à 10 chantiers en parallèle, autonome sur la maîtrise d'œuvre déléguée. Sans ce jalon, la montée en charge T3 et T4 n'est pas tenable et la signature du premier tertiaire light en M8 est repoussée. Cabinets de chasse Michael Page Construction ou Hays Construction recommandés. Budget 22 000 à 28 000 euros bruts mensuels selon profil.</div>
+    <div class="mission-meta"><strong>Propriétaire</strong> Yannis · <strong>Livrable</strong> Contrat signé, démarrage effectif · <strong>Conséquence si non atteint</strong> Plafonnement à 8 chantiers actifs, signature tertiaire light reportée Brique B</div>
+  </div>
+
+  <div class="mission-card">
+    <div><span class="mission-num">3</span><span class="mission-name">Jalon J3, premier dossier MaPrimeRénov mandataire encaissé</span><span class="mission-tag">M8 à M9, janvier à février 2027</span></div>
+    <div class="mission-content">Premier dossier MaPrimeRénov en mandataire mixte traversé entièrement (signature client, montage dossier, instruction Anah, accord, prime versée à BYM, déduction sur facture client). Validation pratique de la mécanique mandataire. Sans ce jalon, le doute persiste sur la viabilité opérationnelle du positionnement mandataire et le pipeline Mission 1 reste fragile.</div>
+    <div class="mission-meta"><strong>Propriétaire</strong> Yannis · <strong>Livrable</strong> Prime encaissée et reversée en déduction client · <strong>Conséquence si non atteint</strong> Audit interne du flux mandataire et correction</div>
+  </div>
+
+  <div class="mission-card">
+    <div><span class="mission-num">4</span><span class="mission-name">Jalon J4, première référence tertiaire light livrée</span><span class="mission-tag">M10 à M12, mars à mai 2027</span></div>
+    <div class="mission-content">Premier chantier Mission 6 (tertiaire light) livré, ticket inférieur à 1 000 000 d'euros, sans contentieux post réception, marge brute supérieure à 30 %. Sans ce jalon, le passage en Brique B sur le tertiaire est compromis, BYM doit prolonger la Brique A pour obtenir cette référence.</div>
+    <div class="mission-meta"><strong>Propriétaire</strong> Conducteur de travaux senior avec Yannis · <strong>Livrable</strong> Procès verbal de réception signé, photos chantier, témoignage client · <strong>Conséquence si non atteint</strong> Prolongation Brique A jusqu'à obtention référence</div>
+  </div>
+
+  <div class="mission-card">
+    <div><span class="mission-num">5</span><span class="mission-name">Jalon J5, validation collégiale des 6 KPI durs de passage à la Brique B</span><span class="mission-tag">M11 à M12, avril à mai 2027</span></div>
+    <div class="mission-content">Validation collégiale par Yannis, Vilmar et Junior des 6 KPI durs : CA annualisé supérieur à 2 000 000 d'euros, RGE acquis sur 4 corps d'état, 1 référence tertiaire light livrée, trésorerie nette 6 mois de charges fixes (250 000 euros environ), marge brute supérieure à 28 %, conducteur travaux senior recruté ou en cours de recrutement avancé. Si une seule condition manque, prolongation Brique A.</div>
+    <div class="mission-meta"><strong>Propriétaire</strong> Yannis avec Vilmar et Junior · <strong>Livrable</strong> Note de validation collégiale signée par les 3 dirigeants · <strong>Conséquence si non atteint</strong> Prolongation Brique A de 3 à 6 mois</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 8</div>
+  <h2>Rituels de pilotage</h2>
+  <div class="section-lead">3 rituels structurants. Ils garantissent que personne ne se perd et que les alertes remontent à temps.</div>
+
+  <div class="kpi-box">
+    <div class="label">Rituel 1, hebdomadaire</div>
+    <h4>Vendredi 17 heures, point chantier et pipeline</h4>
+    <ul>
+      <li><strong>Participants.</strong> Yannis, Vilmar, Junior, conducteur de travaux. 45 minutes maximum.</li>
+      <li><strong>Ordre du jour.</strong> Avancement des chantiers en cours (5 minutes par chantier), alertes sécurité ou qualité, mouvements de pipeline (entrées, sorties, signatures), encaissements et décaissements de la semaine, écarts vs budget chantier, nouvelles tâches priorité haute.</li>
+      <li><strong>Support.</strong> Rapport hebdomadaire automatique généré dans la table rapports_hebdo Supabase, diffusé par e mail à 15 heures vendredi.</li>
+      <li><strong>Décisions tracées.</strong> Compte rendu en 5 lignes dans Google Docs partagé, archivage dans Drive.</li>
+    </ul>
+  </div>
+
+  <div class="kpi-box">
+    <div class="label">Rituel 2, mensuel</div>
+    <h4>Premier lundi du mois, revue stratégique 90 minutes</h4>
+    <ul>
+      <li><strong>Participants.</strong> Yannis, Vilmar, Junior, Benjamin Pallaud (par visio Google Meet).</li>
+      <li><strong>Ordre du jour.</strong> Bilan financier du mois précédent (CA encaissé, marge brute par chantier, position trésorerie), avancement des jalons critiques (RGE, MaPrimeRénov, recrutements), décisions structurantes du mois (recrutements, contrats de plus de 50 000 euros), revue des 6 KPI durs vs cibles, alertes externes (réglementaires, marché, concurrents).</li>
+      <li><strong>Support.</strong> Tableau de bord mensuel dans le dashboard groupe IRIS H, onglet BYM. Note d'écarts préparée par Yannis.</li>
+      <li><strong>Décisions tracées.</strong> Compte rendu d'1 page Google Docs, archivage Drive et table rapports_hebdo.</li>
+    </ul>
+  </div>
+
+  <div class="kpi-box">
+    <div class="label">Rituel 3, trimestriel</div>
+    <h4>Premier vendredi du trimestre, revue stratégique élargie 3 heures</h4>
+    <ul>
+      <li><strong>Participants.</strong> Yannis, Vilmar, Junior, Benjamin Pallaud, conducteur de travaux senior, et selon trimestre, direction IRIS REP, Vélibor Klepic (RIR), invité externe (avocat des affaires, courtier assurance, expert comptable senior).</li>
+      <li><strong>Ordre du jour.</strong> Bilan trimestriel BYM, écarts business plan, validation des grandes orientations trimestre suivant, décisions structurantes (recrutements clés, conventions de partenariat, financement, investissements), revue concurrentielle, retours clients, retours partenaires.</li>
+      <li><strong>Support.</strong> Mémorandum trimestriel BYM préparé par Yannis (5 à 8 pages), partagé 48 heures avant.</li>
+      <li><strong>Décisions tracées.</strong> Note de décisions trimestrielle, archivage Drive et table memoire_fragments Supabase.</li>
+    </ul>
+  </div>
+
+  <div class="mentor">
+    <div class="label">Conseil de mentor sur les rituels</div>
+    <p>Le rituel hebdomadaire est non négociable. Il dure 45 minutes maximum. Aucune absence sans visio. Pas de rituel signifie pas de pilotage, ce qui en BTP en croissance est l'antichambre du chaos. Les 3 dirigeants sont collégialement responsables, ils ne peuvent pas se permettre de dérive d'information entre eux. La discipline du vendredi 17 heures vaut plus que tous les outils du monde.</p>
+  </div>
+</div>
+
+<div class="section" style="background: #fff5f1; border: 2px solid var(--bad);">
+  <div class="section-num" style="color: var(--bad);">À surveiller en permanence</div>
+  <h2 style="color: var(--bad);">Les 5 signaux faibles à intercepter avant qu'ils ne deviennent forts</h2>
+  <div class="section-lead">Les BTP en croissance ne meurent pas brutalement. Ils dérivent par signaux faibles ignorés. Voici les 5 à surveiller en Brique A.</div>
+
+  <div class="todo-redbox">
+    <div class="label">Signal faible 1</div>
+    <h4>Marge brute par chantier qui descend sous 25 %</h4>
+    <p style="font-size:13px;margin-top:8px;">Si un chantier termine avec une marge brute inférieure à 25 %, c'est qu'il y a eu dérive (sous estimation devis, reprises non facturées, sous traitance imprévue, défaillance fournisseur). Audit immédiat du chantier, analyse de cause racine, correction sur les chantiers similaires en cours.</p>
+  </div>
+
+  <div class="todo-redbox">
+    <div class="label">Signal faible 2</div>
+    <h4>DSO clients qui dépasse 60 jours</h4>
+    <p style="font-size:13px;margin-top:8px;">DSO de plus de 60 jours signifie clients en retard de paiement non gérés. Scoring client à revoir en amont, procédure de relance à durcir (relance J+5, J+15, J+30, mise en demeure J+45), affacturage à activer pour les chantiers concernés.</p>
+  </div>
+
+  <div class="todo-redbox">
+    <div class="label">Signal faible 3</div>
+    <h4>Taux de conversion devis vers signature qui descend sous 25 %</h4>
+    <p style="font-size:13px;margin-top:8px;">Taux inférieur à 25 % signifie soit prospects mal qualifiés en amont (scoring client défaillant), soit pitch ou objections mal traités, soit prix non concurrentiels. Analyse de cause, ajustement immédiat.</p>
+  </div>
+
+  <div class="todo-redbox">
+    <div class="label">Signal faible 4</div>
+    <h4>Reprises post réception (parfait achèvement) qui dépassent 2 % du CA livré</h4>
+    <p style="font-size:13px;margin-top:8px;">Reprises supérieures à 2 % du CA livré = problème de qualité de production. Audit de chantier sur le ou les chantiers concernés, revue procédures, formation compagnons, sortie éventuelle d'un sous traitant du référentiel.</p>
+  </div>
+
+  <div class="todo-redbox">
+    <div class="label">Signal faible 5</div>
+    <h4>Trésorerie qui descend sous 30 jours de charges fixes (environ 30 000 euros)</h4>
+    <p style="font-size:13px;margin-top:8px;">Trésorerie inférieure à 30 jours de charges fixes signifie BFR mal piloté. Activation immédiate des leviers : acomptes BTP rappelés à tous les clients en cours, affacturage poussé à 100 % des chantiers de plus de 100 000 euros, négociation avec banque traditionnelle pour ligne court terme, apport en compte courant des associés en dernier recours.</p>
+  </div>
+</div>
+
+<div class="signature">BYM Construction, Brique A Planning Opérationnel mois par mois, mai 2026, version initiale à enrichir au fil des rituels mensuels et trimestriels</div>
+
+</div>
+</body>
+</html>
