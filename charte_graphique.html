@@ -321,6 +321,7 @@
   .dot-ok { background: var(--green); }
   .dot-ko { background: var(--red); }
   .dot-partial { background: var(--amber); }
+  .dot-neutral { background: #d0cfcc; }
   .stat-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -621,29 +622,71 @@ const BRANDS = {
     ]
   },
   orleans_coloc: {
-    name: 'Orleans Colocation',
-    full: 'Orleans Colocation',
-    activity: 'Marque dediee colocation Orleans',
+    name: 'Orléans Colocation',
+    full: 'Orléans Colocation',
+    activity: 'Plateforme de colocation vérifiée à Orléans',
+    tone: 'Sobre, institutionnel, rassurant. Inspiration éditoriale et fintech française.',
     colors: {
-      primary:   { hex: '#b8860b', role: 'Doré or, primaire' },
-      secondary: { hex: '#1a1a1a', role: 'Noir profond, secondaire' },
-      accent:    { hex: '#fafaf8', role: 'Blanc cassé, mise en exergue' },
-      neutral:   { hex: '#f5f3f0', role: 'Ivoire, fond de page' }
+      primary:   { hex: '#0e1f4d', role: 'Navy, primaire (titres, navbar, CTA principal, footer)' },
+      secondary: { hex: '#5B9BD5', role: 'Blue accent (liens, prix, ring focus)' },
+      accent:    { hex: '#DDE9F5', role: 'Blue-soft (fonds secondaires, marquee, badges). Approximation à confirmer.' },
+      neutral:   { hex: '#fcfbf8', role: 'Ivory, background global' }
     },
+    colorsExtended: [
+      { token: '--warning',    hex: '#b45309', role: 'Warning',       usage: 'Bandeau anti-arnaque, texte' },
+      { token: '--warning-bg', hex: '#ffe7c2', role: 'Warning bg',    usage: 'Bandeau anti-arnaque, fond' },
+      { token: '--success',    hex: '#16a34a', role: 'Success',       usage: 'Badges Vérifiée' },
+      { token: '--gold',       hex: '#c8a04a', role: 'Gold',          usage: 'Accent ponctuel. Approximation à confirmer.' },
+      { token: '--purple',     hex: '#8b5cf6', role: 'Purple',        usage: 'Accent ponctuel, animation pulse-glow. Approximation à confirmer.' }
+    ],
+    shadcnMapping: [
+      { token: '--primary',    bind: 'navy' },
+      { token: '--accent',     bind: 'blue' },
+      { token: '--secondary',  bind: 'blue-soft' },
+      { token: '--background', bind: 'ivory' },
+      { token: '--ring',       bind: 'blue' }
+    ],
     typography: {
-      title: 'Helvetica Neue ou Avenir, sans serif sobre premium',
-      body: 'Georgia, serif lisible pour corps long',
-      source: 'Charte groupe IRIS H, mai 2026'
+      title: 'Quicksand 600 (semibold), letter-spacing -0.01em, navy par défaut',
+      body: 'Quicksand 300 à 500, font-features ss01 + cv01 activées',
+      source: 'Google Fonts. Famille unique Quicksand 300 → 700, anti-aliasing activé, text-rendering optimizeLegibility'
     },
     slogan: null,
+    visualSystem: {
+      radius: 'Base 0.875rem (14px), échelle sm à 4xl',
+      shadows: [
+        'shadow-soft : ombre discrète teinte navy (cards au repos)',
+        'shadow-elevated : élévation hover (cards interactives)',
+        'shadow-glow : halo bleu pour focus'
+      ],
+      container: '.container-oc, max-width 80rem, padding 1rem mobile et 2rem desktop'
+    },
+    animations: [
+      'animate-marquee : défilement horizontal infini 40s, pause au hover, respecte prefers-reduced-motion',
+      'animate-pulse-glow : halo violet pulsé 2.4s',
+      'Cards : translateY -0.5 + passage shadow-elevated au hover, image scale 1.05 sur 500ms'
+    ],
+    signatureComponents: [
+      'Cards annonces : ratio image 4/3, badges flottants top-left (type et Vérifiée), prix bleu accent gros et gras, métadonnées séparées par bordure haute',
+      'Auth shell : split-screen 50/50, panneau gauche navy plein avec wordmark et baseline, panneau droit ivoire avec formulaire centré',
+      'Footer : fond navy, 4 colonnes, liens navy-foreground 75 puis hover bleu accent',
+      'Sélection texte : fond bleu translucide, texte navy'
+    ],
+    darkMode: 'Présent (.dark) : background navy profond, cards navy moyen, accent bleu identique, bordures translucides blanches à 10%',
+    principles: [
+      'Jamais de classes couleur en dur (text-white, bg-black), uniquement les tokens sémantiques',
+      'Ivoire chaud plutôt que blanc pur, différencie du SaaS générique',
+      'Bleu accent réservé aux éléments d action et de valeur (prix, liens, CTA secondaires), le navy reste dominant pour ancrer l autorité'
+    ],
     rules: [
-      'Ton institutionnel premium, direct et professionnel, chaleureux sans excès',
-      'Aucun tiret dans les textes, ni cadratin ni demi cadratin ni tiret simple, virgules et points uniquement',
-      'Aucune tournure IA reconnaissable : pas de bien sûr, certainement, absolument, il est important de noter, n hésitez pas, en effet',
-      'Montants en chiffres complets uniquement, jamais K ni M. Exemple : 30 000 euros, 5 000 000 euros',
-      'Aucun prix d honoraires ni grille tarifaire affichée',
-      'Mise en page éditoriale institutionnelle, style boutique fund épuré, beaucoup d espace blanc, peu d éléments par section',
-      'Géographie centrée Orléans, marque cible étudiants et jeunes actifs sans rompre le code institutionnel du groupe'
+      'Wordmark typographique pur, aucune icône associée',
+      'orléans en navy + colocation en bleu accent, tout en bas de casse, tracking serré -0.01em',
+      'Aucune classe couleur en dur, uniquement tokens sémantiques shadcn',
+      'Fond ivoire chaud (#fcfbf8), jamais blanc pur',
+      'Bleu accent #5B9BD5 réservé aux éléments d action et de valeur',
+      'Le navy #0e1f4d reste dominant pour ancrer l autorité institutionnelle',
+      'Aucun tiret dans les textes, virgules et points uniquement',
+      'Aucune tournure IA reconnaissable'
     ]
   }
 };
@@ -795,6 +838,97 @@ function renderRulesSection(brand) {
   `;
 }
 
+function renderToneSection(brand) {
+  const tone = BRANDS[brand].tone;
+  if (!tone) return '';
+  return `
+    <div class="section">
+      <h2>Ton de marque <span class="badge badge-ok">Renseigné</span></h2>
+      <div class="slogan-block" style="font-style:normal">${tone}</div>
+    </div>
+  `;
+}
+
+function renderColorsExtendedSection(brand) {
+  const ext = BRANDS[brand].colorsExtended;
+  if (!ext || ext.length === 0) return '';
+  const cards = ext.map(c => `
+    <div class="color-card" onclick="copyHex('${c.hex}')">
+      <div class="color-swatch" style="background:${c.hex}"></div>
+      <div class="color-info">
+        <div class="role">${c.token || c.role}</div>
+        <div class="hex">${c.hex}</div>
+        <div style="font-size:11px;color:var(--text-light);margin-top:4px;line-height:1.3">${c.usage || ''}</div>
+      </div>
+    </div>
+  `).join('');
+  return `
+    <div class="section">
+      <h2>Palette étendue <span class="badge badge-ok">${ext.length} tokens</span></h2>
+      <div class="colors-grid">${cards}</div>
+    </div>
+  `;
+}
+
+function renderShadcnMappingSection(brand) {
+  const m = BRANDS[brand].shadcnMapping;
+  if (!m || m.length === 0) return '';
+  const rows = m.map(r => `
+    <div class="typo-row">
+      <div class="typo-label" style="font-family:'SF Mono',Menlo,monospace;font-size:12px;width:180px">${r.token}</div>
+      <div class="typo-value" style="font-family:'SF Mono',Menlo,monospace;font-size:13px">${r.bind}</div>
+    </div>
+  `).join('');
+  return `
+    <div class="section">
+      <h2>Mapping tokens shadcn <span class="badge badge-ok">Configuré</span></h2>
+      ${rows}
+    </div>
+  `;
+}
+
+function renderVisualSystemSection(brand) {
+  const v = BRANDS[brand].visualSystem;
+  if (!v) return '';
+  const shadows = (v.shadows || []).map(s => `<li>${s}</li>`).join('');
+  return `
+    <div class="section">
+      <h2>Système visuel <span class="badge badge-ok">Renseigné</span></h2>
+      <div class="typo-row"><div class="typo-label">Radius</div><div class="typo-value">${v.radius || 'Non renseigné'}</div></div>
+      <div class="typo-row"><div class="typo-label">Container</div><div class="typo-value">${v.container || 'Non renseigné'}</div></div>
+      ${v.shadows && v.shadows.length ? `
+        <div class="typo-row" style="align-items:flex-start">
+          <div class="typo-label" style="padding-top:6px">Ombres</div>
+          <div class="typo-value"><ul class="rules-list" style="margin:0">${shadows}</ul></div>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function renderListSection(brand, field, title) {
+  const list = BRANDS[brand][field];
+  if (!list || list.length === 0) return '';
+  const html = list.map(r => `<li>${r}</li>`).join('');
+  return `
+    <div class="section">
+      <h2>${title} <span class="badge badge-ok">${list.length}</span></h2>
+      <ul class="rules-list">${html}</ul>
+    </div>
+  `;
+}
+
+function renderDarkModeSection(brand) {
+  const dm = BRANDS[brand].darkMode;
+  if (!dm) return '';
+  return `
+    <div class="section">
+      <h2>Mode sombre <span class="badge badge-ok">Disponible</span></h2>
+      <div class="slogan-block" style="font-style:normal">${dm}</div>
+    </div>
+  `;
+}
+
 function renderBrandPanel(brand) {
   const b = BRANDS[brand];
   const logos = VARIANTS.map(v => renderLogoCard(brand, v)).join('');
@@ -815,9 +949,17 @@ function renderBrandPanel(brand) {
         <h2>Logos ${logoBadge}</h2>
         <div class="logos-grid">${logos}</div>
       </div>
+      ${renderToneSection(brand)}
       ${renderColorsSection(brand)}
+      ${renderColorsExtendedSection(brand)}
+      ${renderShadcnMappingSection(brand)}
       ${renderTypoSection(brand)}
       ${renderSloganSection(brand)}
+      ${renderVisualSystemSection(brand)}
+      ${renderListSection(brand, 'animations', 'Animations')}
+      ${renderListSection(brand, 'signatureComponents', 'Composants signature')}
+      ${renderDarkModeSection(brand)}
+      ${renderListSection(brand, 'principles', 'Principes de marque')}
       ${renderRulesSection(brand)}
     </div>
   `;
@@ -833,14 +975,22 @@ function renderSynthesisPanel() {
     { key: 'blanc_transparent',   label: 'Logo blanc fond transparent',   type: 'logo' },
     { key: 'blanc_noir',          label: 'Logo blanc fond noir',          type: 'logo' },
     { key: 'favicon',             label: 'Favicon fond blanc',            type: 'logo' },
+    { key: 'tone',                label: 'Ton de marque',                 type: 'tone', extended: true },
     { key: 'primary',             label: 'Couleur primaire',              type: 'color' },
     { key: 'secondary',           label: 'Couleur secondaire',            type: 'color' },
     { key: 'accent',              label: 'Couleur accent',                type: 'color' },
     { key: 'neutral',             label: 'Couleur neutre',                type: 'color' },
+    { key: 'colorsExtended',      label: 'Palette étendue',               type: 'list', extended: true },
+    { key: 'shadcnMapping',       label: 'Mapping shadcn',                type: 'list', extended: true },
     { key: 'title',               label: 'Police titre',                  type: 'typo' },
     { key: 'body',                label: 'Police courante',               type: 'typo' },
     { key: 'source',              label: 'Source typo',                   type: 'typo' },
     { key: 'slogan',              label: 'Slogan',                        type: 'slogan' },
+    { key: 'visualSystem',        label: 'Système visuel',                type: 'object', extended: true },
+    { key: 'animations',          label: 'Animations',                    type: 'list', extended: true },
+    { key: 'signatureComponents', label: 'Composants signature',          type: 'list', extended: true },
+    { key: 'darkMode',            label: 'Mode sombre',                   type: 'string', extended: true },
+    { key: 'principles',          label: 'Principes de marque',           type: 'list', extended: true },
     { key: 'rules',               label: 'Regles d usage',                type: 'rules' }
   ];
 
@@ -849,49 +999,71 @@ function renderSynthesisPanel() {
   const rows = ROWS.map(r => {
     const cells = BRAND_ORDER.map(brand => {
       let status = 'ko';
+      const b = BRANDS[brand];
       if (r.type === 'logo') {
         status = DRIVE[brand][r.key] ? 'ok' : 'ko';
       } else if (r.type === 'color') {
-        status = BRANDS[brand].colors[r.key] && BRANDS[brand].colors[r.key].hex ? 'ok' : 'ko';
+        status = b.colors[r.key] && b.colors[r.key].hex ? 'ok' : 'ko';
       } else if (r.type === 'typo') {
-        status = BRANDS[brand].typography[r.key] ? 'ok' : 'ko';
+        status = b.typography[r.key] ? 'ok' : 'ko';
       } else if (r.type === 'slogan') {
-        const s = BRANDS[brand].slogan;
-        const st = BRANDS[brand].sloganStatus;
+        const s = b.slogan;
+        const st = b.sloganStatus;
         status = s ? (st === 'partial' ? 'partial' : 'ok') : 'ko';
       } else if (r.type === 'rules') {
-        status = (BRANDS[brand].rules && BRANDS[brand].rules.length > 0) ? 'ok' : 'ko';
+        status = (b.rules && b.rules.length > 0) ? 'ok' : 'ko';
+      } else if (r.type === 'tone' || r.type === 'string') {
+        status = b[r.key] ? 'ok' : 'neutral';
+      } else if (r.type === 'list') {
+        status = (b[r.key] && b[r.key].length > 0) ? 'ok' : 'neutral';
+      } else if (r.type === 'object') {
+        status = b[r.key] ? 'ok' : 'neutral';
       }
       return `<td><span class="dot dot-${status}"></span></td>`;
     }).join('');
-    return `<tr><td class="label">${r.label}</td>${cells}</tr>`;
+    const labelStyle = r.extended ? 'style="color:#888;font-weight:500"' : '';
+    const labelSuffix = r.extended ? ' <span style="font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:0.5px">étendu</span>' : '';
+    return `<tr><td class="label" ${labelStyle}>${r.label}${labelSuffix}</td>${cells}</tr>`;
   }).join('');
 
-  // Stats
-  let totalSlots = 0, filledSlots = 0;
+  // Stats : on compte uniquement les éléments de BASE (non étendus) pour le pourcentage
+  let totalBase = 0, filledBase = 0;
+  let totalExt = 0, filledExt = 0;
   BRAND_ORDER.forEach(brand => {
+    const b = BRANDS[brand];
     ROWS.forEach(r => {
-      totalSlots++;
-      if (r.type === 'logo') { if (DRIVE[brand][r.key]) filledSlots++; }
-      else if (r.type === 'color') { if (BRANDS[brand].colors[r.key] && BRANDS[brand].colors[r.key].hex) filledSlots++; }
-      else if (r.type === 'typo') { if (BRANDS[brand].typography[r.key]) filledSlots++; }
-      else if (r.type === 'slogan') { if (BRANDS[brand].slogan) filledSlots++; }
-      else if (r.type === 'rules') { if (BRANDS[brand].rules && BRANDS[brand].rules.length > 0) filledSlots++; }
+      let filled = false;
+      if (r.type === 'logo') filled = !!DRIVE[brand][r.key];
+      else if (r.type === 'color') filled = !!(b.colors[r.key] && b.colors[r.key].hex);
+      else if (r.type === 'typo') filled = !!b.typography[r.key];
+      else if (r.type === 'slogan') filled = !!b.slogan;
+      else if (r.type === 'rules') filled = !!(b.rules && b.rules.length > 0);
+      else if (r.type === 'list') filled = !!(b[r.key] && b[r.key].length > 0);
+      else if (r.type === 'object' || r.type === 'tone' || r.type === 'string') filled = !!b[r.key];
+
+      if (r.extended) {
+        totalExt++;
+        if (filled) filledExt++;
+      } else {
+        totalBase++;
+        if (filled) filledBase++;
+      }
     });
   });
-  const pct = Math.round(100 * filledSlots / totalSlots);
+  const pctBase = Math.round(100 * filledBase / totalBase);
+  const pctExt = Math.round(100 * filledExt / totalExt);
 
   return `
     <div class="panel" id="panel-synthese">
       <div style="margin-bottom:24px">
-        <div style="font-size:20px;font-weight:700;color:var(--dark)">Synthese</div>
-        <div style="font-size:13px;color:var(--text-light);margin-top:4px">Etat de completion de la charte graphique par entite. Vert renseigne, rouge manquant, orange a valider.</div>
+        <div style="font-size:20px;font-weight:700;color:var(--dark)">Synthèse</div>
+        <div style="font-size:13px;color:var(--text-light);margin-top:4px">État de complétion par entité. Vert renseigné, orange à valider, rouge manquant, gris non renseigné (éléments étendus optionnels).</div>
       </div>
       <div class="stat-row">
-        <div class="stat-card"><div class="label">Completion globale</div><div class="value">${pct}%</div></div>
-        <div class="stat-card"><div class="label">Elements renseignes</div><div class="value">${filledSlots} / ${totalSlots}</div></div>
+        <div class="stat-card"><div class="label">Complétion base</div><div class="value">${pctBase}%</div><div style="font-size:11px;color:var(--text-light);margin-top:2px">${filledBase} / ${totalBase} éléments</div></div>
+        <div class="stat-card"><div class="label">Complétion étendue</div><div class="value">${pctExt}%</div><div style="font-size:11px;color:var(--text-light);margin-top:2px">${filledExt} / ${totalExt} éléments</div></div>
         <div class="stat-card"><div class="label">Marques couvertes</div><div class="value">${BRAND_ORDER.length}</div></div>
-        <div class="stat-card"><div class="label">Manquants</div><div class="value" style="color:var(--red)">${totalSlots - filledSlots}</div></div>
+        <div class="stat-card"><div class="label">Manquants base</div><div class="value" style="color:var(--red)">${totalBase - filledBase}</div></div>
       </div>
       <div style="overflow-x:auto">
         <table class="synth">
@@ -901,9 +1073,10 @@ function renderSynthesisPanel() {
       </div>
       <div style="margin-top:20px;padding:14px 18px;background:var(--bg);border-radius:8px;font-size:12px;color:var(--text)">
         <strong>Legende :</strong>
-        <span style="margin-left:12px"><span class="dot dot-ok"></span> Renseigne</span>
-        <span style="margin-left:12px"><span class="dot dot-partial"></span> A valider</span>
-        <span style="margin-left:12px"><span class="dot dot-ko"></span> Manquant</span>
+        <span style="margin-left:12px"><span class="dot dot-ok"></span> Renseigné</span>
+        <span style="margin-left:12px"><span class="dot dot-partial"></span> À valider</span>
+        <span style="margin-left:12px"><span class="dot dot-ko"></span> Manquant base</span>
+        <span style="margin-left:12px"><span class="dot dot-neutral"></span> Non renseigné étendu</span>
       </div>
     </div>
   `;
