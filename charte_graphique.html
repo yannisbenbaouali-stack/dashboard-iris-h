@@ -404,58 +404,53 @@
 
 <script>
 // ============================================
-// DRIVE FILE IDS (copies dans 6. Logos et chartes graphiques)
+// LOGOS - chemins relatifs vers assets/logos/{brand}/
 // ============================================
-const DRIVE = {
+const LOGOS = {
   iris_rep: {
-    couleur_blanc:      '1HbPcFHa59ctaX6_eCfmq64L73pC5CWbm',
-    couleur_transparent:'1Aov6HyEZW2Qg05XbWDfHtex7WElqlYO-',
-    couleur_noir:       null,
-    noir_blanc:         '1pJR-cJ2a6UapUSJtx-q_GA_ioMgmC70E',
-    noir_transparent:   '1QpOU-Gd9KJf2ExXVLF4NpYsCXUw3bkUh',
-    blanc_noir:         '1AAiJAbJfUOGvnC9NxAfJzwV34UUw6L54',
-    blanc_transparent:  '1NWpBHJ7_PxSMjeDBbkJqD9HSB4_L80v6',
-    favicon:            '1PsIxR7qVTcXzLNtXBdcLlSPstBeeelda'
+    couleur_blanc:       './assets/logos/iris_rep/1_couleur_fond_blanc.png',
+    couleur_transparent: './assets/logos/iris_rep/2_couleur_fond_transparent.png',
+    noir_blanc:          './assets/logos/iris_rep/3_noir_fond_blanc.png',
+    noir_transparent:    './assets/logos/iris_rep/4_noir_fond_transparent.png',
+    blanc_noir:          './assets/logos/iris_rep/5_blanc_fond_noir.png',
+    blanc_transparent:   './assets/logos/iris_rep/6_blanc_fond_transparent.png',
+    favicon:             './assets/logos/iris_rep/7_icone_fond_blanc.png'
   },
   bym: {
-    couleur_blanc:      '1UtsbHpyAwavKDU-xomlJCKHIttxqAk7e',
-    couleur_transparent:'1SjOmuhk06CiRjUCs2pVDC0Lzo2mVODnf',
-    couleur_noir:       null,
-    noir_blanc:         '1Y2zkdVg3etVfZZFa4Ba0YAHHK-Fl6cqx',
-    noir_transparent:   '1VRPj_5poZOFIyBXq8gI11lHRnkONzFRu',
-    blanc_noir:         '1rOSCjc3dVAXhgip0oRoezRvtCvd9-wZt',
-    blanc_transparent:  '1f8iG2AcwPZmxMF1kbdJ2wvGtUcWOnfLk',
-    favicon:            '1sx7BrPDM6aK7nN_WDkuOeGJCr7zwVCz4'
+    couleur_blanc:       './assets/logos/bym/1_couleur_fond_blanc.png',
+    couleur_transparent: './assets/logos/bym/2_couleur_fond_transparent.png',
+    noir_blanc:          './assets/logos/bym/3_noir_fond_blanc.png',
+    noir_transparent:    null,
+    blanc_noir:          './assets/logos/bym/5_blanc_fond_noir.png',
+    blanc_transparent:   './assets/logos/bym/6_blanc_fond_transparent.png',
+    favicon:             './assets/logos/bym/7_icone_fond_blanc.png'
   },
   urban_rise: {
-    couleur_blanc:      '1Js2KjuIrwa-paSwkrOnVMCYbZqodVGVn',
-    couleur_transparent:'15KQDpg8H5SH0jtwSCF1tWOp1RO_DXIKK',
-    couleur_noir:       null,
-    noir_blanc:         '1NMD5i4Cn-DXuRw2VlHzP6Oj1Onvmij26',
-    noir_transparent:   '1R6yiHiq_Vfq8DHMhtsO7V6WxO79OqtT6',
-    blanc_noir:         '1Hooymd7-lixeVm-BGNDJK7Fuxf_YAWpB',
-    blanc_transparent:  '1yVdd8PUHHmd820JWXzX90f1rx_9z_Epn',
-    favicon:            '1akBoDQZn1zccMkXmH8tbR39_d1WO9t_M'
+    couleur_blanc:       './assets/logos/urban_rise/1_couleur_fond_blanc.png',
+    couleur_transparent: './assets/logos/urban_rise/2_couleur_fond_transparent.png',
+    noir_blanc:          './assets/logos/urban_rise/3_noir_fond_blanc.png',
+    noir_transparent:    null,
+    blanc_noir:          './assets/logos/urban_rise/5_blanc_fond_noir.png',
+    blanc_transparent:   './assets/logos/urban_rise/6_blanc_fond_transparent.png',
+    favicon:             './assets/logos/urban_rise/7_icone_fond_blanc.png'
   },
   arristo: {
-    couleur_blanc:      null,
-    couleur_transparent:null,
-    couleur_noir:       null,
-    noir_blanc:         '1tpl64ygx8sscxgWOYek7Bi34-FGCBNVi',
-    noir_transparent:   '1noHHyeZF00NsNt71-MemwcPdrbrvmBuz',
-    blanc_noir:         '1EISiQ3QVWYfIGsZ_iNcbYcEycpD-_wuU',
-    blanc_transparent:  '1XSwj1tOMCazC8c6L_b39ApetnFqIPhRd',
-    favicon:            '1GsivD3pWVa8ss2t5bV3AEMtB550W8bbg'
+    couleur_blanc: null, couleur_transparent: null,
+    noir_blanc: null, noir_transparent: null,
+    blanc_noir: null, blanc_transparent: null, favicon: null
   },
   rir: {
-    couleur_blanc: null, couleur_transparent: null, couleur_noir: null,
+    couleur_blanc: null, couleur_transparent: null,
     noir_blanc: null, noir_transparent: null,
     blanc_noir: null, blanc_transparent: null, favicon: null
   },
   orleans_coloc: {
-    couleur_blanc: null, couleur_transparent: null, couleur_noir: null,
+    couleur_blanc:       './assets/logos/orleans_coloc/1_logo_couleur_fond_blanc.png',
+    couleur_transparent: './assets/logos/orleans_coloc/2_logo_couleur_fond_transparent.png',
     noir_blanc: null, noir_transparent: null,
-    blanc_noir: null, blanc_transparent: null, favicon: null
+    blanc_noir: null, blanc_transparent: null,
+    favicon:             './assets/logos/orleans_coloc/3_icone_couleur_fond_blanc.png',
+    icone_transparent:   './assets/logos/orleans_coloc/4_icone_couleur_fond_transparent.png'
   }
 };
 
@@ -474,12 +469,11 @@ const FOLDERS = {
 const VARIANTS = [
   { key: 'couleur_transparent', label: 'Couleur fond transparent', bgClass: 'bg-checker' },
   { key: 'couleur_blanc',       label: 'Couleur fond blanc',       bgClass: 'bg-white' },
-  { key: 'couleur_noir',        label: 'Couleur fond noir',        bgClass: 'bg-black' },
   { key: 'noir_transparent',    label: 'Noir fond transparent',    bgClass: 'bg-checker' },
   { key: 'noir_blanc',          label: 'Noir fond blanc',          bgClass: 'bg-white' },
   { key: 'blanc_transparent',   label: 'Blanc fond transparent',   bgClass: 'bg-checker' },
   { key: 'blanc_noir',          label: 'Blanc fond noir',          bgClass: 'bg-black' },
-  { key: 'favicon',             label: 'Favicon fond blanc',       bgClass: 'bg-white' }
+  { key: 'favicon',             label: 'Icone fond blanc',         bgClass: 'bg-white' }
 ];
 
 // ============================================
@@ -630,7 +624,7 @@ const BRANDS = {
       primary:   { hex: '#0e1f4d', role: 'Navy, primaire (titres, navbar, CTA principal, footer)' },
       secondary: { hex: '#5B9BD5', role: 'Blue accent (liens, prix, ring focus)' },
       accent:    { hex: '#DDE9F5', role: 'Blue-soft (fonds secondaires, marquee, badges)' },
-      neutral:   { hex: '#fcfbf8', role: 'Ivory, background global' }
+      neutral:   { hex: '#f5f3f0', role: 'Ivory, background global' }
     },
     colorsExtended: [
       { token: '--warning',    hex: '#b45309', role: 'Warning',       usage: 'Bandeau anti-arnaque, texte (brun-orangé)' },
@@ -682,7 +676,7 @@ const BRANDS = {
       'Wordmark typographique pur, aucune icône associée',
       'orléans en navy + colocation en bleu accent, tout en bas de casse, tracking serré -0.01em',
       'Aucune classe couleur en dur, uniquement tokens sémantiques shadcn',
-      'Fond ivoire chaud (#fcfbf8), jamais blanc pur',
+      'Fond ivoire chaud (#f5f3f0), même fond que toutes les marques du groupe',
       'Bleu accent #5B9BD5 réservé aux éléments d action et de valeur',
       'Le navy #0e1f4d reste dominant pour ancrer l autorité institutionnelle',
       'Aucun tiret dans les textes, virgules et points uniquement',
@@ -707,9 +701,9 @@ function driveDownload(id) {
 }
 
 function renderLogoCard(brand, variant) {
-  const fileId = DRIVE[brand][variant.key];
+  const path = LOGOS[brand][variant.key];
   const brandName = BRANDS[brand].name;
-  if (!fileId) {
+  if (!path) {
     return `
       <div class="logo-card">
         <div class="logo-preview placeholder ${variant.bgClass}">
@@ -727,13 +721,13 @@ function renderLogoCard(brand, variant) {
   return `
     <div class="logo-card">
       <div class="logo-preview ${variant.bgClass}">
-        <img src="${driveImg(fileId)}" alt="${brandName} ${variant.label}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=color:#888;font-size:11px;padding:8px;text-align:center>Apercu Drive<br>indisponible</div>'">
+        <img src="${path}" alt="${brandName} ${variant.label}" loading="lazy">
       </div>
       <div class="logo-meta">
         <div class="name">${variant.label}</div>
         <div class="logo-actions">
-          <a class="logo-btn" href="${driveView(fileId)}" target="_blank">Ouvrir</a>
-          <a class="logo-btn" href="${driveDownload(fileId)}" target="_blank">Telecharger</a>
+          <a class="logo-btn" href="${path}" target="_blank">Ouvrir</a>
+          <a class="logo-btn" href="${path}" download>Telecharger</a>
         </div>
       </div>
     </div>
@@ -932,7 +926,7 @@ function renderDarkModeSection(brand) {
 function renderBrandPanel(brand) {
   const b = BRANDS[brand];
   const logos = VARIANTS.map(v => renderLogoCard(brand, v)).join('');
-  const filledLogos = VARIANTS.filter(v => DRIVE[brand][v.key]).length;
+  const filledLogos = VARIANTS.filter(v => LOGOS[brand][v.key]).length;
   const logoBadge = filledLogos === VARIANTS.length
     ? '<span class="badge badge-ok">Complet</span>'
     : filledLogos === 0
@@ -969,12 +963,11 @@ function renderSynthesisPanel() {
   const ROWS = [
     { key: 'couleur_transparent', label: 'Logo couleur fond transparent', type: 'logo' },
     { key: 'couleur_blanc',       label: 'Logo couleur fond blanc',       type: 'logo' },
-    { key: 'couleur_noir',        label: 'Logo couleur fond noir',        type: 'logo' },
     { key: 'noir_transparent',    label: 'Logo noir fond transparent',    type: 'logo' },
     { key: 'noir_blanc',          label: 'Logo noir fond blanc',          type: 'logo' },
     { key: 'blanc_transparent',   label: 'Logo blanc fond transparent',   type: 'logo' },
     { key: 'blanc_noir',          label: 'Logo blanc fond noir',          type: 'logo' },
-    { key: 'favicon',             label: 'Favicon fond blanc',            type: 'logo' },
+    { key: 'favicon',             label: 'Icone fond blanc',              type: 'logo' },
     { key: 'tone',                label: 'Ton de marque',                 type: 'tone', extended: true },
     { key: 'primary',             label: 'Couleur primaire',              type: 'color' },
     { key: 'secondary',           label: 'Couleur secondaire',            type: 'color' },
@@ -1001,7 +994,7 @@ function renderSynthesisPanel() {
       let status = 'ko';
       const b = BRANDS[brand];
       if (r.type === 'logo') {
-        status = DRIVE[brand][r.key] ? 'ok' : 'ko';
+        status = LOGOS[brand][r.key] ? 'ok' : 'ko';
       } else if (r.type === 'color') {
         status = b.colors[r.key] && b.colors[r.key].hex ? 'ok' : 'ko';
       } else if (r.type === 'typo') {
@@ -1033,7 +1026,7 @@ function renderSynthesisPanel() {
     const b = BRANDS[brand];
     ROWS.forEach(r => {
       let filled = false;
-      if (r.type === 'logo') filled = !!DRIVE[brand][r.key];
+      if (r.type === 'logo') filled = !!LOGOS[brand][r.key];
       else if (r.type === 'color') filled = !!(b.colors[r.key] && b.colors[r.key].hex);
       else if (r.type === 'typo') filled = !!b.typography[r.key];
       else if (r.type === 'slogan') filled = !!b.slogan;
