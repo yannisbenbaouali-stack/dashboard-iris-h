@@ -255,6 +255,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'mandats')"><span class="nav-dot"></span><span>Registre Mandats</span><span class="nav-cnt" id="nav-mandats-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'audit')"><span class="nav-dot"></span><span>Audit Drive</span><span class="nav-cnt" id="nav-audit-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'histoire')"><span class="nav-dot"></span><span>Histoire</span><span class="nav-cnt" id="nav-histoire-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'electricite')"><span class="nav-dot"></span><span>Électricité</span><span class="nav-cnt" id="nav-electricite-cnt">0</span></button>
     </div>
     <div class="sb-footer">
       <div>Supabase connecté</div>
@@ -450,6 +451,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div id="histoire-chapitres-view" style="display:none"></div>
         <div id="histoire-indices-view" style="display:none"></div>
         <div id="histoire-chronologie-view" style="display:none"></div>
+      </div>
+
+      <!-- ELECTRICITE -->
+      <div class="tab" id="tab-electricite">
+        <iframe id="electricite-frame" src="electricien.html?v=1" style="width:100%;height:calc(100vh - 100px);border:none;border-radius:12px;background:var(--bg)"></iframe>
       </div>
 
     </div>
@@ -669,7 +675,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Structuration',businessplan:'Business Plan et Communication',outils:'Outils',mandats:'Registre Mandats · IRIS REP',audit:'Audit Drive'};
+  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Structuration',businessplan:'Business Plan et Communication',outils:'Outils',mandats:'Registre Mandats · IRIS REP',audit:'Audit Drive',electricite:'Bible de l\'électricien'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();

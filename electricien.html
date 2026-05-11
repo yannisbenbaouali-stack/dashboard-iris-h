@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bible de l'électricien · IRIS H</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0e1f4d;--navy2:#162a5c;--navy3:#1d3570;
+  --blue:#5B9BD5;--blue2:#7AB3E0;--blue-bg:rgba(91,155,213,0.08);--blue-border:rgba(91,155,213,0.2);
+  --bg:#f5f3f0;--card:#fff;--border:#e2e6ef;--border2:#d1d5e0;
+  --text:#1a1d2b;--dim:#7a7f8e;--dim2:#b0b4c0;
+  --green:#2ecc71;--green-bg:#eafaf1;--red:#e74c3c;--red-bg:#fdecea;
+  --orange:#f39c12;--orange-bg:#fef5e7;--amber:#d4a017;
+  --font:'Nunito Sans',sans-serif;
+}
+html,body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
+body{padding:0}
+
+.elec-wrap{display:grid;grid-template-columns:280px 1fr;min-height:100vh;max-width:1400px;margin:0 auto;background:var(--bg)}
+
+/* SOMMAIRE LATERAL */
+.elec-toc{background:var(--card);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;padding:24px 18px}
+.elec-toc-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:16px;padding-left:8px}
+.elec-toc-search{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:12px;outline:none;margin-bottom:14px;background:var(--bg);color:var(--text)}
+.elec-toc-search:focus{border-color:var(--blue)}
+.elec-toc-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:7px;font-size:12.5px;color:var(--text);cursor:pointer;transition:all .12s;text-decoration:none;line-height:1.35;margin-bottom:1px}
+.elec-toc-item:hover{background:var(--blue-bg);color:var(--navy)}
+.elec-toc-item.active{background:var(--navy);color:#fff;font-weight:600}
+.elec-toc-num{font-size:10px;color:var(--dim);font-weight:700;min-width:18px}
+.elec-toc-item.active .elec-toc-num{color:var(--blue2)}
+.elec-toc-cnt{font-size:10px;background:rgba(0,0,0,0.06);padding:2px 6px;border-radius:10px;color:var(--dim);font-weight:600;min-width:20px;text-align:center}
+.elec-toc-item.active .elec-toc-cnt{background:rgba(255,255,255,0.18);color:#fff}
+
+/* CONTENU PRINCIPAL */
+.elec-main{padding:32px 40px 80px;max-width:100%;overflow-x:hidden}
+
+/* HEADER */
+.elec-header{margin-bottom:28px}
+.elec-titre{font-size:28px;font-weight:800;color:var(--navy);letter-spacing:-0.5px;margin-bottom:4px}
+.elec-titre .accent{color:var(--blue);font-weight:300}
+.elec-sub{font-size:12px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+
+/* KPIS */
+.elec-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.elec-kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.elec-kpi-lab{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:6px}
+.elec-kpi-val{font-size:22px;font-weight:700;color:var(--navy);line-height:1}
+.elec-kpi-sub{font-size:11px;color:var(--dim);margin-top:4px}
+
+/* FILTRES */
+.elec-filters{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.elec-fbtn{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:6px 12px;font-family:var(--font);font-size:11.5px;font-weight:600;color:var(--dim);cursor:pointer;transition:.12s}
+.elec-fbtn:hover{color:var(--navy);border-color:var(--blue)}
+.elec-fbtn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* SECTION */
+.elec-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:18px;scroll-margin-top:20px}
+.elec-section-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.elec-section-titre{font-size:20px;font-weight:700;color:var(--navy);letter-spacing:-0.3px;line-height:1.3}
+.elec-section-titre .elec-num{display:inline-block;background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;margin-right:10px;vertical-align:middle;letter-spacing:0.5px}
+.elec-section-statut{font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:0.8px;text-transform:uppercase;white-space:nowrap}
+.elec-statut-brouillon{background:#fef5e7;color:#d4a017}
+.elec-statut-valide{background:var(--green-bg);color:#27ae60}
+
+.elec-section-content{font-size:14px;line-height:1.65;color:var(--text)}
+.elec-section-content h3{font-size:15px;font-weight:700;color:var(--navy);margin:20px 0 8px}
+.elec-section-content h4{font-size:13.5px;font-weight:600;color:var(--navy2);margin:16px 0 6px}
+.elec-section-content p{margin-bottom:10px}
+.elec-section-content ul,.elec-section-content ol{margin:8px 0 12px 22px}
+.elec-section-content li{margin-bottom:4px}
+.elec-section-content code{background:var(--blue-bg);color:var(--navy);padding:1px 6px;border-radius:4px;font-family:'SF Mono','Monaco','Consolas',monospace;font-size:12.5px}
+.elec-section-content blockquote{border-left:3px solid var(--blue);background:var(--blue-bg);padding:12px 16px;margin:12px 0;border-radius:0 8px 8px 0;font-size:13px;color:var(--navy2)}
+.elec-section-content table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.elec-section-content th{background:var(--blue-bg);color:var(--navy);font-weight:700;padding:8px 12px;text-align:left;border:1px solid var(--border)}
+.elec-section-content td{padding:8px 12px;border:1px solid var(--border)}
+.elec-section-content strong{color:var(--navy);font-weight:700}
+
+.elec-section-empty{color:var(--dim);font-style:italic;font-size:13px;padding:20px 0;text-align:center}
+
+/* SOUS SECTIONS */
+.elec-soussection{background:var(--bg);border-radius:10px;padding:18px 22px;margin-top:14px;border:1px solid var(--border)}
+.elec-soussection-titre{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:10px}
+
+/* SOURCES */
+.elec-sources{margin-top:18px;padding-top:14px;border-top:1px dashed var(--border);font-size:11.5px;color:var(--dim)}
+.elec-sources-lab{font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:10px;margin-bottom:6px;color:var(--dim)}
+.elec-source-item{display:inline-block;background:var(--blue-bg);color:var(--navy);padding:3px 9px;border-radius:5px;margin-right:6px;margin-bottom:4px;font-size:11.5px;text-decoration:none}
+.elec-source-item:hover{background:var(--blue-border)}
+
+/* NOTES PERSO */
+.elec-notes-perso{background:#fffceb;border-left:3px solid var(--amber);padding:12px 16px;margin-top:14px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.55;color:var(--text)}
+.elec-notes-lab{font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:10px;margin-bottom:5px;color:var(--amber)}
+
+/* META */
+.elec-meta{display:flex;gap:14px;font-size:10.5px;color:var(--dim);margin-top:12px;letter-spacing:0.3px}
+.elec-meta-item strong{color:var(--text);font-weight:600}
+
+/* LOADER */
+.elec-loader{text-align:center;padding:60px;color:var(--dim);font-size:13px}
+
+/* ERREUR CONFIG */
+.elec-err{background:#fdecea;border:1px solid #f5b7b1;color:#922b21;border-radius:10px;padding:18px;margin:20px}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .elec-wrap{grid-template-columns:1fr}
+  .elec-toc{position:static;height:auto;max-height:none;border-right:none;border-bottom:1px solid var(--border)}
+  .elec-main{padding:20px}
+  .elec-kpis{grid-template-columns:repeat(2,1fr)}
+  .elec-section{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="elec-wrap" id="elec-wrap" style="display:none">
+  <!-- SOMMAIRE -->
+  <aside class="elec-toc">
+    <div class="elec-toc-title">Sommaire</div>
+    <input class="elec-toc-search" id="elec-search" placeholder="Rechercher dans la bible..." oninput="filtrerRecherche()">
+    <div id="elec-toc-body"></div>
+  </aside>
+
+  <!-- CONTENU -->
+  <main class="elec-main">
+    <div class="elec-header">
+      <div class="elec-titre">Bible de <span class="accent">l'électricien</span></div>
+      <div class="elec-sub">Base de connaissances · Yannis Benbaouali</div>
+    </div>
+
+    <div class="elec-kpis" id="elec-kpis"></div>
+
+    <div class="elec-filters" id="elec-filters">
+      <button class="elec-fbtn on" data-statut="all" onclick="filtrerStatut('all',this)">Toutes</button>
+      <button class="elec-fbtn" data-statut="brouillon" onclick="filtrerStatut('brouillon',this)">Brouillons</button>
+      <button class="elec-fbtn" data-statut="validé" onclick="filtrerStatut('validé',this)">Validées</button>
+      <button class="elec-fbtn" data-statut="enrichies" onclick="filtrerStatut('enrichies',this)">Avec contenu</button>
+    </div>
+
+    <div id="elec-sections"></div>
+  </main>
+</div>
+
+<div class="elec-loader" id="elec-loader">Chargement de la base...</div>
+<div id="elec-error"></div>
+
+<script>
+const CFG_KEY='iris_h_cfg';
+let entries=[];
+let currentFiltre='all';
+let currentRecherche='';
+
+function getConfig(){
+  try{
+    const s=JSON.parse(localStorage.getItem(CFG_KEY));
+    if(s&&s.url&&s.key)return s;
+  }catch(e){}
+  return null;
+}
+
+async function chargerBible(){
+  const cfg=getConfig();
+  if(!cfg){
+    document.getElementById('elec-loader').style.display='none';
+    document.getElementById('elec-error').innerHTML='<div class="elec-err">Configuration Supabase manquante. Ouvrir le dashboard principal pour la configurer.</div>';
+    return;
+  }
+
+  try{
+    const r=await fetch(cfg.url+'/rest/v1/electricien_bible?select=*&order=section_ordre.asc,sous_section_ordre.asc',{
+      headers:{apikey:cfg.key,Authorization:'Bearer '+cfg.key}
+    });
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    entries=await r.json();
+    document.getElementById('elec-loader').style.display='none';
+    document.getElementById('elec-wrap').style.display='grid';
+    renderTout();
+  }catch(e){
+    document.getElementById('elec-loader').style.display='none';
+    document.getElementById('elec-error').innerHTML='<div class="elec-err">Erreur de chargement : '+e.message+'</div>';
+  }
+}
+
+function getSections(){
+  const map={};
+  entries.forEach(e=>{
+    if(!map[e.section_ordre])map[e.section_ordre]={
+      ordre:e.section_ordre,
+      nom:e.section_principale,
+      entries:[]
+    };
+    map[e.section_ordre].entries.push(e);
+  });
+  return Object.values(map).sort((a,b)=>a.ordre-b.ordre);
+}
+
+function filtrerEntries(allEntries){
+  return allEntries.filter(e=>{
+    if(currentFiltre==='brouillon'&&e.statut!=='brouillon')return false;
+    if(currentFiltre==='validé'&&e.statut!=='validé')return false;
+    if(currentFiltre==='enrichies'&&(!e.contenu_html||e.contenu_html.trim().length<20))return false;
+    if(currentRecherche){
+      const t=(e.titre+' '+e.section_principale+' '+(e.sous_section||'')+' '+(e.contenu_html||'')+' '+(e.tags||[]).join(' ')).toLowerCase();
+      if(!t.includes(currentRecherche.toLowerCase()))return false;
+    }
+    return true;
+  });
+}
+
+function renderTout(){
+  renderKpis();
+  renderTOC();
+  renderSections();
+}
+
+function renderKpis(){
+  const sectionsCount=getSections().length;
+  const totalEntries=entries.length;
+  const enrichies=entries.filter(e=>e.contenu_html&&e.contenu_html.trim().length>=20).length;
+  const validees=entries.filter(e=>e.statut==='validé').length;
+  document.getElementById('elec-kpis').innerHTML=`
+    <div class="elec-kpi"><div class="elec-kpi-lab">Sections</div><div class="elec-kpi-val">${sectionsCount}</div><div class="elec-kpi-sub">Thématiques couvertes</div></div>
+    <div class="elec-kpi"><div class="elec-kpi-lab">Fiches</div><div class="elec-kpi-val">${totalEntries}</div><div class="elec-kpi-sub">Entrées totales</div></div>
+    <div class="elec-kpi"><div class="elec-kpi-lab">Enrichies</div><div class="elec-kpi-val">${enrichies}</div><div class="elec-kpi-sub">${totalEntries>0?Math.round(enrichies/totalEntries*100):0}% du total</div></div>
+    <div class="elec-kpi"><div class="elec-kpi-lab">Validées</div><div class="elec-kpi-val">${validees}</div><div class="elec-kpi-sub">Connaissances confirmées</div></div>
+  `;
+}
+
+function renderTOC(){
+  const sections=getSections();
+  const filteredEntries=filtrerEntries(entries);
+  const visibleSectionIds=new Set(filteredEntries.map(e=>e.section_ordre));
+  document.getElementById('elec-toc-body').innerHTML=sections.map(s=>{
+    const isVisible=visibleSectionIds.has(s.ordre);
+    const nbEntries=filteredEntries.filter(e=>e.section_ordre===s.ordre).length;
+    if(!isVisible&&currentRecherche)return '';
+    return `<a class="elec-toc-item${isVisible?'':' inactive'}" onclick="aller(${s.ordre})" style="${isVisible?'':'opacity:0.4'}">
+      <span style="display:flex;align-items:center;gap:8px;flex:1"><span class="elec-toc-num">${String(s.ordre).padStart(2,'0')}</span><span>${escapeHtml(s.nom)}</span></span>
+      ${nbEntries>0?`<span class="elec-toc-cnt">${nbEntries}</span>`:''}
+    </a>`;
+  }).join('');
+}
+
+function renderSections(){
+  const sections=getSections();
+  const filteredEntries=filtrerEntries(entries);
+  const html=sections.map(s=>{
+    const sectionEntries=filteredEntries.filter(e=>e.section_ordre===s.ordre);
+    if(sectionEntries.length===0&&currentRecherche)return '';
+    return sectionEntries.map((e,idx)=>{
+      const isFirst=idx===0;
+      const statutClass=e.statut==='validé'?'elec-statut-valide':'elec-statut-brouillon';
+      const statutLabel=e.statut==='validé'?'Validé':'Brouillon';
+      const hasContent=e.contenu_html&&e.contenu_html.trim().length>0;
+      const sources=Array.isArray(e.sources)?e.sources:[];
+      const tags=Array.isArray(e.tags)?e.tags:[];
+      return `<section class="elec-section" id="${isFirst?'section-'+s.ordre:''}">
+        <div class="elec-section-hdr">
+          <div class="elec-section-titre">
+            ${isFirst?`<span class="elec-num">${String(s.ordre).padStart(2,'0')}</span>`:''}
+            ${escapeHtml(e.titre)}
+            ${e.sous_section?`<div style="font-size:12px;color:var(--dim);font-weight:500;margin-top:4px">${escapeHtml(e.sous_section)}</div>`:''}
+          </div>
+          <span class="elec-section-statut ${statutClass}">${statutLabel}</span>
+        </div>
+        <div class="elec-section-content">${hasContent?e.contenu_html:`<div class="elec-section-empty">Section en attente d'enrichissement. Yannis va partager les documents de formation pour alimenter cette rubrique.</div>`}</div>
+        ${e.notes_perso?`<div class="elec-notes-perso"><div class="elec-notes-lab">Notes perso</div>${escapeHtml(e.notes_perso)}</div>`:''}
+        ${sources.length>0?`<div class="elec-sources"><div class="elec-sources-lab">Sources</div>${sources.map(src=>`<a class="elec-source-item" ${src.url?`href="${escapeAttr(src.url)}" target="_blank"`:''}>${escapeHtml(src.nom||src.title||'Source')}</a>`).join('')}</div>`:''}
+        ${tags.length>0?`<div style="margin-top:10px">${tags.map(t=>`<span style="display:inline-block;background:var(--blue-bg);color:var(--navy);font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:4px;margin-right:4px">#${escapeHtml(t)}</span>`).join('')}</div>`:''}
+        <div class="elec-meta">
+          <span class="elec-meta-item">Créée <strong>${formatDate(e.date_creation)}</strong></span>
+          ${e.date_maj&&e.date_maj!==e.date_creation?`<span class="elec-meta-item">MAJ <strong>${formatDate(e.date_maj)}</strong></span>`:''}
+        </div>
+      </section>`;
+    }).join('');
+  }).join('');
+  document.getElementById('elec-sections').innerHTML=html||`<div class="elec-section-empty" style="padding:60px">Aucun résultat pour ces filtres.</div>`;
+}
+
+function filtrerStatut(s,btn){
+  currentFiltre=s;
+  document.querySelectorAll('.elec-fbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderTOC();
+  renderSections();
+}
+
+function filtrerRecherche(){
+  currentRecherche=document.getElementById('elec-search').value.trim();
+  renderTOC();
+  renderSections();
+}
+
+function aller(ordre){
+  const el=document.getElementById('section-'+ordre);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function escapeHtml(s){
+  if(s===null||s===undefined)return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escapeAttr(s){return escapeHtml(s)}
+
+function formatDate(d){
+  if(!d)return '';
+  try{
+    const dt=new Date(d);
+    return dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
+  }catch(e){return ''}
+}
+
+chargerBible();
+</script>
+
+</body>
+</html>
