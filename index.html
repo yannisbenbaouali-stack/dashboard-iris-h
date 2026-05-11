@@ -320,6 +320,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div class="filters" style="margin-bottom:12px">
           <button class="fbtn struct-btn on" id="struct-btn-orga" onclick="switchStruct('orga',this)">Organigramme</button>
           <button class="fbtn struct-btn" id="struct-btn-schema" onclick="switchStruct('schema',this)">Schéma directeur</button>
+          <button class="fbtn struct-btn" id="struct-btn-charte" onclick="switchStruct('charte',this)">Charte graphique</button>
         </div>
 
         <!-- Section Organigramme avec sous-onglets Tout / BYM -->
@@ -334,6 +335,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <!-- Section Schéma directeur -->
         <div id="struct-section-schema" style="display:none">
           <iframe id="schema-frame" src="schema_directeur.html?v=1" style="width:100%;height:calc(100vh - 200px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
+        </div>
+
+        <!-- Section Charte graphique -->
+        <div id="struct-section-charte" style="display:none">
+          <iframe id="charte-frame" src="charte_graphique.html?v=1" style="width:100%;height:calc(100vh - 200px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
         </div>
       </div>
 
@@ -1543,9 +1549,14 @@ function switchStruct(section,btn){
   btn.classList.add('on');
   document.getElementById('struct-section-orga').style.display=section==='orga'?'block':'none';
   document.getElementById('struct-section-schema').style.display=section==='schema'?'block':'none';
+  document.getElementById('struct-section-charte').style.display=section==='charte'?'block':'none';
   if(section==='schema'){
     const f=document.getElementById('schema-frame');
     f.src='schema_directeur.html?v='+Date.now();
+  }
+  if(section==='charte'){
+    const f=document.getElementById('charte-frame');
+    f.src='charte_graphique.html?v='+Date.now();
   }
 }
 

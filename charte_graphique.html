@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charte graphique · Groupe IRIS H</title>
+<style>
+  :root {
+    --bg: #f5f3f0;
+    --card-bg: #ffffff;
+    --card-border: #e0ddd8;
+    --dark: #1a1a1a;
+    --accent: #b8860b;
+    --text: #3a3a3a;
+    --text-light: #888;
+    --line: #c0bdb8;
+    --shadow: 0 2px 16px rgba(0,0,0,0.06);
+    --green: #2d8a4e;
+    --red: #c33b3b;
+    --amber: #d6a01b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 20px 60px;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .doc-header {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 28px 36px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .doc-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+  .doc-header .subtitle {
+    color: var(--text-light);
+    font-size: 14px;
+  }
+  .brand-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+  }
+  .brand-tab {
+    padding: 8px 16px;
+    border: 1px solid var(--card-border);
+    background: transparent;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .brand-tab:hover {
+    background: var(--bg);
+  }
+  .brand-tab.on {
+    background: var(--dark);
+    color: white;
+    border-color: var(--dark);
+  }
+  .panel {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 32px 36px;
+    box-shadow: var(--shadow);
+    display: none;
+  }
+  .panel.on { display: block; }
+  .section {
+    margin-bottom: 32px;
+  }
+  .section:last-child { margin-bottom: 0; }
+  .section h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--dark);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .section h2 .badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+  }
+  .badge-ok { background: #e6f5ec; color: var(--green); }
+  .badge-ko { background: #fbe6e6; color: var(--red); }
+  .badge-partial { background: #fdf3d8; color: var(--amber); }
+  .logos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .logo-card {
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--card-bg);
+    transition: all 0.15s;
+  }
+  .logo-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+  }
+  .logo-preview {
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .logo-preview.bg-white { background: #ffffff; }
+  .logo-preview.bg-black { background: #1a1a1a; }
+  .logo-preview.bg-checker {
+    background-image:
+      linear-gradient(45deg, #e8e8e8 25%, transparent 25%),
+      linear-gradient(-45deg, #e8e8e8 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #e8e8e8 75%),
+      linear-gradient(-45deg, transparent 75%, #e8e8e8 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    background-color: #ffffff;
+  }
+  .logo-preview img {
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+  }
+  .logo-preview.placeholder {
+    background: #f5f3f0;
+    color: var(--text-light);
+    font-size: 11px;
+    border-bottom: 1px dashed var(--card-border);
+  }
+  .logo-meta {
+    padding: 10px 12px;
+    border-top: 1px solid var(--card-border);
+    background: #fafafa;
+  }
+  .logo-meta .name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .logo-actions {
+    display: flex;
+    gap: 6px;
+  }
+  .logo-btn {
+    flex: 1;
+    text-align: center;
+    padding: 5px 8px;
+    font-size: 11px;
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    background: white;
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .logo-btn:hover {
+    background: var(--dark);
+    color: white;
+    border-color: var(--dark);
+  }
+  .logo-btn.missing {
+    background: #fbe6e6;
+    color: var(--red);
+    border-color: #f0c8c8;
+    cursor: not-allowed;
+  }
+  .colors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .color-card {
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .color-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .color-swatch {
+    height: 80px;
+    width: 100%;
+  }
+  .color-info {
+    padding: 10px 12px;
+    background: white;
+  }
+  .color-info .role {
+    font-size: 11px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+  .color-info .hex {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dark);
+    font-family: 'SF Mono', Menlo, monospace;
+  }
+  .typo-row {
+    display: flex;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .typo-row:last-child { border-bottom: none; }
+  .typo-label {
+    width: 140px;
+    font-size: 12px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .typo-value {
+    flex: 1;
+    font-size: 14px;
+    color: var(--dark);
+  }
+  .typo-value.missing {
+    color: var(--red);
+    font-style: italic;
+    font-size: 12px;
+  }
+  .slogan-block {
+    padding: 20px 24px;
+    background: var(--bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    font-size: 15px;
+    color: var(--dark);
+    font-style: italic;
+  }
+  .slogan-block.missing {
+    color: var(--red);
+    background: #fbe6e6;
+    border-left-color: var(--red);
+    font-style: normal;
+    font-size: 13px;
+  }
+  .empty-msg {
+    padding: 24px;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 13px;
+    background: var(--bg);
+    border-radius: 8px;
+  }
+  table.synth {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.synth th, table.synth td {
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--card-border);
+  }
+  table.synth th {
+    background: var(--bg);
+    font-weight: 700;
+    color: var(--dark);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+  }
+  table.synth td.label {
+    text-align: left;
+    font-weight: 600;
+    color: var(--dark);
+  }
+  .dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .dot-ok { background: var(--green); }
+  .dot-ko { background: var(--red); }
+  .dot-partial { background: var(--amber); }
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    padding: 18px 20px;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    background: white;
+  }
+  .stat-card .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+  .stat-card .value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark);
+  }
+  .drive-link {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 4px 10px;
+    font-size: 11px;
+    background: var(--bg);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .drive-link:hover { background: var(--dark); color: white; border-color: var(--dark); }
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--dark);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 1000;
+  }
+  .toast.show { opacity: 1; }
+  .rules-list {
+    list-style: none;
+    padding: 0;
+  }
+  .rules-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--card-border);
+    font-size: 13px;
+  }
+  .rules-list li:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="doc-header">
+    <h1>Charte graphique · Groupe IRIS H</h1>
+    <div class="subtitle">Logos, couleurs, typographies, slogans et règles d'usage par entité. Stockage Drive synchronisé.</div>
+  </div>
+
+  <div class="brand-tabs" id="brandTabs"></div>
+
+  <div id="panels"></div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================
+// DRIVE FILE IDS (copies dans 6. Logos et chartes graphiques)
+// ============================================
+const DRIVE = {
+  iris_rep: {
+    couleur_blanc:      '1HbPcFHa59ctaX6_eCfmq64L73pC5CWbm',
+    couleur_transparent:'1Aov6HyEZW2Qg05XbWDfHtex7WElqlYO-',
+    couleur_noir:       null,
+    noir_blanc:         '1pJR-cJ2a6UapUSJtx-q_GA_ioMgmC70E',
+    noir_transparent:   '1QpOU-Gd9KJf2ExXVLF4NpYsCXUw3bkUh',
+    blanc_noir:         '1AAiJAbJfUOGvnC9NxAfJzwV34UUw6L54',
+    blanc_transparent:  '1NWpBHJ7_PxSMjeDBbkJqD9HSB4_L80v6',
+    favicon:            '1PsIxR7qVTcXzLNtXBdcLlSPstBeeelda'
+  },
+  bym: {
+    couleur_blanc:      '1UtsbHpyAwavKDU-xomlJCKHIttxqAk7e',
+    couleur_transparent:'1SjOmuhk06CiRjUCs2pVDC0Lzo2mVODnf',
+    couleur_noir:       null,
+    noir_blanc:         '1Y2zkdVg3etVfZZFa4Ba0YAHHK-Fl6cqx',
+    noir_transparent:   '1VRPj_5poZOFIyBXq8gI11lHRnkONzFRu',
+    blanc_noir:         '1rOSCjc3dVAXhgip0oRoezRvtCvd9-wZt',
+    blanc_transparent:  '1f8iG2AcwPZmxMF1kbdJ2wvGtUcWOnfLk',
+    favicon:            '1sx7BrPDM6aK7nN_WDkuOeGJCr7zwVCz4'
+  },
+  urban_rise: {
+    couleur_blanc:      '1Js2KjuIrwa-paSwkrOnVMCYbZqodVGVn',
+    couleur_transparent:'15KQDpg8H5SH0jtwSCF1tWOp1RO_DXIKK',
+    couleur_noir:       null,
+    noir_blanc:         '1NMD5i4Cn-DXuRw2VlHzP6Oj1Onvmij26',
+    noir_transparent:   '1R6yiHiq_Vfq8DHMhtsO7V6WxO79OqtT6',
+    blanc_noir:         '1Hooymd7-lixeVm-BGNDJK7Fuxf_YAWpB',
+    blanc_transparent:  '1yVdd8PUHHmd820JWXzX90f1rx_9z_Epn',
+    favicon:            '1akBoDQZn1zccMkXmH8tbR39_d1WO9t_M'
+  },
+  arristo: {
+    couleur_blanc:      null,
+    couleur_transparent:null,
+    couleur_noir:       null,
+    noir_blanc:         '1tpl64ygx8sscxgWOYek7Bi34-FGCBNVi',
+    noir_transparent:   '1noHHyeZF00NsNt71-MemwcPdrbrvmBuz',
+    blanc_noir:         '1EISiQ3QVWYfIGsZ_iNcbYcEycpD-_wuU',
+    blanc_transparent:  '1XSwj1tOMCazC8c6L_b39ApetnFqIPhRd',
+    favicon:            '1GsivD3pWVa8ss2t5bV3AEMtB550W8bbg'
+  },
+  rir: {
+    couleur_blanc: null, couleur_transparent: null, couleur_noir: null,
+    noir_blanc: null, noir_transparent: null,
+    blanc_noir: null, blanc_transparent: null, favicon: null
+  },
+  orleans_coloc: {
+    couleur_blanc: null, couleur_transparent: null, couleur_noir: null,
+    noir_blanc: null, noir_transparent: null,
+    blanc_noir: null, blanc_transparent: null, favicon: null
+  }
+};
+
+const FOLDERS = {
+  iris_rep:     '18f0JcFTUUvNTtg2dB3rZzEg9ulOJCEUx',
+  bym:          '1CCIDbkd5IK48ldrdpAFiJxUgTU9Igsf1',
+  urban_rise:   '1wJI-e8LZtyxViGr63t7WFo0nLKIDV9dN',
+  arristo:      '1AgqTR4vMcZI9vpWxe3_DHtj22UcBVx5_',
+  rir:          '19Hm7-qfadmV1v9q7yqM8BTkLOavWmzL8',
+  orleans_coloc:'1fxvV6AYI1vsvrIt1jRNe5fUwUoJ1MaAP'
+};
+
+// ============================================
+// VARIANTES STANDARD
+// ============================================
+const VARIANTS = [
+  { key: 'couleur_transparent', label: 'Couleur fond transparent', bgClass: 'bg-checker' },
+  { key: 'couleur_blanc',       label: 'Couleur fond blanc',       bgClass: 'bg-white' },
+  { key: 'couleur_noir',        label: 'Couleur fond noir',        bgClass: 'bg-black' },
+  { key: 'noir_transparent',    label: 'Noir fond transparent',    bgClass: 'bg-checker' },
+  { key: 'noir_blanc',          label: 'Noir fond blanc',          bgClass: 'bg-white' },
+  { key: 'blanc_transparent',   label: 'Blanc fond transparent',   bgClass: 'bg-checker' },
+  { key: 'blanc_noir',          label: 'Blanc fond noir',          bgClass: 'bg-black' },
+  { key: 'favicon',             label: 'Favicon fond blanc',       bgClass: 'bg-white' }
+];
+
+// ============================================
+// CHARTE GRAPHIQUE PAR MARQUE
+// ============================================
+const BRANDS = {
+  iris_rep: {
+    name: 'IRIS REP',
+    full: 'IRIS Real Estate Partners',
+    activity: 'Conseil immobilier tertiaire et brokerage',
+    colors: {
+      primary:   { hex: null, role: 'Primaire navy' },
+      secondary: { hex: null, role: 'Secondaire bleu' },
+      accent:    { hex: null, role: 'Accent' },
+      neutral:   { hex: null, role: 'Neutre' }
+    },
+    typography: {
+      title: null,
+      body: null,
+      source: null
+    },
+    slogan: null,
+    rules: []
+  },
+  bym: {
+    name: 'BYM Construction',
+    full: 'BYM Construction',
+    activity: 'Rénovation tous corps d état IDF et CVL',
+    colors: {
+      primary:   { hex: null, role: 'Primaire navy' },
+      secondary: { hex: null, role: 'Secondaire bleu' },
+      accent:    { hex: null, role: 'Accent' },
+      neutral:   { hex: null, role: 'Neutre' }
+    },
+    typography: { title: null, body: null, source: null },
+    slogan: null,
+    rules: []
+  },
+  urban_rise: {
+    name: 'Urban Rise',
+    full: 'Urban Rise',
+    activity: 'Marchand de biens, achat rénovation revente',
+    colors: {
+      primary:   { hex: null, role: 'Primaire navy' },
+      secondary: { hex: null, role: 'Secondaire bleu' },
+      accent:    { hex: null, role: 'Accent' },
+      neutral:   { hex: null, role: 'Neutre' }
+    },
+    typography: { title: null, body: null, source: null },
+    slogan: 'Structuration d operations immobilieres en Region Centre Val de Loire',
+    sloganStatus: 'partial',
+    rules: []
+  },
+  arristo: {
+    name: 'ARRISTO',
+    full: 'ARRISTO',
+    activity: 'Reseau de professionnels de l immobilier',
+    colors: {
+      primary:   { hex: null, role: 'Primaire' },
+      secondary: { hex: null, role: 'Secondaire' },
+      accent:    { hex: null, role: 'Accent' },
+      neutral:   { hex: null, role: 'Neutre' }
+    },
+    typography: { title: null, body: null, source: null },
+    slogan: null,
+    rules: []
+  },
+  rir: {
+    name: 'RIR',
+    full: 'RIR SAS',
+    activity: 'Marchand de biens et conseil renovation energetique',
+    colors: {
+      primary:   { hex: null, role: 'Primaire' },
+      secondary: { hex: null, role: 'Secondaire' },
+      accent:    { hex: null, role: 'Accent' },
+      neutral:   { hex: null, role: 'Neutre' }
+    },
+    typography: { title: null, body: null, source: null },
+    slogan: null,
+    rules: []
+  },
+  orleans_coloc: {
+    name: 'Orleans Colocation',
+    full: 'Orleans Colocation',
+    activity: 'Marque dediee colocation Orleans',
+    colors: {
+      primary:   { hex: null, role: 'Primaire' },
+      secondary: { hex: null, role: 'Secondaire' },
+      accent:    { hex: null, role: 'Accent' },
+      neutral:   { hex: null, role: 'Neutre' }
+    },
+    typography: { title: null, body: null, source: null },
+    slogan: null,
+    rules: []
+  }
+};
+
+const BRAND_ORDER = ['iris_rep','bym','urban_rise','arristo','rir','orleans_coloc'];
+
+// ============================================
+// RENDU
+// ============================================
+function driveImg(id) {
+  return `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
+}
+function driveView(id) {
+  return `https://drive.google.com/file/d/${id}/view`;
+}
+function driveDownload(id) {
+  return `https://drive.google.com/uc?export=download&id=${id}`;
+}
+
+function renderLogoCard(brand, variant) {
+  const fileId = DRIVE[brand][variant.key];
+  const brandName = BRANDS[brand].name;
+  if (!fileId) {
+    return `
+      <div class="logo-card">
+        <div class="logo-preview placeholder ${variant.bgClass}">
+          Manquant
+        </div>
+        <div class="logo-meta">
+          <div class="name">${variant.label}</div>
+          <div class="logo-actions">
+            <span class="logo-btn missing">A fournir</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  return `
+    <div class="logo-card">
+      <div class="logo-preview ${variant.bgClass}">
+        <img src="${driveImg(fileId)}" alt="${brandName} ${variant.label}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=color:#888;font-size:11px;padding:8px;text-align:center>Apercu Drive<br>indisponible</div>'">
+      </div>
+      <div class="logo-meta">
+        <div class="name">${variant.label}</div>
+        <div class="logo-actions">
+          <a class="logo-btn" href="${driveView(fileId)}" target="_blank">Ouvrir</a>
+          <a class="logo-btn" href="${driveDownload(fileId)}" target="_blank">Telecharger</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderColorsSection(brand) {
+  const b = BRANDS[brand];
+  const colors = Object.entries(b.colors).map(([k, c]) => {
+    if (!c.hex) {
+      return `
+        <div class="color-card">
+          <div class="color-swatch" style="background:#f0eeea;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:11px">A fournir</div>
+          <div class="color-info">
+            <div class="role">${c.role}</div>
+            <div class="hex" style="color:#c33b3b;font-size:11px">Manquant</div>
+          </div>
+        </div>
+      `;
+    }
+    return `
+      <div class="color-card" onclick="copyHex('${c.hex}')">
+        <div class="color-swatch" style="background:${c.hex}"></div>
+        <div class="color-info">
+          <div class="role">${c.role}</div>
+          <div class="hex">${c.hex}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  const allMissing = Object.values(b.colors).every(c => !c.hex);
+  const badge = allMissing
+    ? '<span class="badge badge-ko">A fournir</span>'
+    : '<span class="badge badge-ok">Renseigne</span>';
+  return `
+    <div class="section">
+      <h2>Couleurs ${badge}</h2>
+      <div class="colors-grid">${colors}</div>
+    </div>
+  `;
+}
+
+function renderTypoSection(brand) {
+  const t = BRANDS[brand].typography;
+  const rows = [
+    { label: 'Police titre', val: t.title },
+    { label: 'Police courante', val: t.body },
+    { label: 'Source', val: t.source }
+  ].map(r => {
+    const v = r.val ? `<div class="typo-value">${r.val}</div>` : `<div class="typo-value missing">A fournir</div>`;
+    return `<div class="typo-row"><div class="typo-label">${r.label}</div>${v}</div>`;
+  }).join('');
+  const allMissing = !t.title && !t.body && !t.source;
+  const badge = allMissing
+    ? '<span class="badge badge-ko">A fournir</span>'
+    : '<span class="badge badge-ok">Renseigne</span>';
+  return `
+    <div class="section">
+      <h2>Typographies ${badge}</h2>
+      ${rows}
+    </div>
+  `;
+}
+
+function renderSloganSection(brand) {
+  const b = BRANDS[brand];
+  let badge, html;
+  if (!b.slogan) {
+    badge = '<span class="badge badge-ko">A fournir</span>';
+    html = '<div class="slogan-block missing">Aucun slogan officiel renseigne.</div>';
+  } else if (b.sloganStatus === 'partial') {
+    badge = '<span class="badge badge-partial">A valider</span>';
+    html = `<div class="slogan-block">${b.slogan}<div style="font-size:11px;color:#888;margin-top:8px;font-style:normal">Extrait du logo, a confirmer comme slogan officiel</div></div>`;
+  } else {
+    badge = '<span class="badge badge-ok">Officiel</span>';
+    html = `<div class="slogan-block">${b.slogan}</div>`;
+  }
+  return `
+    <div class="section">
+      <h2>Slogan ${badge}</h2>
+      ${html}
+    </div>
+  `;
+}
+
+function renderRulesSection(brand) {
+  const rules = BRANDS[brand].rules || [];
+  if (rules.length === 0) {
+    return `
+      <div class="section">
+        <h2>Regles d usage <span class="badge badge-ko">A fournir</span></h2>
+        <div class="empty-msg">Aucune regle d usage formalisee (espace de protection, taille mini, interdits).</div>
+      </div>
+    `;
+  }
+  const html = rules.map(r => `<li>${r}</li>`).join('');
+  return `
+    <div class="section">
+      <h2>Regles d usage <span class="badge badge-ok">Formalisees</span></h2>
+      <ul class="rules-list">${html}</ul>
+    </div>
+  `;
+}
+
+function renderBrandPanel(brand) {
+  const b = BRANDS[brand];
+  const logos = VARIANTS.map(v => renderLogoCard(brand, v)).join('');
+  const filledLogos = VARIANTS.filter(v => DRIVE[brand][v.key]).length;
+  const logoBadge = filledLogos === VARIANTS.length
+    ? '<span class="badge badge-ok">Complet</span>'
+    : filledLogos === 0
+      ? '<span class="badge badge-ko">Vide</span>'
+      : `<span class="badge badge-partial">${filledLogos}/${VARIANTS.length}</span>`;
+  return `
+    <div class="panel" id="panel-${brand}">
+      <div style="margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--card-border)">
+        <div style="font-size:20px;font-weight:700;color:var(--dark)">${b.name}</div>
+        <div style="font-size:13px;color:var(--text-light);margin-top:4px">${b.activity}</div>
+        <a class="drive-link" href="https://drive.google.com/drive/folders/${FOLDERS[brand]}" target="_blank">Dossier Drive de la marque</a>
+      </div>
+      <div class="section">
+        <h2>Logos ${logoBadge}</h2>
+        <div class="logos-grid">${logos}</div>
+      </div>
+      ${renderColorsSection(brand)}
+      ${renderTypoSection(brand)}
+      ${renderSloganSection(brand)}
+      ${renderRulesSection(brand)}
+    </div>
+  `;
+}
+
+function renderSynthesisPanel() {
+  const ROWS = [
+    { key: 'couleur_transparent', label: 'Logo couleur fond transparent', type: 'logo' },
+    { key: 'couleur_blanc',       label: 'Logo couleur fond blanc',       type: 'logo' },
+    { key: 'couleur_noir',        label: 'Logo couleur fond noir',        type: 'logo' },
+    { key: 'noir_transparent',    label: 'Logo noir fond transparent',    type: 'logo' },
+    { key: 'noir_blanc',          label: 'Logo noir fond blanc',          type: 'logo' },
+    { key: 'blanc_transparent',   label: 'Logo blanc fond transparent',   type: 'logo' },
+    { key: 'blanc_noir',          label: 'Logo blanc fond noir',          type: 'logo' },
+    { key: 'favicon',             label: 'Favicon fond blanc',            type: 'logo' },
+    { key: 'primary',             label: 'Couleur primaire',              type: 'color' },
+    { key: 'secondary',           label: 'Couleur secondaire',            type: 'color' },
+    { key: 'accent',              label: 'Couleur accent',                type: 'color' },
+    { key: 'neutral',             label: 'Couleur neutre',                type: 'color' },
+    { key: 'title',               label: 'Police titre',                  type: 'typo' },
+    { key: 'body',                label: 'Police courante',               type: 'typo' },
+    { key: 'source',              label: 'Source typo',                   type: 'typo' },
+    { key: 'slogan',              label: 'Slogan',                        type: 'slogan' },
+    { key: 'rules',               label: 'Regles d usage',                type: 'rules' }
+  ];
+
+  const headers = BRAND_ORDER.map(b => `<th>${BRANDS[b].name}</th>`).join('');
+
+  const rows = ROWS.map(r => {
+    const cells = BRAND_ORDER.map(brand => {
+      let status = 'ko';
+      if (r.type === 'logo') {
+        status = DRIVE[brand][r.key] ? 'ok' : 'ko';
+      } else if (r.type === 'color') {
+        status = BRANDS[brand].colors[r.key] && BRANDS[brand].colors[r.key].hex ? 'ok' : 'ko';
+      } else if (r.type === 'typo') {
+        status = BRANDS[brand].typography[r.key] ? 'ok' : 'ko';
+      } else if (r.type === 'slogan') {
+        const s = BRANDS[brand].slogan;
+        const st = BRANDS[brand].sloganStatus;
+        status = s ? (st === 'partial' ? 'partial' : 'ok') : 'ko';
+      } else if (r.type === 'rules') {
+        status = (BRANDS[brand].rules && BRANDS[brand].rules.length > 0) ? 'ok' : 'ko';
+      }
+      return `<td><span class="dot dot-${status}"></span></td>`;
+    }).join('');
+    return `<tr><td class="label">${r.label}</td>${cells}</tr>`;
+  }).join('');
+
+  // Stats
+  let totalSlots = 0, filledSlots = 0;
+  BRAND_ORDER.forEach(brand => {
+    ROWS.forEach(r => {
+      totalSlots++;
+      if (r.type === 'logo') { if (DRIVE[brand][r.key]) filledSlots++; }
+      else if (r.type === 'color') { if (BRANDS[brand].colors[r.key] && BRANDS[brand].colors[r.key].hex) filledSlots++; }
+      else if (r.type === 'typo') { if (BRANDS[brand].typography[r.key]) filledSlots++; }
+      else if (r.type === 'slogan') { if (BRANDS[brand].slogan) filledSlots++; }
+      else if (r.type === 'rules') { if (BRANDS[brand].rules && BRANDS[brand].rules.length > 0) filledSlots++; }
+    });
+  });
+  const pct = Math.round(100 * filledSlots / totalSlots);
+
+  return `
+    <div class="panel" id="panel-synthese">
+      <div style="margin-bottom:24px">
+        <div style="font-size:20px;font-weight:700;color:var(--dark)">Synthese</div>
+        <div style="font-size:13px;color:var(--text-light);margin-top:4px">Etat de completion de la charte graphique par entite. Vert renseigne, rouge manquant, orange a valider.</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="label">Completion globale</div><div class="value">${pct}%</div></div>
+        <div class="stat-card"><div class="label">Elements renseignes</div><div class="value">${filledSlots} / ${totalSlots}</div></div>
+        <div class="stat-card"><div class="label">Marques couvertes</div><div class="value">${BRAND_ORDER.length}</div></div>
+        <div class="stat-card"><div class="label">Manquants</div><div class="value" style="color:var(--red)">${totalSlots - filledSlots}</div></div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="synth">
+          <thead><tr><th style="text-align:left">Element</th>${headers}</tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div style="margin-top:20px;padding:14px 18px;background:var(--bg);border-radius:8px;font-size:12px;color:var(--text)">
+        <strong>Legende :</strong>
+        <span style="margin-left:12px"><span class="dot dot-ok"></span> Renseigne</span>
+        <span style="margin-left:12px"><span class="dot dot-partial"></span> A valider</span>
+        <span style="margin-left:12px"><span class="dot dot-ko"></span> Manquant</span>
+      </div>
+    </div>
+  `;
+}
+
+function buildTabs() {
+  const tabsHtml = BRAND_ORDER.map((b, i) =>
+    `<button class="brand-tab ${i===0?'on':''}" data-target="${b}">${BRANDS[b].name}</button>`
+  ).join('') + `<button class="brand-tab" data-target="synthese" style="margin-left:auto;font-weight:600">Synthese</button>`;
+  document.getElementById('brandTabs').innerHTML = tabsHtml;
+
+  const panelsHtml = BRAND_ORDER.map(renderBrandPanel).join('') + renderSynthesisPanel();
+  document.getElementById('panels').innerHTML = panelsHtml;
+
+  document.querySelector(`#panel-${BRAND_ORDER[0]}`).classList.add('on');
+
+  document.querySelectorAll('.brand-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.brand-tab').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+      document.getElementById('panel-' + btn.dataset.target).classList.add('on');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+}
+
+function copyHex(hex) {
+  navigator.clipboard.writeText(hex).then(() => showToast('HEX ' + hex + ' copie'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+buildTabs();
+</script>
+</body>
+</html>
