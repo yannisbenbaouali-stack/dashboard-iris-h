@@ -203,6 +203,29 @@
     border-color: #f0c8c8;
     cursor: not-allowed;
   }
+  .logo-btn.upload {
+    background: #faf5e8;
+    color: var(--dark);
+    border-color: #e6dcc1;
+    cursor: pointer;
+  }
+  .logo-btn.upload:hover {
+    background: var(--gold);
+    color: white;
+    border-color: var(--gold);
+  }
+  .upload-status {
+    font-size: 10px;
+    margin-top: 6px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 1.3;
+    word-break: break-word;
+  }
+  .upload-status.ok { background: #e8f5e9; color: #16a34a; }
+  .upload-status.err { background: #fbe6e6; color: #c33b3b; }
+  .upload-status.info { background: #eef2f7; color: #4a6585; }
   .colors-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -700,12 +723,177 @@ function driveDownload(id) {
   return `https://drive.google.com/uc?export=download&id=${id}`;
 }
 
+// ============================================
+// UPLOAD GITHUB
+// ============================================
+const GH_REPO = 'yannisbenbaouali-stack/dashboard-iris-h';
+
+const FILENAME_MAP = {
+  couleur_blanc:       '1_couleur_fond_blanc.png',
+  couleur_transparent: '2_couleur_fond_transparent.png',
+  noir_blanc:          '3_noir_fond_blanc.png',
+  noir_transparent:    '4_noir_fond_transparent.png',
+  blanc_noir:          '5_blanc_fond_noir.png',
+  blanc_transparent:   '6_blanc_fond_transparent.png',
+  favicon:             '7_icone_fond_blanc.png'
+};
+
+const FILENAME_MAP_OC = {
+  couleur_blanc:       '1_logo_couleur_fond_blanc.png',
+  couleur_transparent: '2_logo_couleur_fond_transparent.png',
+  favicon:             '3_icone_couleur_fond_blanc.png',
+  icone_transparent:   '4_icone_couleur_fond_transparent.png'
+};
+
+function getTargetPath(brand, variantKey) {
+  const map = brand === 'orleans_coloc' ? FILENAME_MAP_OC : FILENAME_MAP;
+  const fn = map[variantKey];
+  if (!fn) return null;
+  return `assets/logos/${brand}/${fn}`;
+}
+
+function cardId(brand, variantKey) {
+  return `card-${brand}-${variantKey}`;
+}
+
+function setUploadStatus(brand, variantKey, msg, kind) {
+  const card = document.getElementById(cardId(brand, variantKey));
+  if (!card) return;
+  let el = card.querySelector('.upload-status');
+  if (!el) {
+    el = document.createElement('div');
+    el.className = 'upload-status';
+    card.querySelector('.logo-meta').appendChild(el);
+  }
+  el.className = `upload-status ${kind || 'info'}`;
+  el.textContent = msg;
+  if (kind === 'ok') {
+    setTimeout(() => { if (el.parentNode) el.remove(); }, 12000);
+  }
+}
+
+function getPAT() {
+  let pat = localStorage.getItem('gh_pat');
+  if (!pat) {
+    pat = prompt('Token GitHub (PAT scope repo). Memorise en localStorage de ton navigateur.');
+    if (!pat) return null;
+    pat = pat.trim();
+    localStorage.setItem('gh_pat', pat);
+  }
+  return pat;
+}
+
+window.resetGhPat = function() {
+  localStorage.removeItem('gh_pat');
+  alert('Token GitHub efface du navigateur. Il sera redemande au prochain upload.');
+};
+
+async function uploadLogo(brand, variantKey, label) {
+  const targetPath = getTargetPath(brand, variantKey);
+  if (!targetPath) {
+    alert('Pas de chemin cible defini pour cette variante.');
+    return;
+  }
+  const inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = 'image/png,image/jpeg,image/webp,image/svg+xml';
+  inp.onchange = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadStatus(brand, variantKey, `Fichier trop lourd (${(file.size/1024/1024).toFixed(1)} Mo, max 5 Mo via API). Compresse en local.`, 'err');
+      return;
+    }
+    const pat = getPAT();
+    if (!pat) return;
+
+    setUploadStatus(brand, variantKey, 'Lecture fichier...', 'info');
+    const b64 = await new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result.split(',')[1]);
+      r.onerror = () => rej('lecture echec');
+      r.readAsDataURL(file);
+    });
+
+    const apiUrl = `https://api.github.com/repos/${GH_REPO}/contents/${targetPath}`;
+    const baseHeaders = {
+      'Authorization': `Bearer ${pat}`,
+      'Accept': 'application/vnd.github+json'
+    };
+
+    setUploadStatus(brand, variantKey, 'Recuperation SHA existant...', 'info');
+    let sha = null;
+    try {
+      const g = await fetch(apiUrl + '?ref=main', { headers: baseHeaders });
+      if (g.ok) {
+        const d = await g.json();
+        sha = d.sha;
+      } else if (g.status === 401) {
+        localStorage.removeItem('gh_pat');
+        setUploadStatus(brand, variantKey, 'Token invalide ou expire. Recharge la page pour redonner un PAT.', 'err');
+        return;
+      } else if (g.status !== 404) {
+        const err = await g.text();
+        setUploadStatus(brand, variantKey, `Erreur GET ${g.status}: ${err.slice(0,150)}`, 'err');
+        return;
+      }
+    } catch(e) {
+      setUploadStatus(brand, variantKey, `Erreur reseau GET: ${e.message}`, 'err');
+      return;
+    }
+
+    setUploadStatus(brand, variantKey, sha ? 'Push update vers GitHub...' : 'Push creation vers GitHub...', 'info');
+    const body = {
+      message: `dashboard upload: ${targetPath}`,
+      content: b64,
+      branch: 'main'
+    };
+    if (sha) body.sha = sha;
+
+    try {
+      const r = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: { ...baseHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (r.ok) {
+        setUploadStatus(brand, variantKey, 'Push OK. GitHub Pages prend 1 a 2 min pour propager.', 'ok');
+        LOGOS[brand][variantKey] = './' + targetPath;
+        setTimeout(() => {
+          const card = document.getElementById(cardId(brand, variantKey));
+          if (!card) return;
+          const preview = card.querySelector('.logo-preview');
+          if (preview) {
+            preview.classList.remove('placeholder');
+            preview.innerHTML = `<img src="./${targetPath}?t=${Date.now()}" alt="${label}" loading="lazy">`;
+          }
+          const missingBtn = card.querySelector('.logo-btn.missing');
+          if (missingBtn) {
+            missingBtn.outerHTML = `
+              <a class="logo-btn" href="./${targetPath}" target="_blank">Ouvrir</a>
+              <a class="logo-btn" href="./${targetPath}" download>Telecharger</a>
+            `;
+          }
+        }, 90 * 1000);
+      } else {
+        const err = await r.text();
+        if (r.status === 401) localStorage.removeItem('gh_pat');
+        setUploadStatus(brand, variantKey, `Erreur PUT ${r.status}: ${err.slice(0,200)}`, 'err');
+      }
+    } catch (e) {
+      setUploadStatus(brand, variantKey, `Erreur reseau PUT: ${e.message}`, 'err');
+    }
+  };
+  inp.click();
+}
+
 function renderLogoCard(brand, variant) {
   const path = LOGOS[brand][variant.key];
   const brandName = BRANDS[brand].name;
+  const uploadBtn = `<button class="logo-btn upload" onclick="uploadLogo('${brand}','${variant.key}','${variant.label.replace(/'/g, "\\'")}')">Upload</button>`;
   if (!path) {
     return `
-      <div class="logo-card">
+      <div class="logo-card" id="${cardId(brand, variant.key)}">
         <div class="logo-preview placeholder ${variant.bgClass}">
           Manquant
         </div>
@@ -713,13 +901,14 @@ function renderLogoCard(brand, variant) {
           <div class="name">${variant.label}</div>
           <div class="logo-actions">
             <span class="logo-btn missing">A fournir</span>
+            ${uploadBtn}
           </div>
         </div>
       </div>
     `;
   }
   return `
-    <div class="logo-card">
+    <div class="logo-card" id="${cardId(brand, variant.key)}">
       <div class="logo-preview ${variant.bgClass}">
         <img src="${path}" alt="${brandName} ${variant.label}" loading="lazy">
       </div>
@@ -728,6 +917,7 @@ function renderLogoCard(brand, variant) {
         <div class="logo-actions">
           <a class="logo-btn" href="${path}" target="_blank">Ouvrir</a>
           <a class="logo-btn" href="${path}" download>Telecharger</a>
+          ${uploadBtn}
         </div>
       </div>
     </div>
@@ -923,15 +1113,28 @@ function renderDarkModeSection(brand) {
   `;
 }
 
+function getVariantsForBrand(brand) {
+  if (brand === 'orleans_coloc') {
+    return [
+      { key: 'couleur_transparent', label: 'Logo couleur fond transparent', bgClass: 'bg-checker' },
+      { key: 'couleur_blanc',       label: 'Logo couleur fond blanc',       bgClass: 'bg-white' },
+      { key: 'favicon',             label: 'Icone couleur fond blanc',      bgClass: 'bg-white' },
+      { key: 'icone_transparent',   label: 'Icone couleur fond transparent',bgClass: 'bg-checker' }
+    ];
+  }
+  return VARIANTS;
+}
+
 function renderBrandPanel(brand) {
   const b = BRANDS[brand];
-  const logos = VARIANTS.map(v => renderLogoCard(brand, v)).join('');
-  const filledLogos = VARIANTS.filter(v => LOGOS[brand][v.key]).length;
-  const logoBadge = filledLogos === VARIANTS.length
+  const variants = getVariantsForBrand(brand);
+  const logos = variants.map(v => renderLogoCard(brand, v)).join('');
+  const filledLogos = variants.filter(v => LOGOS[brand][v.key]).length;
+  const logoBadge = filledLogos === variants.length
     ? '<span class="badge badge-ok">Complet</span>'
     : filledLogos === 0
       ? '<span class="badge badge-ko">Vide</span>'
-      : `<span class="badge badge-partial">${filledLogos}/${VARIANTS.length}</span>`;
+      : `<span class="badge badge-partial">${filledLogos}/${variants.length}</span>`;
   return `
     <div class="panel" id="panel-${brand}">
       <div style="margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--card-border)">
