@@ -3,17 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IRIS REP, plaquette commerciale v4, conseil en immobilier d'entreprise</title>
+<title>IRIS REP, plaquette commerciale v5, alignée site officiel www.irisrep.com</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ========================================================================
-   IRIS REAL ESTATE PARTNERS, plaquette v4
-   Positionnement : conseil indépendant en immobilier d'entreprise
-   Inspirations : irisrep.com/v2 (verbatim, typo, photos)
-                  CBRE, JLL, Cushman, Knight Frank, Catella, Tusker, Eastdil
-                  (structure bicéphale investissement + utilisateur)
+   IRIS REAL ESTATE PARTNERS, plaquette v5
+   Source : audit complet de www.irisrep.com (toutes pages)
+   Verbatim, missions officielles, segmentation clients, mentions légales
    Format : A3 paysage (420x297mm) plié central → 4 pages A4 portrait
    ======================================================================== */
 
@@ -34,7 +32,6 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 @page { size: A3 landscape; margin: 0; }
 
 body {
@@ -123,8 +120,7 @@ body {
     rgba(13,13,13,0.95) 100%);
 }
 .couv-content {
-  position: relative;
-  z-index: 2;
+  position: relative; z-index: 2;
   height: 100%;
   padding: 48px 52px 44px;
   display: flex;
@@ -142,13 +138,13 @@ body {
   text-transform: uppercase;
   font-weight: 500;
   line-height: 1.6;
-  max-width: 260px;
+  max-width: 280px;
 }
 
 .couv-mid { position: relative; }
 .couv-rule { width: 56px; height: 1.5px; background: var(--or); margin-bottom: 26px; }
 .couv-slogan {
-  font-family: 'Inter', 'Avenir Next', 'Helvetica Neue', sans-serif;
+  font-family: 'Inter', 'Avenir Next', sans-serif;
   font-size: 68px;
   line-height: 1.0;
   letter-spacing: -1.8px;
@@ -168,7 +164,7 @@ body {
   font-size: 16px;
   line-height: 1.55;
   color: rgba(250,250,248,0.85);
-  max-width: 460px;
+  max-width: 480px;
 }
 
 .couv-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
@@ -195,7 +191,7 @@ body {
    ============================================================ */
 .dos {
   background: var(--ivoire);
-  padding: 48px 52px 44px;
+  padding: 44px 50px 36px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -210,12 +206,12 @@ body {
   z-index: 3;
 }
 
-.dos-head { display: flex; flex-direction: column; gap: 12px; }
-.dos-logo { height: 52px; }
+.dos-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+.dos-logo { height: 48px; }
 .dos-logo img { height: 100%; width: auto; }
 .dos-tagline {
-  font-size: 9.5px;
-  letter-spacing: 3px;
+  font-size: 9px;
+  letter-spacing: 2.8px;
   color: var(--noir);
   text-transform: uppercase;
   font-weight: 600;
@@ -223,56 +219,69 @@ body {
   line-height: 1.55;
 }
 
-.dos-body { display: flex; flex-direction: column; gap: 22px; }
+.dos-body { display: flex; flex-direction: column; gap: 18px; }
 .dos-h {
-  font-size: 9.5px;
-  letter-spacing: 2.8px;
+  font-size: 9px;
+  letter-spacing: 2.6px;
   text-transform: uppercase;
   color: var(--or);
   font-weight: 600;
-  padding-bottom: 8px;
+  padding-bottom: 6px;
   border-bottom: 1px solid var(--or);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
-.dos-villes { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px 22px; }
-.dos-ville h4 {
+
+.dos-bureau-card {
+  background: var(--blanc);
+  padding: 12px 14px;
+  border-left: 3px solid var(--or);
+}
+.dos-bureau-card h4 {
   font-size: 11px;
   font-weight: 600;
   color: var(--noir);
   letter-spacing: 1.6px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   text-transform: uppercase;
 }
-.dos-ville p { font-size: 11px; line-height: 1.55; color: var(--gris); }
-.dos-ville p em { color: var(--or); font-style: normal; font-weight: 500; font-size: 10.5px; }
-
-.dos-contact {
-  background: var(--blanc);
-  padding: 16px 18px;
-  border-left: 3px solid var(--or);
+.dos-bureau-card p {
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--gris);
 }
+.dos-bureau-card p em { color: var(--or); font-style: normal; font-weight: 500; font-size: 10.5px; }
+
 .dos-contact-name { font-size: 14px; font-weight: 600; color: var(--noir); margin-bottom: 2px; }
 .dos-contact-role {
-  font-size: 9.5px;
+  font-size: 9px;
   color: var(--or);
   letter-spacing: 1.8px;
   text-transform: uppercase;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
-.dos-contact-info { font-size: 11.5px; line-height: 1.65; color: var(--gris); }
+.dos-contact-info { font-size: 11px; line-height: 1.65; color: var(--gris); margin-bottom: 6px; }
 .dos-contact-info strong { color: var(--noir); font-weight: 600; }
+.dos-contact-bio {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: var(--gris-fonce);
+  padding-top: 8px;
+  border-top: 1px solid var(--line-light);
+}
 
 .dos-qr {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding-top: 14px;
+  gap: 12px;
+  padding-top: 12px;
   border-top: 1px solid var(--line);
 }
 .dos-qr-box {
-  width: 64px; height: 64px;
-  background: repeating-conic-gradient(var(--noir) 0% 25%, transparent 0% 50%) 50% / 10px 10px;
+  width: 58px; height: 58px;
+  background: repeating-conic-gradient(var(--noir) 0% 25%, transparent 0% 50%) 50% / 9px 9px;
   border: 1.5px solid var(--noir);
   flex-shrink: 0;
   position: relative;
@@ -285,17 +294,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 600;
   color: var(--noir);
 }
-.dos-qr-text { font-size: 11px; line-height: 1.55; color: var(--gris); }
-.dos-qr-text strong { color: var(--noir); display: block; font-size: 12px; margin-bottom: 3px; font-weight: 600; }
+.dos-qr-text { font-size: 10.5px; line-height: 1.55; color: var(--gris); }
+.dos-qr-text strong { color: var(--noir); display: block; font-size: 11.5px; margin-bottom: 2px; font-weight: 600; }
 
 .dos-foot {
-  font-size: 9px;
+  font-size: 8.5px;
   color: var(--gris-clair);
-  letter-spacing: 0.6px;
+  letter-spacing: 0.5px;
   line-height: 1.7;
   padding-top: 10px;
   border-top: 1px solid var(--line);
@@ -303,11 +312,11 @@ body {
 .dos-foot strong { color: var(--noir); font-weight: 600; }
 
 /* ============================================================
-   PAGE 2 — Notre maison + cycle 5 temps
+   PAGE 2 — Notre maison
    ============================================================ */
 .qui {
   background: var(--ivoire);
-  padding: 50px 52px 44px;
+  padding: 44px 50px 38px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -322,21 +331,21 @@ body {
 }
 
 .section-num {
-  font-size: 9.5px;
+  font-size: 9px;
   letter-spacing: 3.5px;
   color: var(--or);
   text-transform: uppercase;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 .section-title {
   font-family: 'Inter', 'Avenir Next', sans-serif;
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 500;
   color: var(--noir);
   line-height: 1.08;
   letter-spacing: -0.8px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 .section-title .it {
   font-family: 'Georgia', serif;
@@ -344,14 +353,14 @@ body {
   font-weight: 400;
   color: var(--or);
 }
-.section-rule { width: 48px; height: 1.5px; background: var(--or); margin-bottom: 22px; }
+.section-rule { width: 48px; height: 1.5px; background: var(--or); margin-bottom: 18px; }
 
 .qui-intro {
   font-family: 'Georgia', serif;
-  font-size: 13.5px;
-  line-height: 1.65;
+  font-size: 12.5px;
+  line-height: 1.6;
   color: var(--gris-fonce);
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   text-align: justify;
   hyphens: auto;
 }
@@ -362,42 +371,43 @@ body {
   font-style: normal;
 }
 
-.piliers {
+.singularites {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin-bottom: 22px;
-  padding: 18px 0;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 14px 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
-.pilier-card { padding: 0 12px 0 0; border-right: 1px solid var(--line-light); }
-.pilier-card:last-child { border-right: none; }
-.pilier-num {
+.sing-card { padding: 0 10px 0 0; border-right: 1px solid var(--line-light); }
+.sing-card:last-child { border-right: none; }
+.sing-num {
   font-family: 'Inter', 'Avenir Next', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--or);
   font-weight: 500;
   letter-spacing: 1px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
-.pilier-card h4 {
-  font-size: 11px;
+.sing-card h4 {
+  font-size: 10.5px;
   font-weight: 600;
   color: var(--noir);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 6px;
+  letter-spacing: 0.9px;
+  margin-bottom: 5px;
+  line-height: 1.2;
 }
-.pilier-card p { font-size: 10.5px; line-height: 1.5; color: var(--gris); }
+.sing-card p { font-size: 10px; line-height: 1.5; color: var(--gris); }
 
 .cycle-label {
-  font-size: 9.5px;
+  font-size: 9px;
   letter-spacing: 3px;
   color: var(--or);
   font-weight: 600;
   text-transform: uppercase;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 .cycle-grid {
   display: grid;
@@ -405,35 +415,63 @@ body {
   gap: 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
-.cycle-step { padding: 14px 10px 12px 0; border-right: 1px solid var(--line); }
+.cycle-step { padding: 12px 8px 10px 0; border-right: 1px solid var(--line); }
 .cycle-step:last-child { border-right: none; padding-right: 0; }
-.cycle-step:not(:first-child) { padding-left: 10px; }
+.cycle-step:not(:first-child) { padding-left: 8px; }
 .cycle-num {
   font-family: 'Inter', 'Avenir Next', sans-serif;
-  font-size: 22px;
+  font-size: 20px;
   color: var(--or);
   font-weight: 400;
   line-height: 1;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   letter-spacing: -0.5px;
 }
 .cycle-step h4 {
-  font-size: 12.5px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--noir);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
-.cycle-step p { font-size: 9.5px; line-height: 1.4; color: var(--gris); }
+.cycle-step p { font-size: 9px; line-height: 1.4; color: var(--gris); }
+
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line-light);
+}
+.timeline-label {
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  color: var(--or);
+  font-weight: 600;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+.timeline-items { display: flex; gap: 14px; flex: 1; justify-content: space-between; }
+.timeline-item { text-align: center; }
+.timeline-year {
+  font-family: 'Inter', 'Avenir Next', sans-serif;
+  font-size: 13px;
+  color: var(--noir);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.timeline-item p { font-size: 8.5px; line-height: 1.3; color: var(--gris); }
 
 .engagement {
   background: var(--or-fond);
   border-left: 3px solid var(--or);
-  padding: 14px 18px;
+  padding: 12px 16px;
   font-family: 'Georgia', serif;
   font-style: italic;
-  font-size: 12.5px;
+  font-size: 11.5px;
   line-height: 1.55;
   color: var(--gris-fonce);
   margin-top: auto;
@@ -441,21 +479,21 @@ body {
 .engagement strong {
   display: block;
   font-style: normal;
-  font-size: 9.5px;
+  font-size: 9px;
   color: var(--or);
   font-weight: 600;
-  letter-spacing: 2px;
+  letter-spacing: 1.8px;
   text-transform: uppercase;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
   font-family: 'Inter', 'Avenir Next', sans-serif;
 }
 
 /* ============================================================
-   PAGE 3 — Deux lignes, 6 missions chacune
+   PAGE 3 — Notre offre
    ============================================================ */
 .services {
   background: var(--blanc);
-  padding: 50px 52px 40px;
+  padding: 44px 50px 36px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -469,75 +507,80 @@ body {
   z-index: 3;
 }
 
-.ligne-block {
+.typologies {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
   margin-bottom: 16px;
-  padding-bottom: 16px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
-.ligne-block:last-of-type { border-bottom: none; padding-bottom: 0; }
-.ligne-head {
-  display: grid;
-  grid-template-columns: 38px 1fr 110px;
-  gap: 14px;
-  align-items: start;
-  margin-bottom: 12px;
+.typologie { padding: 0 10px 0 0; border-right: 1px solid var(--line-light); }
+.typologie:last-child { border-right: none; }
+.typologie h5 {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--noir);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 3px;
 }
-.ligne-num {
+.typologie p { font-size: 8.5px; line-height: 1.4; color: var(--gris); }
+
+.discipline-block {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.discipline-block:last-of-type { border-bottom: none; padding-bottom: 6px; }
+.discipline-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.discipline-num {
   font-family: 'Inter', 'Avenir Next', sans-serif;
-  font-size: 22px;
+  font-size: 18px;
   color: var(--or);
   font-weight: 500;
   letter-spacing: -0.4px;
-  line-height: 1;
-  padding-top: 4px;
 }
-.ligne-titles h4 {
-  font-size: 15px;
+.discipline-head h4 {
+  font-size: 14px;
   font-weight: 600;
   color: var(--noir);
-  margin-bottom: 3px;
   letter-spacing: -0.1px;
 }
-.ligne-titles .ligne-sub {
+.discipline-baseline {
   font-family: 'Georgia', serif;
   font-style: italic;
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--or);
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
-.ligne-titles p { font-size: 10.5px; line-height: 1.5; color: var(--gris); }
-.ligne-clients {
-  background: var(--ivoire-clair);
-  padding: 8px 10px;
-  border-left: 2px solid var(--or);
-  font-size: 9px;
+.discipline-desc {
+  font-size: 10px;
   line-height: 1.5;
   color: var(--gris);
-}
-.ligne-clients strong {
-  display: block;
-  color: var(--or);
-  font-weight: 600;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  font-size: 8.5px;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
 }
 
 .missions-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px 14px;
+  gap: 7px 12px;
 }
 .mission-item {
   display: flex;
-  gap: 8px;
+  gap: 7px;
   align-items: flex-start;
 }
 .mission-dot {
   flex-shrink: 0;
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   border-radius: 50%;
   background: var(--or-fond);
   border: 1px solid var(--or);
@@ -545,34 +588,36 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
+  font-size: 8.5px;
   font-weight: 600;
   font-family: 'Inter', 'Avenir Next', sans-serif;
 }
 .mission-content h5 {
-  font-size: 10.5px;
+  font-size: 9.5px;
   font-weight: 600;
   color: var(--noir);
   margin-bottom: 1px;
   letter-spacing: 0;
 }
-.mission-content p { font-size: 9.5px; line-height: 1.4; color: var(--gris); }
+.mission-content p { font-size: 8.5px; line-height: 1.4; color: var(--gris); }
+
+.missions-grid.steps4 { grid-template-columns: repeat(4, 1fr); }
 
 .cta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid var(--line);
   margin-top: auto;
 }
 .cta-text {
   font-family: 'Georgia', serif;
   font-style: italic;
-  font-size: 12.5px;
+  font-size: 11.5px;
   line-height: 1.5;
   color: var(--gris-fonce);
-  max-width: 62%;
+  max-width: 64%;
 }
 .cta-text strong {
   color: var(--noir);
@@ -583,10 +628,10 @@ body {
 .cta-btn {
   background: var(--or);
   color: var(--blanc);
-  padding: 11px 20px;
-  font-size: 10px;
+  padding: 10px 18px;
+  font-size: 9.5px;
   font-weight: 600;
-  letter-spacing: 2px;
+  letter-spacing: 1.8px;
   text-transform: uppercase;
   border-radius: 2px;
   white-space: nowrap;
@@ -611,62 +656,64 @@ body {
 
   .couv-content { padding: 20mm 22mm 18mm; }
   .couv-logo { height: 24mm; }
-  .couv-tag-top { font-size: 11px; letter-spacing: 4px; max-width: 300px; }
+  .couv-tag-top { font-size: 11px; letter-spacing: 4px; max-width: 320px; }
   .couv-slogan { font-size: 92px; letter-spacing: -2.5px; }
-  .couv-sub { font-size: 17px; max-width: 540px; }
+  .couv-sub { font-size: 17px; max-width: 560px; }
   .couv-meta { font-size: 11px; letter-spacing: 3px; }
   .couv-cta { font-size: 12px; letter-spacing: 3.5px; }
 
-  .dos { padding: 18mm 20mm 16mm; }
+  .dos { padding: 16mm 18mm 14mm; }
   .dos-logo { height: 18mm; }
-  .dos-tagline { font-size: 11px; letter-spacing: 3.5px; max-width: 380px; }
-  .dos-h { font-size: 11px; letter-spacing: 3px; }
-  .dos-ville h4 { font-size: 13px; letter-spacing: 1.8px; }
-  .dos-ville p { font-size: 13px; }
-  .dos-ville p em { font-size: 12px; }
+  .dos-tagline { font-size: 10.5px; letter-spacing: 3.2px; max-width: 380px; }
+  .dos-h { font-size: 10.5px; letter-spacing: 3px; }
+  .dos-bureau-card h4 { font-size: 13px; letter-spacing: 1.8px; }
+  .dos-bureau-card p { font-size: 12.5px; }
+  .dos-bureau-card p em { font-size: 12px; }
   .dos-contact-name { font-size: 17px; }
-  .dos-contact-role { font-size: 11px; letter-spacing: 2px; }
-  .dos-contact-info { font-size: 14px; }
-  .dos-qr-text { font-size: 13px; }
-  .dos-qr-text strong { font-size: 14.5px; }
-  .dos-foot { font-size: 10.5px; }
+  .dos-contact-role { font-size: 10.5px; letter-spacing: 2.2px; }
+  .dos-contact-info { font-size: 13px; }
+  .dos-contact-bio { font-size: 12.5px; }
+  .dos-qr-text { font-size: 12.5px; }
+  .dos-qr-text strong { font-size: 14px; }
+  .dos-foot { font-size: 10px; }
 
-  .qui { padding: 18mm 20mm 16mm; }
-  .services { padding: 18mm 20mm 16mm; }
-  .section-num { font-size: 11px; letter-spacing: 4px; }
-  .section-title { font-size: 42px; letter-spacing: -1px; }
-  .qui-intro { font-size: 15.5px; }
-  .pilier-card .pilier-num { font-size: 18px; }
-  .pilier-card h4 { font-size: 13px; letter-spacing: 1.4px; }
-  .pilier-card p { font-size: 12.5px; }
-  .cycle-label { font-size: 11px; letter-spacing: 3.5px; }
-  .cycle-num { font-size: 30px; }
-  .cycle-step h4 { font-size: 14.5px; }
-  .cycle-step p { font-size: 11.5px; }
-  .engagement { font-size: 15px; padding: 18px 22px; }
-  .engagement strong { font-size: 11px; letter-spacing: 2.5px; }
+  .qui { padding: 16mm 18mm 14mm; }
+  .services { padding: 16mm 18mm 14mm; }
+  .section-num { font-size: 10.5px; letter-spacing: 4px; }
+  .section-title { font-size: 38px; letter-spacing: -1px; }
+  .qui-intro { font-size: 14.5px; }
+  .sing-num { font-size: 17px; }
+  .sing-card h4 { font-size: 12.5px; letter-spacing: 1.3px; }
+  .sing-card p { font-size: 11.5px; }
+  .cycle-label { font-size: 10.5px; letter-spacing: 3.5px; }
+  .cycle-num { font-size: 26px; }
+  .cycle-step h4 { font-size: 13.5px; }
+  .cycle-step p { font-size: 10.5px; }
+  .timeline-label { font-size: 10.5px; letter-spacing: 3px; }
+  .timeline-year { font-size: 15px; }
+  .timeline-item p { font-size: 10px; }
+  .engagement { font-size: 14px; padding: 16px 20px; }
+  .engagement strong { font-size: 10.5px; letter-spacing: 2.2px; }
 
-  .ligne-head { grid-template-columns: 56px 1fr 200px; gap: 22px; }
-  .ligne-num { font-size: 32px; padding-top: 5px; }
-  .ligne-titles h4 { font-size: 20px; }
-  .ligne-titles .ligne-sub { font-size: 14px; }
-  .ligne-titles p { font-size: 12.5px; }
-  .ligne-clients { font-size: 11px; padding: 12px 14px; }
-  .ligne-clients strong { font-size: 10px; letter-spacing: 1.8px; }
-  .mission-dot { width: 24px; height: 24px; font-size: 11px; }
-  .mission-content h5 { font-size: 13px; }
-  .mission-content p { font-size: 11.5px; }
-
-  .cta-text { font-size: 15px; }
-  .cta-btn { font-size: 12px; padding: 13px 24px; letter-spacing: 2.5px; }
+  .typologie h5 { font-size: 12px; letter-spacing: 1.2px; }
+  .typologie p { font-size: 10px; }
+  .discipline-num { font-size: 26px; }
+  .discipline-head h4 { font-size: 19px; }
+  .discipline-baseline { font-size: 13px; }
+  .discipline-desc { font-size: 12px; }
+  .mission-dot { width: 22px; height: 22px; font-size: 10.5px; }
+  .mission-content h5 { font-size: 12px; }
+  .mission-content p { font-size: 10.5px; }
+  .cta-text { font-size: 13.5px; }
+  .cta-btn { font-size: 11px; padding: 12px 22px; letter-spacing: 2.2px; }
 }
 </style>
 </head>
 <body>
 
 <div class="viewer-info">
-  <h3>IRIS REP, plaquette commerciale v4, conseil indépendant en immobilier d'entreprise</h3>
-  <p>Format A3 paysage (420 x 297 mm), pliée au milieu pour donner 4 pages A4. Repositionnement IRIS REP comme <strong>conseiller indépendant en immobilier d'entreprise</strong>, deux lignes complémentaires : <strong>Conseil en investissement</strong> (foncières, family offices, investisseurs institutionnels) et <strong>Conseil en immobilier d'entreprise</strong> (utilisateurs, propriétaires bailleurs). Structure de mission inspirée du marché : CBRE, JLL, Cushman & Wakefield, Knight Frank, Catella, Eastdil pour le segment investissement, BNP Paribas Real Estate, Arthur Loyd, Tusker pour le segment utilisateur. Charte alignée site irisrep.com/v2. Pour imprimer : bouton ci-dessous ou Ctrl+P.</p>
+  <h3>IRIS REP, plaquette commerciale v5, audit complet site officiel</h3>
+  <p>Format A3 paysage (420 x 297 mm), pliée au milieu, 4 pages A4 portrait. Verbatim, missions et segmentations clients repris intégralement de <strong>www.irisrep.com</strong> (toutes pages auditées : Investment Management, Conseil, Investisseurs, Asset Management, Promoteurs, Collectivités, Équipe, À propos). Six missions officielles IM (Audit, ESG, Travaux/Capex, Conseil Acquisition, Structuration Patrimoniale, Pilotage). Quatre temps du cycle d'intervention Conseil (Sourcing, Acquisition, Location, Vente). Quatre typologies clients (Investisseurs, Asset Managers, Promoteurs, Collectivités). Trois singularités (Réseau régional irréplicable, Discrétion off market, Intégration native). Mini-timeline 2020-2024. Mini-bio Yannis (Prologis, Valor REP, Magellim). Carte T CPI37012026000000013 délivrée CCI Touraine. Pour imprimer : bouton ci-dessous ou Ctrl+P.</p>
   <button class="print-btn" onclick="window.print()">Imprimer en PDF</button>
 </div>
 
@@ -686,47 +733,39 @@ body {
 
     <div class="dos-body">
       <div>
-        <div class="dos-h">Nos bureaux</div>
-        <div class="dos-villes">
-          <div class="dos-ville">
-            <h4>Tours</h4>
-            <p>124 rue de Beaujardin<br>37000 Tours</p>
+        <div class="dos-h">Parlons de votre actif</div>
+        <div class="dos-bureau-card">
+          <div class="dos-contact-name">Yannis Benbaouali</div>
+          <div class="dos-contact-role">Président, IRIS Real Estate Partners</div>
+          <div class="dos-contact-info">
+            <strong>06 82 27 91 90</strong><br>
+            yb@irisrep.com
           </div>
-          <div class="dos-ville">
-            <h4>Paris</h4>
-            <p>120 boulevard de Grenelle<br>75015 Paris<br><em>Siège du groupe IRIS H</em></p>
-          </div>
-          <div class="dos-ville">
-            <h4>Orléans</h4>
-            <p>Bureau d'Orléans<br><em>Ouverture prochaine</em></p>
+          <div class="dos-contact-bio">
+            Dix ans d'expérience en investissement immobilier tertiaire. Anciennement Responsable des Investissements chez Prologis, Valor REP et au sein du Groupe Magellim.
           </div>
         </div>
       </div>
 
       <div>
-        <div class="dos-h">Parlons de votre actif</div>
-        <div class="dos-contact">
-          <div class="dos-contact-name">Yannis Benbaouali</div>
-          <div class="dos-contact-role">Fondateur</div>
-          <div class="dos-contact-info">
-            <strong>+33 6 XX XX XX XX</strong><br>
-            yannis@irisrep.com<br>
-            contact@irisrep.com
-          </div>
+        <div class="dos-h">Nos bureaux</div>
+        <div class="dos-bureau-card">
+          <h4>Paris</h4>
+          <p>120 boulevard de Grenelle, 75015 Paris<br><em>Siège du groupe IRIS REP</em></p>
         </div>
       </div>
 
       <div class="dos-qr">
         <div class="dos-qr-box"></div>
         <div class="dos-qr-text">
-          <strong>irisrep.com</strong>
-          Insights de marché, missions actives et publications.
+          <strong>www.irisrep.com</strong>
+          Insights, opportunités off market, simulateur, équipe.
         </div>
       </div>
     </div>
 
     <div class="dos-foot">
-      <strong>IRIS Real Estate Partners</strong>, SAS au capital de 1 000 €. SIREN à compléter. Carte T en cours de délivrance. Filiale du groupe IRIS H, 120 boulevard de Grenelle, 75015 Paris. © 2026 IRIS Real Estate Partners.
+      <strong>IRIS Real Estate Partners</strong>. Société de conseil en immobilier d'entreprise. Titulaire de la Carte Professionnelle de « Transaction sur immeubles et fonds de commerce » délivrée par la CCI, n°CPI37012026000000013. Siège du groupe IRIS REP, 120 boulevard de Grenelle, 75015 Paris. © 2026 IRIS Real Estate Partners.
     </div>
   </div>
 
@@ -740,22 +779,22 @@ body {
           <img src="https://raw.githubusercontent.com/yannisbenbaouali-stack/dashboard-iris-h/main/assets/logos/iris_rep/6_blanc_fond_transparent.png" alt="IRIS Real Estate Partners">
         </div>
         <div class="couv-tag-top">
-          Conseil indépendant<br>en immobilier d'entreprise<br>Île-de-France<br>Centre-Val de Loire
+          Opérateur indépendant<br>Conseil en immobilier d'entreprise<br>Île-de-France · Centre-Val de Loire
         </div>
       </div>
 
       <div class="couv-mid">
         <div class="couv-rule"></div>
         <h1 class="couv-slogan">Réunir,<br>Créer,<br><span class="it">Investir.</span></h1>
-        <p class="couv-sub">IRIS Real Estate Partners accompagne les propriétaires privés et les investisseurs institutionnels sur l'ensemble des cycles de vie de leur patrimoine. Conseil en investissement et conseil utilisateur, sous le même toit.</p>
+        <p class="couv-sub">IRIS Real Estate Partners accompagne les propriétaires privés et les investisseurs institutionnels sur l'ensemble des cycles de vie de leur patrimoine. Quinze ans de présence locale, deux territoires, une discipline.</p>
       </div>
 
       <div class="couv-bottom">
         <div class="couv-meta">
           Édition Mai 2026<br>
-          <strong>irisrep.com</strong>
+          <strong>www.irisrep.com</strong>
         </div>
-        <div class="couv-cta">Découvrir nos deux lignes</div>
+        <div class="couv-cta">Découvrir nos deux disciplines</div>
       </div>
     </div>
   </div>
@@ -766,31 +805,31 @@ body {
      ============================================================ -->
 <div class="sheet">
 
-  <!-- PAGE 2, notre maison + cycle 5 temps -->
+  <!-- PAGE 2, notre maison -->
   <div class="panel qui">
     <div class="section-num">Notre maison</div>
-    <h2 class="section-title">Un conseil tertiaire,<br><span class="it">en toute indépendance.</span></h2>
+    <h2 class="section-title">Une discipline,<br><span class="it">deux territoires.</span></h2>
     <div class="section-rule"></div>
 
     <p class="qui-intro">
-      <strong>IRIS Real Estate Partners</strong> est un cabinet indépendant de conseil en immobilier d'entreprise, présent en Île-de-France et en Centre-Val de Loire. Notre métier : accompagner propriétaires privés, foncières familiales, investisseurs institutionnels et utilisateurs, sur l'ensemble du cycle de vie de leur patrimoine tertiaire. Nous opérons exclusivement sur le tertiaire, bureaux, commerces, locaux d'activité, immobilier de santé et immobilier mixte.
+      <strong>IRIS Real Estate Partners</strong> est un opérateur indépendant spécialisé dans le conseil en immobilier d'entreprise. Notre approche conjugue <strong>performance financière, exigence environnementale et innovation technique</strong> pour accompagner investisseurs, asset managers, promoteurs et collectivités sur l'ensemble du cycle de vie des actifs immobiliers tertiaires en Île-de-France et en Centre-Val de Loire.
     </p>
 
-    <div class="piliers">
-      <div class="pilier-card">
-        <div class="pilier-num">01</div>
-        <h4>Indépendance</h4>
-        <p>Aucun produit maison imposé, aucun conflit d'intérêts. Nos recommandations sont guidées par le seul intérêt long terme du client.</p>
+    <div class="singularites">
+      <div class="sing-card">
+        <div class="sing-num">01</div>
+        <h4>Un réseau régional irréplicable</h4>
+        <p>Quinze ans de présence sur le Centre-Val de Loire. Relations directes avec notaires, banques régionales, propriétaires institutionnels et familiaux à Tours, Orléans, Blois, Bourges.</p>
       </div>
-      <div class="pilier-card">
-        <div class="pilier-num">02</div>
-        <h4>Ancrage régional</h4>
-        <p>Connaissance fine des actifs, des locataires, des notaires et des banques régionales. L'intimité du marché local, la rigueur d'analyse parisienne.</p>
+      <div class="sing-card">
+        <div class="sing-num">02</div>
+        <h4>Une discrétion off market assumée</h4>
+        <p>La majorité de nos transactions ne sont jamais publiées. Nous protégeons l'identité du vendeur et qualifions chaque acquéreur avant de transmettre le dossier.</p>
       </div>
-      <div class="pilier-card">
-        <div class="pilier-num">03</div>
-        <h4>Discrétion</h4>
-        <p>Sur des dossiers tenus en confiance pendant une génération, la discrétion est la première condition de la confiance accumulée.</p>
+      <div class="sing-card">
+        <div class="sing-num">03</div>
+        <h4>Une intégration native IM + Conseil</h4>
+        <p>Une transaction conclue peut se prolonger en mandat d'asset management long terme. Un seul interlocuteur, un cycle d'investissement piloté de bout en bout.</p>
       </div>
     </div>
 
@@ -799,7 +838,7 @@ body {
       <div class="cycle-step">
         <div class="cycle-num">I</div>
         <h4>Auditer</h4>
-        <p>Évaluer la performance et la conformité de votre patrimoine tertiaire.</p>
+        <p>Évaluer la performance et la conformité de votre patrimoine.</p>
       </div>
       <div class="cycle-step">
         <div class="cycle-num">II</div>
@@ -823,133 +862,153 @@ body {
       </div>
     </div>
 
+    <div class="timeline">
+      <div class="timeline-label">Notre histoire</div>
+      <div class="timeline-items">
+        <div class="timeline-item">
+          <div class="timeline-year">2020</div>
+          <p>Fondation<br>en Île-de-France</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2021</div>
+          <p>Premiers mandats<br>investissement IDF</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2022</div>
+          <p>Expansion<br>Centre-Val de Loire</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2023</div>
+          <p>Offre promoteurs<br>et collectivités</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2024</div>
+          <p>Renforcement<br>partenariats</p>
+        </div>
+      </div>
+    </div>
+
     <div class="engagement">
-      <strong>Notre engagement</strong>
-      Sur un actif détenu pendant une génération, la qualité du conseil ne se mesure pas au trimestre. Elle se mesure à la confiance accumulée, à la transmission rendue plus simple, et à la valeur conservée quand le marché tangue.
+      <strong>Avant le mandat, la conversation.</strong>
+      Nous écoutons d'abord, nous proposons ensuite. Sur un actif détenu pendant une génération, la qualité du conseil ne se mesure pas au trimestre, elle se mesure à la confiance accumulée.
     </div>
   </div>
 
-  <!-- PAGE 3, deux lignes avec missions détaillées -->
+  <!-- PAGE 3, notre offre -->
   <div class="panel services">
     <div class="section-num">Notre offre</div>
-    <h2 class="section-title">Deux lignes,<br><span class="it">douze missions.</span></h2>
+    <h2 class="section-title">Deux disciplines,<br><span class="it">complémentaires.</span></h2>
     <div class="section-rule"></div>
 
-    <!-- LIGNE 01 -->
-    <div class="ligne-block">
-      <div class="ligne-head">
-        <div class="ligne-num">01</div>
-        <div class="ligne-titles">
-          <h4>IRIS Investment Management</h4>
-          <div class="ligne-sub">Conseil en investissement tertiaire.</div>
-          <p>Asset advisory et asset management pour compte de tiers. Du sourcing off market à l'arbitrage, en passant par le pilotage long terme.</p>
-        </div>
-        <div class="ligne-clients">
-          <strong>Pour qui</strong>
-          Foncières privées, family offices, investisseurs institutionnels, propriétaires patrimoniaux.
-        </div>
+    <!-- 4 typologies clients en bandeau -->
+    <div class="typologies">
+      <div class="typologie">
+        <h5>Investisseurs</h5>
+        <p>Acquisitions, cessions, S&LB, VEFA, asset deal, share deal.</p>
       </div>
+      <div class="typologie">
+        <h5>Asset Managers</h5>
+        <p>Cession, repositionnement, travaux, commercialisation locative.</p>
+      </div>
+      <div class="typologie">
+        <h5>Promoteurs</h5>
+        <p>Prospection foncière, urbanisme, appels d'offres, PUV et BP.</p>
+      </div>
+      <div class="typologie">
+        <h5>Collectivités</h5>
+        <p>Représentation, audit d'appels d'offres, conseil stratégique.</p>
+      </div>
+    </div>
+
+    <!-- DISCIPLINE 01 IM -->
+    <div class="discipline-block">
+      <div class="discipline-head">
+        <div class="discipline-num">01</div>
+        <h4>IRIS Investment Management</h4>
+      </div>
+      <div class="discipline-baseline">Investment Management et Asset Management pour compte de tiers.</div>
+      <div class="discipline-desc">Pérenniser, rentabiliser, valoriser le patrimoine tertiaire en cohérence avec les objectifs financiers, juridiques et fiscaux. Six missions classées par niveau d'engagement, du diagnostic ponctuel au mandat de pilotage long terme.</div>
       <div class="missions-grid">
         <div class="mission-item">
-          <div class="mission-dot">1</div>
+          <div class="mission-dot">I</div>
           <div class="mission-content">
-            <h5>Acquisition</h5>
+            <h5>Mission Audit</h5>
+            <p>Audit complet de portefeuille livré en 30 jours. Plan d'action priorisé.</p>
+          </div>
+        </div>
+        <div class="mission-item">
+          <div class="mission-dot">II</div>
+          <div class="mission-content">
+            <h5>Mission ESG et Décret Tertiaire</h5>
+            <p>Plan énergétique 5 et 10 ans, labels BREEAM et HQE.</p>
+          </div>
+        </div>
+        <div class="mission-item">
+          <div class="mission-dot">III</div>
+          <div class="mission-content">
+            <h5>Mission Travaux et Capex</h5>
+            <p>Pilotage rénovation et repositionnement, partenariat BYM Construction.</p>
+          </div>
+        </div>
+        <div class="mission-item">
+          <div class="mission-dot">IV</div>
+          <div class="mission-content">
+            <h5>Mission Conseil Acquisition</h5>
             <p>Sourcing off market, due diligence, structuration, négociation.</p>
           </div>
         </div>
         <div class="mission-item">
-          <div class="mission-dot">2</div>
+          <div class="mission-dot">V</div>
           <div class="mission-content">
-            <h5>Cession</h5>
-            <p>Valorisation, marketing dédié, mise en concurrence acquéreurs.</p>
+            <h5>Mission Structuration Patrimoniale</h5>
+            <p>SCI, démembrement, optimisation IFI, transmission.</p>
           </div>
         </div>
         <div class="mission-item">
-          <div class="mission-dot">3</div>
+          <div class="mission-dot">VI</div>
           <div class="mission-content">
-            <h5>Asset advisory</h5>
-            <p>Business plan, capex, ESG, pilotage long terme.</p>
-          </div>
-        </div>
-        <div class="mission-item">
-          <div class="mission-dot">4</div>
-          <div class="mission-content">
-            <h5>Patrimonial</h5>
-            <p>Structuration juridique et fiscale, transmission, IFI.</p>
-          </div>
-        </div>
-        <div class="mission-item">
-          <div class="mission-dot">5</div>
-          <div class="mission-content">
-            <h5>Debt advisory</h5>
-            <p>Sourcing financement, refinancement, conseil banque.</p>
-          </div>
-        </div>
-        <div class="mission-item">
-          <div class="mission-dot">6</div>
-          <div class="mission-content">
-            <h5>Expertise</h5>
-            <p>Évaluation, due diligence acquéreur, second avis.</p>
+            <h5>Mission Pilotage</h5>
+            <p>Mandat long terme, reporting trimestriel, portefeuilles 5 M€ et plus.</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- LIGNE 02 -->
-    <div class="ligne-block">
-      <div class="ligne-head">
-        <div class="ligne-num">02</div>
-        <div class="ligne-titles">
-          <h4>IRIS Conseil en immobilier d'entreprise</h4>
-          <div class="ligne-sub">Conseil utilisateur et commercialisation.</div>
-          <p>Recherche d'implantation, négociation de bail, commercialisation pour le compte de propriétaires bailleurs. Un seul interlocuteur du brief à la signature.</p>
-        </div>
-        <div class="ligne-clients">
-          <strong>Pour qui</strong>
-          Dirigeants d'entreprises utilisatrices, propriétaires bailleurs, propriétaires utilisateurs.
-        </div>
+    <!-- DISCIPLINE 02 CONSEIL -->
+    <div class="discipline-block">
+      <div class="discipline-head">
+        <div class="discipline-num">02</div>
+        <h4>IRIS Conseil en immobilier d'entreprise</h4>
       </div>
-      <div class="missions-grid">
+      <div class="discipline-baseline">Acquisition, arbitrage, commercialisation et conseil sur-mesure.</div>
+      <div class="discipline-desc">Sourcer, négocier et conclure les transactions tertiaires, en mobilisant un réseau régional bâti sur quinze ans de présence locale. Un cycle continu en quatre temps.</div>
+      <div class="missions-grid steps4">
         <div class="mission-item">
-          <div class="mission-dot">1</div>
+          <div class="mission-dot">I</div>
           <div class="mission-content">
-            <h5>Recherche d'implantation</h5>
-            <p>Site selection, recherche locataire, accompagnement bail.</p>
+            <h5>Conseil et sourcing</h5>
+            <p>Stratégie patrimoniale, identification off market, mobilisation du réseau régional.</p>
           </div>
         </div>
         <div class="mission-item">
-          <div class="mission-dot">2</div>
+          <div class="mission-dot">II</div>
           <div class="mission-content">
-            <h5>Cession utilisateur</h5>
-            <p>Revente d'immeuble d'exploitation, mise en marché.</p>
+            <h5>Acquisition d'immeubles</h5>
+            <p>Due diligence, négociation, sécurisation des conditions suspensives, signature.</p>
           </div>
         </div>
         <div class="mission-item">
-          <div class="mission-dot">3</div>
+          <div class="mission-dot">III</div>
           <div class="mission-content">
-            <h5>Lease advisory</h5>
-            <p>Négociation, renégociation, sortie anticipée de bail.</p>
+            <h5>Location</h5>
+            <p>Recherche locataires qualifiés, négociation et rédaction de baux commerciaux.</p>
           </div>
         </div>
         <div class="mission-item">
-          <div class="mission-dot">4</div>
+          <div class="mission-dot">IV</div>
           <div class="mission-content">
-            <h5>Workplace strategy</h5>
-            <p>Programmation, AMO aménagement, design des espaces.</p>
-          </div>
-        </div>
-        <div class="mission-item">
-          <div class="mission-dot">5</div>
-          <div class="mission-content">
-            <h5>Commercialisation bailleur</h5>
-            <p>Location bureaux et locaux pour compte de propriétaires.</p>
-          </div>
-        </div>
-        <div class="mission-item">
-          <div class="mission-dot">6</div>
-          <div class="mission-content">
-            <h5>Stratégie immobilière</h5>
-            <p>Schéma directeur, optimisation de portefeuille occupant.</p>
+            <h5>Vente</h5>
+            <p>Valorisation, sourcing acquéreurs, du off market discret à la commercialisation ouverte.</p>
           </div>
         </div>
       </div>
@@ -957,17 +1016,18 @@ body {
 
     <div class="cta">
       <div class="cta-text">
-        <strong>Échangeons.</strong> Un audit n'engage à rien. C'est souvent la meilleure manière de comprendre ce que votre patrimoine peut devenir.
+        <strong>Un actif à arbitrer, à louer.</strong> Parlons-en. Un audit n'engage à rien. C'est la meilleure manière de comprendre ce que votre patrimoine peut devenir.
       </div>
-      <div class="cta-btn">Prendre rendez-vous</div>
+      <div class="cta-btn">Proposer un projet</div>
     </div>
   </div>
 </div>
 
 <div class="viewer-info" style="margin-top: 30px;">
-  <h3>Notes de production</h3>
-  <p><strong>Différences clés v4 vs v3</strong> : repositionnement IRIS REP comme cabinet de conseil indépendant en immobilier d'entreprise (et non opérateur asset management). Couverture : tagline éditoriale "Conseil indépendant en immobilier d'entreprise". Page 2 : 3 piliers (Indépendance, Ancrage, Discrétion) inspirés de Tusker, Eastdil, Catella, Arthur Loyd, devant le cycle 5 temps qui reste. Page 3 entièrement refondue : deux lignes clairement distinguées, chacune avec subtitle, audience cible et 6 missions détaillées. <strong>Investment Management</strong> : Acquisition, Cession, Asset advisory, Patrimonial, Debt advisory, Expertise, inspiré CBRE, JLL Capital Markets, Cushman, Catella, Eastdil, Newmark. <strong>Conseil en immobilier d'entreprise</strong> : Recherche d'implantation, Cession utilisateur, Lease advisory, Workplace strategy, Commercialisation bailleur, Stratégie immobilière, inspiré BNP Paribas Real Estate, CBRE, Arthur Loyd, Tusker, Consult'im.</p>
-  <p><strong>À compléter</strong> : mobile direct, SIREN, carte T, QR code irisrep.com. <strong>Finitions</strong> : 250 g/m² couché mat, vernis sélectif logo et cartouche or.</p>
+  <h3>Notes de production v5</h3>
+  <p><strong>Sources verbatim</strong> : audit complet du site officiel www.irisrep.com, toutes pages (Accueil, Investment Management, Conseil en immobilier d'entreprise, Investisseurs, Asset Management, Promoteurs, Collectivités, Équipe, À propos). Six missions IM avec leurs noms officiels du site. Quatre temps du cycle d'intervention Conseil. Quatre typologies clients en bandeau. Trois singularités reprises mot pour mot. Mini-timeline 2020-2024. Mini-bio Yannis (Prologis, Valor REP, Magellim, dix ans d'expérience). Carte T CPI37012026000000013.</p>
+  <p><strong>Contact mis à jour</strong> : yb@irisrep.com et 06 82 27 91 90 (numéro réel récupéré du site, plus de placeholder). Yannis = Président, plus Fondateur.</p>
+  <p><strong>Finitions imprimeur</strong> : 250 g/m² couché mat, pli central, vernis sélectif sur logo de couverture et numéro romains des missions.</p>
 </div>
 
 </body>
