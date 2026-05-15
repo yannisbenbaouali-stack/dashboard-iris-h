@@ -311,16 +311,128 @@
   .progress-fill.iris { background: var(--iris); }
   .progress-fill.bym { background: var(--bym); }
   .progress-fill.arristo { background: var(--arristo); }
+
+  /* ─── MODE TOGGLE BP / PROCESS ─── */
+  .mode-toggle {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 4px;
+    width: fit-content;
+    box-shadow: var(--shadow);
+  }
+  .mode-btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-light);
+    background: transparent;
+    transition: all .15s;
+  }
+  .mode-btn.active {
+    background: var(--dark);
+    color: #fff;
+  }
+
+  /* ─── PROCESS SECTION ─── */
+  #mode-process { display: none; }
+  #mode-bp { display: block; }
+
+  .process-phase-block {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .process-phase-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+    background: var(--card-bg);
+    transition: background .12s;
+  }
+  .process-phase-header:hover { background: #f9f8f6; }
+  .process-phase-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+  }
+  .process-phase-num.jalon { background: var(--bym); }
+  .process-phase-num.technique { background: #5b7fa6; }
+  .process-phase-title {
+    font-size: 14px; font-weight: 700; color: var(--dark); flex: 1;
+  }
+  .process-phase-badge {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .06em; padding: 3px 9px; border-radius: 20px;
+  }
+  .process-phase-badge.jalon { background: #fdf0e3; color: var(--bym); }
+  .process-phase-badge.technique { background: #e8f0f8; color: #5b7fa6; }
+  .process-phase-chevron { color: var(--text-light); transition: transform .2s; font-size: 12px; }
+  .process-phase-header.open .process-phase-chevron { transform: rotate(180deg); }
+  .process-phase-body {
+    display: none;
+    padding: 0 20px 18px;
+    border-top: 1px solid var(--card-border);
+  }
+  .process-phase-body.open { display: block; }
+  .process-desc { font-size: 13px; color: var(--text); line-height: 1.6; margin: 14px 0 10px; }
+  .process-criteres {
+    background: #f0f7ec; border-left: 3px solid var(--arristo);
+    padding: 10px 14px; border-radius: 0 6px 6px 0;
+    font-size: 12px; color: #3a5a30; margin-bottom: 10px;
+  }
+  .process-criteres strong { display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+  .process-questions { margin-top: 10px; }
+  .process-questions strong { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-light); display: block; margin-bottom: 8px; }
+  .process-q { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 12px; color: var(--text); }
+  .process-q::before { content: "?"; color: var(--iris); font-weight: 700; flex-shrink: 0; }
+  .process-options { margin-top: 10px; }
+  .process-options strong { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-light); display: block; margin-bottom: 8px; }
+  .process-opt { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 12px; color: var(--text); }
+  .process-opt::before { content: "→"; color: var(--bym); font-weight: 700; flex-shrink: 0; }
+  .process-source { margin-top: 10px; font-size: 11px; color: var(--text-light); font-style: italic; }
+  .process-empty { text-align: center; padding: 3rem; color: var(--text-light); font-size: 13px; }
+  .process-section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--text-light); margin: 20px 0 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .process-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--card-border);
+  }
 </style>
 </head>
 <body>
   <div class="container">
 
     <div class="page-header">
-      <h1>Business Plan et Communication</h1>
-      <div class="lead">Cœur du réacteur entrepreneurial du groupe IRIS H. Trois axes stratégiques en développement, chacun avec son book mentor brique par brique et son plan de communication 12 mois. Documents de base, à enrichir au fur et à mesure de leurs avancées.</div>
+      <h1>BP &amp; Process</h1>
+      <div class="lead">Business plans et process de décision du groupe IRIS H. Trois entités stratégiques, chacune avec son book brique par brique et son process de décision enrichi au fil des projets.</div>
     </div>
 
+    <!-- MODE TOGGLE -->
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="mode-bp-btn" onclick="switchMode('bp')">Business Plan</button>
+      <button class="mode-btn" id="mode-process-btn" onclick="switchMode('process')">Process &amp; D&#233;cisions</button>
+    </div>
+
+    <!-- ═══════ MODE BP ═══════ -->
+    <div id="mode-bp">
     <div class="volet-tabs">
       <button class="volet-tab iris active" onclick="switchVolet('iris',this)"><span class="dot"></span>IRIS REP</button>
       <button class="volet-tab bym" onclick="switchVolet('bym',this)"><span class="dot"></span>BYM Construction</button>
@@ -791,18 +903,99 @@
 
     </div>
 
+  </div><!-- /mode-bp -->
+
+  <!-- ═══════ MODE PROCESS ═══════ -->
+  <div id="mode-process" style="display:none">
+    <div class="volet-tabs" id="process-volet-tabs">
+      <button class="volet-tab bym active" onclick="switchProcessVolet('BYM',this)"><span class="dot"></span>BYM Construction</button>
+      <button class="volet-tab iris" onclick="switchProcessVolet('IRIS REP',this)"><span class="dot"></span>IRIS REP</button>
+      <button class="volet-tab arristo" onclick="switchProcessVolet('Urban Rise',this)"><span class="dot"></span>Urban Rise &amp; ARRISTO</button>
+    </div>
+    <div id="process-content">
+      <div class="process-empty">Chargement du process&hellip;</div>
+    </div>
   </div>
 
+  </div><!-- /container -->
+
 <script>
+const SUPABASE_URL = 'https://kkznkuwoxoxvapejzytv.supabase.co';
+const SUPABASE_ANON = window.parent && window.parent.SUPABASE_ANON ? window.parent.SUPABASE_ANON : null;
+
+/* ── MODE TOGGLE ── */
+let currentProcessEntite = 'BYM';
+
+function switchMode(mode) {
+  document.getElementById('mode-bp').style.display = mode === 'bp' ? 'block' : 'none';
+  document.getElementById('mode-process').style.display = mode === 'process' ? 'block' : 'none';
+  document.getElementById('mode-bp-btn').classList.toggle('active', mode === 'bp');
+  document.getElementById('mode-process-btn').classList.toggle('active', mode === 'process');
+  if (mode === 'process') loadProcess(currentProcessEntite);
+}
+
+function switchProcessVolet(entite, btn) {
+  document.querySelectorAll('#process-volet-tabs .volet-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentProcessEntite = entite;
+  loadProcess(entite);
+}
+
+async function loadProcess(entite) {
+  const el = document.getElementById('process-content');
+  el.innerHTML = '<div class="process-empty">Chargement\u2026</div>';
+  const ANON = SUPABASE_ANON;
+  if (!ANON) { el.innerHTML = '<div class="process-empty">Cl\u00e9 Supabase non disponible (ouvrir depuis le dashboard principal)</div>'; return; }
+  try {
+    const url = SUPABASE_URL + '/rest/v1/process_decision?entite=eq.' + encodeURIComponent(entite) + '&actif=eq.true&order=type.asc,ordre.asc';
+    const r = await fetch(url, { headers: { apikey: ANON, Authorization: 'Bearer ' + ANON } });
+    const data = await r.json();
+    if (!data || !data.length) { el.innerHTML = '<div class="process-empty">Aucun process d\u00e9fini pour ' + entite + ' \u2014 \u00e0 enrichir au fil des projets.</div>'; return; }
+    const jalons = data.filter(d => d.type === 'jalon');
+    const techniques = data.filter(d => d.type === 'technique');
+    let html = '';
+    if (jalons.length) {
+      html += '<div class="process-section-label">Jalons projet \u2014 go/no-go par \u00e9tape</div>';
+      jalons.forEach((p, i) => { html += renderProcessBlock(p, i + 1); });
+    }
+    if (techniques.length) {
+      html += '<div class="process-section-label" style="margin-top:28px">D\u00e9cisions techniques \u2014 arbres de d\u00e9cision</div>';
+      techniques.forEach((p, i) => { html += renderProcessBlock(p, i + 1); });
+    }
+    el.innerHTML = html;
+  } catch(e) { el.innerHTML = '<div class="process-empty">Erreur chargement : ' + e.message + '</div>'; }
+}
+
+function renderProcessBlock(p, num) {
+  const qs = Array.isArray(p.questions_cles) ? p.questions_cles : [];
+  const opts = Array.isArray(p.options_decision) ? p.options_decision : [];
+  return '<div class="process-phase-block">'
+    + '<div class="process-phase-header" onclick="toggleProcess(this)">'
+    + '<div class="process-phase-num ' + p.type + '">' + num + '</div>'
+    + '<div class="process-phase-title">' + p.titre + '</div>'
+    + '<span class="process-phase-badge ' + p.type + '">' + (p.type === 'jalon' ? 'Jalon' : 'D\u00e9cision tech') + '</span>'
+    + '<span class="process-phase-chevron">\u25bc</span>'
+    + '</div>'
+    + '<div class="process-phase-body">'
+    + (p.description ? '<div class="process-desc">' + p.description + '</div>' : '')
+    + (p.criteres ? '<div class="process-criteres"><strong>Crit\u00e8res de validation</strong>' + p.criteres + '</div>' : '')
+    + (qs.length ? '<div class="process-questions"><strong>Questions cl\u00e9s</strong>' + qs.map(q => '<div class="process-q">' + q + '</div>').join('') + '</div>' : '')
+    + (opts.length ? '<div class="process-options"><strong>Options de d\u00e9cision</strong>' + opts.map(o => '<div class="process-opt">' + o + '</div>').join('') + '</div>' : '')
+    + (p.source_projet ? '<div class="process-source">Source : projets ' + p.source_projet + '</div>' : '')
+    + '</div></div>';
+}
+
+function toggleProcess(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+
 function switchVolet(name, btn) {
   document.querySelectorAll('.volet-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.querySelectorAll('.volet-section').forEach(s => s.classList.remove('active'));
   document.getElementById('volet-' + name).classList.add('active');
 }
-
-const SUPABASE_URL = 'https://kkznkuwoxoxvapejzytv.supabase.co';
-const SUPABASE_ANON = window.parent && window.parent.SUPABASE_ANON ? window.parent.SUPABASE_ANON : null;
 
 async function openDoc(filename) {
   if (!SUPABASE_ANON) {

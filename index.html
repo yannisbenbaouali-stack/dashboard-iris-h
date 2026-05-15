@@ -250,7 +250,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'memoire')"><span class="nav-dot"></span><span>Mémoire</span></button>
       <button class="nav-item" onclick="switchTab(this,'organigramme')"><span class="nav-dot"></span><span>Structuration</span></button>
-      <button class="nav-item" onclick="switchTab(this,'businessplan')"><span class="nav-dot"></span><span>Business Plan</span></button>
+      <button class="nav-item" onclick="switchTab(this,'businessplan')"><span class="nav-dot"></span><span>BP &amp; Process</span></button>
       <button class="nav-item" onclick="switchTab(this,'outils')"><span class="nav-dot"></span><span>Outils</span></button>
       <button class="nav-item" onclick="switchTab(this,'mandats')"><span class="nav-dot"></span><span>Registre Mandats</span><span class="nav-cnt" id="nav-mandats-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'audit')"><span class="nav-dot"></span><span>Audit Drive</span><span class="nav-cnt" id="nav-audit-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
@@ -706,7 +706,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Structuration',businessplan:'Business Plan et Communication',outils:'Outils',mandats:'Registre Mandats · IRIS REP',audit:'Audit Drive',electricite:'Bible de l\'électricien'};
+  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Structuration',businessplan:'BP & Process',outils:'Outils',mandats:'Registre Mandats · IRIS REP',audit:'Audit Drive',electricite:'Bible de l\'électricien'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
@@ -2441,6 +2441,55 @@ function renderChContent(){
           <span style="font-size:9px;padding:2px 6px;border-radius:10px;background:${{urgente:'#FCEBEB',haute:'#FAEEDA',moyenne:'#E6F1FB',standby:'#F4F4F4'}[t.priorite]||'#F4F4F4'};color:${{urgente:'#791F1F',haute:'#633806',moyenne:'#0C447C',standby:'#999'}[t.priorite]||'#999'}">${t.priorite||''}</span>
         </div>`).join(''):`<div style="text-align:center;padding:3rem;color:var(--dim)"><div style="font-size:2rem;margin-bottom:8px">✅</div><div>Aucune tâche sur ce chantier</div></div>`}`;
   }
+
+  else if(chCurrentTab==='process'){
+    el.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--dim);font-size:12px">Chargement du process BYM…</div>`;
+    const h={apikey:cfg.key,'Authorization':'Bearer '+cfg.key};
+    fetch(`${cfg.url}/rest/v1/process_decision?entite=eq.BYM&actif=eq.true&order=type.asc,ordre.asc`,{headers:h})
+      .then(r=>r.json()).then(data=>{
+        if(!data||!data.length){el.innerHTML=`<div style="text-align:center;padding:3rem;color:var(--dim)"><div style="font-size:2rem;margin-bottom:8px">🔄</div><div>Aucun process défini — enrichir au fil des projets</div></div>`;return;}
+        const jalons=data.filter(d=>d.type==='jalon');
+        const techniques=data.filter(d=>d.type==='technique');
+        let html=`<div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:16px">Process de décision BYM Construction <span style="font-size:11px;font-weight:400;color:var(--dim)">(${jalons.length} jalons · ${techniques.length} décisions techniques)</span></div>`;
+        if(jalons.length){
+          html+=`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);margin:0 0 10px;display:flex;align-items:center;gap:8px">Jalons projet <span style="flex:1;height:1px;background:var(--border)"></span></div>`;
+          jalons.forEach((p,i)=>{html+=renderProcessCard(p,i+1,'#c9772a');});
+        }
+        if(techniques.length){
+          html+=`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);margin:20px 0 10px;display:flex;align-items:center;gap:8px">Décisions techniques <span style="flex:1;height:1px;background:var(--border)"></span></div>`;
+          techniques.forEach((p,i)=>{html+=renderProcessCard(p,i+1,'#5b7fa6');});
+        }
+        el.innerHTML=html;
+      }).catch(e=>{el.innerHTML=`<div style="color:var(--red);padding:1rem;font-size:12px">Erreur : ${e.message}</div>`;});
+  }
+}
+
+function renderProcessCard(p,num,color){
+  const qs=Array.isArray(p.questions_cles)?p.questions_cles:[];
+  const opts=Array.isArray(p.options_decision)?p.options_decision:[];
+  const bodyId='proc-body-'+p.id;
+  return `<div style="background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden">
+    <div onclick="toggleProcCard('${bodyId}',this)" style="display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer">
+      <div style="width:26px;height:26px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0">${num}</div>
+      <div style="flex:1;font-size:12px;font-weight:600;color:var(--navy)">${p.titre}</div>
+      ${p.source_projet?`<span style="font-size:9px;color:var(--dim);font-style:italic">${p.source_projet}</span>`:''}
+      <span style="color:var(--dim);font-size:10px" id="${bodyId}-chev">▼</span>
+    </div>
+    <div id="${bodyId}" style="display:none;padding:0 16px 14px;border-top:1px solid var(--border)">
+      ${p.description?`<div style="font-size:12px;color:var(--navy);line-height:1.6;margin:10px 0 8px">${p.description}</div>`:''}
+      ${p.criteres?`<div style="background:#f0f7ec;border-left:3px solid #5b8a4f;padding:8px 12px;border-radius:0 6px 6px 0;font-size:11px;color:#3a5a30;margin-bottom:8px"><strong style="display:block;font-size:10px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Critères</strong>${p.criteres}</div>`:''}
+      ${qs.length?`<div style="margin-top:8px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--dim);margin-bottom:6px">Questions clés</div>${qs.map(q=>`<div style="display:flex;gap:6px;font-size:11px;color:var(--navy);margin-bottom:4px"><span style="color:var(--blue);font-weight:700;flex-shrink:0">?</span>${q}</div>`).join('')}</div>`:''}
+      ${opts.length?`<div style="margin-top:8px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--dim);margin-bottom:6px">Options</div>${opts.map(o=>`<div style="display:flex;gap:6px;font-size:11px;color:var(--navy);margin-bottom:4px"><span style="color:${color};font-weight:700;flex-shrink:0">→</span>${o}</div>`).join('')}</div>`:''}
+    </div>
+  </div>`;
+}
+
+function toggleProcCard(id,header){
+  const body=document.getElementById(id);
+  const chev=document.getElementById(id+'-chev');
+  const open=body.style.display==='none';
+  body.style.display=open?'block':'none';
+  if(chev)chev.style.transform=open?'rotate(180deg)':'';
 }
 
 function copyChPlanningTexte(){
@@ -2630,6 +2679,7 @@ boot();
       <button class="ch-tab" onclick="switchChTab(this,'budget')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">💶 Budget</button>
       <button class="ch-tab" onclick="switchChTab(this,'questions')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">💬 Questions et notes</button>
       <button class="ch-tab" onclick="switchChTab(this,'todo')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">✅ Todo chantier</button>
+      <button class="ch-tab" onclick="switchChTab(this,'process')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">🔄 Process</button>
     </div>
     <!-- Content -->
     <div style="padding:24px 28px;min-height:400px" id="ch-content"></div>
