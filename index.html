@@ -1296,6 +1296,7 @@ function renderFinance(){
   const v1TotalMontant = v1.reduce((a,r) => a + (parseFloat(r.montant)||0), 0);
   const thStyle='font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;padding:6px 0;border-bottom:1px solid var(--border)';
   const tdStyle='padding:8px 0;font-size:13px;border-bottom:1px solid var(--bg)';
+  const etatBadge=e=>{if(!e)return'';const m={'versé':'background:var(--green-bg);color:#1a8a4a','Remboursés !':'background:var(--green-bg);color:#1a8a4a','à faire':'background:var(--orange-bg);color:#b36d00'};return`<span class="pill" style="font-size:10px;${m[e]||''}">${e}</span>`};
 
   let vilmarHtml = v1.length
     ? `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse">
@@ -1326,8 +1327,6 @@ function renderFinance(){
   const v2TotalTtc = v2.reduce((a,r) => a + (parseFloat(r.pct_ttc)||0), 0);
   const v2TotalDebit = v2.reduce((a,r) => a + (parseFloat(r.debit_vilmar)||0), 0);
   const v2Solde = v2TotalTtc - v2TotalDebit;
-
-  const etatBadge=e=>{if(!e)return'';const m={'versé':'background:var(--green-bg);color:#1a8a4a','Remboursés !':'background:var(--green-bg);color:#1a8a4a','à faire':'background:var(--orange-bg);color:#b36d00'};return`<span class="pill" style="font-size:10px;${m[e]||''}">${e}</span>`};
 
   const vilmar2Html = v2.length
     ? `<div style="overflow-x:auto;margin-top:24px;padding-top:20px;border-top:2px solid var(--border)"><table style="width:100%;border-collapse:collapse">
