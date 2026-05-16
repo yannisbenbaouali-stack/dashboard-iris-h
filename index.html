@@ -1299,19 +1299,19 @@ function renderFinance(){
   const etatBadge=e=>{if(!e)return'';const m={'versé':'background:var(--green-bg);color:#1a8a4a','Remboursés !':'background:var(--green-bg);color:#1a8a4a','à faire':'background:var(--orange-bg);color:#b36d00'};return`<span class="pill" style="font-size:10px;${m[e]||''}">${e}</span>`};
 
   let vilmarHtml = v1.length
-    ? `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse">
+    ? `<div style="overflow-x:auto"><table style="width:auto;border-collapse:collapse">
         <thead><tr>
-          <th style="text-align:left;${thStyle}">Libellé</th>
-          <th style="text-align:right;${thStyle}">Montant</th>
-          <th style="text-align:center;${thStyle}">Remboursé ?</th>
-          <th style="text-align:left;${thStyle}">Comment</th>
+          <th style="text-align:left;${thStyle};padding-right:24px">Libellé</th>
+          <th style="text-align:right;${thStyle};padding-right:16px;white-space:nowrap">Montant</th>
+          <th style="text-align:center;${thStyle};padding-right:16px;white-space:nowrap">Remboursé ?</th>
+          <th style="text-align:left;${thStyle};white-space:nowrap">Comment</th>
         </tr></thead>
         <tbody>
           ${v1.map(r=>{const isRemb=r.etat==='Remboursés !'||r.etat==='versé';return`<tr style="background:${isRemb?'rgba(65,201,142,.08)':''}">
-            <td style="${tdStyle}">${r.libelle||''}</td>
-            <td style="${tdStyle};text-align:right">${fmt(parseFloat(r.montant)||0)}</td>
-            <td style="${tdStyle};text-align:center">${r.etat?etatBadge(r.etat):`<span style="font-size:11px;color:var(--dim)">non</span>`}</td>
-            <td style="${tdStyle};font-size:12px;color:var(--dim)">${r.commentaire||''}</td>
+            <td style="${tdStyle};padding-right:24px">${r.libelle||''}</td>
+            <td style="${tdStyle};text-align:right;padding-right:16px;white-space:nowrap">${fmt(parseFloat(r.montant)||0)}</td>
+            <td style="${tdStyle};text-align:center;padding-right:16px;white-space:nowrap">${r.etat?etatBadge(r.etat):`<span style="font-size:11px;color:var(--dim)">non</span>`}</td>
+            <td style="${tdStyle};font-size:12px;color:var(--dim);white-space:nowrap">${r.commentaire||''}</td>
           </tr>`}).join('')}
         </tbody></table></div>`
     : '';
