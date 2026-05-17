@@ -200,10 +200,12 @@ setTimeout(() => {
   const iB = botC('irisH');
   const gT = topC('gc');
   drawLine(iB.x, iB.y, gT.x, gT.y, '#c0bdb8');
+  drawPct('51 %', (iB.x + gT.x) / 2 - 22, (iB.y + gT.y) / 2);
 
   // Christian → Galerie Carrez
   const cB = botC('christian');
   drawLine(cB.x, cB.y, gT.x, gT.y, '#c0bdb8');
+  drawPct('49 %', (cB.x + gT.x) / 2 + 22, (cB.y + gT.y) / 2);
 
 }, 120);
 </script>
