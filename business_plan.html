@@ -905,7 +905,17 @@
 
 <script>
 const SUPABASE_URL = 'https://kkznkuwoxoxvapejzytv.supabase.co';
-const SUPABASE_ANON = window.parent && window.parent.SUPABASE_ANON ? window.parent.SUPABASE_ANON : null;
+function getSupabaseAnon() {
+  // 1. depuis la fenêtre parente (cas iframe via index.html)
+  if (window.parent && window.parent.SUPABASE_ANON) return window.parent.SUPABASE_ANON;
+  // 2. depuis localStorage iris_h_cfg (config saisie dans index.html)
+  try {
+    const s = JSON.parse(localStorage.getItem('iris_h_cfg'));
+    if (s && s.key) return s.key;
+  } catch (e) {}
+  return null;
+}
+const SUPABASE_ANON = getSupabaseAnon();
 
 /* ── MODE TOGGLE ── */
 let currentProcessEntite = 'BYM';
