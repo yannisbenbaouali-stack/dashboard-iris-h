@@ -14,9 +14,6 @@
 
 
 /* Bandeau visuel imprimable */
-.visuel-bandeau { position: relative; margin: 18px 0 14px; border-left: 3px solid var(--or); overflow: hidden; }
-.visuel-bandeau img { display: block; width: 100%; height: 120px; object-fit: cover; filter: saturate(0.85) brightness(0.95); background: linear-gradient(135deg, #d4a64a 0%, #1a1a1a 100%); }
-.visuel-bandeau .visuel-legende { font-family: 'Georgia', serif; font-style: italic; font-size: 10px; color: var(--gris); padding: 8px 12px 0; line-height: 1.5; }
 /* ========================================================================
    IRIS REAL ESTATE PARTNERS, plaquette v6
    Source : audit complet de www.irisrep.com (toutes pages)
@@ -102,6 +99,33 @@ body {
   background: rgba(0,0,0,0.06);
   z-index: 50;
 }
+.sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('https://irisrep.com/assets/region-cvl-idf-BXIVDZ5O.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+.panel { z-index: 2; }
+.vision { position: relative; overflow: hidden; }
+.vision::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('https://irisrep.com/assets/region-cvl-idf-BXIVDZ5O.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: multiply;
+}
+.vision > * { position: relative; z-index: 1; }
 .panel { flex: 1; position: relative; overflow: hidden; }
 
 /* ============================================================
@@ -153,7 +177,7 @@ body {
 .couv-mid { position: relative; }
 .couv-rule { width: 56px; height: 1.5px; background: var(--or); margin-bottom: 26px; }
 .couv-tagline {
-  font-family: 'Georgia', serif;
+  font-family: 'Quicksand', sans-serif;
   font-style: italic;
   font-size: 22px;
   letter-spacing: 0.2px;
@@ -171,13 +195,13 @@ body {
   margin-bottom: 18px;
 }
 .couv-slogan .it {
-  font-family: 'Georgia', serif;
+  font-family: 'Quicksand', sans-serif;
   font-style: italic;
   font-weight: 400;
   color: var(--or);
 }
 .couv-sub {
-  font-family: 'Georgia', serif;
+  font-family: 'Quicksand', sans-serif;
   font-style: italic;
   font-size: 16px;
   line-height: 1.55;
@@ -281,7 +305,7 @@ body {
 .dos-contact-info { font-size: 11px; line-height: 1.65; color: var(--gris); margin-bottom: 6px; }
 .dos-contact-info strong { color: var(--noir); font-weight: 600; }
 .dos-contact-bio {
-  font-family: 'Georgia', serif;
+  font-family: 'Quicksand', sans-serif;
   font-style: italic;
   font-size: 10.5px;
   line-height: 1.55;
@@ -366,7 +390,7 @@ body {
   margin-bottom: 10px;
 }
 .section-title .it {
-  font-family: 'Georgia', serif;
+  font-family: 'Quicksand', sans-serif;
   font-style: italic;
   font-weight: 400;
   color: var(--or);
@@ -374,7 +398,7 @@ body {
 .section-rule { width: 48px; height: 1.5px; background: var(--or); margin-bottom: 18px; }
 
 .qui-intro {
-  font-family: 'Georgia', serif;
+  font-family: 'Quicksand', sans-serif;
   font-size: 12.5px;
   line-height: 1.6;
   color: var(--gris-fonce);
@@ -489,7 +513,7 @@ body {
 .vision { background: var(--or-fond); border-left: 3px solid var(--or); padding: 14px 18px 14px 18px; margin-top: auto; font-family: 'Quicksand', sans-serif; }
 .vision-eyebrow { font-size: 9px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--or); margin-bottom: 10px; display: inline-block; }
 .vision-title { font-size: 14px; font-weight: 600; color: var(--noir); margin: 4px 0 10px 0; letter-spacing: -0.2px; }
-.vision-quote { font-family: 'Georgia', serif; font-style: italic; font-size: 11px; line-height: 1.55; color: var(--gris-fonce); margin: 0 0 12px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
+.vision-quote { font-family: 'Quicksand', sans-serif; font-style: italic; font-size: 11px; line-height: 1.55; color: var(--gris-fonce); margin: 0 0 12px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
 .vision-quote::before { content: "« "; color: var(--or); font-size: 14px; font-weight: 600; }
 .vision-quote::after { content: " »"; color: var(--or); font-size: 14px; font-weight: 600; }
 .vision-author { font-size: 10px; color: var(--noir); display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line-light); padding-top: 8px; }
@@ -500,7 +524,7 @@ body {
   background: var(--or-fond);
   border-left: 3px solid var(--or);
   padding: 12px 16px;
-  font-family: 'Georgia', serif;
+  font-family: 'Quicksand', sans-serif;
   font-style: italic;
   font-size: 11.5px;
   line-height: 1.55;
@@ -585,7 +609,7 @@ body {
   letter-spacing: -0.1px;
 }
 .discipline-baseline {
-  font-family: 'Georgia', serif;
+  font-family: 'Quicksand', sans-serif;
   font-style: italic;
   font-size: 10.5px;
   color: var(--or);
@@ -643,7 +667,7 @@ body {
   margin-top: auto;
 }
 .cta-text {
-  font-family: 'Georgia', serif;
+  font-family: 'Quicksand', sans-serif;
   font-style: italic;
   font-size: 11.5px;
   line-height: 1.5;
@@ -727,7 +751,7 @@ body {
 .vision { background: var(--or-fond); border-left: 3px solid var(--or); padding: 14px 18px 14px 18px; margin-top: auto; font-family: 'Quicksand', sans-serif; }
 .vision-eyebrow { font-size: 9px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--or); margin-bottom: 10px; display: inline-block; }
 .vision-title { font-size: 14px; font-weight: 600; color: var(--noir); margin: 4px 0 10px 0; letter-spacing: -0.2px; }
-.vision-quote { font-family: 'Georgia', serif; font-style: italic; font-size: 11px; line-height: 1.55; color: var(--gris-fonce); margin: 0 0 12px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
+.vision-quote { font-family: 'Quicksand', sans-serif; font-style: italic; font-size: 11px; line-height: 1.55; color: var(--gris-fonce); margin: 0 0 12px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
 .vision-quote::before { content: "« "; color: var(--or); font-size: 14px; font-weight: 600; }
 .vision-quote::after { content: " »"; color: var(--or); font-size: 14px; font-weight: 600; }
 .vision-author { font-size: 10px; color: var(--noir); display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line-light); padding-top: 8px; }
@@ -769,7 +793,7 @@ body {
 
     <div class="dos-body">
       <div>
-        <div class="dos-h">Parlons de votre actif</div>
+        <div class="dos-h">Contact</div>
         <div class="dos-bureau-card">
           <div class="dos-contact-name">Yannis Benbaouali</div>
           <div class="dos-contact-role">Président, IRIS Real Estate Partners</div>
@@ -798,7 +822,7 @@ body {
     </div>
 
     <div class="dos-foot">
-      <strong>IRIS Real Estate Partners</strong>. Société indépendante de conseil immobilier tertiaire. Les activités de transaction immobilière sont opérées par Galerie Carrez, société du groupe IRIS REP, titulaire de la Carte Professionnelle « Transaction sur immeubles et fonds de commerce » n°CPI37012026000000013, délivrée par la CCI de Touraine. Siège du groupe IRIS REP, 120 boulevard de Grenelle, 75015 Paris. © 2026 IRIS Real Estate Partners.
+      <strong>IRIS Real Estate Partners</strong>. Société indépendante de conseil immobilier tertiaire. Les activités de transaction immobilière sont opérées par Galerie Carrez, société du groupe IRIS REP, titulaire de la Carte Professionnelle « Transaction sur immeubles et fonds de commerce » n°CPI37012026000000013, délivrée par la CCI de Touraine. Responsabilité Civile Professionnelle souscrite auprès de Galian Assurances. Siège du groupe IRIS REP, 120 boulevard de Grenelle, 75015 Paris. © 2026 IRIS Real Estate Partners.
     </div>
   </div>
 
@@ -884,7 +908,7 @@ body {
           <div class="mission-dot">VI</div>
           <div class="mission-content">
             <h5>Mission Pilotage</h5>
-            <p>Mandat long terme, reporting trimestriel, portefeuilles 5 M€ et plus.</p>
+            <p>Mandat global de gestion du portefeuille, reporting trimestriel, supervision opérationnelle continue.</p>
           </div>
         </div>
       </div>
@@ -933,7 +957,7 @@ body {
 <div class="vision">
       <div class="vision-eyebrow">Notre vision</div>
       <h3 class="vision-title">Une approche responsable.</h3>
-      <blockquote class="vision-quote">Performance financière, exigence environnementale, innovation technique. Coordonner ces leviers pour valoriser l'usage et la valeur de chaque actif tertiaire que nous accompagnons.</blockquote>
+      <blockquote class="vision-quote">Performance financière, exigence environnementale, innovation et technique. Coordonner ces leviers pour valoriser l'usage et la valeur de chaque actif étudié.</blockquote>
       <div class="vision-author"><strong>Yannis Benbaouali</strong><span>Président, IRIS Real Estate Partners</span></div>
     </div>
   </div>
@@ -1002,10 +1026,7 @@ body {
       </div>
     </div>
 
-    <div class="visuel-bandeau" aria-label="Visuel à générer, voir prompt v2">
-      <img src="https://irisrep.com/assets/region-cvl-idf-BXIVDZ5O.jpg" alt="Centre-Val de Loire et Île-de-France">
-      <div class="visuel-legende">Île-de-France et Centre-Val de Loire. Deux régions, une expertise.</div>
-    </div>
+    
   </div>
 
 </div>
