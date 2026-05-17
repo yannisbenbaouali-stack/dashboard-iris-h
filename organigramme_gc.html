@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organigramme Galerie Carrez</title>
+<style>
+  :root {
+    --bg: #f5f3f0;
+    --card-bg: #ffffff;
+    --card-border: #e0ddd8;
+    --dark: #1a1a1a;
+    --dark-card: #2a2a2a;
+    --accent: #b8860b;
+    --text: #3a3a3a;
+    --text-light: #888;
+    --text-muted: #aaa;
+    --line: #c0bdb8;
+    --gc-color: #0d9488;
+    --gc-border: #0d9488;
+    --gc-bg: rgba(13, 148, 136, 0.06);
+    --shadow: 0 2px 16px rgba(0,0,0,0.06);
+    --shadow-hover: 0 8px 32px rgba(0,0,0,0.12);
+    --person-bg: #fafaf8;
+    --person-border: #d8d5d0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    background: var(--bg); color: var(--text);
+    min-height: 100vh; overflow-x: auto;
+  }
+
+  .header { text-align: center; padding: 36px 20px 8px; }
+  .header h1 { font-size: 26px; font-weight: 700; color: var(--dark); letter-spacing: -0.5px; }
+  .header p { font-size: 13px; color: var(--text-light); margin-top: 5px; }
+
+  .legend {
+    display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+    padding: 14px 20px 28px; font-size: 12px; color: var(--text-light);
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .legend-dot.holding { background: var(--dark-card); }
+  .legend-dot.person { background: var(--person-bg); border: 1.5px solid var(--person-border); }
+  .legend-dot.gc { background: var(--gc-bg); border: 2px solid var(--gc-border); }
+
+  .chart-wrapper { display: flex; justify-content: center; padding: 0 20px 40px; overflow-x: auto; }
+  .chart { position: relative; margin: 0 auto; }
+
+  .lines-svg { position: absolute; top: 0; left: 0; pointer-events: none; }
+
+  .node { position: absolute; transform: translateX(-50%); opacity: 0; animation: fadeIn 0.5s ease forwards; }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  .card {
+    background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 12px;
+    padding: 16px 20px; min-width: 170px; max-width: 210px; text-align: center;
+    box-shadow: var(--shadow); transition: box-shadow 0.2s, transform 0.2s; cursor: default;
+  }
+  .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+  .card.dark { background: var(--dark-card); border-color: var(--dark); }
+  .card.dark .entity-name { color: #fff; }
+  .card.dark .entity-type, .card.dark .entity-capital, .card.dark .entity-activity { color: #bbb; }
+  .card.person { background: var(--person-bg); border-color: var(--person-border); min-width: 140px; }
+  .card.gc-card {
+    border: 2px solid var(--gc-border);
+    background: var(--gc-bg);
+    min-width: 200px;
+  }
+  .card.gc-card .entity-name { color: var(--gc-color); }
+
+  .entity-name { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .entity-type { font-size: 12px; color: var(--text-light); }
+  .entity-capital { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .entity-activity { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+  .entity-siren { font-size: 10px; color: var(--text-muted); margin-top: 3px; font-family: monospace; }
+  .entity-loc { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  .person-svg { width: 18px; height: 18px; color: var(--text-light); }
+  .person-role { font-size: 10px; color: var(--text-muted); margin-top: 3px; font-style: italic; }
+
+  .pct-label { position: absolute; font-size: 11px; font-weight: 600; pointer-events: none; white-space: nowrap; color: var(--text-light); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Galerie Carrez</h1>
+  <p>Structure actionnariale</p>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot holding"></div> Holding</div>
+  <div class="legend-item"><div class="legend-dot person"></div> Personne physique</div>
+  <div class="legend-item"><div class="legend-dot gc"></div> Entité</div>
+</div>
+
+<div class="chart-wrapper">
+  <div class="chart" id="chart">
+    <svg class="lines-svg" id="linesSvg"></svg>
+  </div>
+</div>
+
+<script>
+const PERSON_ICON = `<svg class="person-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0112 0v1"/></svg>`;
+
+const CHART_W = 800;
+const CHART_H = 460;
+const chart = document.getElementById('chart');
+const svg = document.getElementById('linesSvg');
+
+chart.style.width = CHART_W + 'px';
+chart.style.height = CHART_H + 'px';
+svg.setAttribute('width', CHART_W);
+svg.setAttribute('height', CHART_H);
+
+const nodePos = {};
+
+function makeNode(id, opts) {
+  const { x, y, delay, name, forme, capital, activity, siren, loc, dark, person, gc, role, subtitle } = opts;
+  nodePos[id] = { cx: x, top: y };
+
+  const node = document.createElement('div');
+  node.className = 'node';
+  node.id = 'n-' + id;
+  node.style.left = x + 'px';
+  node.style.top = y + 'px';
+  node.style.animationDelay = (delay || 0) + 's';
+
+  let cls = 'card';
+  if (dark) cls += ' dark';
+  if (person) cls += ' person';
+  if (gc) cls += ' gc-card';
+
+  let h = `<div class="${cls}">`;
+  if (person) h += `<div class="entity-name">${PERSON_ICON}${name}</div>`;
+  else h += `<div class="entity-name">${name}</div>`;
+  if (role) h += `<div class="person-role">${role}</div>`;
+  if (forme) h += `<div class="entity-type">${forme}</div>`;
+  if (capital) h += `<div class="entity-capital">Capital : ${capital}</div>`;
+  if (activity) h += `<div class="entity-activity">${activity}</div>`;
+  if (siren) h += `<div class="entity-siren">SIREN ${siren}</div>`;
+  if (loc) h += `<div class="entity-loc">📍 ${loc}</div>`;
+  h += '</div>';
+
+  node.innerHTML = h;
+  chart.appendChild(node);
+}
+
+// Colonnes
+const colYannis  = 180;
+const colIrisH   = 180;
+const colChristian = 620;
+const colGC      = 400;
+
+// Ligne 1 : personnes physiques
+makeNode('yannis', { x: colYannis,   y: 0,   delay: 0.0, name: 'Yannis Benbaouali', role: 'Gérant IRIS H', person: true });
+makeNode('christian', { x: colChristian, y: 0, delay: 0.05, name: 'Christian Bonventre', role: 'DG Galerie Carrez', person: true });
+
+// Ligne 2 : IRIS H
+makeNode('irisH', { x: colIrisH, y: 210, delay: 0.2, name: 'IRIS H', forme: 'EURL', capital: '2 500 €', activity: 'Holding · Paris 15e', siren: '931541023', dark: true });
+
+// Ligne 3 : Galerie Carrez
+makeNode('gc', { x: colGC, y: 350, delay: 0.35, name: 'Galerie Carrez', forme: 'SAS', activity: 'Agence immobilière & Art · Tours', siren: '994934909', loc: '124 rue de Beaujardin, 37000 Tours', gc: true });
+
+function drawLine(x1, y1, x2, y2, color) {
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+  line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+  line.setAttribute('stroke', color || '#c0bdb8');
+  line.setAttribute('stroke-width', '1.5');
+  svg.appendChild(line);
+}
+
+function drawPct(text, x, y) {
+  const lbl = document.createElement('div');
+  lbl.className = 'pct-label';
+  lbl.textContent = text;
+  lbl.style.left = x + 'px';
+  lbl.style.top = y + 'px';
+  lbl.style.transform = 'translateX(-50%)';
+  chart.appendChild(lbl);
+}
+
+function cardH(id) { return document.getElementById('n-' + id).querySelector('.card').offsetHeight; }
+function topC(id)  { return { x: nodePos[id].cx, y: nodePos[id].top }; }
+function botC(id)  { return { x: nodePos[id].cx, y: nodePos[id].top + cardH(id) }; }
+
+setTimeout(() => {
+  // Yannis → IRIS H
+  const yB = botC('yannis');
+  const iT = topC('irisH');
+  drawLine(yB.x, yB.y, iT.x, iT.y, '#b8860b');
+  drawPct('100 %', (yB.x + iT.x) / 2 + 20, (yB.y + iT.y) / 2);
+
+  // IRIS H → Galerie Carrez
+  const iB = botC('irisH');
+  const gT = topC('gc');
+  drawLine(iB.x, iB.y, gT.x, gT.y, '#c0bdb8');
+
+  // Christian → Galerie Carrez
+  const cB = botC('christian');
+  drawLine(cB.x, cB.y, gT.x, gT.y, '#c0bdb8');
+
+}, 120);
+</script>
+
+</body>
+</html>
