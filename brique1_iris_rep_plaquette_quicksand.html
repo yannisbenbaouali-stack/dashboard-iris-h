@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRIS REP, plaquette institutionnelle, version Quicksand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* Justification généralisée des paragraphes */
+.qui-intro, .discipline-desc, .engagement, .sing-card p, .cycle-step p, .mission-content p, .typologie p, .dos-bureau-card p, .cta-text { text-align: justify; text-justify: inter-word; hyphens: auto; }
+
+
+/* Bandeau visuel imprimable */
+.visuel-bandeau { position: relative; margin: 18px 0 14px; border-left: 3px solid var(--or); overflow: hidden; }
+.visuel-bandeau img { display: block; width: 100%; height: 120px; object-fit: cover; filter: saturate(0.85) brightness(0.95); background: linear-gradient(135deg, #d4a64a 0%, #1a1a1a 100%); }
+.visuel-bandeau .visuel-legende { font-family: 'Georgia', serif; font-style: italic; font-size: 10px; color: var(--gris); padding: 8px 12px 0; line-height: 1.5; }
+/* ========================================================================
+   IRIS REAL ESTATE PARTNERS, plaquette v5
+   Source : audit complet de www.irisrep.com (toutes pages)
+   Verbatim, missions officielles, segmentation clients, mentions légales
+   Format : A3 paysage (420x297mm) plié central → 4 pages A4 portrait
+   ======================================================================== */
+
+:root {
+  --or: #b8860b;
+  --or-clair: #d4a64a;
+  --or-fond: #faf6ed;
+  --noir: #1a1a1a;
+  --noir-profond: #0d0d0d;
+  --gris-fonce: #2a2a2a;
+  --gris: #555;
+  --gris-clair: #888;
+  --ivoire: #f5f3f0;
+  --ivoire-clair: #fafaf8;
+  --blanc: #ffffff;
+  --line: #c0bdb8;
+  --line-light: #e6e2dc;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@page { size: A3 landscape; margin: 0; }
+
+body {
+  background: #d0cec9;
+  font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
+  color: var(--gris-fonce);
+  -webkit-font-smoothing: antialiased;
+  padding: 30px 20px;
+  min-height: 100vh;
+  font-weight: 400;
+}
+
+.viewer-info {
+  max-width: 1180px;
+  margin: 0 auto 24px;
+  background: var(--blanc);
+  padding: 20px 28px;
+  border-radius: 10px;
+  border-left: 4px solid var(--or);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--gris);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.viewer-info h3 { font-size: 15px; color: var(--noir); margin-bottom: 6px; font-weight: 600; }
+.viewer-info strong { color: var(--noir); }
+.print-btn {
+  display: inline-block;
+  margin-top: 12px;
+  background: var(--noir);
+  color: #fff;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+.print-btn:hover { background: var(--or); }
+
+.sheet {
+  width: 1180px;
+  height: 836px;
+  margin: 0 auto 30px;
+  background: var(--ivoire);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  position: relative;
+  display: flex;
+  overflow: hidden;
+}
+.sheet::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(0,0,0,0.06);
+  z-index: 50;
+}
+.panel { flex: 1; position: relative; overflow: hidden; }
+
+/* ============================================================
+   COUVERTURE
+   ============================================================ */
+.couv {
+  background: var(--noir-profond);
+  color: var(--ivoire-clair);
+  position: relative;
+}
+.couv-photo {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=2400&h=1600&fit=crop&q=85&auto=format'); /* Unsplash, architecture institutionnelle */
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.6) brightness(0.8);
+}
+.couv-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(13,13,13,0.45) 0%,
+    rgba(13,13,13,0.65) 50%,
+    rgba(13,13,13,0.95) 100%);
+}
+.couv-content {
+  position: relative; z-index: 2;
+  height: 100%;
+  padding: 48px 52px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.couv-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.couv-logo { height: 64px; }
+.couv-logo img { height: 100%; width: auto; display: block; }
+.couv-tag-top {
+  text-align: right;
+  font-size: 9.5px;
+  letter-spacing: 3.5px;
+  color: rgba(245,243,240,0.7);
+  text-transform: uppercase;
+  font-weight: 500;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+.couv-mid { position: relative; }
+.couv-rule { width: 56px; height: 1.5px; background: var(--or); margin-bottom: 26px; }
+.couv-slogan {
+  font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
+  font-size: 68px;
+  line-height: 1.0;
+  letter-spacing: -1.8px;
+  font-weight: 500;
+  color: var(--ivoire-clair);
+  margin-bottom: 18px;
+}
+.couv-slogan .it {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--or);
+}
+.couv-sub {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.55;
+  color: rgba(250,250,248,0.85);
+  max-width: 480px;
+}
+
+.couv-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+.couv-meta {
+  font-size: 9.5px;
+  letter-spacing: 2.5px;
+  color: rgba(245,243,240,0.55);
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+.couv-meta strong { color: var(--or); font-weight: 600; }
+.couv-cta {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--or);
+  text-transform: uppercase;
+  font-weight: 600;
+  border-bottom: 1.5px solid var(--or);
+  padding-bottom: 4px;
+}
+
+/* ============================================================
+   DOS
+   ============================================================ */
+.dos {
+  background: var(--ivoire);
+  padding: 44px 50px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+.dos::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--noir);
+  z-index: 3;
+}
+
+.dos-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+.dos-logo { height: 48px; }
+.dos-logo img { height: 100%; width: auto; }
+.dos-tagline {
+  font-size: 9px;
+  letter-spacing: 2.8px;
+  color: var(--noir);
+  text-transform: uppercase;
+  font-weight: 600;
+  max-width: 360px;
+  line-height: 1.55;
+}
+
+.dos-body { display: flex; flex-direction: column; gap: 18px; }
+.dos-h {
+  font-size: 9px;
+  letter-spacing: 2.6px;
+  text-transform: uppercase;
+  color: var(--or);
+  font-weight: 600;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--or);
+  margin-bottom: 10px;
+}
+
+.dos-bureau-card {
+  background: var(--blanc);
+  padding: 12px 14px;
+  border-left: 3px solid var(--or);
+}
+.dos-bureau-card h4 {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--noir);
+  letter-spacing: 1.6px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+.dos-bureau-card p {
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--gris);
+}
+.dos-bureau-card p em { color: var(--or); font-style: normal; font-weight: 500; font-size: 10.5px; }
+
+.dos-contact-name { font-size: 14px; font-weight: 600; color: var(--noir); margin-bottom: 2px; }
+.dos-contact-role {
+  font-size: 9px;
+  color: var(--or);
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.dos-contact-info { font-size: 11px; line-height: 1.65; color: var(--gris); margin-bottom: 6px; }
+.dos-contact-info strong { color: var(--noir); font-weight: 600; }
+.dos-contact-bio {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: var(--gris-fonce);
+  padding-top: 8px;
+  border-top: 1px solid var(--line-light);
+}
+
+.dos-qr {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.dos-qr-box {
+  width: 58px; height: 58px;
+  background: repeating-conic-gradient(var(--noir) 0% 25%, transparent 0% 50%) 50% / 9px 9px;
+  border: 1.5px solid var(--noir);
+  flex-shrink: 0;
+  position: relative;
+}
+.dos-qr-box::after {
+  content: "QR";
+  position: absolute;
+  inset: 30%;
+  background: var(--ivoire);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 600;
+  color: var(--noir);
+}
+.dos-qr-text { font-size: 10.5px; line-height: 1.55; color: var(--gris); }
+.dos-qr-text strong { color: var(--noir); display: block; font-size: 11.5px; margin-bottom: 2px; font-weight: 600; }
+
+.dos-foot {
+  font-size: 8.5px;
+  color: var(--gris-clair);
+  letter-spacing: 0.5px;
+  line-height: 1.7;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+.dos-foot strong { color: var(--noir); font-weight: 600; }
+
+/* ============================================================
+   PAGE 2 — Notre maison
+   ============================================================ */
+.qui {
+  background: var(--ivoire);
+  padding: 44px 50px 38px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.qui::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--or);
+  z-index: 3;
+}
+
+.section-num {
+  font-size: 9px;
+  letter-spacing: 3.5px;
+  color: var(--or);
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--noir);
+  line-height: 1.08;
+  letter-spacing: -0.8px;
+  margin-bottom: 10px;
+}
+.section-title .it {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--or);
+}
+.section-rule { width: 48px; height: 1.5px; background: var(--or); margin-bottom: 18px; }
+
+.qui-intro {
+  font-family: 'Georgia', serif;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--gris-fonce);
+  margin-bottom: 16px;
+  text-align: justify;
+  hyphens: auto;
+}
+.qui-intro strong {
+  color: var(--noir);
+  font-weight: 600;
+  font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
+  font-style: normal;
+}
+
+
+.sing-title { font-size: 10px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--or); margin: 8px 0 14px 0; }
+.singularites {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.sing-card { padding: 0 10px 0 0; border-right: 1px solid var(--line-light); }
+.sing-card:last-child { border-right: none; }
+.sing-num {
+  font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  color: var(--or);
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.sing-card h4 {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--noir);
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+.sing-card p { font-size: 10px; line-height: 1.5; color: var(--gris); }
+
+.cycle-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--or);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.cycle-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 14px;
+}
+.cycle-step { padding: 12px 8px 10px 0; border-right: 1px solid var(--line); }
+.cycle-step:last-child { border-right: none; padding-right: 0; }
+.cycle-step:not(:first-child) { padding-left: 8px; }
+.cycle-num {
+  font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
+  font-size: 20px;
+  color: var(--or);
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+.cycle-step h4 {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--noir);
+  margin-bottom: 3px;
+}
+.cycle-step p { font-size: 9px; line-height: 1.4; color: var(--gris); }
+
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line-light);
+}
+.timeline-label {
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  color: var(--or);
+  font-weight: 600;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+.timeline-items { display: flex; gap: 14px; flex: 1; justify-content: space-between; }
+.timeline-item { text-align: center; }
+.timeline-year {
+  font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  color: var(--noir);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.timeline-item p { font-size: 8.5px; line-height: 1.3; color: var(--gris); }
+
+
+.vision { background: var(--or-fond); border-left: 3px solid var(--or); padding: 14px 18px 14px 18px; margin-top: auto; font-family: 'Quicksand', sans-serif; }
+.vision-eyebrow { font-size: 9px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--or); margin-bottom: 10px; display: inline-block; }
+.vision-title { font-size: 14px; font-weight: 600; color: var(--noir); margin: 4px 0 10px 0; letter-spacing: -0.2px; }
+.vision-quote { font-family: 'Georgia', serif; font-style: italic; font-size: 11px; line-height: 1.55; color: var(--gris-fonce); margin: 0 0 12px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
+.vision-quote::before { content: "« "; color: var(--or); font-size: 14px; font-weight: 600; }
+.vision-quote::after { content: " »"; color: var(--or); font-size: 14px; font-weight: 600; }
+.vision-author { font-size: 10px; color: var(--noir); display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line-light); padding-top: 8px; }
+.vision-author strong { font-weight: 700; letter-spacing: 0.3px; }
+.vision-author span { font-size: 8.5px; color: var(--gris); letter-spacing: 1.2px; text-transform: uppercase; }
+
+.engagement {
+  background: var(--or-fond);
+  border-left: 3px solid var(--or);
+  padding: 12px 16px;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--gris-fonce);
+  margin-top: auto;
+}
+.engagement strong {
+  display: block;
+  font-style: normal;
+  font-size: 9px;
+  color: var(--or);
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
+}
+
+/* ============================================================
+   PAGE 3 — Notre offre
+   ============================================================ */
+.services {
+  background: var(--blanc);
+  padding: 44px 50px 36px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.services::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--noir);
+  z-index: 3;
+}
+
+.typologies {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-bottom: 16px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.typologie { padding: 0 10px 0 0; border-right: 1px solid var(--line-light); }
+.typologie:last-child { border-right: none; }
+.typologie h5 {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--noir);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+}
+.typologie p { font-size: 8.5px; line-height: 1.4; color: var(--gris); }
+
+.discipline-block {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.discipline-block:last-of-type { border-bottom: none; padding-bottom: 6px; }
+.discipline-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.discipline-num {
+  font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
+  font-size: 18px;
+  color: var(--or);
+  font-weight: 500;
+  letter-spacing: -0.4px;
+}
+.discipline-head h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--noir);
+  letter-spacing: -0.1px;
+}
+.discipline-baseline {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 10.5px;
+  color: var(--or);
+  margin-bottom: 6px;
+}
+.discipline-desc {
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--gris);
+  margin-bottom: 10px;
+}
+
+.missions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px 12px;
+}
+.mission-item {
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+}
+.mission-dot {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--or-fond);
+  border: 1px solid var(--or);
+  color: var(--or);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8.5px;
+  font-weight: 600;
+  font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
+}
+.mission-content h5 {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--noir);
+  margin-bottom: 1px;
+  letter-spacing: 0;
+}
+.mission-content p { font-size: 8.5px; line-height: 1.4; color: var(--gris); }
+
+.missions-grid.steps4 { grid-template-columns: repeat(4, 1fr); }
+
+.cta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  margin-top: auto;
+}
+.cta-text {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--gris-fonce);
+  max-width: 64%;
+}
+.cta-text strong {
+  color: var(--noir);
+  font-style: normal;
+  font-weight: 600;
+  font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
+}
+.cta-btn {
+  background: var(--or);
+  color: var(--blanc);
+  padding: 10px 18px;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   PRINT, A3 paysage 420x297 mm
+   ============================================================ */
+@media print {
+  body { background: white; padding: 0; margin: 0; }
+  .viewer-info { display: none !important; }
+  .sheet {
+    width: 420mm;
+    height: 297mm;
+    margin: 0;
+    box-shadow: none;
+    page-break-after: always;
+  }
+  .sheet:last-child { page-break-after: avoid; }
+  .sheet::before { display: none; }
+  .panel { padding: 0; }
+
+  .couv-content { padding: 20mm 22mm 18mm; }
+  .couv-logo { height: 24mm; }
+  .couv-tag-top { font-size: 11px; letter-spacing: 4px; max-width: 320px; }
+  .couv-slogan { font-size: 92px; letter-spacing: -2.5px; }
+  .couv-sub { font-size: 17px; max-width: 560px; }
+  .couv-meta { font-size: 11px; letter-spacing: 3px; }
+  .couv-cta { font-size: 12px; letter-spacing: 3.5px; }
+
+  .dos { padding: 16mm 18mm 14mm; }
+  .dos-logo { height: 18mm; }
+  .dos-tagline { font-size: 10.5px; letter-spacing: 3.2px; max-width: 380px; }
+  .dos-h { font-size: 10.5px; letter-spacing: 3px; }
+  .dos-bureau-card h4 { font-size: 13px; letter-spacing: 1.8px; }
+  .dos-bureau-card p { font-size: 12.5px; }
+  .dos-bureau-card p em { font-size: 12px; }
+  .dos-contact-name { font-size: 17px; }
+  .dos-contact-role { font-size: 10.5px; letter-spacing: 2.2px; }
+  .dos-contact-info { font-size: 13px; }
+  .dos-contact-bio { font-size: 12.5px; }
+  .dos-qr-text { font-size: 12.5px; }
+  .dos-qr-text strong { font-size: 14px; }
+  .dos-foot { font-size: 10px; }
+
+  .qui { padding: 16mm 18mm 14mm; }
+  .services { padding: 16mm 18mm 14mm; }
+  .section-num { font-size: 10.5px; letter-spacing: 4px; }
+  .section-title { font-size: 38px; letter-spacing: -1px; }
+  .qui-intro { font-size: 14.5px; }
+  .sing-num { font-size: 17px; }
+  .sing-card h4 { font-size: 12.5px; letter-spacing: 1.3px; }
+  .sing-card p { font-size: 11.5px; }
+  .cycle-label { font-size: 10.5px; letter-spacing: 3.5px; }
+  .cycle-num { font-size: 26px; }
+  .cycle-step h4 { font-size: 13.5px; }
+  .cycle-step p { font-size: 10.5px; }
+  .timeline-label { font-size: 10.5px; letter-spacing: 3px; }
+  .timeline-year { font-size: 15px; }
+  .timeline-item p { font-size: 10px; }
+  
+.vision { background: var(--or-fond); border-left: 3px solid var(--or); padding: 14px 18px 14px 18px; margin-top: auto; font-family: 'Quicksand', sans-serif; }
+.vision-eyebrow { font-size: 9px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--or); margin-bottom: 10px; display: inline-block; }
+.vision-title { font-size: 14px; font-weight: 600; color: var(--noir); margin: 4px 0 10px 0; letter-spacing: -0.2px; }
+.vision-quote { font-family: 'Georgia', serif; font-style: italic; font-size: 11px; line-height: 1.55; color: var(--gris-fonce); margin: 0 0 12px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
+.vision-quote::before { content: "« "; color: var(--or); font-size: 14px; font-weight: 600; }
+.vision-quote::after { content: " »"; color: var(--or); font-size: 14px; font-weight: 600; }
+.vision-author { font-size: 10px; color: var(--noir); display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line-light); padding-top: 8px; }
+.vision-author strong { font-weight: 700; letter-spacing: 0.3px; }
+.vision-author span { font-size: 8.5px; color: var(--gris); letter-spacing: 1.2px; text-transform: uppercase; }
+
+.engagement { font-size: 14px; padding: 16px 20px; }
+  .engagement strong { font-size: 10.5px; letter-spacing: 2.2px; }
+
+  .typologie h5 { font-size: 12px; letter-spacing: 1.2px; }
+  .typologie p { font-size: 10px; }
+  .discipline-num { font-size: 26px; }
+  .discipline-head h4 { font-size: 19px; }
+  .discipline-baseline { font-size: 13px; }
+  .discipline-desc { font-size: 12px; }
+  .mission-dot { width: 22px; height: 22px; font-size: 10.5px; }
+  .mission-content h5 { font-size: 12px; }
+  .mission-content p { font-size: 10.5px; }
+  .cta-text { font-size: 13.5px; }
+  .cta-btn { font-size: 11px; padding: 12px 22px; letter-spacing: 2.2px; }
+}
+</style>
+</head>
+<body>
+
+<div class="viewer-info">
+  <h3>IRIS REP, plaquette commerciale v5, audit complet site officiel</h3>
+  <p>Format A3 paysage (420 x 297 mm), pliée au milieu, 4 pages A4 portrait. Plaquette IRIS Real Estate Partners alignée stratégie brique 1. Deux lignes, Investment Management (six missions Audit, ESG et Décret Tertiaire, Travaux et Capex, Conseil Acquisition, Structuration Patrimoniale, Pilotage) et Conseil en immobilier d'entreprise (cycle complet en cinq temps). Cible patrimoniale prioritaire foncières familiales tertiaires Île de France et Centre Val de Loire et family offices régionaux non structurés. Carte T CPI37012026000000013 délivrée CCI Touraine. Pour imprimer, bouton ci dessous ou Ctrl + P.</p>
+  <button class="print-btn" onclick="window.print()">Imprimer en PDF</button>
+</div>
+
+<!-- ============================================================
+     FEUILLE 1 RECTO : DOS (gauche) + COUVERTURE (droite)
+     ============================================================ -->
+<div class="sheet">
+
+  <!-- DOS, page 4 -->
+  <div class="panel dos">
+    <div class="dos-head">
+      <div class="dos-logo">
+        <img src="https://raw.githubusercontent.com/yannisbenbaouali-stack/dashboard-iris-h/main/assets/logos/iris_rep/2_couleur_fond_transparent.png" alt="IRIS Real Estate Partners">
+      </div>
+      <div class="dos-tagline">Île de France et Centre Val de Loire</div>
+    </div>
+
+    <div class="dos-body">
+      <div>
+        <div class="dos-h">Parlons de votre actif</div>
+        <div class="dos-bureau-card">
+          <div class="dos-contact-name">Yannis Benbaouali</div>
+          <div class="dos-contact-role">Président, IRIS Real Estate Partners</div>
+          <div class="dos-contact-info">
+            <strong>06 82 27 91 90</strong><br>
+            yb@irisrep.com
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="dos-h">Nos bureaux</div>
+        <div class="dos-bureau-card">
+          <h4>Paris</h4>
+          <p>120 boulevard de Grenelle, 75015 Paris<br><em>Siège du groupe IRIS REP</em></p>
+        </div>
+        <div class="dos-bureau-card">
+          <h4>Tours</h4>
+          <p>124 rue de Beaujardin, 37000 Tours</p>
+        </div>
+        <div class="dos-bureau-card">
+          <h4>Orléans</h4>
+          <p><em style="color: var(--noir); font-style: italic;">Ouverture T4 2026</em></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="dos-foot">
+      <strong>IRIS Real Estate Partners</strong>. Société indépendante de conseil immobilier tertiaire. Titulaire par sa filiale Galerie Carrez de la Carte Professionnelle de « Transaction sur immeubles et fonds de commerce » délivrée par la CCI, n°CPI37012026000000013. Siège du groupe IRIS REP, 120 boulevard de Grenelle, 75015 Paris. © 2026 IRIS Real Estate Partners.
+    </div>
+  </div>
+
+  <!-- COUVERTURE, page 1 -->
+  <div class="panel couv">
+    <div class="couv-photo"></div>
+    <div class="couv-overlay"></div>
+    <div class="couv-content">
+      <div class="couv-top">
+        <div class="couv-logo">
+          <img src="https://raw.githubusercontent.com/yannisbenbaouali-stack/dashboard-iris-h/main/assets/logos/iris_rep/6_blanc_fond_transparent.png" alt="IRIS Real Estate Partners">
+        </div>
+        
+      </div>
+
+      <div class="couv-mid">
+        <div class="couv-rule"></div>
+        <h1 class="couv-slogan">Réunir,<br>Créer,<br><span class="it">Investir.</span></h1>
+        <p class="couv-sub">Conseil, investissement et asset management tertiaire. Île-de-France et Centre-Val de Loire. Pour propriétaires privés et investisseurs institutionnels.</p>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     FEUILLE 1 VERSO : DOUBLE PAGE INTÉRIEURE
+     ============================================================ -->
+<div class="sheet">
+
+    <!-- PAGE 2, notre offre -->
+  <div class="panel services">
+    <div class="section-num">Notre offre</div>
+
+  <!-- PAGE 3, notre signature -->
+  <div class="panel qui">
+    <div class="section-num">Notre signature</div>
+    <h2 class="section-title">Deux régions,<br><span class="it">une expertise.</span></h2>
+    <div class="section-rule"></div>
+
+    <p class="qui-intro">
+      <strong>IRIS Real Estate Partners</strong> est une société indépendante de conseil immobilier tertiaire. Nous accompagnons investisseurs institutionnels, propriétaires privés et entreprises locataires sur l'ensemble du cycle de vie de leur patrimoine immobilier en Île-de-France et région Centre-Val de Loire.
+    </p>
+
+    <div class="sing-title">Notre singularité.</div>
+    <div class="singularites">
+      <div class="sing-card">
+        <div class="sing-num">01</div>
+        <h4>Un réseau régional ancré</h4>
+        <p>15 ans de présence sur le territoire Centre-Val de Loire, des notaires et des banques régionales partenaires, des relations directes avec les propriétaires institutionnels et familiaux locaux. Une connaissance du terrain à Tours, Orléans, Blois ou Bourges que nous avons construite lentement, et que nous cherchons chaque jour à mériter.</p>
+      </div>
+      <div class="sing-card">
+        <div class="sing-num">02</div>
+        <h4>Le off-market comme leitmotiv</h4>
+        <p>Disposant d'un réseau étendu et local, nous sommes en capacité d'identifier en off-market des opportunités d'investissement, de cession et de commercialisation au travers des partenaires clés, et des montages structurés sécurisant l'opération.</p>
+      </div>
+      <div class="sing-card">
+        <div class="sing-num">03</div>
+        <h4>BYM Construction, partenaire natif</h4>
+        <p>Notre société travaux certifiée RGE, couvre l'ensemble du cycle technique des actifs, rénovation lourde, repositionnement, mise aux normes énergétiques, second œuvre, maintenance et entretien courant. Un seul partenaire pour valoriser, entretenir et maintenir le patrimoine sur la durée.</p>
+      </div>
+    </div>
+
+    <div class="cycle-label">Un cycle complet, cinq temps</div>
+    <div class="cycle-grid">
+      <div class="cycle-step">
+        <div class="cycle-num">I</div>
+        <h4>Auditer</h4>
+        <p>Évaluer la performance et la conformité de votre patrimoine.</p>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-num">II</div>
+        <h4>Valoriser</h4>
+        <p>Repositionner, rénover, optimiser la valeur de vos actifs.</p>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-num">III</div>
+        <h4>Investir</h4>
+        <p>Acquérir les bons actifs, au bon moment, sur le bon territoire.</p>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-num">IV</div>
+        <h4>Commercialiser</h4>
+        <p>Louer, vendre, sécuriser la liquidité de vos immeubles.</p>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-num">V</div>
+        <h4>Arbitrer</h4>
+        <p>Décider de la sortie au moment optimal du cycle.</p>
+      </div>
+    </div>
+
+<div class="cta" style="text-align: center;">
+      <div class="cta-text" style="text-align: center;">
+        Découvrez l'ensemble de nos opportunités à l'acquisition, cession et location sur <a href="https://www.irisrep.com" style="color: var(--or); text-decoration: none; font-weight: 600;">www.irisrep.com</a>
+      </div>
+    </div>
+
+    <div class="visuel-bandeau" aria-label="Visuel à générer, voir prompt v2">
+      <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=2400&h=400&fit=crop&q=85&auto=format" alt="Panorama urbain Paris haussmann">
+      <div class="visuel-legende">Tours, Orléans, Paris. Trois géographies tertiaires, une lecture commune.</div>
+    </div>
+  </div>
+    <h2 class="section-title">Deux missions,<br><span class="it">une discipline.</span></h2>
+    <div class="section-rule"></div>
+
+    <!-- DISCIPLINE 01 IM -->
+    <div class="discipline-block">
+      <div class="discipline-head">
+        <div class="discipline-num">01</div>
+        <h4>Investment Management</h4>
+      </div>
+      <div class="discipline-baseline">Asset advisory et asset management pour compte de tiers.</div>
+      <div class="discipline-desc">L'immobilier tertiaire à hauteur d'objectifs. Nous pérennisons, rentabilisons et valorisons votre patrimoine immobilier tertiaire en cohérence avec vos objectifs financiers, juridiques et fiscaux. Six missions, du diagnostic ponctuel au mandat de pilotage long terme.</div>
+      <div class="missions-grid">
+        <div class="mission-item">
+          <div class="mission-dot">I</div>
+          <div class="mission-content">
+            <h5>Mission Audit</h5>
+            <p>Audit complet de portefeuille livré en 30 jours. Plan d'action priorisé.</p>
+          </div>
+        </div>
+        <div class="mission-item">
+          <div class="mission-dot">II</div>
+          <div class="mission-content">
+            <h5>Mission ESG et Décret Tertiaire</h5>
+            <p>Plan énergétique 5 et 10 ans, labels BREEAM et HQE.</p>
+          </div>
+        </div>
+        <div class="mission-item">
+          <div class="mission-dot">III</div>
+          <div class="mission-content">
+            <h5>Mission Travaux et Capex</h5>
+            <p>Pilotage rénovation et repositionnement, partenariat BYM Construction.</p>
+          </div>
+        </div>
+        <div class="mission-item">
+          <div class="mission-dot">IV</div>
+          <div class="mission-content">
+            <h5>Mission Conseil Acquisition</h5>
+            <p>Sourcing off market, due diligence, structuration, négociation.</p>
+          </div>
+        </div>
+        <div class="mission-item">
+          <div class="mission-dot">V</div>
+          <div class="mission-content">
+            <h5>Mission Structuration Patrimoniale</h5>
+            <p>SCI, démembrement, optimisation IFI, transmission.</p>
+          </div>
+        </div>
+        <div class="mission-item">
+          <div class="mission-dot">VI</div>
+          <div class="mission-content">
+            <h5>Mission Pilotage</h5>
+            <p>Mandat long terme, reporting trimestriel, portefeuilles 5 M€ et plus.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DISCIPLINE 02 CONSEIL -->
+    <div class="discipline-block">
+      <div class="discipline-head">
+        <div class="discipline-num">02</div>
+        <h4>Conseil en immobilier d'entreprise</h4>
+      </div>
+      <div class="discipline-baseline">Transaction, commercialisation et conseil sur mesure.</div>
+      <div class="discipline-desc">Nous sourçons, négocions et concluons les transactions tertiaires de nos clients, en exploitant un réseau régional construit sur 15 ans de présence locale. Un cycle continu, quatre temps qui s'enchaînent et se renouvellent.</div>
+      <div class="missions-grid steps4">
+        <div class="mission-item">
+          <div class="mission-dot">I</div>
+          <div class="mission-content">
+            <h5>Conseil et sourcing</h5>
+            <p>Stratégie patrimoniale, identification off market, mobilisation du réseau régional.</p>
+          </div>
+        </div>
+        <div class="mission-item">
+          <div class="mission-dot">II</div>
+          <div class="mission-content">
+            <h5>Acquisition d'immeubles</h5>
+            <p>Due diligence, négociation, sécurisation des conditions suspensives, signature.</p>
+          </div>
+        </div>
+        <div class="mission-item">
+          <div class="mission-dot">III</div>
+          <div class="mission-content">
+            <h5>Location</h5>
+            <p>Recherche locataires qualifiés, négociation et rédaction de baux commerciaux.</p>
+          </div>
+        </div>
+        <div class="mission-item">
+          <div class="mission-dot">IV</div>
+          <div class="mission-content">
+            <h5>Vente</h5>
+            <p>Valorisation, sourcing acquéreurs, du off market discret à la commercialisation ouverte.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="vision">
+      <div class="vision-eyebrow">Notre vision</div>
+      <h3 class="vision-title">Une approche responsable.</h3>
+      <blockquote class="vision-quote">L'approche d'IRIS Real Estate Partners conjugue performance financière, exigence environnementale, innovation technique et coordination des acteurs d'un projet immobilier afin de valoriser l'usage pour les preneurs et d'optimiser la valeur pour les investisseurs.</blockquote>
+      <div class="vision-author"><strong>Yannis Benbaouali</strong><span>Président, IRIS Real Estate Partners</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="viewer-info" style="margin-top: 30px;">
+  <h3>Notes de production v5</h3>
+  <p><strong>Référence</strong> : version alignée stratégie brique 1 IRIS REP, mai 2026. Slogan Réunir Créer Investir. Deux lignes, Investment Management (six missions) et Conseil en immobilier d'entreprise (cycle cinq temps). Cible patrimoniale prioritaire foncières familiales tertiaires Île de France et Centre Val de Loire et family offices régionaux. Carte T CPI37012026000000013.</p>
+  <p><strong>Contact mis à jour</strong> : yb@irisrep.com et 06 82 27 91 90 (numéro réel récupéré du site, plus de placeholder). Yannis = Président, plus Fondateur.</p>
+  <p><strong>Finitions imprimeur</strong> : 250 g/m² couché mat, pli central, vernis sélectif sur logo de couverture et numéro romains des missions.</p>
+</div>
+
+</body>
+</html>
