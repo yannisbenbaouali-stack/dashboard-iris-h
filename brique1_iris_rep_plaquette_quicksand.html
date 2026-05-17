@@ -99,18 +99,6 @@ body {
   background: rgba(0,0,0,0.06);
   z-index: 50;
 }
-.sheet-interior::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url('https://irisrep.com/assets/region-cvl-idf-BXIVDZ5O.jpg');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.20;
-  pointer-events: none;
-  z-index: 1;
-  mix-blend-mode: multiply;
-}
 .panel { z-index: 2; }
 .vision { position: relative; }
 .panel { flex: 1; position: relative; overflow: hidden; }
@@ -219,7 +207,9 @@ body {
    DOS
    ============================================================ */
 .dos {
-  background: var(--ivoire);
+  background:
+    linear-gradient(rgba(245,243,240,0.84), rgba(245,243,240,0.84)),
+    url('https://irisrep.com/assets/region-cvl-idf-BXIVDZ5O.jpg') center/cover no-repeat;
   padding: 44px 50px 36px;
   display: flex;
   flex-direction: column;
@@ -344,13 +334,14 @@ body {
    PAGE 2 — Notre maison
    ============================================================ */
 .qui {
-  background: var(--ivoire);
+  background:
+    linear-gradient(rgba(245,243,240,0.84), rgba(245,243,240,0.84)),
+    url('https://irisrep.com/assets/region-cvl-idf-BXIVDZ5O.jpg') right center / 200% 100% no-repeat;
   padding: 44px 50px 38px;
   position: relative;
   display: flex;
   flex-direction: column;
 }
-.sheet-interior .qui { background: transparent; }
 .qui::before {
   content: "";
   position: absolute;
@@ -535,13 +526,14 @@ body {
    PAGE 3 — Notre offre
    ============================================================ */
 .services {
-  background: var(--blanc);
+  background:
+    linear-gradient(rgba(255,255,255,0.84), rgba(255,255,255,0.84)),
+    url('https://irisrep.com/assets/region-cvl-idf-BXIVDZ5O.jpg') left center / 200% 100% no-repeat;
   padding: 44px 50px 36px;
   position: relative;
   display: flex;
   flex-direction: column;
 }
-.sheet-interior .services { background: transparent; }
 .services::before {
   content: "";
   position: absolute;
@@ -841,7 +833,7 @@ body {
 <!-- ============================================================
      FEUILLE 1 VERSO : DOUBLE PAGE INTÉRIEURE
      ============================================================ -->
-<div class="sheet sheet-interior">
+<div class="sheet">
 
   <!-- PAGE 2, notre offre -->
   <div class="panel services">
