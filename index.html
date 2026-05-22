@@ -1023,7 +1023,7 @@ function renderDeals(){
   const entIco=e=>({BYM:'🏗️','Urban Rise':'🏠',URBAN_RISE:'🏠','IRIS REP':'🔍',IRIS_REP:'🔍',ARRISTO:'🤝','IRIS H':'🏛️',IRIS_H:'🏛️','Galerie Carrez':'🎨',GALERIE_CARREZ:'🎨',RIR:'⚡'}[e]||'📋');
   document.getElementById('deals-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr>${cols.map(c=>{let cls='';if(dealsSortCol===c.k)cls=dealsSortDir==='asc'?' ▲':' ▼';return`<th style="cursor:pointer" onclick="sortDeals('${c.k}')">${c.l}${cls}</th>`}).join('')}</tr></thead><tbody>
   ${deals.length?deals.map(d=>{const canVitrine=isVitrinable(d);let vCell='';if(canVitrine){const vVente=(data.vitrines||[]).find(x=>x.deal_id===d.id&&x.annonce_type==='vente');const vCommer=(data.vitrines||[]).find(x=>x.deal_id===d.id&&x.annonce_type==='commercialisation');const statDot=(v,lbl)=>{if(!v)return'';const c={brouillon:'#999',publie:'#41c98e',archive:'#fb923c'}[v.statut_publication]||'#999';const sl={brouillon:'Brouillon',publie:'Publié',archive:'Archivé'}[v.statut_publication]||'?';return`<span style=\"width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;flex-shrink:0\" title=\"${lbl} · ${sl}\"></span>`};const btnVente=d.vitrine_vente_actif?`<div style=\"display:flex;align-items:center;gap:3px\">${statDot(vVente,'Vente')}<button class=\"fbtn\" style=\"font-size:10px;padding:2px 6px;background:var(--green-bg);color:#1a8a4a;border-color:#c5e8d1\" onclick=\"openVitrineModal('${d.id}','vente')\" title=\"Éditer annonce vente\">Vente ✏️</button><button class=\"fbtn\" style=\"font-size:10px;padding:2px 5px;background:#fee;color:#c62828;border-color:#f5c6c6\" onclick=\"quickDeactivateVitrine('${d.id}','vente')\">🔕</button></div>`:`<button class=\"fbtn\" style=\"font-size:10px;padding:2px 8px;background:rgba(91,155,213,0.1);color:var(--blue);border-color:var(--blue)\" onclick=\"activateVitrine('${d.id}','vente')\">Vente</button>`;const btnCommer=d.vitrine_commer_actif?`<div style=\"display:flex;align-items:center;gap:3px\">${statDot(vCommer,'Commerc.')}<button class=\"fbtn\" style=\"font-size:10px;padding:2px 6px;color:#3C3489\" onclick=\"openVitrineModal('${d.id}','commercialisation')\" title=\"Éditer annonce commercialisation\">Commerc. ✏️</button><button class=\"fbtn\" style=\"font-size:10px;padding:2px 5px;background:#fee;color:#c62828;border-color:#f5c6c6\" onclick=\"quickDeactivateVitrine('${d.id}','commercialisation')\">🔕</button></div>`:`<button class=\"fbtn\" style=\"font-size:10px;padding:2px 8px;background:rgba(127,119,221,0.1);color:#3C3489;border-color:#a095e0\" onclick=\"activateVitrine('${d.id}','commercialisation')\">Commerc.</button>`;vCell=`<div style=\"display:flex;flex-direction:column;gap:4px\">${btnVente}${btnCommer}</div>`}const isBymChantier=d.entite==='BYM'&&['travaux','demarre','sous_promesse','attente_validation','compromis','acte'].includes(d.etape);
-return`<tr style=\"background:${isBymChantier?'rgba(91,155,213,0.04)':''};\" ${isBymChantier?`onclick=\"openChantierModal('${d.code}','${(d.nom||'').replace(/\"/g,'').replace(/`/g,'')}')\" title=\"Cliquer pour ouvrir la fiche chantier\"`:''} ><td><a href=\"#\" onclick=\"goToTodoForDeal('${d.code||''}');return false\" style=\"color:var(--blue);font-weight:600;text-decoration:none;font-size:12px\" title=\"Voir les tâches ${d.code}\">${d.code||''}</a></td><td class=\"td-name\">${entIco(d.entite)} ${d.nom||''}</td><td>${eBadge(d.entite)}</td><td>${DL[d.type]||d.type||''}</td><td>${etBadge(d.etape)}</td><td style=\"color:var(--green);font-weight:500\">${fmt(d.montant)}</td><td style=\"color:var(--blue)\">${fmt(d.ca_previ)}</td><td style=\"color:var(--green)\">${fmt(d.resultat_previ)}</td><td>${d.adresse||''}</td><td style=\"font-size:10px;color:var(--dim);font-style:italic;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap\" title=\"${(d.commentaire||'').replace(/\"/g,'&quot;')}\">${d.commentaire||''}</td><td style=\"min-width:130px\">${vCell}</td></tr>`}).join(''):`<tr><td colspan=\"${cols.length}\" style=\"text-align:center;padding:2rem;color:var(--dim)\">Aucun deal</td></tr>`}
+return`<tr style=\"background:${isBymChantier?'rgba(91,155,213,0.04)':''};\" ${isBymChantier?`onclick=\"openChantierModal('${d.code}','${(d.nom||'').replace(/\"/g,'').replace(/`/g,'')}')\" title=\"Cliquer pour ouvrir la fiche chantier\"`:''} ><td><a href=\"#\" onclick=\"goToTodoForDeal('${d.code||''}');return false\" style=\"color:var(--blue);font-weight:600;text-decoration:none;font-size:12px\" title=\"Voir les tâches ${d.code}\">${d.code||''}</a></td><td class=\"td-name\">${entIco(d.entite)} ${d.nom||''}</td><td>${eBadge(d.entite)}</td><td>${DL[d.type]||d.type||''}</td><td>${etBadge(d.etape)}</td><td style=\"color:var(--green);font-weight:500\">${fmt(d.montant)}</td><td style=\"color:var(--blue)\">${fmt(d.ca_previ)}</td><td style=\"color:var(--green)\">${fmt(d.resultat_previ)}</td><td>${d.adresse?`<a href=\"#\" onclick=\"openSyntheseModal('${d.code}');event.stopPropagation();return false\" style=\"color:var(--blue);text-decoration:underline dotted;font-size:12px\" title=\"Synthèse ${d.code}\">${d.adresse}</a>`:''}</td><td style=\"font-size:10px;color:var(--dim);font-style:italic;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap\" title=\"${(d.commentaire||'').replace(/\"/g,'&quot;')}\">${d.commentaire||''}</td><td style=\"min-width:130px\">${vCell}</td></tr>`}).join(''):`<tr><td colspan=\"${cols.length}\" style=\"text-align:center;padding:2rem;color:var(--dim)\">Aucun deal</td></tr>`}
   </tbody></table>`;
 }
 
@@ -2681,6 +2681,113 @@ boot();
 </script>
 
 <!-- MODALE FICHE CHANTIER -->
+<!-- ═══════ MODAL SYNTHÈSE DEAL ═══════ -->
+<div id="synthese-modal" style="display:none;position:fixed;inset:0;background:rgba(10,20,50,.78);z-index:9998;overflow-y:auto" onclick="if(event.target===this)closeSyntheseModal()">
+  <div style="background:var(--card);border-radius:14px;width:95vw;max-width:1100px;margin:1.5rem auto;padding:0;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35)">
+    <div style="background:var(--navy);padding:18px 26px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:10px;color:#90B8D8;font-weight:600;letter-spacing:.1em;margin-bottom:3px">SYNTHÈSE DEAL</div>
+        <div id="syn-title" style="font-size:16px;font-weight:700;color:#fff"></div>
+      </div>
+      <button onclick="closeSyntheseModal()" style="background:rgba(255,255,255,.12);border:none;border-radius:8px;width:34px;height:34px;font-size:16px;color:#fff;cursor:pointer">✕</button>
+    </div>
+    <div id="syn-body" style="padding:22px 26px;min-height:200px"></div>
+  </div>
+</div>
+
+<script>
+async function openSyntheseModal(code){
+  document.getElementById('syn-title').textContent=code;
+  document.getElementById('syn-body').innerHTML='<div style="color:var(--dim);font-size:13px">Chargement...</div>';
+  document.getElementById('synthese-modal').style.display='block';
+  try{
+    const [lots,charges,locatif]=await Promise.all([
+      supa('deal_lots',`deal_code=eq.${code}&order=lot_numero.asc`),
+      supa('deal_charges',`deal_code=eq.${code}&order=lot_numero.asc`),
+      supa('deal_etat_locatif',`deal_code=eq.${code}&order=lot_numero.asc`)
+    ]);
+    const chargesMap={};(charges||[]).forEach(c=>chargesMap[c.lot_numero]=c);
+    const fEur=v=>v!=null?new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v):'<span style="color:#bbb;font-style:italic">À compléter</span>';
+    const fNum=v=>v!=null?v+' m²':'<span style="color:#bbb;font-style:italic">À compléter</span>';
+    const fTant=v=>v!=null?v:'<span style="color:#bbb;font-style:italic">–</span>';
+
+    // Table 1 : Surface / Lots / Copropriétaires
+    let t1=`<h3 style="font-size:13px;font-weight:700;color:var(--navy);margin:0 0 10px">Tableau de surface</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:24px">
+      <thead><tr style="background:var(--navy);color:#fff">
+        <th style="padding:8px 10px;text-align:left;border-radius:6px 0 0 0">Lot</th>
+        <th style="padding:8px 10px;text-align:left">Usage</th>
+        <th style="padding:8px 10px;text-align:left">Étage</th>
+        <th style="padding:8px 10px;text-align:left">Copropriétaire</th>
+        <th style="padding:8px 10px;text-align:left">Email</th>
+        <th style="padding:8px 10px;text-align:left">Tél.</th>
+        <th style="padding:8px 10px;text-align:right">Surface</th>
+        <th style="padding:8px 10px;text-align:right;border-radius:0 6px 0 0">Tantième</th>
+      </tr></thead><tbody>`;
+    if(!lots||!lots.length){t1+=`<tr><td colspan="8" style="padding:16px;color:var(--dim);text-align:center;font-style:italic">Aucun lot renseigné</td></tr>`;}
+    else{lots.forEach((l,i)=>{const bg=i%2===0?'var(--bg)':'var(--card)';t1+=`<tr style="background:${bg}">
+      <td style="padding:7px 10px;font-weight:600;color:var(--navy)">${l.lot_numero||''}</td>
+      <td style="padding:7px 10px">${l.usage_lot||''}</td>
+      <td style="padding:7px 10px">${l.etage||''}</td>
+      <td style="padding:7px 10px;font-weight:500">${[l.copro_prenom,l.copro_nom].filter(Boolean).join(' ')||'<span style="color:#bbb;font-style:italic">–</span>'}</td>
+      <td style="padding:7px 10px;font-size:11px">${l.copro_email||''}</td>
+      <td style="padding:7px 10px;font-size:11px">${l.copro_tel||''}</td>
+      <td style="padding:7px 10px;text-align:right">${fNum(l.surface_m2)}</td>
+      <td style="padding:7px 10px;text-align:right">${fTant(l.tantieme)}${l.tantieme!=null&&l.tantieme_total?'<span style="color:var(--dim);font-size:10px">/'+l.tantieme_total+'</span>':''}</td>
+    </tr>`;})}
+    t1+=`</tbody></table>`;
+
+    // Table 2 : Charges par lot
+    let t2=`<h3 style="font-size:13px;font-weight:700;color:var(--navy);margin:0 0 10px">Tableau des charges par lot</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:24px">
+      <thead><tr style="background:var(--navy);color:#fff">
+        <th style="padding:8px 10px;text-align:left;border-radius:6px 0 0 0">Lot</th>
+        <th style="padding:8px 10px;text-align:right">Taxe foncière (annuelle)</th>
+        <th style="padding:8px 10px;text-align:right;border-radius:0 6px 0 0">Charges copropriété (annuelles)</th>
+      </tr></thead><tbody>`;
+    const chargesLots=lots&&lots.length?lots:Object.values(chargesMap);
+    if(!chargesLots.length){t2+=`<tr><td colspan="3" style="padding:16px;color:var(--dim);text-align:center;font-style:italic">Aucune charge renseignée</td></tr>`;}
+    else{chargesLots.forEach((l,i)=>{const c=chargesMap[l.lot_numero]||{};const bg=i%2===0?'var(--bg)':'var(--card)';t2+=`<tr style="background:${bg}">
+      <td style="padding:7px 10px;font-weight:600;color:var(--navy)">${l.lot_numero||''} <span style="color:var(--dim);font-weight:400">${l.usage_lot||''}</span></td>
+      <td style="padding:7px 10px;text-align:right">${fEur(c.taxe_fonciere)}</td>
+      <td style="padding:7px 10px;text-align:right">${fEur(c.charges_copro_annuelles)}</td>
+    </tr>`;})}
+    t2+=`</tbody></table>`;
+
+    // Table 3 : État locatif
+    let t3=`<h3 style="font-size:13px;font-weight:700;color:var(--navy);margin:0 0 10px">État locatif</h3>`;
+    const locActifs=locatif?locatif.filter(l=>l.statut!=='sans_objet'):[];
+    if(!locActifs.length){
+      t3+=`<div style="padding:14px 16px;background:var(--bg);border-radius:8px;color:var(--dim);font-size:12px;font-style:italic;border:1px solid var(--border)">Sans objet</div>`;
+    }else{
+      t3+=`<table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead><tr style="background:var(--navy);color:#fff">
+          <th style="padding:8px 10px;text-align:left;border-radius:6px 0 0 0">Lot</th>
+          <th style="padding:8px 10px;text-align:left">Locataire</th>
+          <th style="padding:8px 10px;text-align:right">Loyer mensuel</th>
+          <th style="padding:8px 10px;text-align:left">Type bail</th>
+          <th style="padding:8px 10px;text-align:left">Début</th>
+          <th style="padding:8px 10px;text-align:left;border-radius:0 6px 0 0">Fin</th>
+        </tr></thead><tbody>`;
+      locActifs.forEach((l,i)=>{const bg=i%2===0?'var(--bg)':'var(--card)';t3+=`<tr style="background:${bg}">
+        <td style="padding:7px 10px;font-weight:600;color:var(--navy)">${l.lot_numero||'–'}</td>
+        <td style="padding:7px 10px">${l.locataire||'–'}</td>
+        <td style="padding:7px 10px;text-align:right">${fEur(l.loyer_mensuel)}</td>
+        <td style="padding:7px 10px">${l.type_bail||'–'}</td>
+        <td style="padding:7px 10px">${l.date_debut_bail||'–'}</td>
+        <td style="padding:7px 10px">${l.date_fin_bail||'–'}</td>
+      </tr>`;});
+      t3+=`</tbody></table>`;
+    }
+
+    document.getElementById('syn-body').innerHTML=t1+t2+t3;
+  }catch(e){
+    document.getElementById('syn-body').innerHTML=`<div style="color:#f87171;font-size:13px">Erreur chargement synthèse : ${e.message}</div>`;
+  }
+}
+function closeSyntheseModal(){document.getElementById('synthese-modal').style.display='none';}
+</script>
+
 <div id="chantier-modal" style="display:none;position:fixed;inset:0;background:rgba(10,20,50,.7);z-index:9999;overflow-y:auto">
   <div style="background:var(--card);border-radius:12px;width:95vw;max-width:1800px;margin:1rem auto;padding:0;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)">
     <!-- Header -->
