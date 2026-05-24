@@ -10,7 +10,9 @@
 <style>
 
 /* Justification généralisée des paragraphes */
-.qui-intro, .discipline-desc, .engagement, .sing-card p, .cycle-step p, .mission-content p, .typologie p, .dos-bureau-card p, .cta-text { text-align: justify; text-justify: inter-word; hyphens: none; }
+.qui-intro, .discipline-desc, .engagement, .cta-text { text-align: justify; text-justify: inter-word; hyphens: none; }
+.sing-card p, .mission-content p, .typologie p, .dos-bureau-card p, .cycle-step p { text-align: left; hyphens: none; }
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
 
 /* Bandeau visuel imprimable */
@@ -27,9 +29,9 @@
   --or-fond: #faf6ed;
   --noir: #1a1a1a;
   --noir-profond: #0d0d0d;
-  --gris-fonce: #2a2a2a;
-  --gris: #555;
-  --gris-clair: #888;
+  --gris-fonce: #1a1a1a;
+  --gris: #1a1a1a;
+  --gris-clair: #1a1a1a;
   --ivoire: #f5f3f0;
   --ivoire-clair: #fafaf8;
   --blanc: #ffffff;
@@ -300,34 +302,6 @@ body {
   border-top: 1px solid var(--line-light);
 }
 
-.dos-qr {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
-}
-.dos-qr-box {
-  width: 58px; height: 58px;
-  background: repeating-conic-gradient(var(--noir) 0% 25%, transparent 0% 50%) 50% / 9px 9px;
-  border: 1.5px solid var(--noir);
-  flex-shrink: 0;
-  position: relative;
-}
-.dos-qr-box::after {
-  content: "QR";
-  position: absolute;
-  inset: 30%;
-  background: var(--ivoire);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 8px;
-  font-weight: 600;
-  color: var(--noir);
-}
-.dos-qr-text { font-size: 10.5px; line-height: 1.55; color: var(--gris); }
-.dos-qr-text strong { color: var(--noir); display: block; font-size: 11.5px; margin-bottom: 2px; font-weight: 600; }
 
 .dos-foot {
   font-size: 8.5px;
@@ -720,8 +694,6 @@ body {
   .dos-contact-role { font-size: 8px; letter-spacing: 1.8px; }
   .dos-contact-info { font-size: 9.5px; }
   .dos-contact-bio { font-size: 12.5px; }
-  .dos-qr-text { font-size: 12.5px; }
-  .dos-qr-text strong { font-size: 14px; }
   .dos-foot { font-size: 10px; }
 
   .qui { padding: 16mm 18mm 14mm; }
@@ -848,7 +820,7 @@ body {
   <!-- PAGE 2, notre offre -->
   <div class="panel services">
     <div class="section-num">Notre offre</div>
-    <h2 class="section-title">Deux missions,<br><span class="it">une discipline.</span></h2>
+    <h2 class="section-title">Deux services,<br><span class="it">une discipline.</span></h2>
     <div class="section-rule"></div>
 
     <!-- DISCIPLINE 01 IM -->
@@ -864,7 +836,7 @@ body {
           <div class="mission-dot">I</div>
           <div class="mission-content">
             <h5>Mission Audit</h5>
-            <p>Audit complet de portefeuille livré en 30 jours. Plan d'action priorisé.</p>
+            <p>Étude de la performance, de la conformité et de l'adéquation de votre patrimoine avec votre stratégie. Audit complet livré en 30 jours, plan d'action priorisé.</p>
           </div>
         </div>
         <div class="mission-item">
@@ -878,14 +850,14 @@ body {
           <div class="mission-dot">III</div>
           <div class="mission-content">
             <h5>Mission Travaux et Capex</h5>
-            <p>Pilotage rénovation et repositionnement, partenariat BYM Construction.</p>
+            <p>Repositionner, transformer et valoriser chaque actif pour servir la stratégie immobilière. Pilotage rénovation et Capex, partenariat BYM Construction.</p>
           </div>
         </div>
         <div class="mission-item">
           <div class="mission-dot">IV</div>
           <div class="mission-content">
             <h5>Mission Conseil Acquisition</h5>
-            <p>Sourcing off-market, due diligence, structuration, négociation.</p>
+            <p>Acquérir le bon actif au bon moment, avec une vision long terme. Sourcing off-market, due diligence, structuration, négociation.</p>
           </div>
         </div>
         <div class="mission-item">
@@ -932,14 +904,14 @@ body {
           <div class="mission-dot">III</div>
           <div class="mission-content">
             <h5>Location</h5>
-            <p>Recherche locataires qualifiés, négociation et rédaction de baux commerciaux.</p>
+            <p>Louer à des locataires qualifiés. Négociation et rédaction de baux commerciaux.</p>
           </div>
         </div>
         <div class="mission-item">
           <div class="mission-dot">IV</div>
           <div class="mission-content">
             <h5>Vente</h5>
-            <p>Valorisation, sourcing acquéreurs, du off-market discret à la commercialisation ouverte.</p>
+            <p>Vendre, céder au moment prévu du cycle ou structurer une cession-bail pour cristalliser la valeur et sécuriser la liquidité. Valorisation et sourcing acquéreurs, du off-market discret à la commercialisation ouverte.</p>
           </div>
         </div>
       </div>
@@ -983,34 +955,6 @@ body {
       </div>
     </div>
 
-    <div class="cycle-label">Un cycle complet, cinq temps</div>
-    <div class="cycle-grid">
-      <div class="cycle-step">
-        <div class="cycle-num">I</div>
-        <h4>Auditer</h4>
-        <p>Étude de la performance et la conformité de votre patrimoine, et son adéquation avec votre stratégie.</p>
-      </div>
-      <div class="cycle-step">
-        <div class="cycle-num">II</div>
-        <h4>Valoriser</h4>
-        <p>Repositionner, transformer, arbitrer chaque actif pour parfaire la stratégie immobilière.</p>
-      </div>
-      <div class="cycle-step">
-        <div class="cycle-num">III</div>
-        <h4>Investir</h4>
-        <p>Acquérir ou louer le bon site, avec une vision long terme.</p>
-      </div>
-      <div class="cycle-step">
-        <div class="cycle-num">IV</div>
-        <h4>Commercialiser</h4>
-        <p>Louer, vendre, ou structurer un S&amp;LB pour sécuriser la liquidité de vos immeubles.</p>
-      </div>
-      <div class="cycle-step">
-        <div class="cycle-num">V</div>
-        <h4>Arbitrer</h4>
-        <p>Céder au moment de cycle prévu, et cristalliser la valeur patrimoniale ambitionnée.</p>
-      </div>
-    </div>
 
 <div class="cta" style="justify-content: center; text-align: center;">
       <div class="cta-text" style="text-align: center; max-width: 100%;">
