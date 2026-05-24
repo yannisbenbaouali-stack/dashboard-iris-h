@@ -343,28 +343,23 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 
       <!-- STRUCTURATION -->
       <div class="tab" id="tab-businessplan">
+        <!-- Ligne 1 : societe -->
+        <div class="filters" style="margin-bottom:10px">
+          <button class="fbtn struct-soc-btn on" id="soc-btn-iris" onclick="selectStructSoc('iris',this)">IRIS REP</button>
+          <button class="fbtn struct-soc-btn" id="soc-btn-bym" onclick="selectStructSoc('bym',this)">BYM Construction</button>
+          <button class="fbtn struct-soc-btn" id="soc-btn-arristo" onclick="selectStructSoc('arristo',this)">Urban Rise et ARRISTO</button>
+        </div>
+        <!-- En-tete societe : Objectif + KPI -->
+        <div id="struct-soc-header" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px"></div>
+        <!-- Ligne 2 : type de document -->
         <div class="filters" style="margin-bottom:12px">
-          <button class="fbtn struct2-btn on" id="s2-btn-bp" onclick="switchStruct2('bp',this)">Business Plan</button>
-          <button class="fbtn struct2-btn" id="s2-btn-process" onclick="switchStruct2('process',this)">Process</button>
-          <button class="fbtn struct2-btn" id="s2-btn-template" onclick="switchStruct2('template',this)">Template</button>
-          <button class="fbtn struct2-btn" id="s2-btn-charte" onclick="switchStruct2('charte',this)">Charte graphique</button>
+          <button class="fbtn struct-doc-btn on" id="doc-btn-bp" onclick="selectStructDoc('bp',this)">Business Plan</button>
+          <button class="fbtn struct-doc-btn" id="doc-btn-process" onclick="selectStructDoc('process',this)">Process &amp; D&#233;cisions</button>
+          <button class="fbtn struct-doc-btn" id="doc-btn-template" onclick="selectStructDoc('template',this)">Template</button>
+          <button class="fbtn struct-doc-btn" id="doc-btn-charte" onclick="selectStructDoc('charte',this)">Charte graphique</button>
         </div>
-        <div id="s2-section-bp">
-          <iframe id="businessplan-frame" src="business_plan.html?v=1" style="width:100%;height:calc(100vh - 160px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
-        </div>
-        <div id="s2-section-process" style="display:none">
-          <div style="display:flex;align-items:center;justify-content:center;height:calc(100vh - 200px);color:var(--dim);font-size:14px">Section Process · à venir</div>
-        </div>
-        <div id="s2-section-template" style="display:none">
-          <div style="display:flex;align-items:center;justify-content:center;height:calc(100vh - 200px);color:var(--dim);font-size:14px">Section Template · à venir</div>
-        </div>
-        <div id="s2-section-charte" style="display:none">
-          <div class="filters" style="margin-bottom:12px">
-            <button class="fbtn charte-ent-btn on" id="charte-btn-iris" onclick="switchCharteEnt('iris',this)">IRIS REP</button>
-            <button class="fbtn charte-ent-btn" id="charte-btn-bym" onclick="switchCharteEnt('bym',this)">BYM</button>
-          </div>
-          <iframe id="charte-frame" src="charte_graphique.html?v=2" style="width:100%;height:calc(100vh - 200px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
-        </div>
+        <!-- Contenu -->
+        <div id="struct-content"></div>
       </div>
 
       <!-- OUTILS -->
@@ -732,7 +727,7 @@ function switchTab(btn,tab){
 }
 
 function renderCurrentTab(){
-  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,audit:renderAudit,histoire:renderHistoire};
+  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct};
   if(m[currentTab])m[currentTab]();
 }
 
@@ -1600,20 +1595,52 @@ function switchStruct(section,btn){
   document.getElementById('struct-section-schema').style.display=section==='schema'?'block':'none';
 }
 
-function switchStruct2(section,btn){
-  document.querySelectorAll('.struct2-btn').forEach(b=>{b.classList.remove('on')});
-  btn.classList.add('on');
-  ['bp','process','template','charte'].forEach(s=>{
-    const el=document.getElementById('s2-section-'+s);
-    if(el)el.style.display=s===section?'block':'none';
-  });
-}
+const STRUCT_SOC={
+  iris:{nom:'IRIS REP',objectif:"Lancer le m\u00e9tier asset management et b\u00e2tir, brique par brique, la r\u00e9f\u00e9rence du tertiaire patrimonial en Centre Val de Loire. Trajectoire de l'advisory \u00e0 la gestion de fonds, sur le mod\u00e8le d'\u00e9cosyst\u00e8me int\u00e9gr\u00e9 Aalto REIM.",kpi:null},
+  bym:{nom:'BYM Construction',objectif:"Structurer l'entreprise de r\u00e9novation et de construction sur \u00cele de France et Centre Val de Loire, industrialiser la production de chantiers et formaliser le partenariat capex avec IRIS REP Asset Services.",kpi:null},
+  arristo:{nom:'Urban Rise et ARRISTO',objectif:"D\u00e9velopper l'activit\u00e9 marchand de biens d'Urban Rise et animer le r\u00e9seau professionnel ARRISTO, en synergie avec les op\u00e9rations du groupe.",kpi:null}
+};
+let structSoc='iris', structDoc='bp', structInit=false;
 
-function switchCharteEnt(ent,btn){
-  document.querySelectorAll('.charte-ent-btn').forEach(b=>{b.classList.remove('on')});
-  btn.classList.add('on');
-  const f=document.getElementById('charte-frame');
-  f.src=(ent==='bym'?'charte_graphique_bym.html':'charte_graphique.html')+'?v='+Date.now();
+function selectStructSoc(soc,btn){
+  structSoc=soc;
+  document.querySelectorAll('.struct-soc-btn').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  renderStructHeader();
+  renderStructContent();
+}
+function selectStructDoc(doc,btn){
+  structDoc=doc;
+  document.querySelectorAll('.struct-doc-btn').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  renderStructContent();
+}
+function renderStructHeader(){
+  const s=STRUCT_SOC[structSoc];
+  const card=(label,body)=>'<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px">'
+    +'<div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:#b8860b;text-transform:uppercase;margin-bottom:6px">'+label+'</div>'+body+'</div>';
+  const kpiBody=s.kpi?s.kpi:'<div style="color:var(--dim);font-size:12px;font-style:italic">\u00c0 d\u00e9finir ensemble.</div>';
+  document.getElementById('struct-soc-header').innerHTML=
+    card('Objectif','<div style="font-size:13px;line-height:1.5;color:var(--navy)">'+s.objectif+'</div>')
+    +card('KPI',kpiBody);
+}
+function renderStructContent(){
+  const el=document.getElementById('struct-content');
+  const ph=t=>'<div style="display:flex;align-items:center;justify-content:center;height:calc(100vh - 320px);color:var(--dim);font-size:14px">'+t+'</div>';
+  let src=null;
+  if(structDoc==='bp'||structDoc==='process'){
+    src='business_plan.html?embed=1&mode='+structDoc+'&volet='+structSoc+'&v='+Date.now();
+  }else if(structDoc==='charte'){
+    if(structSoc==='iris')src='charte_graphique.html?v='+Date.now();
+    else{el.innerHTML=ph('Charte graphique '+STRUCT_SOC[structSoc].nom+' \u00b7 \u00e0 venir');return;}
+  }else if(structDoc==='template'){
+    el.innerHTML=ph('Template '+STRUCT_SOC[structSoc].nom+' \u00b7 \u00e0 venir');return;
+  }
+  el.innerHTML='<iframe src="'+src+'" style="width:100%;height:calc(100vh - 300px);border:none;border-radius:12px;background:#f5f3f0"></iframe>';
+}
+function renderStruct(){
+  renderStructHeader();
+  if(!structInit){renderStructContent();structInit=true;}
 }
 
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)}

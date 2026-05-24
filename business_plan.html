@@ -420,11 +420,6 @@
 <body>
   <div class="container">
 
-    <div class="page-header">
-      <h1>BP &amp; Process</h1>
-      <div class="lead">Business plans et process de décision du groupe IRIS H. Trois entités stratégiques, chacune avec son book brique par brique et son process de décision enrichi au fil des projets.</div>
-    </div>
-
     <!-- MODE TOGGLE -->
     <div class="mode-toggle">
       <button class="mode-btn active" id="mode-bp-btn" onclick="switchMode('bp')">Business Plan</button>
@@ -517,52 +512,21 @@
 
         <div class="doc-card">
           <div class="doc-type">Stratégie de prospection</div>
-          <h3>Brique 1, Prospection</h3>
+          <h3>Brique 1, Stratégie de prospection</h3>
           <span class="doc-status status-existant">Disponible</span>
-          <div class="doc-desc"><strong>KPI brique 1 M0 à M12</strong><br>Nombre de prospects contactés, cible 100 cibles qualifiées sur les 5 audiences L1 à L5<br>Nombre de mandats signés, cible 5 mandats à M12 pour atteindre 30 000 000 euros AUM et 150 000 euros de CA brique 1</div>
+          <div class="doc-desc"><strong>KPI brique 1 M0 à M12</strong><br>100 cibles qualifiées sur les 5 audiences L1 à L5, 5 mandats signés à M12 pour 30 000 000 euros AUM et 150 000 euros de CA.<br><br>Encart unique regroupant la stratégie de prospection, l'audit concurrentiel CVL exhaustif (30 acteurs locaux, 4 nationaux, 14 SCPI, 60+ clients potentiels), le top prospection priorisé 440 cibles et le tableur stratégique de pilotage.</div>
           <div class="doc-meta">
-            <strong>Format</strong> Page HTML, imprimable<br>
-            <strong>Statut</strong> Document de base, à enrichir<br>
+            <strong>Format</strong> Pages HTML + tableur XLSX<br>
+            <strong>Statut</strong> Documents de pilotage, à enrichir<br>
             <strong>Mise à jour</strong> Mai 2026<br>
             <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill iris" style="width:75%"></div></div>
+            <div class="progress-bar"><div class="progress-fill iris" style="width:82%"></div></div>
           </div>
           <div class="doc-actions">
-            <a href="brique1_iris_rep_prospection.html" class="doc-action" target="_blank">Ouvrir</a>
-          </div>
-        </div>
-
-        <div class="doc-card">
-          <div class="doc-type">Audit concurrentiel</div>
-          <h3>Brique 1, Audit concurrentiel CVL exhaustif</h3>
-          <span class="doc-status status-existant">Disponible</span>
-          <div class="doc-desc"><strong>Cartographie chiffrée brique 1</strong><br>30 acteurs locaux à siège CVL<br>4 concurrents nationaux opérant en CVL<br>14 SCPI et foncières institutionnelles avec actifs CVL<br>4 modèles US transposables<br>60+ clients potentiels en 10 typologies</div>
-          <div class="doc-meta">
-            <strong>Format</strong> Page HTML, imprimable<br>
-            <strong>Statut</strong> Document de base, à enrichir<br>
-            <strong>Mise à jour</strong> Mai 2026<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill iris" style="width:85%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="brique1_iris_rep_audit_cvl.html" class="doc-action" target="_blank">Ouvrir</a>
-          </div>
-        </div>
-
-        <div class="doc-card">
-          <div class="doc-type">Tableur stratégique</div>
-          <h3>Brique 1, Tableur stratégique IRIS REP</h3>
-          <span class="doc-status status-existant">Disponible</span>
-          <div class="doc-desc">Fichier Excel multi onglets, 7 feuilles. Vue d'ensemble 3 métiers, roadmap 5 briques, concurrents par brique, clients CVL par brique, tarification benchmarkée, étapes réglementaires, plan 90 jours. Source de pilotage opérationnel pour la prospection brique 1.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> XLSX · 7 onglets<br>
-            <strong>Statut</strong> Source de pilotage stratégique<br>
-            <strong>Mise à jour</strong> Mai 2026<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill iris" style="width:90%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="#" class="doc-action" onclick="openDocById(17); return false;">Ouvrir</a>
+            <a href="brique1_iris_rep_prospection.html" class="doc-action" target="_blank">Prospection</a>
+            <a href="brique1_iris_rep_audit_cvl.html" class="doc-action" target="_blank">Audit concurrentiel CVL</a>
+            <a href="brique1_iris_rep_top_prospection.html" class="doc-action" target="_blank">Top prospection priorisée</a>
+            <a href="IRIS_REP_Clients_Brique1_v3.xlsx" class="doc-action" download>Tableur stratégique</a>
           </div>
         </div>
 
@@ -985,10 +949,11 @@ function toggleProcess(header) {
 }
 
 function switchVolet(name, btn) {
-  document.querySelectorAll('.volet-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.volet-section').forEach(s => s.classList.remove('active'));
-  document.getElementById('volet-' + name).classList.add('active');
+  document.querySelectorAll('#mode-bp .volet-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('#mode-bp .volet-section').forEach(s => s.classList.remove('active'));
+  const vs = document.getElementById('volet-' + name);
+  if (vs) vs.classList.add('active');
 }
 
 async function openDoc(filename) {
@@ -1036,6 +1001,27 @@ async function openDocById(id) {
     alert('Erreur lors de la récupération du document id ' + id + '. Vérifier la connexion Supabase.');
   }
 }
+
+/* ── MODE INTEGRE (pilote depuis le dashboard) ── */
+(function(){
+  const params = new URLSearchParams(location.search);
+  if (params.get('embed') === '1') {
+    document.querySelector('.mode-toggle').style.display = 'none';
+    document.querySelectorAll('.volet-tabs').forEach(t => t.style.display = 'none');
+    document.body.style.padding = '0';
+    document.body.style.background = 'transparent';
+  }
+  const mode = params.get('mode');
+  const volet = params.get('volet');
+  if (mode === 'process') {
+    switchMode('process');
+    const pmap = { iris: 'IRIS REP', bym: 'BYM', arristo: 'Urban Rise' };
+    if (volet && pmap[volet]) { currentProcessEntite = pmap[volet]; loadProcess(pmap[volet]); }
+  } else if (mode === 'bp') {
+    switchMode('bp');
+    if (volet) switchVolet(volet, null);
+  }
+})();
 </script>
 </body>
 </html>
