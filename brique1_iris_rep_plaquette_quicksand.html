@@ -10,7 +10,7 @@
 <style>
 
 /* Justification généralisée des paragraphes */
-.qui-intro, .discipline-desc, .engagement, .sing-card p, .cycle-step p, .mission-content p, .typologie p, .dos-bureau-card p, .cta-text { text-align: justify; text-justify: inter-word; hyphens: auto; }
+.qui-intro, .discipline-desc, .engagement, .sing-card p, .cycle-step p, .mission-content p, .typologie p, .dos-bureau-card p, .cta-text { text-align: justify; text-justify: inter-word; hyphens: none; }
 
 
 /* Bandeau visuel imprimable */
@@ -183,6 +183,15 @@ body {
   color: rgba(250,250,248,0.85);
   max-width: 480px;
 }
+.couv-sub-region {
+  display: block;
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--or);
+  margin-top: 12px;
+}
 
 .couv-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
 .couv-meta {
@@ -252,7 +261,7 @@ body {
 
 .dos-bureau-card {
   background: rgba(250,246,237,0.3);
-  padding: 12px 14px;
+  padding: 9px 12px;
   border-left: 3px solid var(--or);
 }
 .dos-bureau-card h4 {
@@ -375,6 +384,7 @@ body {
   color: var(--or);
 }
 .section-rule { width: 48px; height: 1.5px; background: var(--or); margin-bottom: 18px; }
+.bym-logo { height: 22px; width: auto; display: block; margin-top: 8px; }
 
 .qui-intro {
   font-family: 'Quicksand', sans-serif;
@@ -383,7 +393,7 @@ body {
   color: var(--gris-fonce);
   margin-bottom: 16px;
   text-align: justify;
-  hyphens: auto;
+  hyphens: none;
 }
 .qui-intro strong {
   color: var(--noir);
@@ -489,15 +499,15 @@ body {
 .timeline-item p { font-size: 8.5px; line-height: 1.3; color: var(--gris); }
 
 
-.vision { background: rgba(250,246,237,0.3); border-left: 3px solid var(--or); padding: 14px 18px 14px 18px; margin-top: auto; font-family: 'Quicksand', sans-serif; }
-.vision-eyebrow { font-size: 9px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--or); margin-bottom: 10px; display: inline-block; }
-.vision-title { font-size: 14px; font-weight: 600; color: var(--noir); margin: 4px 0 10px 0; letter-spacing: -0.2px; }
-.vision-quote { font-family: 'Quicksand', sans-serif; font-style: italic; font-size: 11px; line-height: 1.55; color: var(--gris-fonce); margin: 0 0 12px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
+.vision { background: rgba(250,246,237,0.3); border-left: 3px solid var(--or); padding: 9px 13px 9px 13px; margin-top: auto; font-family: 'Quicksand', sans-serif; }
+.vision-eyebrow { font-size: 8px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--or); margin-bottom: 6px; display: inline-block; }
+.vision-title { font-size: 11px; font-weight: 600; color: var(--noir); margin: 2px 0 6px 0; letter-spacing: -0.2px; }
+.vision-quote { font-family: 'Quicksand', sans-serif; font-style: italic; font-size: 9.5px; line-height: 1.45; color: var(--gris-fonce); margin: 0 0 8px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
 .vision-quote::before { content: "« "; color: var(--or); font-size: 14px; font-weight: 600; }
 .vision-quote::after { content: " »"; color: var(--or); font-size: 14px; font-weight: 600; }
-.vision-author { font-size: 10px; color: var(--noir); display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line-light); padding-top: 8px; }
+.vision-author { font-size: 9px; color: var(--noir); display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line-light); padding-top: 6px; }
 .vision-author strong { font-weight: 700; letter-spacing: 0.3px; }
-.vision-author span { font-size: 8.5px; color: var(--gris); letter-spacing: 1.2px; text-transform: uppercase; }
+.vision-author span { font-size: 7.5px; color: var(--gris); letter-spacing: 1.2px; text-transform: uppercase; }
 
 .engagement {
   background: var(--or-fond);
@@ -695,6 +705,7 @@ body {
   .couv-tag-top { font-size: 11px; letter-spacing: 4px; max-width: 320px; }
   .couv-slogan { font-size: 92px; letter-spacing: -2.5px; }
   .couv-sub { font-size: 17px; max-width: 560px; }
+  .couv-sub-region { font-size: 12px; margin-top: 14px; }
   .couv-meta { font-size: 11px; letter-spacing: 3px; }
   .couv-cta { font-size: 12px; letter-spacing: 3.5px; }
 
@@ -702,12 +713,12 @@ body {
   .dos-logo { height: 18mm; }
   .dos-tagline { font-size: 10.5px; letter-spacing: 3.2px; max-width: 380px; }
   .dos-h { font-size: 10.5px; letter-spacing: 3px; }
-  .dos-bureau-card h4 { font-size: 13px; letter-spacing: 1.8px; }
-  .dos-bureau-card p { font-size: 12.5px; }
-  .dos-bureau-card p em { font-size: 12px; }
-  .dos-contact-name { font-size: 17px; }
-  .dos-contact-role { font-size: 10.5px; letter-spacing: 2.2px; }
-  .dos-contact-info { font-size: 13px; }
+  .dos-bureau-card h4 { font-size: 11px; letter-spacing: 1.6px; }
+  .dos-bureau-card p { font-size: 10.5px; }
+  .dos-bureau-card p em { font-size: 10px; }
+  .dos-contact-name { font-size: 14px; }
+  .dos-contact-role { font-size: 9px; letter-spacing: 2px; }
+  .dos-contact-info { font-size: 11px; }
   .dos-contact-bio { font-size: 12.5px; }
   .dos-qr-text { font-size: 12.5px; }
   .dos-qr-text strong { font-size: 14px; }
@@ -729,15 +740,15 @@ body {
   .timeline-year { font-size: 15px; }
   .timeline-item p { font-size: 10px; }
   
-.vision { background: rgba(250,246,237,0.3); border-left: 3px solid var(--or); padding: 14px 18px 14px 18px; margin-top: auto; font-family: 'Quicksand', sans-serif; }
-.vision-eyebrow { font-size: 9px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--or); margin-bottom: 10px; display: inline-block; }
-.vision-title { font-size: 14px; font-weight: 600; color: var(--noir); margin: 4px 0 10px 0; letter-spacing: -0.2px; }
-.vision-quote { font-family: 'Quicksand', sans-serif; font-style: italic; font-size: 11px; line-height: 1.55; color: var(--gris-fonce); margin: 0 0 12px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
+.vision { background: rgba(250,246,237,0.3); border-left: 3px solid var(--or); padding: 9px 13px 9px 13px; margin-top: auto; font-family: 'Quicksand', sans-serif; }
+.vision-eyebrow { font-size: 8px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--or); margin-bottom: 6px; display: inline-block; }
+.vision-title { font-size: 11px; font-weight: 600; color: var(--noir); margin: 2px 0 6px 0; letter-spacing: -0.2px; }
+.vision-quote { font-family: 'Quicksand', sans-serif; font-style: italic; font-size: 9.5px; line-height: 1.45; color: var(--gris-fonce); margin: 0 0 8px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
 .vision-quote::before { content: "« "; color: var(--or); font-size: 14px; font-weight: 600; }
 .vision-quote::after { content: " »"; color: var(--or); font-size: 14px; font-weight: 600; }
-.vision-author { font-size: 10px; color: var(--noir); display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line-light); padding-top: 8px; }
+.vision-author { font-size: 9px; color: var(--noir); display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line-light); padding-top: 6px; }
 .vision-author strong { font-weight: 700; letter-spacing: 0.3px; }
-.vision-author span { font-size: 8.5px; color: var(--gris); letter-spacing: 1.2px; text-transform: uppercase; }
+.vision-author span { font-size: 7.5px; color: var(--gris); letter-spacing: 1.2px; text-transform: uppercase; }
 
 .engagement { font-size: 14px; padding: 16px 20px; }
   .engagement strong { font-size: 10.5px; letter-spacing: 2.2px; }
@@ -803,7 +814,7 @@ body {
     </div>
 
     <div class="dos-foot">
-      <strong>IRIS Real Estate Partners</strong>. Société indépendante de conseil immobilier tertiaire. Les activités de transaction immobilière sont opérées par Galerie Carrez, société du groupe IRIS REP, titulaire de la Carte Professionnelle « Transaction sur immeubles et fonds de commerce » n°CPI37012026000000013, délivrée par la CCI de Touraine. Responsabilité Civile Professionnelle souscrite auprès de Galian Assurances. Siège du groupe IRIS REP, 120 boulevard de Grenelle, 75015 Paris. © 2026 IRIS Real Estate Partners.
+      <strong>IRIS Real Estate Partners</strong>. Société indépendante de conseil immobilier. Les activités de transaction immobilière sont opérées par Galerie Carrez, société du groupe IRIS REP, titulaire de la Carte Professionnelle « Transaction sur immeubles et fonds de commerce » n°CPI37012026000000013, délivrée par la CCI de Touraine. Responsabilité Civile Professionnelle souscrite auprès de Galian Assurances. Siège du groupe IRIS REP, 120 boulevard de Grenelle, 75015 Paris. © 2026 IRIS Real Estate Partners.
     </div>
   </div>
 
@@ -822,7 +833,7 @@ body {
       <div class="couv-mid">
         <div class="couv-rule"></div>
         <h1 class="couv-slogan">Réunir,<br>Créer,<br><span class="it">Investir.</span></h1>
-        <p class="couv-sub">Société de conseil en investissement et asset management immobilier en Île-de-France et Centre-Val de Loire, au service des propriétaires privés et investisseurs institutionnels.</p>
+        <p class="couv-sub">Société de conseil en investissement et asset management, au service des propriétaires privés et investisseurs institutionnels.<span class="couv-sub-region">Île-de-France et Centre-Val de Loire</span></p>
       </div>
       </div>
     </div>
@@ -846,8 +857,8 @@ body {
         <div class="discipline-num">01</div>
         <h4>Investment Management</h4>
       </div>
-      <div class="discipline-baseline">Asset advisory et asset management pour compte de tiers.</div>
-      <div class="discipline-desc">L'immobilier tertiaire à hauteur d'objectifs. Nous pérennisons, rentabilisons et valorisons votre patrimoine immobilier tertiaire en cohérence avec vos objectifs financiers, juridiques et fiscaux. Six missions, du diagnostic ponctuel au mandat de pilotage long terme.</div>
+      <div class="discipline-baseline">Asset advisory et asset management.</div>
+      <div class="discipline-desc">L'immobilier à hauteur d'objectifs. Nous pérennisons, rentabilisons et valorisons votre patrimoine immobilier en cohérence avec vos objectifs financiers, juridiques et fiscaux. Six missions, du diagnostic ponctuel au mandat de pilotage long terme.</div>
       <div class="missions-grid">
         <div class="mission-item">
           <div class="mission-dot">I</div>
@@ -881,7 +892,7 @@ body {
           <div class="mission-dot">V</div>
           <div class="mission-content">
             <h5>Mission Accompagnement</h5>
-            <p>Accompagnement personnalisé de l'investisseur ou de la famille dans ses décisions, en lien avec ses conseils juridiques, fiscaux et bancaires.</p>
+            <p>Accompagnement personnalisé de l'investisseur acquéreur en lien avec ses conseils juridiques, fiscaux et bancaires.</p>
           </div>
         </div>
         <div class="mission-item">
@@ -900,8 +911,8 @@ body {
         <div class="discipline-num">02</div>
         <h4>Conseil en immobilier d'entreprise</h4>
       </div>
-      <div class="discipline-baseline">Transaction, commercialisation et conseil sur mesure.</div>
-      <div class="discipline-desc">Nous sourçons, négocions et concluons les transactions tertiaires de nos clients, en exploitant un réseau régional construit sur 15 ans de présence locale. Un cycle continu, quatre temps qui s'enchaînent et se renouvellent.</div>
+      <div class="discipline-baseline">Transaction, et commercialisation.</div>
+      <div class="discipline-desc">Nous sourçons, négocions et concluons les transactions de nos clients, en exploitant un réseau régional construit sur 15 ans de présence locale. Un cycle continu, quatre temps qui s'enchaînent et se renouvellent.</div>
       <div class="missions-grid steps4">
         <div class="mission-item">
           <div class="mission-dot">I</div>
@@ -949,7 +960,7 @@ body {
     <div class="section-rule"></div>
 
     <p class="qui-intro">
-      <strong>IRIS Real Estate Partners</strong> est une société indépendante de conseil immobilier tertiaire. Nous accompagnons investisseurs institutionnels, propriétaires privés et entreprises locataires sur l'ensemble du cycle de vie de leur patrimoine immobilier en Île-de-France et région Centre-Val de Loire.
+      <strong>IRIS Real Estate Partners</strong> est une société indépendante de conseil immobilier. Nous accompagnons investisseurs institutionnels, propriétaires privés et entreprises locataires sur l'ensemble du cycle de vie de leur patrimoine immobilier en Île-de-France et région Centre-Val de Loire.
     </p>
 
     <div class="sing-title">Notre singularité.</div>
@@ -957,17 +968,18 @@ body {
       <div class="sing-card">
         <div class="sing-num">01</div>
         <h4>Un réseau régional ancré</h4>
-        <p>15 ans de présence sur le territoire Centre-Val de Loire, des notaires et des banques régionales partenaires, des relations directes avec les propriétaires institutionnels et familiaux locaux. Une connaissance du terrain à Tours, Orléans, Blois ou Bourges que nous avons construite lentement, et que nous cherchons chaque jour à mériter.</p>
+        <p>15 ans de présence sur le territoire Centre-Val de Loire et un tissu de partenaires fiables et solides. Une connaissance du terrain à Tours, Orléans, Blois et Bourges que nous renforçons chaque jour pour la mettre au service de nos clients.</p>
       </div>
       <div class="sing-card">
         <div class="sing-num">02</div>
         <h4>Le off-market comme leitmotiv</h4>
-        <p>Disposant d'un réseau étendu et local, nous sommes en capacité d'identifier en off-market des opportunités d'investissement, de cession et de commercialisation au travers des partenaires clés, et des montages structurés sécurisant l'opération.</p>
+        <p>Disposant d'un réseau étendu et local, nous identifions en off-market des opportunités d'investissement, de cession et de commercialisation, ajustées sur mesure à votre cahier des charges.</p>
       </div>
       <div class="sing-card">
         <div class="sing-num">03</div>
         <h4>BYM Construction, partenaire natif</h4>
         <p>Notre société travaux certifiée RGE, couvre l'ensemble du cycle technique des actifs, rénovation lourde, repositionnement, mise aux normes énergétiques, second œuvre, maintenance et entretien courant. Un seul partenaire pour valoriser, entretenir et maintenir le patrimoine sur la durée.</p>
+        <img class="bym-logo" src="https://raw.githubusercontent.com/yannisbenbaouali-stack/dashboard-iris-h/main/assets/logos/bym/4_noir_fond_transparent.png" alt="BYM Construction">
       </div>
     </div>
 
@@ -976,27 +988,27 @@ body {
       <div class="cycle-step">
         <div class="cycle-num">I</div>
         <h4>Auditer</h4>
-        <p>Évaluer la performance et la conformité de votre patrimoine.</p>
+        <p>Étude de la performance et la conformité de votre patrimoine, et son adéquation avec votre stratégie.</p>
       </div>
       <div class="cycle-step">
         <div class="cycle-num">II</div>
         <h4>Valoriser</h4>
-        <p>Repositionner, rénover, optimiser la valeur de vos actifs.</p>
+        <p>Repositionner, transformer, arbitrer chaque actif pour parfaire la stratégie immobilière.</p>
       </div>
       <div class="cycle-step">
         <div class="cycle-num">III</div>
         <h4>Investir</h4>
-        <p>Acquérir les bons actifs, au bon moment, sur le bon territoire.</p>
+        <p>Acquérir ou louer le bon site, avec une vision long terme.</p>
       </div>
       <div class="cycle-step">
         <div class="cycle-num">IV</div>
         <h4>Commercialiser</h4>
-        <p>Louer, vendre, sécuriser la liquidité de vos immeubles.</p>
+        <p>Louer, vendre, ou structurer un S&amp;LB pour sécuriser la liquidité de vos immeubles.</p>
       </div>
       <div class="cycle-step">
         <div class="cycle-num">V</div>
         <h4>Arbitrer</h4>
-        <p>Décider de la sortie au moment optimal du cycle.</p>
+        <p>Céder au moment de cycle prévu, et cristalliser la valeur patrimoniale ambitionnée.</p>
       </div>
     </div>
 
