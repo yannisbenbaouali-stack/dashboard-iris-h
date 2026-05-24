@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benchmark, écosystèmes immobiliers intégrés type Aalto REIM</title>
+<style>
+  :root{--bg:#faf6ed;--card:#fff;--border:#e0ddd8;--dark:#1a1a1a;--accent:#b8860b;--text:#3a3a3a;--dim:#888}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Avenir','Avenir Next','Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);padding:24px 20px 60px}
+  .wrap{max-width:1700px;margin:0 auto}
+  .back{display:inline-block;margin-bottom:16px;color:var(--accent);text-decoration:none;font-weight:600;font-size:13px}
+  .back:hover{text-decoration:underline}
+  .cover{background:linear-gradient(135deg,#1a1a1a,#2a2a2a);color:#faf6ed;border-radius:10px;padding:32px 36px;margin-bottom:22px}
+  .cover h1{font-family:Georgia,serif;font-size:28px;margin-bottom:10px}
+  .cover h1 em{color:var(--accent);font-style:italic}
+  .cover p{font-size:14px;line-height:1.6;color:#d8d4ce;max-width:1000px}
+  .legend{font-size:12px;color:var(--dim);margin:14px 0 10px}
+  .tablewrap{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow-x:auto;box-shadow:0 2px 16px rgba(0,0,0,.05)}
+  table{border-collapse:collapse;width:100%;min-width:1500px;font-size:12px}
+  th,td{padding:11px 13px;text-align:left;vertical-align:top;border-bottom:1px solid var(--border)}
+  thead th{background:#1a1a1a;color:#fff;font-weight:600;position:sticky;top:0;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+  tbody tr:hover{background:#fcfaf5}
+  td.nom{font-weight:700;color:var(--dark);min-width:160px}
+  .geo{color:var(--accent);font-weight:600;font-size:11px;margin-top:3px}
+  .note{font-weight:700;text-align:center;border-radius:5px;padding:3px 7px;display:inline-block;min-width:34px}
+  .n5{background:#1e8449;color:#fff}.n4{background:#58d68d;color:#13361f}.n3{background:#f4d03f;color:#4d3a00}.n2{background:#f5b041;color:#4d3a00}.ref{background:var(--accent);color:#fff}
+  .cible td{background:#fdf6e3}
+  .cible td.nom{color:var(--accent)}
+  .ens{font-size:11px;color:#555;min-width:240px;line-height:1.45}
+  .tag{display:inline-block;background:#f0ece2;color:#6a5b3a;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:600;margin:1px 2px 1px 0}
+  .oui{color:#1e8449;font-weight:700}.non{color:#b03a2e;font-weight:600}.part{color:#b8860b;font-weight:600}
+  h2.sec{font-family:Georgia,serif;font-size:18px;color:var(--dark);margin:28px 0 12px}
+  .synth{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:18px 22px;font-size:13px;line-height:1.65}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a href="index.html" class="back">← Retour dashboard</a>
+<a href="brique1_iris_rep_audit_cvl.html" class="back" style="margin-left:14px">← Audit concurrentiel CVL</a>
+
+<div class="cover">
+  <h1>Benchmark, <em>écosystèmes immobiliers intégrés</em></h1>
+  <p>Comparatif des groupes répliquant le modèle Aalto REIM, une holding chapeau réunissant gestion d'actifs réglementée AMF, transaction et construction ou promotion, avec ancrage régional. Référentiel pour calibrer la trajectoire d'IRIS H, capter trois revenus sur le même actif, la commission de transaction, les honoraires de gestion récurrents, la marge de construction ou de repositionnement.</p>
+</div>
+
+<div class="legend">Proximité au modèle Aalto, note sur 5. Cinq, jumeau structurel. Deux, intégration partielle. SGP, société de gestion de portefeuille agréée AMF. Données mai 2026, sources presse et sites groupes.</div>
+
+<div class="tablewrap">
+<table>
+<thead>
+<tr>
+  <th>Groupe</th><th>Holding et structure</th><th>Gestion d'actifs réglementée</th><th>Transaction</th><th>Construction ou promotion</th><th>Encours ou taille</th><th>Typologie d'actifs</th><th>Modèle</th><th>Proximité</th><th>Enseignement pour IRIS H</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td class="nom">Aalto REIM<div class="geo">Grand Ouest, Rennes</div></td>
+  <td>MATFAIR Holding, trois sociétés sœurs distinctes</td>
+  <td><span class="oui">Oui</span>, SGP agréée AMF janvier 2022, club deals en FIA</td>
+  <td><span class="oui">Oui</span>, Cap Transactions, quatre départements bretons</td>
+  <td><span class="oui">Oui</span>, Alvar Développement, contractant général immobilier d'entreprise</td>
+  <td>174 000 000 euros d'encours, 47 400 000 euros collectés sur l'année, déploie 60 000 000 à 65 000 000 euros par an</td>
+  <td>Locaux d'activité, logistique</td>
+  <td>Club deals régionaux, investisseurs réunis en FIA</td>
+  <td><span class="note ref">Réf</span></td>
+  <td class="ens">L'étalon. Holding qui orchestre sans fusionner, spécialisation par typologie, ancrage régional assumé comme une force.</td>
+</tr>
+<tr>
+  <td class="nom">Axtom et Foncières et Territoires<div class="geo">Grand Est, Lyon Nancy Nantes</div></td>
+  <td>Axtom, collectif d'entrepreneurs, prise de 56 pour cent dans la SGP F et T</td>
+  <td><span class="oui">Oui</span>, F et T agréée AMF 2013, près de 50 foncières en club deals</td>
+  <td><span class="part">Partiel</span>, via réseau Axess et Axdev</td>
+  <td><span class="oui">Oui</span>, Axtom promotion et développement, 280 000 000 euros de CA groupe</td>
+  <td>Plus de 250 000 000 euros d'encours gérés par F et T</td>
+  <td>Bureaux, commerces, locaux d'activité</td>
+  <td>Foncières mutualisées en club deals, approche territoriale</td>
+  <td><span class="note n5">5</span></td>
+  <td class="ens">Jumeau le plus parlant. Prouve qu'un opérateur régional peut s'offrir une SGP par croissance externe plutôt que la bâtir. Alternative à la brique 4 interne.</td>
+</tr>
+<tr>
+  <td class="nom">Groupe Duval<div class="geo">National, origine bretonne</div></td>
+  <td>Financière Duval, holding familiale créée 1994, modèle intégré</td>
+  <td><span class="oui">Oui</span>, SGP Seefar, gestion pour compte de tiers depuis 2012</td>
+  <td><span class="part">Partiel</span>, intégré à la chaîne</td>
+  <td><span class="oui">Oui</span>, promotion via CFA, plus exploitation et services</td>
+  <td>Plus de 6000 collaborateurs, multi métiers</td>
+  <td>Tertiaire, résidentiel, tourisme géré, santé</td>
+  <td>Chaîne complète conception vers gestion d'actifs, fonds immobiliers</td>
+  <td><span class="note n4">4</span></td>
+  <td class="ens">Maturité du modèle compte de tiers à grande échelle. Montre la cible de la brique 5, investisseur pour compte de tiers institutionnels.</td>
+</tr>
+<tr>
+  <td class="nom">Atland<div class="geo">National, coté</div></td>
+  <td>Atland, opérateur global, foncière cotée plus filiales</td>
+  <td><span class="oui">Oui</span>, SGP Atland Voisin, SCPI Épargne Pierre</td>
+  <td><span class="non">Non</span> dédiée</td>
+  <td><span class="oui">Oui</span>, Atland Résidentiel, plus crowdfunding Fundimmo</td>
+  <td>Plusieurs milliards d'actifs sous gestion</td>
+  <td>Bureaux, résidentiel, diversifié</td>
+  <td>Foncière, SCPI, promotion, crowdfunding, construit par acquisitions</td>
+  <td><span class="note n4">4</span></td>
+  <td class="ens">La séquence de construction brique par brique par acquisitions successives est une feuille de route directe.</td>
+</tr>
+<tr>
+  <td class="nom">Groupe Cardinal<div class="geo">Auvergne Rhône Alpes, Lyon</div></td>
+  <td>Groupe Cardinal, créé 2001, adossé au groupe Eaglestone</td>
+  <td><span class="part">Partiel</span>, La Foncière Groupe Cardinal, sans SGP club deal nette</td>
+  <td><span class="non">Non</span> dédiée</td>
+  <td><span class="oui">Oui</span>, promotion, 92 000 000 euros de CA 2024, 48 salariés</td>
+  <td>La Foncière porte environ 150 000 000 euros d'actifs</td>
+  <td>Bureaux, résidences gérées, hôtels, santé, mixte</td>
+  <td>Promotion, gestion, investissement, projets complexes</td>
+  <td><span class="note n3">3</span></td>
+  <td class="ens">Intégré à dominante promotion. Montre comment une foncière propre finance et valorise les opérations du groupe.</td>
+</tr>
+<tr>
+  <td class="nom">Groupe Giboire<div class="geo">Grand Ouest, Rennes</div></td>
+  <td>Groupe familial centenaire, capital 100 pour cent familial</td>
+  <td><span class="non">Non</span>, conseil en investissement sans SGP agréée</td>
+  <td><span class="oui">Oui</span>, transaction résidentielle et Giboire Entreprise</td>
+  <td><span class="oui">Oui</span>, promotion et aménagement foncier</td>
+  <td>Un des principaux acteurs indépendants du Grand Ouest</td>
+  <td>Résidentiel, immobilier d'entreprise</td>
+  <td>Chaîne de valeur complète sans fonds réglementé</td>
+  <td><span class="note n3">3</span></td>
+  <td class="ens">Écosystème régional familial le plus proche sur connaissance terrain plus transaction plus gestion. Il lui manque l'arme du fonds réglementé, exactement la brique que tu ajoutes.</td>
+</tr>
+<tr>
+  <td class="nom">Quartus<div class="geo">National, Paris</div></td>
+  <td>Détenu par Naxicap 63 pour cent et Franck Dondainas 37 pour cent</td>
+  <td><span class="oui">Oui</span>, gestion de fonds immobiliers</td>
+  <td><span class="non">Non</span> dédiée</td>
+  <td><span class="oui">Oui</span>, promotion résidentielle et immobilier d'entreprise et de services</td>
+  <td>286 000 000 euros de CA</td>
+  <td>Immobilier d'entreprise, de services, résidentiel</td>
+  <td>Développeur et gestionnaire adossé à un fonds d'investissement</td>
+  <td><span class="note n3">3</span></td>
+  <td class="ens">Modèle adossé à un fonds de private equity. Voie de financement de la croissance différente de l'autofinancement régional.</td>
+</tr>
+<tr>
+  <td class="nom">Foncière Magellan<div class="geo">National à approche régionale</div></td>
+  <td>Société de gestion indépendante</td>
+  <td><span class="oui">Oui</span>, SGP agréée AMF, SCPI régionales</td>
+  <td><span class="non">Non</span></td>
+  <td><span class="non">Non</span></td>
+  <td>Plusieurs centaines de millions d'euros</td>
+  <td>Bureaux régionaux, immobilier d'entreprise</td>
+  <td>SCPI et fonds à thèse régionale</td>
+  <td><span class="note n2">2</span></td>
+  <td class="ens">SGP régionale pure sans transaction ni construction intégrées. Montre le métier brique 4 isolé, sans l'écosystème.</td>
+</tr>
+<tr>
+  <td class="nom">Launay, Lamotte, Blot<div class="geo">Grand Ouest, Rennes</div></td>
+  <td>Promoteurs familiaux indépendants historiques</td>
+  <td><span class="non">Non</span></td>
+  <td><span class="oui">Oui</span>, agences et transaction</td>
+  <td><span class="oui">Oui</span>, promotion</td>
+  <td>Acteurs régionaux établis</td>
+  <td>Résidentiel dominant</td>
+  <td>Promotion plus transaction, sans gestion d'actifs réglementée</td>
+  <td><span class="note n2">2</span></td>
+  <td class="ens">Tissu régional dense mais sans bras de gestion. Cibles potentielles de partenariat ou d'apport d'affaires plus que modèles.</td>
+</tr>
+<tr class="cible">
+  <td class="nom">IRIS H, cible<div class="geo">Centre Val de Loire, Tours Orléans Paris</div></td>
+  <td>IRIS H, holding orchestrant des entités distinctes</td>
+  <td><span class="part">À M48</span>, IRIS REIM, SGP agréée AMF, brique 4</td>
+  <td><span class="oui">Oui</span>, Galerie Carrez, préfigure IRIS Brokerage</td>
+  <td><span class="oui">Oui</span>, BYM Construction, l'équivalent d'Alvar Développement</td>
+  <td>Cible, 30 000 000 euros AUM à M12, plafond 300 000 000 à 400 000 000 euros à dix ans</td>
+  <td>Tertiaire patrimonial, bureaux et commerces</td>
+  <td>Advisory puis property et facility puis club deals régionaux</td>
+  <td><span class="note ref">Cible</span></td>
+  <td class="ens">Position libre, aucun acteur n'occupe le tertiaire patrimonial en Centre Val de Loire. Construire ou acquérir la SGP, telle est la question de la brique 4.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 class="sec">Lecture stratégique</h2>
+<div class="synth">
+Trois constats pour IRIS H. Premier, le couple Axtom et Foncières et Territoires prouve qu'un acteur régional de taille moyenne peut accéder à une SGP agréée par croissance externe, ce qui ouvre une alternative crédible à la brique 4 construite en interne. Deuxième, aucun de ces écosystèmes intégrés n'occupe le tertiaire patrimonial en Centre Val de Loire, la zone est libre, à l'image de ce qu'Aalto a fait sur les locaux d'activité du Grand Ouest. Troisième, la holding qui orchestre sans fusionner est la constante de tous les modèles aboutis, MATFAIR garde Aalto, Cap Transactions et Alvar distincts, IRIS H doit garder IRIS REP, Galerie Carrez puis IRIS Brokerage, et BYM reliés par des conventions à conditions de marché, jamais fusionnés.
+</div>
+
+</div>
+</body>
+</html>
