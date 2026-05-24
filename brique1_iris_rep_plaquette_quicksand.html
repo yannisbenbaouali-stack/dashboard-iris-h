@@ -548,6 +548,8 @@ body {
 }
 .typologie p { font-size: 8px; line-height: 1.4; color: var(--gris); }
 
+.cycle-iris { margin: 10px 0 4px; text-align: center; }
+.cycle-iris svg { width: 100%; max-width: 430px; height: auto; display: block; margin: 0 auto; }
 .discipline-block {
   margin-bottom: 12px;
   padding-bottom: 12px;
@@ -885,31 +887,40 @@ body {
       </div>
       <div class="discipline-baseline">Transaction et commercialisation.</div>
       <div class="discipline-desc">Nous sourçons, négocions et concluons les transactions de nos clients, en exploitant un réseau régional construit sur 15 ans de présence locale. Un cycle continu, quatre temps qui s'enchaînent et se renouvellent.</div>
-      <div class="missions-grid steps4">
-        <div class="mission-item">
-          <div class="mission-content">
-            <h5>Conseil et sourcing</h5>
-            <p>Stratégie patrimoniale, identification off-market, mobilisation du réseau régional.</p>
-          </div>
-        </div>
-        <div class="mission-item">
-          <div class="mission-content">
-            <h5>Acquisition d'immeubles</h5>
-            <p>Due diligence, négociation, sécurisation des conditions suspensives, signature.</p>
-          </div>
-        </div>
-        <div class="mission-item">
-          <div class="mission-content">
-            <h5>Location</h5>
-            <p>Louer à des locataires qualifiés. Négociation et rédaction de baux commerciaux.</p>
-          </div>
-        </div>
-        <div class="mission-item">
-          <div class="mission-content">
-            <h5>Vente</h5>
-            <p>Vendre, céder au moment prévu du cycle ou structurer une cession-bail pour cristalliser la valeur et sécuriser la liquidité. Valorisation et sourcing acquéreurs, du off-market discret à la commercialisation ouverte.</p>
-          </div>
-        </div>
+      <div class="cycle-iris">
+        <svg viewBox="0 0 680 430" xmlns="http://www.w3.org/2000/svg" font-family="Avenir, 'Helvetica Neue', sans-serif">
+        <defs><marker id="irisCycleArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#b8860b"/></marker></defs>
+        <path d="M333.72,88.16 A120,120 0 0 0 220.16,201.72 L280.08,204.86 A60,60 0 0 1 336.86,148.08 Z" fill="#1a1a1a"/>
+        <circle cx="276.36" cy="144.36" r="15" fill="#ffffff"/>
+        <text x="276.36" y="148.86" text-anchor="middle" font-size="14" font-weight="500" fill="#1a1a1a">01</text>
+        <path d="M459.84,201.72 A120,120 0 0 0 346.28,88.16 L343.14,148.08 A60,60 0 0 1 399.92,204.86 Z" fill="#b8860b"/>
+        <circle cx="403.64" cy="144.36" r="15" fill="#ffffff"/>
+        <text x="403.64" y="148.86" text-anchor="middle" font-size="14" font-weight="500" fill="#b8860b">02</text>
+        <path d="M346.28,327.84 A120,120 0 0 0 459.84,214.28 L399.92,211.14 A60,60 0 0 1 343.14,267.92 Z" fill="#8a6d2f"/>
+        <circle cx="403.64" cy="271.64" r="15" fill="#ffffff"/>
+        <text x="403.64" y="276.14" text-anchor="middle" font-size="14" font-weight="500" fill="#8a6d2f">03</text>
+        <path d="M220.16,214.28 A120,120 0 0 0 333.72,327.84 L336.86,267.92 A60,60 0 0 1 280.08,211.14 Z" fill="#cda434"/>
+        <circle cx="276.36" cy="271.64" r="15" fill="#ffffff"/>
+        <text x="276.36" y="276.14" text-anchor="middle" font-size="14" font-weight="500" fill="#cda434">04</text>
+        <path d="M305.58,79.53 A133,133 0 0 1 374.42,79.53" fill="none" stroke="#b8860b" stroke-width="2.2" marker-end="url(#irisCycleArrow)"/>
+        <path d="M468.47,173.58 A133,133 0 0 1 468.47,242.42" fill="none" stroke="#b8860b" stroke-width="2.2" marker-end="url(#irisCycleArrow)"/>
+        <path d="M374.42,336.47 A133,133 0 0 1 305.58,336.47" fill="none" stroke="#b8860b" stroke-width="2.2" marker-end="url(#irisCycleArrow)"/>
+        <path d="M211.53,242.42 A133,133 0 0 1 211.53,173.58" fill="none" stroke="#b8860b" stroke-width="2.2" marker-end="url(#irisCycleArrow)"/>
+        <circle cx="340" cy="208" r="54" fill="#1a1a1a"/>
+        <text x="340" y="213" text-anchor="middle" font-size="16" font-weight="500" fill="#faf6ed">IRIS REP</text>
+        <text x="18" y="77" font-size="11" font-weight="500" fill="#1a1a1a" letter-spacing="1">01</text>
+        <text x="18" y="92" font-size="16" font-weight="500" fill="#1a1a1a">Conseil et sourcing</text>
+        <text font-size="10.5" font-weight="400" fill="#1a1a1a"><tspan x="18" y="111">Identification off-market,</tspan><tspan x="18" y="125">mobilisation du réseau</tspan><tspan x="18" y="139">régional.</tspan></text>
+        <text x="486" y="77" font-size="11" font-weight="500" fill="#b8860b" letter-spacing="1">02</text>
+        <text x="486" y="92" font-size="16" font-weight="500" fill="#1a1a1a">Acquisition d'immeubles</text>
+        <text font-size="10.5" font-weight="400" fill="#1a1a1a"><tspan x="486" y="111">Due diligence, négociation,</tspan><tspan x="486" y="125">structuration et signature.</tspan></text>
+        <text x="486" y="281" font-size="11" font-weight="500" fill="#8a6d2f" letter-spacing="1">03</text>
+        <text x="486" y="296" font-size="16" font-weight="500" fill="#1a1a1a">Location</text>
+        <text font-size="10.5" font-weight="400" fill="#1a1a1a"><tspan x="486" y="315">Identification de locataires</tspan><tspan x="486" y="329">qualifiés.</tspan></text>
+        <text x="18" y="281" font-size="11" font-weight="500" fill="#b8860b" letter-spacing="1">04</text>
+        <text x="18" y="296" font-size="16" font-weight="500" fill="#1a1a1a">Vente</text>
+        <text font-size="10.5" font-weight="400" fill="#1a1a1a"><tspan x="18" y="315">Cession au cycle opportun,</tspan><tspan x="18" y="329">cristallisation de la valeur</tspan><tspan x="18" y="343">immobilière.</tspan></text>
+        </svg>
       </div>
     </div>
 
