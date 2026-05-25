@@ -250,6 +250,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'memoire')"><span class="nav-dot"></span><span>Mémoire</span></button>
       <button class="nav-item" onclick="switchTab(this,'organigramme')"><span class="nav-dot"></span><span>Organigramme</span></button>
+      <button class="nav-item" onclick="switchTab(this,'charte')"><span class="nav-dot"></span><span>Charte graphique</span></button>
       <button class="nav-item" onclick="switchTab(this,'businessplan')"><span class="nav-dot"></span><span>Structuration</span></button>
       <button class="nav-item" onclick="switchTab(this,'outils')"><span class="nav-dot"></span><span>Outils</span></button>
       <button class="nav-item" onclick="switchTab(this,'mandats')"><span class="nav-dot"></span><span>Registre Mandats</span><span class="nav-cnt" id="nav-mandats-cnt">0</span></button>
@@ -342,6 +343,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 
       </div>
 
+      <!-- CHARTE GRAPHIQUE -->
+      <div class="tab" id="tab-charte">
+        <iframe src="charte_graphique.html?v=1" style="width:100%;height:calc(100vh - 160px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
+      </div>
+
       <!-- STRUCTURATION -->
       <div class="tab" id="tab-businessplan">
         <!-- Ligne 1 : societe -->
@@ -357,7 +363,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
           <button class="fbtn struct-doc-btn on" id="doc-btn-bp" onclick="selectStructDoc('bp',this)">Business Plan</button>
           <button class="fbtn struct-doc-btn" id="doc-btn-process" onclick="selectStructDoc('process',this)">Process &amp; D&#233;cisions</button>
           <button class="fbtn struct-doc-btn" id="doc-btn-template" onclick="selectStructDoc('template',this)">Template</button>
-          <button class="fbtn struct-doc-btn" id="doc-btn-charte" onclick="selectStructDoc('charte',this)">Charte graphique</button>
         </div>
         <!-- Contenu -->
         <div id="struct-content"></div>
@@ -732,7 +737,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien'};
+  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
@@ -740,7 +745,7 @@ function switchTab(btn,tab){
 }
 
 function renderCurrentTab(){
-  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,documents:renderDocuments,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct};
+  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,documents:renderDocuments,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct,charte:()=>{}};
   if(m[currentTab])m[currentTab]();
 }
 
