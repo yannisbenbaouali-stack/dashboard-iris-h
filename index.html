@@ -1781,7 +1781,7 @@ function renderOutilsTable(){
     <tr style="border-bottom:1px solid var(--border);transition:.1s" onmouseover="this.style.background='rgba(91,155,213,0.04)'" onmouseout="this.style.background=''">
       <td style="padding:12px 16px">
         <div style="display:flex;align-items:center;gap:8px">
-          ${o.url?`<img src="https://unavatar.io/${new URL(o.url).hostname}" onerror="this.style.display='none'" style="width:18px;height:18px;border-radius:4px;object-fit:cover" loading="lazy">`:''}
+          ${o.url?(()=>{try{const h=new URL(o.url.startsWith('http')?o.url:'https://'+o.url).hostname;return `<img src="https://unavatar.io/${h}" onerror="this.style.display='none'" style="width:18px;height:18px;border-radius:4px;object-fit:cover" loading="lazy">`}catch(e){return ''}})():''}
           <span style="font-size:13px;font-weight:600;color:var(--navy)">${o.plateforme||''}</span>
         </div>
       </td>
@@ -2944,3 +2944,4 @@ function closeSyntheseModal(){document.getElementById('synthese-modal').style.di
 </div>
 </body>
 </html>
+
