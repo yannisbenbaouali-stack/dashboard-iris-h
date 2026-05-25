@@ -224,9 +224,10 @@ body {
   padding: 44px 50px 36px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   position: relative;
 }
+.dos-body { margin-top: auto; }
 .dos::before {
   content: "";
   position: absolute;
@@ -335,7 +336,7 @@ body {
 }
 
 .section-num {
-  font-size: 8px;
+  font-size: 10px;
   letter-spacing: 3.5px;
   color: var(--or);
   text-transform: uppercase;
@@ -344,7 +345,7 @@ body {
 }
 .section-title {
   font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 500;
   color: var(--noir);
   line-height: 1.08;
@@ -362,7 +363,7 @@ body {
 
 .qui-intro {
   font-family: 'Quicksand', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--gris-fonce);
   margin-bottom: 16px;
@@ -377,7 +378,7 @@ body {
 }
 
 
-.sing-title { font-size: 10px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--or); margin: 8px 0 14px 0; }
+.sing-title { font-size: 12px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--or); margin: 8px 0 14px 0; }
 .singularites {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -391,14 +392,14 @@ body {
 .sing-card:last-child { border-right: none; }
 .sing-num {
   font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--or);
   font-weight: 500;
   letter-spacing: 1px;
   margin-bottom: 6px;
 }
 .sing-card h4 {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--noir);
   text-transform: uppercase;
@@ -406,7 +407,7 @@ body {
   margin-bottom: 5px;
   line-height: 1.2;
 }
-.sing-card p { font-size: 10px; line-height: 1.5; color: var(--gris); }
+.sing-card p { font-size: 12px; line-height: 1.5; color: var(--gris); }
 
 .cycle-label {
   font-size: 8px;
@@ -474,14 +475,14 @@ body {
 
 
 .vision { background: rgba(250,246,237,0.3); border-left: 3px solid var(--or); padding: 9px 13px 9px 13px; margin-top: 6px; font-family: 'Quicksand', sans-serif; }
-.vision-eyebrow { font-size: 8px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--or); margin-bottom: 6px; display: inline-block; }
-.vision-title { font-size: 10px; font-weight: 600; color: var(--noir); margin: 2px 0 6px 0; letter-spacing: -0.2px; }
-.vision-quote { font-family: 'Quicksand', sans-serif; font-style: normal; font-size: 10px; line-height: 1.45; color: var(--gris-fonce); margin: 0 0 8px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
-.vision-quote::before { content: "« "; color: var(--or); font-size: 14px; font-weight: 600; }
-.vision-quote::after { content: " »"; color: var(--or); font-size: 14px; font-weight: 600; }
-.vision-author { font-size: 8px; color: var(--noir); display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line-light); padding-top: 6px; }
+.vision-eyebrow { font-size: 10px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--or); margin-bottom: 6px; display: inline-block; }
+.vision-title { font-size: 12px; font-weight: 600; color: var(--noir); margin: 2px 0 6px 0; letter-spacing: -0.2px; }
+.vision-quote { font-family: 'Quicksand', sans-serif; font-style: normal; font-size: 12px; line-height: 1.45; color: var(--gris-fonce); margin: 0 0 8px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
+.vision-quote::before { content: "« "; color: var(--or); font-size: 16px; font-weight: 600; }
+.vision-quote::after { content: " »"; color: var(--or); font-size: 16px; font-weight: 600; }
+.vision-author { font-size: 10px; color: var(--noir); display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line-light); padding-top: 6px; }
 .vision-author strong { font-weight: 700; letter-spacing: 0.3px; }
-.vision-author span { font-size: 8px; color: var(--gris); letter-spacing: 1.2px; text-transform: uppercase; }
+.vision-author span { font-size: 10px; color: var(--gris); letter-spacing: 1.2px; text-transform: uppercase; }
 
 .engagement {
   background: var(--or-fond);
@@ -489,7 +490,7 @@ body {
   padding: 12px 16px;
   font-family: 'Quicksand', sans-serif;
   font-style: normal;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.55;
   color: var(--gris-fonce);
   margin-top: auto;
@@ -497,7 +498,7 @@ body {
 .engagement strong {
   display: block;
   font-style: normal;
-  font-size: 8px;
+  font-size: 10px;
   color: var(--or);
   font-weight: 600;
   letter-spacing: 1.8px;
@@ -539,19 +540,19 @@ body {
 .typologie { padding: 0 10px 0 0; border-right: 1px solid var(--line-light); }
 .typologie:last-child { border-right: none; }
 .typologie h5 {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--noir);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 3px;
 }
-.typologie p { font-size: 8px; line-height: 1.4; color: var(--gris); }
+.typologie p { font-size: 10px; line-height: 1.4; color: var(--gris); }
 
 .parcours { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 2px; }
 .parcours-item { border-left: 2px solid var(--or); padding-left: 11px; }
-.parcours-label { display: block; font-family: 'Quicksand', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--or); font-weight: 600; margin-bottom: 4px; }
-.parcours-item p { font-size: 9.5px; line-height: 1.5; color: var(--gris); text-align: left; hyphens: none; }
+.parcours-label { display: block; font-family: 'Quicksand', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--or); font-weight: 600; margin-bottom: 4px; }
+.parcours-item p { font-size: 11.5px; line-height: 1.5; color: var(--gris); text-align: left; hyphens: none; }
 .parcours-item p + p { margin-top: 6px; }
 .discipline-block {
   margin-bottom: 12px;
@@ -567,13 +568,13 @@ body {
 }
 .discipline-num {
   font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
-  font-size: 20px;
+  font-size: 22px;
   color: var(--or);
   font-weight: 500;
   letter-spacing: -0.4px;
 }
 .discipline-head h4 {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--noir);
   letter-spacing: -0.1px;
@@ -581,12 +582,12 @@ body {
 .discipline-baseline {
   font-family: 'Quicksand', sans-serif;
   font-style: normal;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--or);
   margin-bottom: 6px;
 }
 .discipline-desc {
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
   color: var(--gris);
   margin-bottom: 10px;
@@ -606,19 +607,19 @@ body {
   flex-shrink: 0;
   min-width: 20px;
   color: var(--or);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
   font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
 }
 .mission-content h5 {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--noir);
   margin-bottom: 1px;
   letter-spacing: 0;
 }
-.mission-content p { font-size: 8px; line-height: 1.4; color: var(--gris); }
+.mission-content p { font-size: 10px; line-height: 1.4; color: var(--gris); }
 
 .missions-grid.steps4 { grid-template-columns: repeat(4, 1fr); }
 
@@ -633,7 +634,7 @@ body {
 .cta-text {
   font-family: 'Quicksand', sans-serif;
   font-style: normal;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.5;
   color: var(--gris-fonce);
   max-width: 64%;
@@ -648,7 +649,7 @@ body {
   background: var(--or);
   color: var(--blanc);
   padding: 10px 18px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 1.8px;
   text-transform: uppercase;
@@ -697,12 +698,12 @@ body {
 
   .qui { padding: 16mm 18mm 14mm; }
   .services { padding: 16mm 18mm 14mm; }
-  .section-num { font-size: 11px; letter-spacing: 4px; }
-  .section-title { font-size: 38px; letter-spacing: -1px; }
-  .qui-intro { font-size: 13px; }
-  .sing-num { font-size: 16px; }
-  .sing-card h4 { font-size: 13px; letter-spacing: 1.3px; }
-  .sing-card p { font-size: 11px; }
+  .section-num { font-size: 13px; letter-spacing: 4px; }
+  .section-title { font-size: 40px; letter-spacing: -1px; }
+  .qui-intro { font-size: 15px; }
+  .sing-num { font-size: 18px; }
+  .sing-card h4 { font-size: 15px; letter-spacing: 1.3px; }
+  .sing-card p { font-size: 13px; }
   .cycle-label { font-size: 11px; letter-spacing: 3.5px; }
   .cycle-num { font-size: 24px; }
   .cycle-step h4 { font-size: 13px; }
@@ -712,29 +713,29 @@ body {
   .timeline-item p { font-size: 9px; }
   
 .vision { background: rgba(250,246,237,0.3); border-left: 3px solid var(--or); padding: 9px 13px 9px 13px; margin-top: 6px; font-family: 'Quicksand', sans-serif; }
-.vision-eyebrow { font-size: 9px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--or); margin-bottom: 6px; display: inline-block; }
-.vision-title { font-size: 11px; font-weight: 600; color: var(--noir); margin: 2px 0 6px 0; letter-spacing: -0.2px; }
-.vision-quote { font-family: 'Quicksand', sans-serif; font-style: normal; font-size: 9px; line-height: 1.45; color: var(--gris-fonce); margin: 0 0 8px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
-.vision-quote::before { content: "« "; color: var(--or); font-size: 13px; font-weight: 600; }
-.vision-quote::after { content: " »"; color: var(--or); font-size: 13px; font-weight: 600; }
-.vision-author { font-size: 9px; color: var(--noir); display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line-light); padding-top: 6px; }
+.vision-eyebrow { font-size: 11px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--or); font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--or); margin-bottom: 6px; display: inline-block; }
+.vision-title { font-size: 13px; font-weight: 600; color: var(--noir); margin: 2px 0 6px 0; letter-spacing: -0.2px; }
+.vision-quote { font-family: 'Quicksand', sans-serif; font-style: normal; font-size: 11px; line-height: 1.45; color: var(--gris-fonce); margin: 0 0 8px 0; padding: 0; text-align: justify; quotes: "«" "»"; position: relative; }
+.vision-quote::before { content: "« "; color: var(--or); font-size: 15px; font-weight: 600; }
+.vision-quote::after { content: " »"; color: var(--or); font-size: 15px; font-weight: 600; }
+.vision-author { font-size: 11px; color: var(--noir); display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line-light); padding-top: 6px; }
 .vision-author strong { font-weight: 700; letter-spacing: 0.3px; }
-.vision-author span { font-size: 9px; color: var(--gris); letter-spacing: 1.2px; text-transform: uppercase; }
+.vision-author span { font-size: 11px; color: var(--gris); letter-spacing: 1.2px; text-transform: uppercase; }
 
-.engagement { font-size: 13px; padding: 16px 20px; }
-  .engagement strong { font-size: 11px; letter-spacing: 2.2px; }
+.engagement { font-size: 15px; padding: 16px 20px; }
+  .engagement strong { font-size: 13px; letter-spacing: 2.2px; }
 
-  .typologie h5 { font-size: 11px; letter-spacing: 1.2px; }
-  .typologie p { font-size: 9px; }
-  .discipline-num { font-size: 24px; }
-  .discipline-head h4 { font-size: 16px; }
-  .discipline-baseline { font-size: 13px; }
-  .discipline-desc { font-size: 11px; }
-  .mission-dot { width: 22px; height: 22px; font-size: 11px; }
-  .mission-content h5 { font-size: 11px; }
-  .mission-content p { font-size: 11px; }
-  .cta-text { font-size: 13px; }
-  .cta-btn { font-size: 11px; padding: 12px 22px; letter-spacing: 2.2px; }
+  .typologie h5 { font-size: 13px; letter-spacing: 1.2px; }
+  .typologie p { font-size: 11px; }
+  .discipline-num { font-size: 26px; }
+  .discipline-head h4 { font-size: 18px; }
+  .discipline-baseline { font-size: 15px; }
+  .discipline-desc { font-size: 13px; }
+  .mission-dot { font-size: 13px; }
+  .mission-content h5 { font-size: 13px; }
+  .mission-content p { font-size: 13px; }
+  .cta-text { font-size: 15px; }
+  .cta-btn { font-size: 13px; padding: 12px 22px; letter-spacing: 2.2px; }
 }
 </style>
 </head>
