@@ -253,6 +253,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'businessplan')"><span class="nav-dot"></span><span>Structuration</span></button>
       <button class="nav-item" onclick="switchTab(this,'outils')"><span class="nav-dot"></span><span>Outils</span></button>
       <button class="nav-item" onclick="switchTab(this,'mandats')"><span class="nav-dot"></span><span>Registre Mandats</span><span class="nav-cnt" id="nav-mandats-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'documents')"><span class="nav-dot"></span><span>Documents</span><span class="nav-cnt" id="nav-documents-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'audit')"><span class="nav-dot"></span><span>Audit Drive</span><span class="nav-cnt" id="nav-audit-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'histoire')"><span class="nav-dot"></span><span>Histoire</span><span class="nav-cnt" id="nav-histoire-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'electricite')"><span class="nav-dot"></span><span>Électricité</span><span class="nav-cnt" id="nav-electricite-cnt">0</span></button>
@@ -451,6 +452,16 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div class="tcard"><div id="mandats-body"></div></div>
       </div>
 
+      <!-- DOCUMENTS - PROTOCOLE ANTI PERTE -->
+      <div class="tab" id="tab-documents">
+        <div class="kpis" id="documents-kpis"></div>
+        <div id="documents-filters" style="margin-bottom:10px"></div>
+        <div style="margin-bottom:12px">
+          <input id="documents-search" placeholder="Rechercher (nom, entite, categorie...)" oninput="renderDocuments()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;width:100%;max-width:420px;background:var(--card);color:var(--text)">
+        </div>
+        <div class="tcard"><div id="documents-body"></div></div>
+      </div>
+
       <!-- AUDIT DRIVE -->
       <div class="tab" id="tab-audit">
         <div id="audit-body"></div>
@@ -598,7 +609,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 <script>
 const CFG_KEY='iris_h_cfg';
 let cfg=null;
-let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[],rapports_rediges:[],vilmar:[],mandats:[],vitrines:[]};
+let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[],rapports_rediges:[],vilmar:[],mandats:[],vitrines:[],documents:[]};
 
 function getConfig(){try{const s=JSON.parse(localStorage.getItem(CFG_KEY));if(s&&s.url&&s.key)return s}catch(e){}return null}
 function saveConfig(){
@@ -624,7 +635,7 @@ async function supa(table,params='',fetchAll=false){
 
 async function loadAll(){
   const safe=async fn=>{try{return await fn()}catch(e){console.warn('Warning:',e);return[]}};
-  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats,vitrines,partenaires,h_bible,h_persos,h_chap,h_indices]=await Promise.all([
+  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats,vitrines,partenaires,h_bible,h_persos,h_chap,h_indices,documents]=await Promise.all([
     safe(()=>supa('taches','order=created_at.desc')),
     safe(()=>supa('taches_v2','order=created_at.asc')),
     safe(()=>supa('taches_recurrentes_suivi','order=semaine.asc')),
@@ -644,11 +655,12 @@ async function loadAll(){
     safe(()=>supa('histoire_bible','order=ordre.asc')),
     safe(()=>supa('histoire_personnages','order=categorie.asc,nom.asc')),
     safe(()=>supa('histoire_chapitres','order=saison.asc,numero.asc')),
-    safe(()=>supa('histoire_indices','order=saison_seme.asc,id.asc'))
+    safe(()=>supa('histoire_indices','order=saison_seme.asc,id.asc')),
+    safe(()=>supa('documents_claude','order=id.desc'))
   ]);
   data.taches=taches;data.taches_v2=taches_v2;data.rec_suivi=rec_suivi;data.deals=deals;
   data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;data.vilmar=vilmar;data.mandats=mandats;data.partenaires=partenaires;data.vitrines=vitrines;data.vitrines=vitrines;
-  data.h_bible=h_bible;data.h_persos=h_persos;data.h_chap=h_chap;data.h_indices=h_indices;
+  data.h_bible=h_bible;data.h_persos=h_persos;data.h_chap=h_chap;data.h_indices=h_indices;data.documents=documents;
   try{localStorage.setItem('iris_h_cache',JSON.stringify({data:{...data,contacts:[]},ts:Date.now()}))}catch(e){}
   render();
   const t=new Date();
@@ -710,6 +722,7 @@ function updateNavCounts(){
   document.getElementById('nav-deals-cnt').textContent=data.deals.filter(d=>!['cloture','dead'].includes(d.etape)).length;
   document.getElementById('nav-crm-cnt').textContent=(data._crmTotal||data.contacts.length).toLocaleString();
   document.getElementById('nav-mandats-cnt').textContent=(data.mandats||[]).length;
+  {const a=(data.documents||[]).filter(d=>(d.file_type||'')!=='todo'&&docUrlState(d)!=='ok').length;const el=document.getElementById('nav-documents-cnt');if(el)el.textContent=a;}
 }
 
 let currentTab='todo';
@@ -719,7 +732,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',audit:'Audit Drive',electricite:'Bible de l\'électricien'};
+  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
@@ -727,7 +740,7 @@ function switchTab(btn,tab){
 }
 
 function renderCurrentTab(){
-  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct};
+  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,documents:renderDocuments,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct};
   if(m[currentTab])m[currentTab]();
 }
 
@@ -1937,6 +1950,77 @@ const AUDIT_DATA = {
     {n:1,code:'GC01',projet:'GC01 · 188, rue du Général de Gaulle, 45160 Olivet',fichier:'Plano de Arquitectura + Estructuras + Cimientos + Sanitarias + Electricas (6 fichiers en espagnol)',taille:'0,3 à 7,1 Mo',chemin:'GC01 dans IRIS REP conseil en immobilier d\'entreprise',conforme:'non_conforme',nom_cible:'1 - GC01 - 188, rue du Général de Gaulle, 45160 Olivet - [type]-V1',doublon:false,note:'Plans en espagnol · probablement référence externe (architecte ibérique ou copie de plans existants sur le bien).',action:'Renommer chaque fichier selon convention. Exemple : "1 - GC01 - 188, rue du Général de Gaulle, 45160 Olivet - Architecte-ElvCoupes-V1.dwg", "...-Structure-V1.dwg", etc. Ranger dans un sous-dossier "Plans architecte" du dossier GC01.'},
   ]
 };
+
+/* ===================== DOCUMENTS - PROTOCOLE ANTI PERTE ===================== */
+let docsFilterEntite='all',docsFilterEtat='all',docsSortCol='id',docsSortDir='desc';
+function sortDocs(c){if(docsSortCol===c)docsSortDir=docsSortDir==='asc'?'desc':'asc';else{docsSortCol=c;docsSortDir='desc'}renderDocuments()}
+function setDocsEntite(e){docsFilterEntite=e;renderDocuments()}
+function setDocsEtat(e){docsFilterEtat=e;renderDocuments()}
+function docUrlState(d){const u=(d.drive_url||'').trim();if(!u||u==='?')return 'manquant';if(/^https?:\/\//i.test(u))return 'ok';return 'non_durable';}
+function docEntBadge(e){const m={'IRIS H':'p-iris','IRIS REP':'p-iris','IRIS_REP':'p-iris','BYM':'p-bym','BYM Construction':'p-bym','Urban Rise':'p-ur','ARRISTO':'p-arristo','Galerie Carrez':'p-gc','RIR':'p-rir','C2C.FR':'p-c2c','Urbolt':'p-bym','perso':'p-infra','Perso':'p-infra'};return e?`<span class="pill ${m[e]||'p-iris'}" style="font-size:9px">${e}</span>`:'';}
+function renderDocuments(){
+  const el=document.getElementById('documents-body');
+  const all=(data.documents||[]);
+  const real=all.filter(d=>(d.file_type||'')!=='todo');
+  const placeholders=all.filter(d=>(d.file_type||'')==='todo');
+  const manq=real.filter(d=>docUrlState(d)==='manquant');
+  const nd=real.filter(d=>docUrlState(d)==='non_durable');
+  const ok=real.filter(d=>docUrlState(d)==='ok');
+  const navc=document.getElementById('nav-documents-cnt');if(navc)navc.textContent=manq.length+nd.length;
+  document.getElementById('documents-kpis').style.gridTemplateColumns='repeat(5,1fr)';
+  document.getElementById('documents-kpis').innerHTML=`
+    <div class="kpi" style="cursor:pointer" onclick="setDocsEtat('all')"><div class="kpi-label">Documents</div><div class="kpi-val">${real.length}</div><div class="kpi-sub">fiches produites</div></div>
+    <div class="kpi red" style="cursor:pointer" onclick="setDocsEtat('manquant')"><div class="kpi-label">Sans lien Drive</div><div class="kpi-val">${manq.length}</div><div class="kpi-sub">risque de perte</div></div>
+    <div class="kpi orange" style="cursor:pointer" onclick="setDocsEtat('non_durable')"><div class="kpi-label">Lien non durable</div><div class="kpi-val">${nd.length}</div><div class="kpi-sub">chemin local ou ?</div></div>
+    <div class="kpi green" style="cursor:pointer" onclick="setDocsEtat('ok')"><div class="kpi-label">Conformes</div><div class="kpi-val">${ok.length}</div><div class="kpi-sub">lien Drive valide</div></div>
+    <div class="kpi" style="background:var(--bg);cursor:pointer" onclick="setDocsEtat('todo')"><div class="kpi-label">A produire</div><div class="kpi-val">${placeholders.length}</div><div class="kpi-sub">placeholders</div></div>`;
+  const entites=[...new Set(all.map(d=>d.entite).filter(Boolean))].sort();
+  const fb=(lbl,val,cur,fn)=>`<button class="fbtn ${cur===val?'on':''}" onclick="${fn}('${val}')" style="font-size:11px;margin:0 4px 4px 0;padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:${cur===val?'var(--blue)':'var(--card)'};color:${cur===val?'#fff':'var(--dim)'};cursor:pointer;font-family:var(--font)">${lbl}</button>`;
+  document.getElementById('documents-filters').innerHTML=
+    `<div style="margin-bottom:6px">`+fb('Toutes entites','all',docsFilterEntite,'setDocsEntite')+entites.map(e=>fb(e,e,docsFilterEntite,'setDocsEntite')).join('')+`</div>`+
+    `<div>`+fb('Tous etats','all',docsFilterEtat,'setDocsEtat')+fb('Sans lien','manquant',docsFilterEtat,'setDocsEtat')+fb('Non durable','non_durable',docsFilterEtat,'setDocsEtat')+fb('Conformes','ok',docsFilterEtat,'setDocsEtat')+fb('A produire','todo',docsFilterEtat,'setDocsEtat')+`</div>`;
+  const q=(document.getElementById('documents-search').value||'').toLowerCase();
+  let rows=all.filter(d=>{
+    if(docsFilterEntite!=='all'&&d.entite!==docsFilterEntite)return false;
+    if(docsFilterEtat==='todo'){if((d.file_type||'')!=='todo')return false;}
+    else if(docsFilterEtat!=='all'){if((d.file_type||'')==='todo')return false;if(docUrlState(d)!==docsFilterEtat)return false;}
+    if(q){const blob=[d.filename,d.entite,d.categorie,d.file_type,d.description].filter(Boolean).join(' ').toLowerCase();if(!blob.includes(q))return false;}
+    return true;
+  });
+  const stRank={manquant:0,non_durable:1,ok:2};
+  rows.sort((a,b)=>{
+    let va,vb;
+    if(docsSortCol==='etat'){va=stRank[docUrlState(a)]??3;vb=stRank[docUrlState(b)]??3;}
+    else if(docsSortCol==='updated_at'){va=a.updated_at||'';vb=b.updated_at||'';}
+    else if(docsSortCol==='filename'){va=(a.filename||'').toLowerCase();vb=(b.filename||'').toLowerCase();}
+    else if(docsSortCol==='entite'){va=(a.entite||'').toLowerCase();vb=(b.entite||'').toLowerCase();}
+    else{va=a.id;vb=b.id;}
+    if(va<vb)return docsSortDir==='asc'?-1:1;if(va>vb)return docsSortDir==='asc'?1:-1;return 0;
+  });
+  const arrow=c=>docsSortCol===c?(docsSortDir==='asc'?' ▲':' ▼'):'';
+  const linkCell=d=>{
+    if((d.file_type||'')==='todo')return `<span class="pill p-standby" style="font-size:9px">A produire</span>`;
+    const st=docUrlState(d),u=(d.drive_url||'').trim();
+    if(st==='ok')return `<a href="${u}" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600;text-decoration:none;font-size:11px">Ouvrir &#8599;</a>`;
+    if(st==='non_durable')return `<span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:#FAEEDA;color:#633806">&#9888; Non durable</span><div style="font-size:8px;color:var(--dim);font-family:monospace;word-break:break-all;margin-top:2px">${escHtml(u)}</div>`;
+    return `<span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--red-bg);color:var(--red)">&#9888; AUCUN LIEN DRIVE</span>`;
+  };
+  const rb=d=>{if((d.file_type||'')==='todo')return '#fafafa';const st=docUrlState(d);return st==='manquant'?'rgba(231,76,60,0.05)':st==='non_durable'?'rgba(243,156,18,0.05)':'#fff';};
+  const cols=[['id','ID','5%'],['filename','Document','30%'],['entite','Entite','11%'],['',  'Categorie','15%'],['',  'Type','9%'],['updated_at','MAJ','11%'],['etat','Lien Drive','19%']];
+  const head=cols.map(c=>`<th style="width:${c[2]}${c[0]?';cursor:pointer':''}"${c[0]?` onclick="sortDocs('${c[0]}')"`:''}>${c[1]}${c[0]?arrow(c[0]):''}</th>`).join('');
+  const body=rows.map(d=>`<tr style="background:${rb(d)}">
+    <td style="text-align:center;font-size:10px;color:var(--dim)">${d.id}</td>
+    <td><div class="td-name" style="font-size:11px;font-weight:600;word-break:break-word">${escHtml(d.filename||'')}</div>${d.description?`<div style="font-size:9px;color:var(--dim);margin-top:2px;line-height:1.4">${escHtml((d.description||'').slice(0,140))}${(d.description||'').length>140?'...':''}</div>`:''}</td>
+    <td>${docEntBadge(d.entite)}</td>
+    <td style="font-size:10px;color:var(--dim)">${escHtml(d.categorie||'')}</td>
+    <td style="font-size:9px;color:var(--dim)"><span class="pill" style="background:var(--bg);color:var(--dim);font-size:8px">${escHtml(d.file_type||'')}</span></td>
+    <td style="font-size:10px;color:var(--dim)">${fmtDt(d.updated_at)}</td>
+    <td>${linkCell(d)}</td>
+  </tr>`).join('');
+  el.innerHTML=`<div style="font-size:11px;padding:8px 12px;background:var(--bg);border-radius:6px;margin-bottom:10px;color:var(--dim)">Protocole anti perte : chaque document final doit avoir un lien Drive durable. Les fiches en rouge n ont aucun lien et risquent d etre perdues. ${rows.length} ligne(s) affichee(s).</div>
+  <div style="overflow-x:auto"><table class="tbl" style="table-layout:fixed"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+/* ===================== END DOCUMENTS ===================== */
 
 function renderAudit() {
   const el = document.getElementById('audit-body');
