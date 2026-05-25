@@ -363,6 +363,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
           <button class="fbtn struct-doc-btn on" id="doc-btn-bp" onclick="selectStructDoc('bp',this)">Business Plan</button>
           <button class="fbtn struct-doc-btn" id="doc-btn-process" onclick="selectStructDoc('process',this)">Process &amp; D&#233;cisions</button>
           <button class="fbtn struct-doc-btn" id="doc-btn-template" onclick="selectStructDoc('template',this)">Template</button>
+          <button class="fbtn struct-doc-btn" id="doc-btn-72" onclick="selectStructDoc('dossier72',this)" style="display:none">72</button>
         </div>
         <!-- Contenu -->
         <div id="struct-content"></div>
@@ -1624,6 +1625,18 @@ function selectStructSoc(soc,btn){
   structSoc=soc;
   document.querySelectorAll('.struct-soc-btn').forEach(b=>b.classList.remove('on'));
   if(btn)btn.classList.add('on');
+  var b72=document.getElementById('doc-btn-72');
+  if(b72){
+    if(soc==='arristo'){b72.style.display='';}
+    else{
+      b72.style.display='none';
+      if(structDoc==='dossier72'){
+        structDoc='bp';
+        document.querySelectorAll('.struct-doc-btn').forEach(x=>x.classList.remove('on'));
+        var bp=document.getElementById('doc-btn-bp'); if(bp)bp.classList.add('on');
+      }
+    }
+  }
   renderStructHeader();
   renderStructContent();
 }
@@ -1653,6 +1666,9 @@ function renderStructContent(){
     else{el.innerHTML=ph('Charte graphique '+STRUCT_SOC[structSoc].nom+' \u00b7 \u00e0 venir');return;}
   }else if(structDoc==='template'){
     el.innerHTML=ph('Template '+STRUCT_SOC[structSoc].nom+' \u00b7 \u00e0 venir');return;
+  }else if(structDoc==='dossier72'){
+    if(structSoc==='arristo')src='assets/dossiers/UR03_72_rue_de_bourgogne.html?v='+Date.now();
+    else{el.innerHTML=ph('Dossier 72 rue de Bourgogne \u00b7 r\u00e9serv\u00e9 Urban Rise et ARRISTO');return;}
   }
   el.innerHTML='<iframe src="'+src+'" style="width:100%;height:calc(100vh - 300px);border:none;border-radius:12px;background:#f5f3f0"></iframe>';
 }
