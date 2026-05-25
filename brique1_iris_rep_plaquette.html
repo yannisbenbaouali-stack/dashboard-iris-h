@@ -548,8 +548,10 @@ body {
 }
 .typologie p { font-size: 8px; line-height: 1.4; color: var(--gris); }
 
-.cycle-iris { margin: 10px 0 4px; text-align: center; }
-.cycle-iris svg { width: 100%; max-width: 490px; height: auto; display: block; margin: 0 auto; }
+.parcours { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 2px; }
+.parcours-item { border-left: 2px solid var(--or); padding-left: 11px; }
+.parcours-label { display: block; font-family: 'Quicksand', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--or); font-weight: 600; margin-bottom: 4px; }
+.parcours-item p { font-size: 9.5px; line-height: 1.5; color: var(--gris); text-align: left; hyphens: none; }
 .discipline-block {
   margin-bottom: 12px;
   padding-bottom: 12px;
@@ -886,58 +888,16 @@ body {
         <h4>Conseil en immobilier d'entreprise</h4>
       </div>
       <div class="discipline-baseline">Transaction et commercialisation.</div>
-      <div class="discipline-desc">Nous sourçons, négocions et concluons les transactions de nos clients, en exploitant un réseau régional construit sur 15 ans de présence locale. Deux parcours, investisseur et utilisateur, issus d'une même discipline de conseil.</div>
-      <div class="cycle-iris">
-        <svg viewBox="14 30 1038 612" xmlns="http://www.w3.org/2000/svg" font-family="'Quicksand','Helvetica Neue',sans-serif" role="img">
-        <title>Process IRIS REP</title>
-        <defs><marker id="procArrow" markerWidth="10" markerHeight="10" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7.2,3.2 L0,6.4" fill="none" stroke="#b8860b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
-        <g fill="none" stroke="#cdb88a" stroke-width="2" marker-end="url(#procArrow)">
-        <path d="M236,330 C272,330 262,168 300,168"/>
-        <path d="M236,330 C272,330 262,492 300,492"/>
-        <path d="M462,168 L504,168"/>
-        <path d="M462,492 L504,492"/>
-        <path d="M716,170 C748,170 744,90 782,90"/>
-        <path d="M716,170 C748,170 744,222 782,222"/>
-        <path d="M716,494 C748,494 744,438 782,438"/>
-        <path d="M716,494 C748,494 744,570 782,570"/>
-        </g>
-        <text x="744" y="160" text-anchor="middle" fill="#a98f57" font-size="14" font-weight="600" letter-spacing="1">ou</text>
-        <text x="744" y="510" text-anchor="middle" fill="#a98f57" font-size="14" font-weight="600" letter-spacing="1">ou</text>
-        <rect x="38" y="238" width="198" height="184" rx="14" fill="#1a1a1a"/>
-        <text x="137" y="316" text-anchor="middle" fill="#faf6ed" font-size="24" font-weight="700">Conseil</text>
-        <text x="137" y="346" text-anchor="middle" fill="#faf6ed" font-size="24" font-weight="700">et sourcing</text>
-        <text x="137" y="382" text-anchor="middle" fill="#bfae8e" font-size="15">Off-market, réseau régional</text>
-        <rect x="302" y="140" width="160" height="56" rx="28" fill="#faf6ed" stroke="#b8860b" stroke-width="1.8"/>
-        <text x="382" y="175" text-anchor="middle" fill="#1a1a1a" font-size="19" font-weight="700">Investisseur</text>
-        <rect x="302" y="464" width="160" height="56" rx="28" fill="#faf6ed" stroke="#b8860b" stroke-width="1.8"/>
-        <text x="382" y="499" text-anchor="middle" fill="#1a1a1a" font-size="19" font-weight="700">Utilisateur</text>
-        <rect x="504" y="96" width="212" height="148" rx="14" fill="#fbfaf6" stroke="#e6dcc4" stroke-width="1.6"/>
-        <rect x="504" y="96" width="6" height="148" rx="3" fill="#b8860b"/>
-        <text x="616" y="166" text-anchor="middle" fill="#1a1a1a" font-size="24" font-weight="700">Acquisition</text>
-        <text x="616" y="198" text-anchor="middle" fill="#7a7060" font-size="15">Due diligence, négociation,</text>
-        <text x="616" y="219" text-anchor="middle" fill="#7a7060" font-size="15">structuration, signature</text>
-        <rect x="504" y="420" width="212" height="148" rx="14" fill="#fbfaf6" stroke="#e6dcc4" stroke-width="1.6"/>
-        <rect x="504" y="420" width="6" height="148" rx="3" fill="#b8860b"/>
-        <text x="616" y="484" text-anchor="middle" fill="#1a1a1a" font-size="24" font-weight="700">Structuration</text>
-        <text x="616" y="512" text-anchor="middle" fill="#1a1a1a" font-size="24" font-weight="700">du projet</text>
-        <text x="616" y="544" text-anchor="middle" fill="#7a7060" font-size="15">Cadrage des besoins et du site</text>
-        <rect x="784" y="42" width="252" height="116" rx="14" fill="#fbfaf6" stroke="#e6dcc4" stroke-width="1.6"/>
-        <rect x="784" y="42" width="6" height="116" rx="3" fill="#cda434"/>
-        <text x="916" y="92" text-anchor="middle" fill="#1a1a1a" font-size="23" font-weight="700">Arbitrage</text>
-        <text x="916" y="126" text-anchor="middle" fill="#7a7060" font-size="15">Cession au cycle opportun</text>
-        <rect x="784" y="174" width="252" height="116" rx="14" fill="#fbfaf6" stroke="#e6dcc4" stroke-width="1.6"/>
-        <rect x="784" y="174" width="6" height="116" rx="3" fill="#8a6d2f"/>
-        <text x="916" y="224" text-anchor="middle" fill="#1a1a1a" font-size="23" font-weight="700">Détention long terme</text>
-        <text x="916" y="258" text-anchor="middle" fill="#7a7060" font-size="14">Gestion patrimoniale, valorisation</text>
-        <rect x="784" y="390" width="252" height="116" rx="14" fill="#fbfaf6" stroke="#e6dcc4" stroke-width="1.6"/>
-        <rect x="784" y="390" width="6" height="116" rx="3" fill="#cda434"/>
-        <text x="916" y="440" text-anchor="middle" fill="#1a1a1a" font-size="23" font-weight="700">Prise à bail</text>
-        <text x="916" y="474" text-anchor="middle" fill="#7a7060" font-size="14">Négociation et conclusion du bail</text>
-        <rect x="784" y="522" width="252" height="116" rx="14" fill="#fbfaf6" stroke="#e6dcc4" stroke-width="1.6"/>
-        <rect x="784" y="522" width="6" height="116" rx="3" fill="#8a6d2f"/>
-        <text x="916" y="572" text-anchor="middle" fill="#1a1a1a" font-size="23" font-weight="700">Acquisition</text>
-        <text x="916" y="606" text-anchor="middle" fill="#7a7060" font-size="14">Achat des locaux, signature</text>
-        </svg>
+      <div class="discipline-desc">Nous sourçons, négocions et concluons les transactions de nos clients, en exploitant un réseau régional construit sur 15 ans de présence locale. Une même discipline de conseil, deux parcours selon le profil.</div>
+      <div class="parcours">
+        <div class="parcours-item">
+          <span class="parcours-label">Investisseur</span>
+          <p>Nous identifions l'opportunité en off-market, puis structurons l'acquisition: due diligence, négociation et signature. L'actif s'inscrit ensuite dans une logique d'arbitrage, cédé au cycle opportun pour cristalliser la valeur, ou de détention long terme, géré et valorisé dans la durée.</p>
+        </div>
+        <div class="parcours-item">
+          <span class="parcours-label">Utilisateur</span>
+          <p>Nous cadrons le projet d'implantation, besoins, site et faisabilité, avant de conclure selon le choix retenu: prise à bail et signature du bail commercial, ou acquisition des locaux.</p>
+        </div>
       </div>
     </div>
 
