@@ -552,6 +552,7 @@ body {
 .parcours-item { border-left: 2px solid var(--or); padding-left: 11px; }
 .parcours-label { display: block; font-family: 'Quicksand', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--or); font-weight: 600; margin-bottom: 4px; }
 .parcours-item p { font-size: 9.5px; line-height: 1.5; color: var(--gris); text-align: left; hyphens: none; }
+.parcours-item p + p { margin-top: 6px; }
 .discipline-block {
   margin-bottom: 12px;
   padding-bottom: 12px;
@@ -603,17 +604,11 @@ body {
 }
 .mission-dot {
   flex-shrink: 0;
-  width: 17px;
-  height: 17px;
-  border-radius: 50%;
-  background: var(--or-fond);
-  border: 1px solid var(--or);
+  min-width: 20px;
   color: var(--or);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 600;
+  letter-spacing: 0.3px;
   font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
 }
 .mission-content h5 {
@@ -837,42 +832,42 @@ body {
       <div class="discipline-desc">L'immobilier à hauteur d'objectifs. Nous pérennisons, rentabilisons et valorisons votre patrimoine immobilier en cohérence avec vos objectifs financiers, juridiques et fiscaux. Six missions, du diagnostic ponctuel au mandat de pilotage long terme.</div>
       <div class="missions-grid">
         <div class="mission-item">
-          <div class="mission-dot">I</div>
+          <div class="mission-dot">I.</div>
           <div class="mission-content">
             <h5>Mission Audit</h5>
             <p>Étude de la performance, de la conformité et de l'adéquation de votre patrimoine avec votre stratégie. Audit complet livré en 30 jours, plan d'action priorisé.</p>
           </div>
         </div>
         <div class="mission-item">
-          <div class="mission-dot">II</div>
+          <div class="mission-dot">II.</div>
           <div class="mission-content">
             <h5>Mission ESG et Décret Tertiaire</h5>
             <p>Plan énergétique 5 et 10 ans, coordination des bureaux d'études et organismes certificateurs (BREEAM, HQE).</p>
           </div>
         </div>
         <div class="mission-item">
-          <div class="mission-dot">III</div>
+          <div class="mission-dot">III.</div>
           <div class="mission-content">
             <h5>Mission Travaux et Capex</h5>
             <p>Repositionner, transformer et valoriser chaque actif pour servir la stratégie immobilière. Pilotage rénovation et Capex, partenariat BYM Construction.</p>
           </div>
         </div>
         <div class="mission-item">
-          <div class="mission-dot">IV</div>
+          <div class="mission-dot">IV.</div>
           <div class="mission-content">
             <h5>Mission Conseil Acquisition</h5>
             <p>Acquérir le bon actif au bon moment, avec une vision long terme. Sourcing off-market, due diligence, structuration, négociation.</p>
           </div>
         </div>
         <div class="mission-item">
-          <div class="mission-dot">V</div>
+          <div class="mission-dot">V.</div>
           <div class="mission-content">
             <h5>Mission Accompagnement</h5>
             <p>Accompagnement personnalisé de l'investisseur acquéreur en lien avec ses conseils juridiques, fiscaux et bancaires.</p>
           </div>
         </div>
         <div class="mission-item">
-          <div class="mission-dot">VI</div>
+          <div class="mission-dot">VI.</div>
           <div class="mission-content">
             <h5>Mission Pilotage</h5>
             <p>Mandat global de gestion du portefeuille, reporting trimestriel, supervision opérationnelle continue.</p>
@@ -892,11 +887,13 @@ body {
       <div class="parcours">
         <div class="parcours-item">
           <span class="parcours-label">Investisseur</span>
-          <p>Nous identifions l'opportunité en off-market, puis structurons l'acquisition: due diligence, négociation et signature. L'actif s'inscrit ensuite dans une logique d'arbitrage, cédé au cycle opportun pour cristalliser la valeur, ou de détention long terme, géré et valorisé dans la durée.</p>
+          <p>Nous identifions des opportunités off-market à fort potentiel, puis pilotons l'ensemble du processus d'acquisition : due diligence, structuration, négociation et sécurisation de la transaction.</p>
+          <p>L'actif est ensuite valorisé selon une stratégie adaptée au cycle de marché : arbitrage opportuniste afin de cristalliser la création de valeur, ou détention long terme avec gestion active et optimisation continue des performances.</p>
         </div>
         <div class="parcours-item">
           <span class="parcours-label">Utilisateur</span>
-          <p>Nous cadrons le projet d'implantation, besoins, site et faisabilité, avant de conclure selon le choix retenu: prise à bail et signature du bail commercial, ou acquisition des locaux.</p>
+          <p>Nous accompagnons les utilisateurs dans la définition et la structuration de leur projet immobilier : analyse des besoins, identification des sites adaptés et étude de faisabilité technique, opérationnelle et financière.</p>
+          <p>Selon la stratégie retenue, nous pilotons ensuite l'opération jusqu'à sa conclusion, qu'il s'agisse d'une prise à bail avec négociation et signature du bail commercial, ou de l'acquisition des locaux.</p>
         </div>
       </div>
     </div>
