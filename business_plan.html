@@ -456,7 +456,7 @@
             <a href="communication_iris_rep_charte_editoriale.html" class="doc-action" target="_blank">Ouvrir charte</a>
             <a href="iris_rep_strategie_communication_brique1_linkedin.html" class="doc-action" target="_blank">Ouvrir LinkedIn</a>
             <a href="#" class="doc-action" onclick="alert('Le prompt du plan de communication 12 mois est dans la conversation Claude. Copie-colle dans une nouvelle conversation pour produire le plan.'); return false;">Voir prompt plan 12 mois</a>
-            <a href="brique1_iris_rep_plaquette.html" class="doc-action" target="_blank">Ouvrir plaquette</a>
+            <a href="#" class="doc-action" onclick="openPlaquetteModal(); return false;">Ouvrir plaquette</a>
           </div>
         </div>
 
@@ -1018,5 +1018,115 @@ async function openDocById(id) {
   }
 })();
 </script>
+
+<!-- Modale plaquette IRIS REP -->
+<style>
+  .plaq-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 13, 13, 0.55);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+  .plaq-modal-overlay.open { display: flex; }
+  .plaq-modal {
+    background: #fff;
+    border-radius: 14px;
+    padding: 32px 36px;
+    width: min(440px, 92vw);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    border: 1px solid var(--card-border);
+    position: relative;
+    font-family: inherit;
+  }
+  .plaq-modal h3 {
+    margin: 0 0 6px;
+    color: var(--dark);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+  }
+  .plaq-modal p {
+    margin: 0 0 22px;
+    color: #555;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .plaq-modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .plaq-modal-btn {
+    display: block;
+    padding: 12px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    cursor: pointer;
+    font-family: inherit;
+    border: none;
+  }
+  .plaq-modal-btn.primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .plaq-modal-btn.primary:hover { background: #9c7209; }
+  .plaq-modal-btn.secondary {
+    background: transparent;
+    color: var(--dark);
+    border: 1px solid var(--card-border);
+  }
+  .plaq-modal-btn.secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .plaq-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    line-height: 1;
+    color: #888;
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+  .plaq-modal-close:hover { color: var(--dark); }
+</style>
+
+<div class="plaq-modal-overlay" id="plaqModal" onclick="if(event.target===this) closePlaquetteModal();">
+  <div class="plaq-modal" role="dialog" aria-labelledby="plaqModalTitle">
+    <button class="plaq-modal-close" onclick="closePlaquetteModal()" aria-label="Fermer">×</button>
+    <h3 id="plaqModalTitle">Plaquette IRIS Real Estate Partners</h3>
+    <p>Choisis le format. La version HTML s'ouvre dans un nouvel onglet, la version PDF se télécharge.</p>
+    <div class="plaq-modal-actions">
+      <a class="plaq-modal-btn primary" href="brique1_iris_rep_plaquette.html" target="_blank" rel="noopener" onclick="closePlaquetteModal();">Ouvrir au format HTML</a>
+      <a class="plaq-modal-btn secondary" href="assets/iris_rep/IRIS_REP_Plaquette.pdf" download="IRIS_REP_Plaquette.pdf" onclick="closePlaquetteModal();">Télécharger le PDF</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openPlaquetteModal() {
+    document.getElementById('plaqModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePlaquetteModal() {
+    document.getElementById('plaqModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closePlaquetteModal();
+  });
+</script>
+
 </body>
 </html>
