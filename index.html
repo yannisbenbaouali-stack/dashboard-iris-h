@@ -246,6 +246,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item active" onclick="switchTab(this,'todo')"><span class="nav-dot"></span><span>Todo</span><span class="nav-cnt" id="nav-todo-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'deals')"><span class="nav-dot"></span><span>Dealflow Projets</span><span class="nav-cnt" id="nav-deals-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'prospects')"><span class="nav-dot"></span><span>Dealflow Prospects</span><span class="nav-cnt" id="nav-prospects-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'location')"><span class="nav-dot"></span><span>Location</span><span class="nav-cnt" id="nav-location-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'finance')"><span class="nav-dot"></span><span>Finance</span></button>
       <button class="nav-item" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'memoire')"><span class="nav-dot"></span><span>Mémoire</span></button>
@@ -292,6 +293,16 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <div class="tab" id="tab-prospects">
         <div class="kpis" id="prospects-kpis"></div>
         <div id="prospects-body"></div>
+      </div>
+
+      <!-- LOCATION - CANDIDATS COLOC ORLEANS -->
+      <div class="tab" id="tab-location">
+        <div class="kpis" id="loc-kpis"></div>
+        <div id="loc-filters" style="margin-bottom:10px"></div>
+        <div style="margin-bottom:12px">
+          <input id="loc-search" placeholder="Rechercher (nom, telephone, email, bien...)" oninput="renderLocation()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;width:100%;max-width:420px;background:var(--card);color:var(--text)">
+        </div>
+        <div class="tcard"><div id="loc-body"></div></div>
       </div>
 
       <!-- FINANCE -->
@@ -615,7 +626,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 <script>
 const CFG_KEY='iris_h_cfg';
 let cfg=null;
-let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[],rapports_rediges:[],vilmar:[],mandats:[],vitrines:[],documents:[]};
+let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[],rapports_rediges:[],vilmar:[],mandats:[],vitrines:[],documents:[],candidats:[],locColocs:[],locChambres:[]};
 
 function getConfig(){try{const s=JSON.parse(localStorage.getItem(CFG_KEY));if(s&&s.url&&s.key)return s}catch(e){}return null}
 function saveConfig(){
@@ -641,7 +652,7 @@ async function supa(table,params='',fetchAll=false){
 
 async function loadAll(){
   const safe=async fn=>{try{return await fn()}catch(e){console.warn('Warning:',e);return[]}};
-  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats,vitrines,partenaires,h_bible,h_persos,h_chap,h_indices,documents]=await Promise.all([
+  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats,vitrines,partenaires,h_bible,h_persos,h_chap,h_indices,documents,candidats,locColocs,locChambres]=await Promise.all([
     safe(()=>supa('taches','order=created_at.desc')),
     safe(()=>supa('taches_v2','order=created_at.asc')),
     safe(()=>supa('taches_recurrentes_suivi','order=semaine.asc')),
@@ -662,11 +673,14 @@ async function loadAll(){
     safe(()=>supa('histoire_personnages','order=categorie.asc,nom.asc')),
     safe(()=>supa('histoire_chapitres','order=saison.asc,numero.asc')),
     safe(()=>supa('histoire_indices','order=saison_seme.asc,id.asc')),
-    safe(()=>supa('documents_claude','order=id.desc'))
+    safe(()=>supa('documents_claude','order=id.desc')),
+    safe(()=>supa('candidats_coloc','order=date_premier_contact.desc.nullslast')),
+    safe(()=>supa('colocations_orleans','order=nom.asc')),
+    safe(()=>supa('chambres_orleans','order=numero.asc'))
   ]);
   data.taches=taches;data.taches_v2=taches_v2;data.rec_suivi=rec_suivi;data.deals=deals;
   data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;data.vilmar=vilmar;data.mandats=mandats;data.partenaires=partenaires;data.vitrines=vitrines;data.vitrines=vitrines;
-  data.h_bible=h_bible;data.h_persos=h_persos;data.h_chap=h_chap;data.h_indices=h_indices;data.documents=documents;
+  data.h_bible=h_bible;data.h_persos=h_persos;data.h_chap=h_chap;data.h_indices=h_indices;data.documents=documents;data.candidats=candidats;data.locColocs=locColocs;data.locChambres=locChambres;
   try{localStorage.setItem('iris_h_cache',JSON.stringify({data:{...data,contacts:[]},ts:Date.now()}))}catch(e){}
   render();
   const t=new Date();
@@ -729,6 +743,7 @@ function updateNavCounts(){
   document.getElementById('nav-crm-cnt').textContent=(data._crmTotal||data.contacts.length).toLocaleString();
   document.getElementById('nav-mandats-cnt').textContent=(data.mandats||[]).length;
   {const a=(data.documents||[]).filter(d=>(d.file_type||'')!=='todo'&&docUrlState(d)!=='ok').length;const el=document.getElementById('nav-documents-cnt');if(el)el.textContent=a;}
+  {const el=document.getElementById('nav-location-cnt');if(el)el.textContent=(data.candidats||[]).length;}
 }
 
 let currentTab='todo';
@@ -738,7 +753,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien'};
+  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',location:'Location · Candidats coloc Orléans'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
@@ -746,7 +761,7 @@ function switchTab(btn,tab){
 }
 
 function renderCurrentTab(){
-  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,documents:renderDocuments,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct,charte:()=>{}};
+  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,documents:renderDocuments,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct,charte:()=>{},location:renderLocation};
   if(m[currentTab])m[currentTab]();
 }
 
@@ -2120,6 +2135,59 @@ function sortMandats(col){
   renderMandats();
 }
 
+let locFilterStatut='all',locSortCol='date_premier_contact',locSortDir='desc';
+function sortLoc(c){if(locSortCol===c){locSortDir=locSortDir==='asc'?'desc':'asc'}else{locSortCol=c;locSortDir='asc'}renderLocation()}
+function locBien(c){
+  var ch=(data.locChambres||[]).find(function(x){return x.id===c.chambre_souhaitee_id});
+  var co=(data.locColocs||[]).find(function(x){return x.id===c.bien_souhaite_id || (ch && x.id===ch.coloc_id)});
+  var parts=[];
+  if(co)parts.push(co.nom||co.code||('coloc '+co.id));
+  if(ch)parts.push('ch. '+(ch.numero||ch.id));
+  return parts.join(' · ');
+}
+function renderLocation(){
+  var src=(data.candidats||[]).slice();
+  var isNew=function(s){return !s || s==='nouveau'};
+  var nouveaux=src.filter(function(c){return isNew(c.statut)}).length;
+  var encours=src.filter(function(c){return ['contacte','contacté','visite','dossier_recu','dossier reçu','en cours'].indexOf((c.statut||'').toLowerCase())>=0}).length;
+  var retenus=src.filter(function(c){return ['retenu','signe','signé'].indexOf((c.statut||'').toLowerCase())>=0}).length;
+  document.getElementById('loc-kpis').innerHTML=
+    '<div class="kpi"><div class="kpi-label">Total candidats</div><div class="kpi-val">'+src.length+'</div></div>'+
+    '<div class="kpi orange"><div class="kpi-label">Nouveaux</div><div class="kpi-val">'+nouveaux+'</div></div>'+
+    '<div class="kpi"><div class="kpi-label">En cours</div><div class="kpi-val">'+encours+'</div></div>'+
+    '<div class="kpi green"><div class="kpi-label">Retenus</div><div class="kpi-val">'+retenus+'</div></div>';
+  var statuts=['all','nouveau','contacte','visite','dossier_recu','retenu','refuse'];
+  var lbl={all:'Tous',nouveau:'Nouveaux',contacte:'Contactés',visite:'Visite',dossier_recu:'Dossier reçu',retenu:'Retenus',refuse:'Refusés'};
+  document.getElementById('loc-filters').innerHTML='<div class="filters">'+statuts.map(function(st){return '<button class="fbtn'+(locFilterStatut===st?' on':'')+'" onclick="locFilterStatut=\''+st+'\';renderLocation()">'+lbl[st]+'</button>'}).join('')+'</div>';
+  var filtered=src;
+  if(locFilterStatut!=='all')filtered=filtered.filter(function(c){var s=(c.statut||'nouveau').toLowerCase().replace('é','e');return s.indexOf(locFilterStatut.replace('_',' '))>=0 || s===locFilterStatut});
+  var q=(document.getElementById('loc-search')&&document.getElementById('loc-search').value||'').toLowerCase().trim();
+  if(q)filtered=filtered.filter(function(c){return [c.prenom,c.nom,c.email,c.telephone,c.plateforme,c.canal_origine,c.profession,c.situation,locBien(c)].map(function(v){return v||''}).join(' ').toLowerCase().indexOf(q)>=0});
+  var dir=locSortDir==='asc'?1:-1;
+  filtered=filtered.slice().sort(function(a,b){var va=(a[locSortCol]||'').toString().toLowerCase(),vb=(b[locSortCol]||'').toString().toLowerCase();return va<vb?-1*dir:va>vb?1*dir:0});
+  var fDate=function(d){if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})};
+  var statBadge=function(s){s=s||'nouveau';var k=s.toLowerCase();var m={'nouveau':'p-med','contacte':'p-high','contacté':'p-high','visite':'p-iris','dossier_recu':'p-high','dossier reçu':'p-high','retenu':'p-done','signe':'p-done','signé':'p-done','refuse':'p-standby','refusé':'p-standby'};return '<span class="pill '+(m[k]||'p-med')+'">'+s+'</span>'};
+  var thS=function(k){return locSortCol===k?(locSortDir==='asc'?' ▲':' ▼'):''};
+  var cols=[{k:'date_premier_contact',l:'Date contact'},{k:'plateforme',l:'Plateforme'},{k:'nom',l:'Candidat'},{k:'telephone',l:'Contact'},{k:'bien',l:'Bien concerné'},{k:'profession',l:'Profil'},{k:'statut',l:'Statut'},{k:'notes',l:'Notes'}];
+  var el=document.getElementById('loc-body');
+  if(!filtered.length){el.innerHTML='<div class="empty"><div class="empty-ico">🏠</div><div class="empty-text">Aucun candidat enregistré pour le moment.<br>La tâche quotidienne de scan des messageries alimentera ce tableau.</div></div>';return}
+  el.innerHTML='<div style="overflow-x:auto"><table class="tbl"><thead><tr>'+cols.map(function(c){return '<th style="cursor:pointer;white-space:nowrap" onclick="sortLoc(\''+c.k+'\')">'+c.l+thS(c.k)+'</th>'}).join('')+'</tr></thead><tbody>'+
+  filtered.map(function(c,i){
+    var contact=[c.telephone,c.email].filter(function(v){return v}).join('<br>');
+    var profil=[c.profession,c.situation].filter(function(v){return v}).join(' · ');
+    var plat=c.plateforme||c.canal_origine||'';
+    return '<tr style="background:'+(i%2===0?'#fff':'#f8f9fc')+'">'+
+      '<td style="white-space:nowrap;font-size:11px">'+fDate(c.date_premier_contact)+'</td>'+
+      '<td><span class="pill p-iris" style="font-size:9px">'+escHtml(plat)+'</span></td>'+
+      '<td style="font-weight:600;color:var(--navy);font-size:12px;white-space:nowrap">'+escHtml(((c.prenom||'')+' '+(c.nom||'')).trim()||'—')+'</td>'+
+      '<td style="font-size:11px;white-space:nowrap">'+contact+'</td>'+
+      '<td style="font-size:11px">'+escHtml(locBien(c))+'</td>'+
+      '<td style="font-size:11px;color:var(--dim);max-width:180px;overflow:hidden;text-overflow:ellipsis" title="'+escHtml(profil)+'">'+escHtml(profil)+'</td>'+
+      '<td>'+statBadge(c.statut)+'</td>'+
+      '<td style="max-width:220px;font-size:10px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+escHtml(c.notes||c.message_brut||'')+'">'+escHtml(c.notes||c.message_brut||'')+'</td>'+
+    '</tr>'}).join('')+
+  '</tbody></table></div>';
+}
 function renderMandats(){
   const src=data.mandats||[];
   const enCours=src.filter(m=>m.statut==='En cours').length;
