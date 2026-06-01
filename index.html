@@ -300,7 +300,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div class="kpis" id="loc-kpis"></div>
         <div id="loc-filters" style="margin-bottom:10px"></div>
         <div style="margin-bottom:12px">
-          <input id="loc-search" name="recherche-candidats" autocomplete="off" autocapitalize="off" spellcheck="false" data-lpignore="true" placeholder="Rechercher (nom, telephone, email, bien...)" oninput="renderLocation()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;width:100%;max-width:420px;background:var(--card);color:var(--text)">
+          <input id="loc-search" name="recherche-candidats" autocomplete="off" autocapitalize="off" spellcheck="false" data-lpignore="true" readonly onfocus="this.removeAttribute('readonly')" placeholder="Rechercher (nom, telephone, email, bien...)" oninput="renderLocation()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;width:100%;max-width:420px;background:var(--card);color:var(--text)">
         </div>
         <div class="tcard"><div id="loc-body"></div></div>
       </div>
