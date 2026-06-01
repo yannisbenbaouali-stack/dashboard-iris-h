@@ -2146,7 +2146,7 @@ function renderLocation(){
   var fDate=function(d){if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})};
   var statBadge=function(s){s=s||'nouveau';var k=s.toLowerCase();var m={'nouveau':'p-med','contacte':'p-high','contacté':'p-high','visite':'p-iris','dossier_recu':'p-high','dossier reçu':'p-high','retenu':'p-done','signe':'p-done','signé':'p-done','refuse':'p-standby','refusé':'p-standby'};return '<span class="pill '+(m[k]||'p-med')+'">'+s+'</span>'};
   var thS=function(k){return locSortCol===k?(locSortDir==='asc'?' ▲':' ▼'):''};
-  var cols=[{k:'date_premier_contact',l:'Date contact'},{k:'plateforme',l:'Plateforme'},{k:'nom',l:'Candidat'},{k:'telephone',l:'Contact'},{k:'bien',l:'Bien concerné'},{k:'profession',l:'Profil'},{k:'statut',l:'Statut'},{k:'notes',l:'Notes'}];
+  var cols=[{k:'date_premier_contact',l:'Date contact'},{k:'plateforme',l:'Plateforme'},{k:'nom',l:'Candidat'},{k:'telephone',l:'Contact'},{k:'bien',l:'Bien concerné'},{k:'profession',l:'Profil'},{k:'statut',l:'Statut'},{k:'notes',l:'Notes'},{k:'url_message',l:'Conversation'}];
   var el=document.getElementById('loc-body');
   if(!filtered.length){el.innerHTML='<div class="empty"><div class="empty-ico">🏠</div><div class="empty-text">Aucun candidat enregistré pour le moment.<br>La tâche quotidienne de scan des messageries alimentera ce tableau.</div></div>';return}
   el.innerHTML='<div style="overflow-x:auto"><table class="tbl"><thead><tr>'+cols.map(function(c){return '<th style="cursor:pointer;white-space:nowrap" onclick="sortLoc(\''+c.k+'\')">'+c.l+thS(c.k)+'</th>'}).join('')+'</tr></thead><tbody>'+
@@ -2154,6 +2154,7 @@ function renderLocation(){
     var contact=[c.telephone,c.email].filter(function(v){return v}).join('<br>');
     var profil=[c.profession,c.situation].filter(function(v){return v}).join(' · ');
     var plat=c.plateforme||c.canal_origine||'';
+    var lien=c.url_message?'<a href="'+String(c.url_message).replace(/&/g,'&amp;').replace(/"/g,'%22')+'" target="_blank" rel="noopener" style="color:var(--blue);font-size:11px;text-decoration:none;white-space:nowrap">Ouvrir &#8599;</a>':'<span style="color:var(--dim)">&#8212;</span>';
     return '<tr style="background:'+(i%2===0?'#fff':'#f8f9fc')+'">'+
       '<td style="white-space:nowrap;font-size:11px">'+fDate(c.date_premier_contact)+'</td>'+
       '<td><span class="pill p-iris" style="font-size:9px">'+escHtml(plat)+'</span></td>'+
@@ -2163,6 +2164,7 @@ function renderLocation(){
       '<td style="font-size:11px;color:var(--dim);max-width:180px;overflow:hidden;text-overflow:ellipsis" title="'+escHtml(profil)+'">'+escHtml(profil)+'</td>'+
       '<td>'+statBadge(c.statut)+'</td>'+
       '<td style="max-width:220px;font-size:10px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+escHtml(c.notes||c.message_brut||'')+'">'+escHtml(c.notes||c.message_brut||'')+'</td>'+
+      '<td style="font-size:11px">'+lien+'</td>'+
     '</tr>'}).join('')+
   '</tbody></table></div>';
 }
