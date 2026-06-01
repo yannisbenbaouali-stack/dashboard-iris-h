@@ -378,6 +378,20 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         </div>
         <!-- Contenu -->
         <div id="struct-content"></div>
+
+        <!-- TABLEAU PARTENAIRES -->
+        <div style="margin-top:28px;padding-top:20px;border-top:2px solid var(--border)">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <h3 style="margin:0;font-size:15px;font-weight:700">Partenaires</h3>
+            <button onclick="openPartenaireModal()" style="background:var(--navy);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:12px;font-weight:600;color:#fff;cursor:pointer">+ Ajouter</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="tbl">
+              <thead><tr><th>Nom</th><th>Prénom</th><th>Email</th><th>Téléphone</th><th>Société</th><th>Commentaire</th></tr></thead>
+              <tbody id="partenaires-tbody"></tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
       <!-- OUTILS -->
@@ -711,6 +725,7 @@ window.addEventListener('hashchange',applyHashRoute);
 function render(){
   updateNavCounts();
   renderCurrentTab();
+  renderPartenaires();
 }
 
 function updateNavCounts(){
@@ -1696,7 +1711,6 @@ function renderOutils(){
   const unlocked=sessionStorage.getItem(OUTILS_SESSION_KEY)==='1';
   const hasPin=!!localStorage.getItem(OUTILS_PIN_KEY);
   if(unlocked){
-    renderPartenaires();
     document.getElementById('outils-lock').style.display='none';
     document.getElementById('outils-content').style.display='block';
     loadOutils();
@@ -1840,28 +1854,25 @@ function renderPartenaires(){
   if(!tbody)return;
   if(!src.length){tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:1.5rem;color:var(--dim)">Aucun partenaire</td></tr>`;return}
   tbody.innerHTML=src.map((p,i)=>`<tr style="background:${i%2===0?'#fff':'#f8f9fc'}">
-    <td style="font-weight:600;font-size:12px">${p.prenom||''} ${p.nom||''}</td>
-    <td style="font-size:11px;color:var(--dim)">${p.societe||''}</td>
-    <td style="font-size:11px">${p.metier||''}</td>
-    <td style="font-size:11px"><a href="tel:${p.telephone||''}" style="color:var(--blue);text-decoration:none">${p.telephone||''}</a></td>
+    <td style="font-weight:600;font-size:12px">${p.nom||''}</td>
+    <td style="font-size:12px">${p.prenom||''}</td>
     <td style="font-size:11px"><a href="mailto:${p.email||''}" style="color:var(--blue);text-decoration:none;word-break:break-all">${p.email||''}</a></td>
+    <td style="font-size:11px"><a href="tel:${p.telephone||''}" style="color:var(--blue);text-decoration:none">${p.telephone||''}</a></td>
+    <td style="font-size:11px;color:var(--dim)">${p.societe||''}</td>
     <td style="font-size:10px;color:var(--dim)">${p.notes||''}</td>
   </tr>`).join('');
 }
 
 function openPartenaireModal(){
-  const nom=prompt('Nom complet (Prénom Nom) :');if(!nom)return;
-  const societe=prompt('Société :');
-  const metier=prompt('Métier :');
-  const tel=prompt('Téléphone :');
+  const nom=prompt('Nom :');if(!nom)return;
+  const prenom=prompt('Prénom :')||'';
   const email=prompt('Email :');
-  const notes=prompt('Notes :');
-  const parts=nom.trim().split(' ');
-  const prenom=parts.slice(0,-1).join(' ')||'';
-  const nomFam=parts[parts.length-1]||nom;
+  const tel=prompt('Téléphone :');
+  const societe=prompt('Société :');
+  const notes=prompt('Commentaire :');
   const cfg=getConfig();
   fetch(`${cfg.url}/rest/v1/partenaires`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},
-    body:JSON.stringify({nom:nomFam,prenom,societe:societe||null,metier:metier||null,telephone:tel||null,email:email||null,notes:notes||null})})
+    body:JSON.stringify({nom:nom.trim(),prenom:prenom.trim()||null,societe:societe||null,telephone:tel||null,email:email||null,notes:notes||null})})
   .then(r=>r.json()).then(rows=>{
     if(rows&&rows[0]){data.partenaires=[...data.partenaires,rows[0]].sort((a,b)=>a.nom.localeCompare(b.nom));renderPartenaires();showToast('Partenaire ajouté');}
   }).catch(()=>showToast('Erreur'));
