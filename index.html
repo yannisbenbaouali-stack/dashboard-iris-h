@@ -326,6 +326,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div id="memo-bible-view"></div>
         <div id="memo-fragments-view" style="display:none"></div>
         <div id="memo-skills-view" style="display:none"></div>
+        <div id="memo-archmd-view" style="display:none"></div>
       </div>
 
       <!-- STRUCTURATION (ex ORGANIGRAMME) -->
@@ -1406,11 +1407,12 @@ const THEMES=[{key:'immobilier',label:'Immobilier',ico:'🏢'},{key:'finance',la
 let activeTheme='immobilier',memoView='bible',fragFilter='all';
 
 function renderMemoire(){
-  document.getElementById('memo-toggle').innerHTML=`<button class="memo-toggle-btn${memoView==='bible'?' active':''}" onclick="memoView='bible';renderMemoire()">Bible consolidée</button><button class="memo-toggle-btn${memoView==='fragments'?' active':''}" onclick="memoView='fragments';renderMemoire()">Fragments bruts</button><button class="memo-toggle-btn${memoView==='skills'?' active':''}" onclick="memoView='skills';renderMemoire()">Skills agents</button>`;
-  if(memoView==='bible')renderBible();else if(memoView==='fragments')renderFragments();else renderSkills();
+  document.getElementById('memo-toggle').innerHTML=`<button class="memo-toggle-btn${memoView==='bible'?' active':''}" onclick="memoView='bible';renderMemoire()">Bible consolidée</button><button class="memo-toggle-btn${memoView==='fragments'?' active':''}" onclick="memoView='fragments';renderMemoire()">Fragments bruts</button><button class="memo-toggle-btn${memoView==='skills'?' active':''}" onclick="memoView='skills';renderMemoire()">Skills agents</button><button class="memo-toggle-btn${memoView==='archmd'?' active':''}" onclick="memoView='archmd';renderMemoire()">Architecture .md</button>`;
+  if(memoView==='bible')renderBible();else if(memoView==='fragments')renderFragments();else if(memoView==='skills')renderSkills();else renderArchMd();
   document.getElementById('memo-bible-view').style.display=memoView==='bible'?'block':'none';
   document.getElementById('memo-fragments-view').style.display=memoView==='fragments'?'block':'none';
   document.getElementById('memo-skills-view').style.display=memoView==='skills'?'block':'none';
+  document.getElementById('memo-archmd-view').style.display=memoView==='archmd'?'block':'none';
 }
 
 function renderBible(){
@@ -1426,6 +1428,74 @@ function renderFragments(){
   const agBadge=a=>{const m={claude:'p-iris',tom:'p-infra',neo:'p-ur'};const l={claude:'Claude',tom:'Tom',neo:'Neo'};return`<span class="pill ${m[a]||''}">${l[a]||a}</span>`};
   el.innerHTML=`<div class="filters"><button class="fbtn${fragFilter==='all'?' on':''}" onclick="fragFilter='all';renderFragments()">Tous</button><button class="fbtn${fragFilter==='claude'?' on':''}" onclick="fragFilter='claude';renderFragments()">Claude</button><button class="fbtn${fragFilter==='tom'?' on':''}" onclick="fragFilter='tom';renderFragments()">Tom</button><button class="fbtn${fragFilter==='neo'?' on':''}" onclick="fragFilter='neo';renderFragments()">Neo</button></div>
   ${filtered.length?filtered.map(f=>`<div class="fragment-item"><div class="fragment-header"><div>${agBadge(f.agent)} <span class="pill ${f.importance==='haute'?'p-urg':'p-med'}">${f.importance}</span></div><div class="fragment-date">${fmtDt(f.created_at)}</div></div><div class="fragment-text">${escHtml(f.contenu)}</div>${f.tags&&f.tags.length?`<div class="fragment-tags">${f.tags.map(t=>`<span class="fragment-tag">${t}</span>`).join('')}</div>`:''}</div>`).join(''):'<div class="empty"><div class="empty-ico">🧠</div><div class="empty-text">Aucun fragment</div></div>'}`;
+}
+
+function renderArchMd(){
+  const F='https://drive.google.com/file/d/',D='https://drive.google.com/drive/folders/';
+  // Arbre de chargement reel defini par BOOTSTRAP.md v1.3
+  const socle=[
+    {n:'INDEX_COWORK.md',id:'1QkuAb8yF-tMRm87439XczRnt3ojKe7V8',s:'ok',note:'Table de routage par type de demande'},
+    {n:'IRIS_H_CONTEXTE.md',id:'1fP19h3dYRlgxPMdQotMVvGvzgp7fiL6n',s:'ok',note:'Contexte groupe'},
+    {n:'REGLES_REDACTION.md',id:'1nHC_5nerc_6h2jC4j_fRolYMcXTFP8WX',s:'ok',note:'Style, zero tiret'},
+    {n:'PROTOCOLE_CONVERSATION.md',id:'1Y-b3qfhH7gzmGAISzQ40-dQuYIYyDIm_',s:'ok',note:'Objectif, fenetre, fin'},
+    {n:'DETECTION_OUTIL_OPTIMAL.md',id:'18Kkm8q8nny6V_uRZIqJ7dIiXIQ1bbxMf',s:'ok',note:'Choix outil'},
+    {n:'INFRASTRUCTURE_TECHNIQUE.md',id:'1Je_mRB0dk7BgtWoqRLQcDgFgiL7QRCeN',s:'ok',note:'Supabase, GitHub, Drive'}
+  ];
+  const entites=[
+    {e:'IRIS H',id:'1Fnc7oDlJ4TU3rSTbBvCmLJ3AwvXbtVLC',f:['CONTEXTE_HOLDING.md','INSTRUCTIONS_SPECIFIQUES.md']},
+    {e:'IRIS REP',id:'13ZC9VVNv9dU6ChT77TDHPqwpWuVg-k8X',f:['CONTEXTE.md','INSTRUCTIONS_COWORK_MANDATS.md','INSTRUCTIONS_COWORK_EMAILS.md','REGISTRE_FORMAT.md']},
+    {e:'BYM Construction',id:'1T_xY_flwvNH6_JjkLA5wqbACZ4-PeKab',f:['CONTEXTE.md','INSTRUCTIONS_BYM.md','DEALFLOW_ETAPES.md']},
+    {e:'Urban Rise',id:'1puu7T13D0RoAo4kUuDJqxEap78FUW1YQ',f:['CONTEXTE.md','MONTAGE_DENORMANDIE.md']},
+    {e:'RIR SAS',id:'1P-lTh2XJZeEK7-dR_nowKJlAwmyBzzzc',f:['CONTEXTE.md','REFERENTIEL_DEALS_RIR.md']},
+    {e:'ARRISTO',id:'169feHhwLRvsKSXi67K3Dvexd7ls_Q0dj',f:['CONTEXTE.md']},
+    {e:'C2C.FR',id:'1mUtuxey4XsB5Sgx9zgt-JnhY6XGwym1p',f:['CONTEXTE.md','PROJETS_ACTIFS.md']},
+    {e:'CCD1 Cybelcity',id:'1zQ-zOdJor16QuzSLQodmPAFaZFf_-GOS',f:['CONTEXTE.md','CONTENTIEUX_72_BOURGOGNE.md']}
+  ];
+  const demande=[
+    {n:'04_REFERENTIELS',id:'1FX2ofK3XJAIE0Y7fcnLfYjk2q56mezEX',note:'Conventions techniques'},
+    {n:'05_PROMPTS_REUTILISABLES',id:'1q04O6x_PkPpL2N_KrhIqpvFFLwt2ZWeY',note:'Templates'},
+    {n:'07_PROJETS_ACTIFS',id:'1pZDuq4uuQenVXk0qGy1a7ZUjmH5BDq_Z',note:'Projets vivants'}
+  ];
+  const devis=[
+    {n:'BYM_audit_devis_methode.md',id:'142H1Y86Y2HK5F2EwJakztwHuqRUYtXF6',loc:'CLAUDE/',s:'ok',note:'Methode audit et mise en forme devis'},
+    {n:'BYM_prompt_v3_EXHAUSTIF.md',id:'12ZmlAi6sQAE7fQQn-QbjTD9sG_rw9exM',loc:'CLAUDE/.../Lovable',s:'warn',note:'BOOTSTRAP pointe un chemin PC local. Copie Drive trouvee ailleurs, chemin a corriger'}
+  ];
+  const tag=s=>s==='ok'?'<span style="font-size:9px;color:#1a8a4a;background:var(--green-bg);padding:1px 6px;border-radius:4px">verifie</span>':s==='warn'?'<span style="font-size:9px;color:#b36d00;background:var(--orange-bg);padding:1px 6px;border-radius:4px">a corriger</span>':'<span style="font-size:9px;color:var(--blue);background:var(--blue-bg);padding:1px 6px;border-radius:4px">declare</span>';
+  const link=u=>`<a href="${u}" target="_blank" style="font-size:10px;color:var(--blue);text-decoration:none;white-space:nowrap">ouvrir &#8599;</a>`;
+  const card=(name,loc,url,s,note)=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;margin:4px 0">
+    <div style="flex:1;min-width:0">
+      <div style="font-size:12px;font-weight:600;color:var(--navy);display:flex;align-items:center;gap:6px;flex-wrap:wrap">${name} ${tag(s)}</div>
+      <div style="font-size:10px;color:var(--dim);font-family:monospace;margin-top:1px">${loc}</div>
+      ${note?`<div style="font-size:10px;color:var(--dim2);margin-top:1px">${note}</div>`:''}
+    </div>${link(url)}</div>`;
+  const sect=(t,sub)=>`<div style="font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin:18px 0 4px">${t}</div>${sub?`<div style="font-size:11px;color:var(--dim);margin-bottom:6px">${sub}</div>`:''}`;
+
+  let h=`<div style="font-size:12px;color:var(--dim);line-height:1.5;margin-bottom:6px">Chaine de chargement reelle des fichiers .md, definie par BOOTSTRAP.md v1.3. Cet onglet ne contient pas la memoire (voir Bible et Fragments), il cartographie ce que Claude lit en debut et en cours de session. Socle verifie fichier par fichier. Fichiers d'entite lies a leur dossier, contenu declare par BOOTSTRAP non verifie ligne a ligne dans cette passe.</div>`;
+
+  // Racine
+  h+=sect('Point d\'entree');
+  h+=card('BOOTSTRAP.md','CLAUDE/',F+'1vJN24ZqqoNk4QNmCZUr9VgAbd4w81b1x/view','ok','Lu en premiere action, toutes interfaces. Reference par Projets Claude, Cowork, Tom, userPreferences');
+
+  // Socle
+  h+=sect('Socle commun','Lu a chaque session, ordre strict. Dossier 00_MASTER');
+  socle.forEach((x,i)=>{h+=card((i+1)+'. '+x.n,'CLAUDE/00_MASTER/',F+x.id+'/view',x.s,x.note)});
+
+  // Par entite
+  h+=sect('Par entite','Charge selon le projet en cours. Dossier 03_ENTITES');
+  entites.forEach(x=>{
+    h+=`<div style="margin:6px 0 2px"><div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;background:var(--bg)"><div style="flex:1;font-size:12px;font-weight:700;color:var(--navy)">${x.e}</div><div style="font-size:10px;color:var(--dim);font-family:monospace">03_ENTITES/${x.e.replace(/ /g,'_').replace(/\./g,'').toUpperCase()}/</div>${link(D+x.id)}</div>`;
+    h+=`<div style="padding-left:14px">${x.f.map(fn=>`<div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--navy);padding:3px 0"><span style="color:var(--dim2)">&#8627;</span><span>${fn}</span> ${tag('decl')}</div>`).join('')}</div></div>`;
+  });
+
+  // A la demande
+  h+=sect('A la demande','Charge selon la nature de la demande, via le routage INDEX_COWORK section 2');
+  demande.forEach(x=>{h+=card(x.n,'CLAUDE/'+x.n+'/',D+x.id,'ok',x.note)});
+
+  // Devis BYM
+  h+=sect('Devis BYM','Declencheur : chiffrage, devis, metre, audit ou mise en forme de devis BYM');
+  devis.forEach(x=>{h+=card(x.n,x.loc,F+x.id+'/view',x.s,x.note)});
+
+  document.getElementById('memo-archmd-view').innerHTML=h;
 }
 
 function escHtml(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}
