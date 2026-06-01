@@ -1023,6 +1023,7 @@ function isVitrinable(d){const c=(d.code||'').toUpperCase();return c.startsWith(
 
 function renderDeals(){
   let deals=dealsFilter==='all'?[...data.deals]:data.deals.filter(d=>dealMatchesFilter(d,dealsFilter));
+  deals=deals.filter(d=>d.etape!=='dead');
   const q=(document.getElementById('deals-search')?.value||'').toLowerCase().trim();
   if(q)deals=deals.filter(d=>['code','nom','adresse','commentaire','type','etape','entite'].map(k=>d[k]||'').join(' ').toLowerCase().includes(q));
   const dir=dealsSortDir==='asc'?1:-1;
@@ -1323,7 +1324,7 @@ function renderFinance(){
     <div class="synth-item"><div class="synth-label">Total entrant</div><div class="synth-value pos">${fmt(tIn)}</div></div>
     <div class="synth-item"><div class="synth-label">Total sortant</div><div class="synth-value neg">${fmt(tOut)}</div></div>
     <div class="synth-item"><div class="synth-label">Tréso nette</div><div class="synth-value ${net>=0?'pos':'neg'}">${net>=0?'+':''}${fmt(Math.abs(net))}</div></div>
-    <div class="synth-item"><div class="synth-label">Deals actifs</div><div class="synth-value">${data.deals.filter(d=>d.etape!=='perdu').length}</div></div>
+    <div class="synth-item"><div class="synth-label">Deals actifs</div><div class="synth-value">${data.deals.filter(d=>!['cloture','dead'].includes(d.etape)).length}</div></div>
   </div></div>`;
 
   // Section Vilmar : 2 tableaux
