@@ -1433,19 +1433,26 @@ function renderFinance(){
 
 async function renderBudgetDevisBYM(){
   var el=document.getElementById('fin-budget-bym'); if(!el)return;
-  var _nm={}; (typeof data!=='undefined'&&data.deals?data.deals:[]).forEach(function(d){_nm[d.code]=d.nom;});
+  var _nm={},_dead={};
+  (typeof data!=='undefined'&&data.deals?data.deals:[]).forEach(function(d){_nm[d.code]=d.nom; if(d.etape==='dead')_dead[d.code]=1;});
+  var money=function(v){ if(v==null)return '—'; var f=fmt(parseFloat(v)); return f|| '0€'; };
   try{
-    var r=await fetch(`${cfg.url}/rest/v1/chantier_budget?poste=eq.CA%20Devis&order=deal_code.asc`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'}});
+    var r=await fetch(`${cfg.url}/rest/v1/chantier_budget?poste=eq.CA%20Devis&order=deal_code.asc,ordre.asc`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'}});
     var rows=await r.json();
-    if(!rows||!rows.length){el.innerHTML='<div class="empty"><div class="empty-text">Aucune ligne devis BYM</div></div>';return;}
+    rows=(rows||[]).filter(function(x){return !_dead[x.deal_code];});
+    if(!rows.length){el.innerHTML='<div class="empty"><div class="empty-text">Aucune ligne devis BYM</div></div>';return;}
     var th='font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;padding:6px 8px;border-bottom:1px solid var(--border)';
     var td='padding:8px;font-size:13px;border-bottom:1px solid var(--bg)';
-    var stColor=function(s){return ({'dossier manquant':'var(--red)','devis manquant':'var(--red)','\u00e0 v\u00e9rifier':'var(--red)','\u00e0 analyser':'var(--orange)','ok':'var(--green)'})[s]||'var(--dim)';};
+    var stColor=function(s){return ({'dossier manquant':'var(--red)','devis manquant':'var(--red)','à vérifier':'var(--red)','à analyser':'var(--orange)','ok':'var(--green)'})[s]||'var(--dim)';};
+    var vbymCell=function(x){ if(x.vbym_etat==='a_creer')return '<span style="color:var(--orange)">à créer</span>'; if(x.ht_vbym!=null)return money(x.ht_vbym); return '—'; };
     el.innerHTML='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse"><thead><tr>'+
       '<th style="text-align:left;'+th+'">Code</th>'+
       '<th style="text-align:left;'+th+'">Projet</th>'+
+      '<th style="text-align:left;'+th+'">Nature</th>'+
       '<th style="text-align:right;'+th+'">CA HT</th>'+
       '<th style="text-align:right;'+th+'">CA HT VBYM</th>'+
+      '<th style="text-align:right;'+th+'">Facturé</th>'+
+      '<th style="text-align:right;'+th+'">Payé</th>'+
       '<th style="text-align:left;'+th+'">Statut</th>'+
       '<th style="text-align:left;'+th+'">Devis</th>'+
       '<th style="text-align:left;'+th+'">Alerte</th>'+
@@ -1453,10 +1460,13 @@ async function renderBudgetDevisBYM(){
       rows.map(function(x){return '<tr>'+
         '<td style="'+td+';white-space:nowrap">'+(x.deal_code||'')+'</td>'+
         '<td style="'+td+'">'+(_nm[x.deal_code]||'')+'</td>'+
-        '<td style="'+td+';text-align:right;white-space:nowrap">'+(x.ht_devis!=null?fmt(parseFloat(x.ht_devis)):'\u2014')+'</td>'+
-        '<td style="'+td+';text-align:right;white-space:nowrap">'+(x.ht_vbym!=null?fmt(parseFloat(x.ht_vbym)):'\u2014')+'</td>'+
+        '<td style="'+td+'">'+(x.libelle_devis||'')+'</td>'+
+        '<td style="'+td+';text-align:right;white-space:nowrap">'+(x.ht_devis!=null?money(x.ht_devis):'—')+'</td>'+
+        '<td style="'+td+';text-align:right;white-space:nowrap">'+vbymCell(x)+'</td>'+
+        '<td style="'+td+';text-align:right;white-space:nowrap">'+money(x.facture||0)+'</td>'+
+        '<td style="'+td+';text-align:right;white-space:nowrap">'+(parseFloat(x.paye_pct)||0)+' %</td>'+
         '<td style="'+td+';color:'+stColor(x.statut_devis)+'">'+(x.statut_devis||'')+'</td>'+
-        '<td style="'+td+'">'+(x.devis_drive_url?'<a href="'+x.devis_drive_url+'" target="_blank" rel="noopener" style="color:#2e7d6b">Dossier</a>':'<span style="color:var(--red)">\u00e0 cr\u00e9er</span>')+'</td>'+
+        '<td style="'+td+'">'+(x.devis_drive_url?'<a href="'+x.devis_drive_url+'" target="_blank" rel="noopener" style="color:#2e7d6b">Dossier</a>':'<span style="color:var(--red)">à créer</span>')+'</td>'+
         '<td style="'+td+';font-size:12px;color:var(--dim)">'+(x.alerte||'')+'</td>'+
         '</tr>';}).join('')+
       '</tbody></table></div>';
