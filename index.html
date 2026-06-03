@@ -224,9 +224,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
     <div class="setup-logo">IRIS <span>H</span></div>
     <div class="setup-sub">Dashboard</div>
     <div class="setup-label">URL Supabase</div>
-    <input class="setup-input" id="inp-url" placeholder="https://xxxx.supabase.co">
+    <input class="setup-input" id="inp-url" placeholder="https://xxxx.supabase.co" autocomplete="off">
     <div class="setup-label">Clé anon (anon public key)</div>
-    <input class="setup-input" id="inp-key" placeholder="eyJhbG..." type="password">
+    <input class="setup-input" id="inp-key" placeholder="eyJhbG..." type="password" autocomplete="off">
     <button class="setup-btn" onclick="saveConfig()">Connecter</button>
     <div class="setup-note">Supabase → Settings → API → Project URL + anon public key.</div>
   </div>
@@ -628,6 +628,7 @@ function saveConfig(){
   const url=document.getElementById('inp-url').value.trim().replace(/\/$/,'');
   const key=document.getElementById('inp-key').value.trim();
   if(!url||!key){showToast('Renseigne URL + clé');return}
+  if(!/^https?:\/\//i.test(url)){showToast('URL Supabase invalide');return}
   localStorage.setItem(CFG_KEY,JSON.stringify({url,key}));cfg={url,key};boot();
 }
 function clearConfig(){if(!confirm('Déconnecter ?'))return;try{if(_authClient)_authClient.auth.signOut();}catch(e){}localStorage.removeItem(CFG_KEY);location.reload()}
@@ -1875,6 +1876,7 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 
 function boot(){
   cfg=getConfig();
+  if(cfg && !/^https?:\/\//i.test(cfg.url||'')){localStorage.removeItem(CFG_KEY);cfg=null;}
   if(!cfg){document.getElementById('setup').classList.remove('hidden');return}
   document.getElementById('setup').classList.add('hidden');
   if(!authReady){ensureAuth();return}
