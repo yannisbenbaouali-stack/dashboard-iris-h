@@ -616,9 +616,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 </style>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const CFG_KEY='iris_h_cfg';
 let cfg=null;
+let authTok=null; let authReady=false; let _authClient=null;
 let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[],rapports_rediges:[],vilmar:[],mandats:[],vitrines:[],documents:[],candidats:[],locColocs:[],locChambres:[]};
 
 function getConfig(){try{const s=JSON.parse(localStorage.getItem(CFG_KEY));if(s&&s.url&&s.key)return s}catch(e){}return null}
@@ -628,16 +630,57 @@ function saveConfig(){
   if(!url||!key){showToast('Renseigne URL + clé');return}
   localStorage.setItem(CFG_KEY,JSON.stringify({url,key}));cfg={url,key};boot();
 }
-function clearConfig(){if(!confirm('Déconnecter ?'))return;localStorage.removeItem(CFG_KEY);location.reload()}
+function clearConfig(){if(!confirm('Déconnecter ?'))return;try{if(_authClient)_authClient.auth.signOut();}catch(e){}localStorage.removeItem(CFG_KEY);location.reload()}
+function _authCli(){ if(!_authClient && window.supabase && cfg) _authClient=window.supabase.createClient(cfg.url,cfg.key); return _authClient; }
+async function ensureAuth(){
+  var c=_authCli();
+  if(!c){ setTimeout(ensureAuth,200); return; }
+  try{
+    const {data:{session}}=await c.auth.getSession();
+    if(session && session.access_token){ authTok=session.access_token; authReady=true;
+      c.auth.onAuthStateChange((_e,sx)=>{ if(sx&&sx.access_token)authTok=sx.access_token; });
+      boot(); return; }
+  }catch(e){}
+  showAuthGate();
+}
+function showAuthGate(){
+  var g=document.getElementById('authgate');
+  if(!g){ g=document.createElement('div'); g.id='authgate';
+    g.style.cssText='position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#0c1424';
+    g.innerHTML='<div style="width:320px;font-family:sans-serif;color:#e6e9ee">'
+      +'<div style="font-size:22px;font-weight:700;margin-bottom:2px">IRIS <span style=\'color:#3a7bd5\'>H</span></div>'
+      +'<div style="font-size:12px;color:#8794a5;margin-bottom:16px">Connexion sécurisée</div>'
+      +'<input id="ag-em" type="email" placeholder="Email" autocomplete="username" style="width:100%;padding:11px;margin:6px 0;border:1px solid #233047;border-radius:8px;background:#0f1b30;color:#fff">'
+      +'<input id="ag-pw" type="password" placeholder="Mot de passe" autocomplete="current-password" style="width:100%;padding:11px;margin:6px 0;border:1px solid #233047;border-radius:8px;background:#0f1b30;color:#fff">'
+      +'<button id="ag-go" style="width:100%;padding:11px;margin-top:10px;border:none;border-radius:8px;background:#3a7bd5;color:#fff;font-weight:600;cursor:pointer">Se connecter</button>'
+      +'<div id="ag-msg" style="color:#e2554a;font-size:12px;margin-top:10px;min-height:16px"></div></div>';
+    document.body.appendChild(g);
+    g.querySelector('#ag-go').addEventListener('click',doLogin);
+    g.querySelector('#ag-pw').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+  }
+  g.style.display='flex';
+}
+async function doLogin(){
+  var c=_authCli(); var em=document.getElementById('ag-em').value.trim(); var pw=document.getElementById('ag-pw').value;
+  var msg=document.getElementById('ag-msg'); msg.textContent='';
+  if(!em||!pw){msg.textContent='Email et mot de passe requis';return;}
+  try{
+    const {data,error}=await c.auth.signInWithPassword({email:em,password:pw});
+    if(error){msg.textContent='Échec : '+error.message;return;}
+    authTok=data.session.access_token; authReady=true;
+    c.auth.onAuthStateChange((_e,sx)=>{ if(sx&&sx.access_token)authTok=sx.access_token; });
+    boot();
+  }catch(e){ msg.textContent='Erreur : '+(e&&e.message||e); }
+}
 
 async function supa(table,params='',fetchAll=false){
   if(!fetchAll){
-    const r=await fetch(`${cfg.url}/rest/v1/${table}?${params}&limit=1000`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'}});
+    const r=await fetch(`${cfg.url}/rest/v1/${table}?${params}&limit=1000`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json'}});
     if(!r.ok)throw new Error(`${table}:${r.status}`);return r.json();
   }
   let all=[],off=0;
   while(true){
-    const r=await fetch(`${cfg.url}/rest/v1/${table}?${params}&limit=1000&offset=${off}`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'}});
+    const r=await fetch(`${cfg.url}/rest/v1/${table}?${params}&limit=1000&offset=${off}`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json'}});
     if(!r.ok)throw new Error(`${table}:${r.status}`);const p=await r.json();all=all.concat(p);if(p.length<1000)break;off+=1000;
   }
   return all;
@@ -686,7 +729,7 @@ async function loadAll(){
 async function loadCRMContacts(){
   if(!cfg)return;
   try{
-    const hdr={'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'count=exact'};
+    const hdr={'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'count=exact'};
     const countRes=await fetch(`${cfg.url}/rest/v1/contacts?limit=1&offset=0`,{headers:hdr});
     const total=parseInt(countRes.headers.get('content-range')?.split('/')[1]||'0');
     data.contacts=[];data._crmTotal=total;
@@ -983,10 +1026,10 @@ async function loadCRMTable(){
   if(search){const s=encodeURIComponent(`%${search}%`);params+=`&or=(nom.ilike.${s},prenom.ilike.${s},societe.ilike.${s},email.ilike.${s},metier.ilike.${s},localisation.ilike.${s},telephone.ilike.${s})`}
   const offset=crmPage*CRM_PS;
   try{
-    const hdr={'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'count=exact'};
+    const hdr={'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'count=exact'};
     const[countRes,pageRes]=await Promise.all([
       fetch(`${cfg.url}/rest/v1/contacts?${params}&limit=1&offset=0`,{headers:hdr}),
-      fetch(`${cfg.url}/rest/v1/contacts?${params}&limit=${CRM_PS}&offset=${offset}`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'}})
+      fetch(`${cfg.url}/rest/v1/contacts?${params}&limit=${CRM_PS}&offset=${offset}`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json'}})
     ]);
     const fTotal=parseInt(countRes.headers.get('content-range')?.split('/')[1]||'0');
     const pg=await pageRes.json();
@@ -1283,7 +1326,7 @@ function openContactNote(pcId){
   document.getElementById('modal-prospect-save').disabled=false;
   // Charger la note existante
   if(cfg){
-    fetch(`${cfg.url}/rest/v1/prospect_contacts?id=eq.${pcId}&select=notes,contact_id`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`}})
+    fetch(`${cfg.url}/rest/v1/prospect_contacts?id=eq.${pcId}&select=notes,contact_id`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`}})
     .then(r=>r.json()).then(d=>{
       if(d.length){
         document.getElementById('modal-prospect-note').value=d[0].notes||'';
@@ -1306,7 +1349,7 @@ async function saveProspectNote(){
   try{
     await fetch(`${cfg.url}/rest/v1/prospect_contacts?id=eq.${currentPcId}`,{
       method:'PATCH',
-      headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'},
+      headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json'},
       body:JSON.stringify({notes})
     });
     closeProspectModal();
@@ -1437,7 +1480,7 @@ async function renderBudgetDevisBYM(){
   (typeof data!=='undefined'&&data.deals?data.deals:[]).forEach(function(d){_nm[d.code]=d.nom; if(d.etape==='dead')_dead[d.code]=1;});
   var money=function(v){ if(v==null)return '—'; var f=fmt(parseFloat(v)); return f|| '0€'; };
   try{
-    var r=await fetch(`${cfg.url}/rest/v1/chantier_budget?poste=eq.CA%20Devis&order=deal_code.asc,ordre.asc`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'}});
+    var r=await fetch(`${cfg.url}/rest/v1/chantier_budget?poste=eq.CA%20Devis&order=deal_code.asc,ordre.asc`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json'}});
     var rows=await r.json();
     rows=(rows||[]).filter(function(x){return !_dead[x.deal_code];});
     if(!rows.length){el.innerHTML='<div class="empty"><div class="empty-text">Aucune ligne devis BYM</div></div>';return;}
@@ -1738,7 +1781,7 @@ async function saveTaskDetail(){
   try{
     await fetch(`${cfg.url}/rest/v1/taches_v2?id=eq.${currentTaskId}`,{
       method:'PATCH',
-      headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'},
+      headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json'},
       body:JSON.stringify({detail})
     });
     const t=(data.taches_v2||[]).find(t=>t.id===currentTaskId);
@@ -1834,6 +1877,8 @@ function boot(){
   cfg=getConfig();
   if(!cfg){document.getElementById('setup').classList.remove('hidden');return}
   document.getElementById('setup').classList.add('hidden');
+  if(!authReady){ensureAuth();return}
+  var _ag=document.getElementById('authgate'); if(_ag)_ag.style.display='none';
   document.getElementById('app').style.display='flex';
   updateTopbar();
   const cache=localStorage.getItem('iris_h_cache');
@@ -1914,7 +1959,7 @@ function outilsLock(){
 async function loadOutils(){
   if(!cfg)return;
   try{
-    const r=await fetch(`${cfg.url}/rest/v1/outils?order=ordre.asc,plateforme.asc`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`}});
+    const r=await fetch(`${cfg.url}/rest/v1/outils?order=ordre.asc,plateforme.asc`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`}});
     outilsData=await r.json();
     renderOutilsTable();
   }catch(e){console.error('outils load',e);}
@@ -1976,7 +2021,7 @@ async function outilsSaveNew(){
   if(!p){showToast('Plateforme requise');return}
   const body={plateforme:p,identifiant:document.getElementById('oa-identifiant').value.trim(),mot_de_passe:document.getElementById('oa-mdp').value,url:document.getElementById('oa-url').value.trim(),ordre:outilsData.length+1};
   try{
-    await fetch(`${cfg.url}/rest/v1/outils`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(body)});
+    await fetch(`${cfg.url}/rest/v1/outils`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(body)});
     document.getElementById('oa-plateforme').value='';document.getElementById('oa-identifiant').value='';document.getElementById('oa-mdp').value='';document.getElementById('oa-url').value='';
     document.getElementById('outils-add-form').style.display='none';
     showToast('Enregistré');
@@ -1987,7 +2032,7 @@ async function outilsSaveNew(){
 async function outilsDelete(id){
   if(!confirm('Supprimer cet outil ?'))return;
   try{
-    await fetch(`${cfg.url}/rest/v1/outils?id=eq.${id}`,{method:'DELETE',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Prefer':'return=minimal'}});
+    await fetch(`${cfg.url}/rest/v1/outils?id=eq.${id}`,{method:'DELETE',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Prefer':'return=minimal'}});
     showToast('Supprimé');loadOutils();
   }catch(e){showToast('Erreur');}
 }
@@ -2015,7 +2060,7 @@ function openPartenaireModal(){
   const societe=prompt('Société :');
   const notes=prompt('Commentaire :');
   const cfg=getConfig();
-  fetch(`${cfg.url}/rest/v1/partenaires`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},
+  fetch(`${cfg.url}/rest/v1/partenaires`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},
     body:JSON.stringify({nom:nom.trim(),prenom:prenom.trim()||null,societe:societe||null,telephone:tel||null,email:email||null,notes:notes||null})})
   .then(r=>r.json()).then(rows=>{
     if(rows&&rows[0]){data.partenaires=[...data.partenaires,rows[0]].sort((a,b)=>a.nom.localeCompare(b.nom));renderPartenaires();showToast('Partenaire ajouté');}
@@ -2432,11 +2477,11 @@ async function activateVitrine(dealId,type){
   if(!confirm(msg))return;
   try{
     const patch={};patch[flagField]=true;
-    await fetch(`${cfg.url}/rest/v1/deals?id=eq.${dealId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(patch)});
+    await fetch(`${cfg.url}/rest/v1/deals?id=eq.${dealId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(patch)});
     if(!isReactivation){
       const slug=vitrineSlugify((d.nom||'')+'-'+(d.code||dealId.substring(0,8))+'-'+type);
       const body={deal_id:dealId,slug,titre_vitrine:d.nom||'Sans titre',categorie:'bureaux',transaction:transact,annonce_type:type,statut_publication:'brouillon',ordre_affichage:100};
-      await fetch(`${cfg.url}/rest/v1/deals_vitrine`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(body)});
+      await fetch(`${cfg.url}/rest/v1/deals_vitrine`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(body)});
       const newVs=await supa('deals_vitrine',`deal_id=eq.${dealId}`);
       if(newVs){data.vitrines=data.vitrines.filter(v=>v.deal_id!==dealId);newVs.forEach(v=>data.vitrines.push(v))}
     }
@@ -2455,7 +2500,7 @@ async function quickDeactivateVitrine(dealId,type){
   if(!confirm(`Désactiver l'annonce ${typeLabel} de "${d.nom}" ?\n\nLes infos sont conservées, tu pourras réactiver en 1 clic.`))return;
   try{
     const patch={};patch[flagField]=false;
-    await fetch(`${cfg.url}/rest/v1/deals?id=eq.${dealId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(patch)});
+    await fetch(`${cfg.url}/rest/v1/deals?id=eq.${dealId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(patch)});
     d[flagField]=false;
     showToast(`Annonce ${typeLabel} désactivée`);
     renderDeals();
@@ -2530,7 +2575,7 @@ async function vitrineDeletePhoto(url){
   if(vitrineCurrent.photoPrincipale===url)vitrineCurrent.photoPrincipale=vitrineCurrent.photos[0]||null;
   try{
     const m=url.match(/deals-vitrine\/(.+)$/);
-    if(m&&m[1]){await fetch(`${cfg.url}/storage/v1/object/deals-vitrine/${m[1]}`,{method:'DELETE',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`}})}
+    if(m&&m[1]){await fetch(`${cfg.url}/storage/v1/object/deals-vitrine/${m[1]}`,{method:'DELETE',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`}})}
   }catch(e){console.warn('Suppression storage :',e)}
   renderVitrinePhotos();
 }
@@ -2548,7 +2593,7 @@ async function vitrineUploadPhotos(ev){
     const ts=Date.now()+'-'+i;
     const path=`${slug}/${ts}.${ext}`;
     try{
-      const r=await fetch(`${cfg.url}/storage/v1/object/deals-vitrine/${path}`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':f.type,'x-upsert':'true'},body:f});
+      const r=await fetch(`${cfg.url}/storage/v1/object/deals-vitrine/${path}`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':f.type,'x-upsert':'true'},body:f});
       if(!r.ok)throw new Error(r.status);
       const publicUrl=`${cfg.url}/storage/v1/object/public/deals-vitrine/${path}`;
       vitrineCurrent.photos.push(publicUrl);
@@ -2589,7 +2634,7 @@ async function vitrineSave(){
 
   document.getElementById('vitrine-loading').style.display='block';
   try{
-    const r=await fetch(`${cfg.url}/rest/v1/deals_vitrine?id=eq.${vitrineCurrent.vitrineId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(body)});
+    const r=await fetch(`${cfg.url}/rest/v1/deals_vitrine?id=eq.${vitrineCurrent.vitrineId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(body)});
     if(!r.ok)throw new Error(r.status);
     const updated=await supa('deals_vitrine',`id=eq.${vitrineCurrent.vitrineId}`);
     if(updated&&updated[0]){data.vitrines=data.vitrines.filter(v=>v.id!==vitrineCurrent.vitrineId);data.vitrines.push(updated[0])}
@@ -2611,7 +2656,7 @@ async function vitrineDeactivate(){
   if(!confirm(`Désactiver l'annonce ${typeLabel} ?\n\nLe bien disparaîtra du site mais les infos sont conservées.`))return;
   try{
     const patch={};patch[flagField]=false;
-    await fetch(`${cfg.url}/rest/v1/deals?id=eq.${vitrineCurrent.dealId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(patch)});
+    await fetch(`${cfg.url}/rest/v1/deals?id=eq.${vitrineCurrent.dealId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(patch)});
     const d=data.deals.find(x=>x.id===vitrineCurrent.dealId);if(d)d[flagField]=false;
     showToast(`Annonce ${typeLabel} désactivée`);
     closeVitrineModal();
@@ -2648,7 +2693,7 @@ async function openChantierModal(code,nom){
   document.getElementById('chantier-modal').style.display='block';
   document.body.style.overflow='hidden';
   const cfg=getConfig();
-  const headers={'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`};
+  const headers={'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`};
   const [pl,bu,qu,td]=await Promise.all([
     fetch(`${cfg.url}/rest/v1/chantier_planning?deal_code=eq.${code}&order=ordre.asc`,{headers}).then(r=>r.json()),
     fetch(`${cfg.url}/rest/v1/chantier_budget?deal_code=eq.${code}&order=ordre.asc`,{headers}).then(r=>r.json()),
@@ -2818,7 +2863,7 @@ function renderChContent(){
 
   else if(chCurrentTab==='process'){
     el.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--dim);font-size:12px">Chargement du process BYM…</div>`;
-    const h={apikey:cfg.key,'Authorization':'Bearer '+cfg.key};
+    const h={apikey:cfg.key,'Authorization':'Bearer '+(authTok||cfg.key)};
     fetch(`${cfg.url}/rest/v1/process_decision?entite=eq.BYM&actif=eq.true&order=type.asc,ordre.asc`,{headers:h})
       .then(r=>r.json()).then(data=>{
         if(!data||!data.length){el.innerHTML=`<div style="text-align:center;padding:3rem;color:var(--dim)"><div style="font-size:2rem;margin-bottom:8px">🔄</div><div>Aucun process défini — enrichir au fil des projets</div></div>`;return;}
@@ -2996,7 +3041,7 @@ async function addChPhase(){
   const parseDate=s=>{if(!s)return null;const p=s.split('/');return p.length===3?`${p[2]}-${p[1]}-${p[0]}`:null};
   const cfg=getConfig();
   const body={deal_code:chCurrentCode,phase,notes,date_debut:parseDate(debut),date_fin:parseDate(fin),couleur:couleurHex,ordre:(chData.planning.length+1)};
-  const r=await fetch(`${cfg.url}/rest/v1/chantier_planning`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});
+  const r=await fetch(`${cfg.url}/rest/v1/chantier_planning`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});
   const rows=await r.json();if(rows&&rows[0]){chData.planning.push(rows[0]);renderChContent();showToast('Consigne ajoutée');}
 }
 
@@ -3005,14 +3050,14 @@ async function addChBudget(){
   const prevu=parseFloat(prompt('Montant prévu (€) :')||'0');
   const cfg=getConfig();
   const body={deal_code:chCurrentCode,poste,montant_prevu:prevu||0,montant_reel:0,ordre:(chData.budget.length+1)};
-  const r=await fetch(`${cfg.url}/rest/v1/chantier_budget`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});
+  const r=await fetch(`${cfg.url}/rest/v1/chantier_budget`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});
   const rows=await r.json();if(rows&&rows[0]){chData.budget.push(rows[0]);renderChContent();showToast('Poste ajouté');}
 }
 
 async function addChQuestion(){
   const q=prompt('Question :');if(!q)return;
   const cfg=getConfig();
-  const r=await fetch(`${cfg.url}/rest/v1/chantier_questions`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify({deal_code:chCurrentCode,question:q,statut:'ouverte',type:'question'})});
+  const r=await fetch(`${cfg.url}/rest/v1/chantier_questions`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify({deal_code:chCurrentCode,question:q,statut:'ouverte',type:'question'})});
   const rows=await r.json();if(rows&&rows[0]){chData.questions.push(rows[0]);renderChContent();showToast('Question ajoutée');}
 }
 
@@ -3020,7 +3065,7 @@ async function addChNote(){
   const titre=prompt('Titre court de la note :');if(!titre)return;
   const contenu=prompt('Contenu de la note (lien, info, etc.) :');if(!contenu)return;
   const cfg=getConfig();
-  const r=await fetch(`${cfg.url}/rest/v1/chantier_questions`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify({deal_code:chCurrentCode,titre,question:contenu,statut:'info',type:'note'})});
+  const r=await fetch(`${cfg.url}/rest/v1/chantier_questions`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify({deal_code:chCurrentCode,titre,question:contenu,statut:'info',type:'note'})});
   const rows=await r.json();if(rows&&rows[0]){chData.questions.push(rows[0]);renderChContent();showToast('Note ajoutée');}
 }
 
@@ -3028,7 +3073,7 @@ async function addChTodo(){
   const titre=prompt('Titre de la tâche :');if(!titre)return;
   const cfg=getConfig();
   const body={titre,entite:'BYM',priorite:'moyenne',statut:'a_faire',type_tache:'classique',code_projet:chCurrentCode};
-  const r=await fetch(`${cfg.url}/rest/v1/taches_v2`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});
+  const r=await fetch(`${cfg.url}/rest/v1/taches_v2`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});
   const rows=await r.json();if(rows&&rows[0]){chData.todos.push(rows[0]);renderChContent();showToast('Tâche ajoutée');}
 }
 /* ===================== END FICHE CHANTIER ===================== */
