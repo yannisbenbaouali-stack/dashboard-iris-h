@@ -1426,6 +1426,38 @@ function renderFinance(){
   const vilmarFinal = (vilmarHtml || vilmar2Html) ? vilmarHtml + vilmar2Html : '<div class="empty"><div class="empty-text">Aucune donnée Vilmar</div></div>';
   html+=`<div class="fin-section" id="fin-vilmar"><div class="tcard">${vilmarFinal}</div></div>`;
   document.getElementById('fin-sections').innerHTML=html;
+  // [Ajout] CA chantiers BYM (devis) sous les barres de budget
+  var _fb=document.getElementById('fin-budget');
+  if(_fb){var _d=document.createElement('div');_d.className='tcard';_d.style.marginTop='16px';_d.innerHTML='<div style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">CA chantiers BYM (devis)</div><div id="fin-budget-bym"><div class="empty"><div class="empty-text">Chargement\u2026</div></div></div>';_fb.appendChild(_d);renderBudgetDevisBYM();}
+}
+
+async function renderBudgetDevisBYM(){
+  var el=document.getElementById('fin-budget-bym'); if(!el)return;
+  try{
+    var r=await fetch(`${cfg.url}/rest/v1/chantier_budget?poste=eq.CA%20Devis&order=deal_code.asc`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Content-Type':'application/json'}});
+    var rows=await r.json();
+    if(!rows||!rows.length){el.innerHTML='<div class="empty"><div class="empty-text">Aucune ligne devis BYM</div></div>';return;}
+    var th='font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;padding:6px 8px;border-bottom:1px solid var(--border)';
+    var td='padding:8px;font-size:13px;border-bottom:1px solid var(--bg)';
+    var stColor=function(s){return ({'dossier manquant':'var(--red)','devis manquant':'var(--red)','\u00e0 v\u00e9rifier':'var(--red)','\u00e0 analyser':'var(--orange)','ok':'var(--green)'})[s]||'var(--dim)';};
+    el.innerHTML='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse"><thead><tr>'+
+      '<th style="text-align:left;'+th+'">Chantier</th>'+
+      '<th style="text-align:right;'+th+'">CA HT</th>'+
+      '<th style="text-align:right;'+th+'">CA HT VBYM</th>'+
+      '<th style="text-align:left;'+th+'">Statut</th>'+
+      '<th style="text-align:left;'+th+'">Devis</th>'+
+      '<th style="text-align:left;'+th+'">Alerte</th>'+
+      '</tr></thead><tbody>'+
+      rows.map(function(x){return '<tr>'+
+        '<td style="'+td+'">'+(x.deal_code||'')+'</td>'+
+        '<td style="'+td+';text-align:right;white-space:nowrap">'+(x.ht_devis!=null?fmt(parseFloat(x.ht_devis)):'\u2014')+'</td>'+
+        '<td style="'+td+';text-align:right;white-space:nowrap">'+(x.ht_vbym!=null?fmt(parseFloat(x.ht_vbym)):'\u2014')+'</td>'+
+        '<td style="'+td+';color:'+stColor(x.statut_devis)+'">'+(x.statut_devis||'')+'</td>'+
+        '<td style="'+td+'">'+(x.devis_drive_url?'<a href="'+x.devis_drive_url+'" target="_blank" rel="noopener" style="color:#2e7d6b">Dossier</a>':'<span style="color:var(--red)">\u00e0 cr\u00e9er</span>')+'</td>'+
+        '<td style="'+td+';font-size:12px;color:var(--dim)">'+(x.alerte||'')+'</td>'+
+        '</tr>';}).join('')+
+      '</tbody></table></div>';
+  }catch(e){el.innerHTML='<div class="empty"><div class="empty-text">Erreur chargement devis BYM</div></div>';}
 }
 
 // ════════════════════════════════════════
