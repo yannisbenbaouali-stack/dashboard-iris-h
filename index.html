@@ -303,6 +303,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
           <input id="loc-search" name="recherche-candidats" autocomplete="off" autocapitalize="off" spellcheck="false" data-lpignore="true" readonly onfocus="this.removeAttribute('readonly')" placeholder="Rechercher (nom, telephone, email, bien...)" oninput="renderLocation()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;width:100%;max-width:420px;background:var(--card);color:var(--text)">
         </div>
         <div class="tcard"><div id="loc-body"></div></div>
+        <div class="tcard" style="margin-top:18px"><div class="tcard-hdr"><span class="tcard-title">Liste des partenaires</span></div><div id="loc-partenaires-body"></div></div>
       </div>
 
       <!-- FINANCE -->
@@ -644,7 +645,7 @@ async function supa(table,params='',fetchAll=false){
 
 async function loadAll(){
   const safe=async fn=>{try{return await fn()}catch(e){console.warn('Warning:',e);return[]}};
-  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats,vitrines,partenaires,h_bible,h_persos,h_chap,h_indices,documents,candidats,locColocs,locChambres]=await Promise.all([
+  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats,vitrines,partenaires,h_bible,h_persos,h_chap,h_indices,documents,candidats,locColocs,locChambres,partColoc]=await Promise.all([
     safe(()=>supa('taches','order=created_at.desc')),
     safe(()=>supa('taches_v2','order=created_at.asc')),
     safe(()=>supa('taches_recurrentes_suivi','order=semaine.asc')),
@@ -668,11 +669,12 @@ async function loadAll(){
     safe(()=>supa('documents_claude','order=id.desc')),
     safe(()=>supa('candidats_coloc','order=date_premier_contact.desc.nullslast')),
     safe(()=>supa('colocations_orleans','order=nom.asc')),
-    safe(()=>supa('chambres_orleans','order=numero.asc'))
+    safe(()=>supa('chambres_orleans','order=numero.asc')),
+    safe(()=>supa('partenaires_coloc','order=created_at.asc'))
   ]);
   data.taches=taches;data.taches_v2=taches_v2;data.rec_suivi=rec_suivi;data.deals=deals;
   data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;data.vilmar=vilmar;data.mandats=mandats;data.partenaires=partenaires;data.vitrines=vitrines;data.vitrines=vitrines;
-  data.h_bible=h_bible;data.h_persos=h_persos;data.h_chap=h_chap;data.h_indices=h_indices;data.documents=documents;data.candidats=candidats;data.locColocs=locColocs;data.locChambres=locChambres;
+  data.h_bible=h_bible;data.h_persos=h_persos;data.h_chap=h_chap;data.h_indices=h_indices;data.documents=documents;data.candidats=candidats;data.locColocs=locColocs;data.locChambres=locChambres;data.partColoc=partColoc;
   try{localStorage.setItem('iris_h_cache',JSON.stringify({data:{...data,contacts:[]},ts:Date.now()}))}catch(e){}
   render();
   const t=new Date();
@@ -2273,6 +2275,27 @@ function renderLocation(){
       '<td>'+statBadge(c.statut)+'</td>'+
       '<td style="max-width:220px;font-size:10px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+escHtml(c.notes||c.message_brut||'')+'">'+escHtml(c.notes||c.message_brut||'')+'</td>'+
       '<td style="font-size:11px">'+lien+'</td>'+
+    '</tr>'}).join('')+
+  '</tbody></table></div>';
+  renderLocPartenaires();
+}
+function renderLocPartenaires(){
+  var el=document.getElementById('loc-partenaires-body');
+  if(!el)return;
+  var src=(data.partColoc||[]).slice();
+  if(!src.length){el.innerHTML='<div class="empty"><div class="empty-ico">🤝</div><div class="empty-text">Aucun partenaire enregistré.</div></div>';return}
+  var statBadge=function(s){s=s||'actif';var m={'actif':'p-done','inactif':'p-standby','a_contacter':'p-med'};return '<span class="pill '+(m[s.toLowerCase()]||'p-med')+'">'+escHtml(s)+'</span>'};
+  el.innerHTML='<div style="overflow-x:auto"><table class="tbl"><thead><tr>'+
+    '<th>Partenaire</th><th>Société</th><th>Rôle</th><th>Contact</th><th>Statut</th><th>Notes</th></tr></thead><tbody>'+
+  src.map(function(p,i){
+    var contact=[p.telephone,p.email].filter(function(v){return v}).map(function(v){return v.indexOf('@')>=0?'<a href="mailto:'+escHtml(v)+'" style="color:var(--blue);text-decoration:none">'+escHtml(v)+'</a>':'<a href="tel:'+escHtml(v)+'" style="color:var(--blue);text-decoration:none">'+escHtml(v)+'</a>'}).join('<br>');
+    return '<tr style="background:'+(i%2===0?'#fff':'#f8f9fc')+'">'+
+      '<td style="font-weight:600;color:var(--navy);font-size:12px;white-space:nowrap">'+escHtml(((p.prenom||'')+' '+(p.nom||'')).trim()||'—')+'</td>'+
+      '<td style="font-size:11px">'+escHtml(p.societe||'')+'</td>'+
+      '<td style="font-size:11px">'+escHtml(p.role||'')+'</td>'+
+      '<td style="font-size:11px;white-space:nowrap">'+contact+'</td>'+
+      '<td>'+statBadge(p.statut)+'</td>'+
+      '<td style="max-width:240px;font-size:10px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+escHtml(p.notes||'')+'">'+escHtml(p.notes||'')+'</td>'+
     '</tr>'}).join('')+
   '</tbody></table></div>';
 }
