@@ -1395,10 +1395,7 @@ function renderFinance(){
 
   const eBadge=e=>{const m={BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',RIR:'p-rir'};const l={BYM:'BYM','Urban Rise':'Urban Rise','IRIS REP':'IRIS REP',RIR:'RIR'};return`<span class="pill ${m[e]||''}">${l[e]||e}</span>`};
 
-  let html=`<div class="fin-section active" id="fin-budget"><div class="tcard">`;
-  if(!ch.length)html+='<div class="empty"><div class="empty-text">Aucun chantier avec budget</div></div>';
-  else html+=ch.map(c=>{const pct=Math.round(c.budget_realise/c.budget_initial*100);const cls=pct>90?'bfill-danger':pct>75?'bfill-warn':'bfill-ok';return`<div class="budget-row"><div class="budget-label"><span class="bname">${c.nom} ${eBadge(c.entite)}</span><span class="bpct" style="color:${pct>90?'var(--red)':pct>75?'var(--orange)':'var(--green)'}">${pct}%</span></div><div class="budget-bar"><div class="budget-fill ${cls}" style="width:${Math.min(pct,100)}%"></div></div><div class="budget-nums"><span>${fmt(c.budget_realise)} réalisé</span><span>Budget : ${fmt(c.budget_initial)}</span></div></div>`}).join('');
-  html+=`</div></div>`;
+  let html=`<div class="fin-section active" id="fin-budget"></div>`;
 
   html+=`<div class="fin-section" id="fin-treso"><div class="tcard"><div class="treso-row" style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px"><span></span><span>Entrant</span><span>Sortant</span><span>Net</span></div>`;
   entites.forEach(e=>{const rows=data.tresorerie.filter(t=>t.entite===e);const ein=rows.filter(r=>r.type==='entrant').reduce((a,r)=>a+r.montant,0);const eout=rows.filter(r=>r.type==='sortant').reduce((a,r)=>a+r.montant,0);const n=ein-eout;html+=`<div class="treso-row"><span class="treso-entite">${labels[e]}</span><span class="treso-in">+${fmt(ein)||'0€'}</span><span class="treso-out">${fmt(eout)||'0€'}</span><span class="treso-net" style="color:${n>=0?'var(--green)':'var(--red)'}">${n>=0?'+':''}${fmt(Math.abs(n))}</span></div>`});
