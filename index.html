@@ -621,6 +621,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 const CFG_KEY='iris_h_cfg';
 let cfg=null;
 let authTok=null; let authReady=false; let _authClient=null;
+const SUPA_URL='https://kkznkuwoxoxvapejzytv.supabase.co';
+const SUPA_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtrem5rdXdveG94dmFwZWp6eXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNTQxMTksImV4cCI6MjA4ODkzMDExOX0.Nb7N2FpKvm3NMzS6Nhx4qWoqHZW3-Es3JNPgHxkOWcE';
 let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[],rapports_rediges:[],vilmar:[],mandats:[],vitrines:[],documents:[],candidats:[],locColocs:[],locChambres:[]};
 
 function getConfig(){try{const s=JSON.parse(localStorage.getItem(CFG_KEY));if(s&&s.url&&s.key)return s}catch(e){}return null}
@@ -1875,10 +1877,8 @@ function renderStruct(){
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)}
 
 function boot(){
-  cfg=getConfig();
-  if(cfg && !/^https?:\/\//i.test(cfg.url||'')){localStorage.removeItem(CFG_KEY);cfg=null;}
-  if(!cfg){document.getElementById('setup').classList.remove('hidden');return}
-  document.getElementById('setup').classList.add('hidden');
+  cfg={url:SUPA_URL,key:SUPA_ANON};
+  var _su0=document.getElementById('setup'); if(_su0)_su0.classList.add('hidden');
   if(!authReady){ensureAuth();return}
   var _ag=document.getElementById('authgate'); if(_ag)_ag.style.display='none';
   document.getElementById('app').style.display='flex';
