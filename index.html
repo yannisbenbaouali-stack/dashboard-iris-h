@@ -681,7 +681,7 @@ async function doMagic(){
   var c=_authCli(); var em=document.getElementById('ag-em').value.trim();
   var msg=document.getElementById('ag-msg'); msg.textContent='';
   if(!em||em.indexOf('@')<0){msg.textContent='Saisis ton email d abord';return;}
-  try{ const {error}=await c.auth.signInWithOtp({email:em}); if(error){msg.textContent='Erreur : '+error.message;return;} msg.style.color='#41c98e'; msg.textContent='Lien envoye, verifie tes emails.'; }
+  try{ var base=location.origin+location.pathname; const {error}=await c.auth.signInWithOtp({email:em, options:{emailRedirectTo:base}}); if(error){msg.textContent='Erreur : '+error.message;return;} msg.style.color='#41c98e'; msg.textContent='Lien envoye, verifie tes emails.'; }
   catch(e){ msg.textContent='Erreur : '+(e&&e.message||e); }
 }
 
