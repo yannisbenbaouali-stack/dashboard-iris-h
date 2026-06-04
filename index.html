@@ -653,13 +653,15 @@ function showAuthGate(){
     g.innerHTML='<div style="width:320px;font-family:sans-serif;color:#e6e9ee">'
       +'<div style="font-size:22px;font-weight:700;margin-bottom:2px">IRIS <span style=\'color:#3a7bd5\'>H</span></div>'
       +'<div style="font-size:12px;color:#8794a5;margin-bottom:16px">Connexion sécurisée</div>'
-      +'<input id="ag-em" type="email" placeholder="Email" autocomplete="username" style="width:100%;padding:11px;margin:6px 0;border:1px solid #233047;border-radius:8px;background:#0f1b30;color:#fff">'
+      +'<input id="ag-em" type="email" placeholder="Email" autocomplete="off" style="width:100%;padding:11px;margin:6px 0;border:1px solid #233047;border-radius:8px;background:#0f1b30;color:#fff">'
       +'<input id="ag-pw" type="password" placeholder="Mot de passe" autocomplete="current-password" style="width:100%;padding:11px;margin:6px 0;border:1px solid #233047;border-radius:8px;background:#0f1b30;color:#fff">'
       +'<button id="ag-go" style="width:100%;padding:11px;margin-top:10px;border:none;border-radius:8px;background:#3a7bd5;color:#fff;font-weight:600;cursor:pointer">Se connecter</button>'
+      +'<button id="ag-link" style="width:100%;padding:9px;margin-top:8px;border:1px solid #233047;border-radius:8px;background:transparent;color:#8ab4f8;cursor:pointer">Recevoir un lien par email</button>'
       +'<div id="ag-msg" style="color:#e2554a;font-size:12px;margin-top:10px;min-height:16px"></div></div>';
     document.body.appendChild(g);
     g.querySelector('#ag-go').addEventListener('click',doLogin);
     g.querySelector('#ag-pw').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+    g.querySelector('#ag-link').addEventListener('click',doMagic);
   }
   g.style.display='flex';
 }
@@ -674,6 +676,13 @@ async function doLogin(){
     c.auth.onAuthStateChange((_e,sx)=>{ if(sx&&sx.access_token)authTok=sx.access_token; });
     boot();
   }catch(e){ msg.textContent='Erreur : '+(e&&e.message||e); }
+}
+async function doMagic(){
+  var c=_authCli(); var em=document.getElementById('ag-em').value.trim();
+  var msg=document.getElementById('ag-msg'); msg.textContent='';
+  if(!em||em.indexOf('@')<0){msg.textContent='Saisis ton email d abord';return;}
+  try{ const {error}=await c.auth.signInWithOtp({email:em}); if(error){msg.textContent='Erreur : '+error.message;return;} msg.style.color='#41c98e'; msg.textContent='Lien envoye, verifie tes emails.'; }
+  catch(e){ msg.textContent='Erreur : '+(e&&e.message||e); }
 }
 
 async function supa(table,params='',fetchAll=false){
