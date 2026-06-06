@@ -1137,11 +1137,7 @@ async function renderProspects(){
   const actifs=data.prospects.filter(p=>p.statut!=='dead').length;
   const enCours=data.prospects.filter(p=>p.statut==='en_cours').length;
   const valides=data.prospects.filter(p=>p.statut==='valide').length;
-  document.getElementById('prospects-kpis').innerHTML=`
-    <div class="kpi"><div class="kpi-label">Total prospects</div><div class="kpi-val">${data.prospects.length}</div></div>
-    <div class="kpi"><div class="kpi-label">En cours</div><div class="kpi-val">${enCours}</div></div>
-    <div class="kpi green"><div class="kpi-label">Validés</div><div class="kpi-val">${valides}</div></div>
-    <div class="kpi"><div class="kpi-label">Actifs</div><div class="kpi-val">${actifs}</div></div>`;
+  const kpiEl=document.getElementById('prospects-kpis');kpiEl.innerHTML='';kpiEl.style.display='none';
   document.getElementById('nav-prospects-cnt').textContent=actifs;
 
   const eMap={BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',ARRISTO:'p-arristo','Galerie Carrez':'p-gc','IRIS REP':'p-iris'};
