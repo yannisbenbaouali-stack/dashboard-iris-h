@@ -870,7 +870,7 @@ function renderTodo(){
   // Mini histogramme par entité
   const byEntite={};src.filter(t=>t.statut!=='fait').forEach(t=>{byEntite[t.entite||'Autre']=(byEntite[t.entite||'Autre']||0)+1});
   const entColors={'IRIS H':'#c8a455',Perso:'#888',BYM:'#5B9BD5','Urban Rise':'#a78bfa','IRIS REP':'#c8a455',ARRISTO:'#fb923c','Galerie Carrez':'#22d3ee',RIR:'#fb923c','C2C.FR':'#2C3E50',Autre:'#666'};
-  const miniBarHtml=Object.entries(byEntite).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div style="display:flex;align-items:center;gap:6px;font-size:10px;margin-bottom:2px"><span style="width:70px;text-align:right;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${k}</span><div style="height:8px;width:${Math.max(8,v/Math.max(...Object.values(byEntite))*80)}px;background:${entColors[k]||'#666'};border-radius:3px"></div><span style="color:var(--dim);font-weight:600">${v}</span></div>`).join('');
+  const miniBarHtml=Object.entries(byEntite).sort((a,b)=>a[0].localeCompare(b[0],'fr')).map(([k,v])=>`<div style="display:flex;align-items:center;gap:6px;font-size:10px;margin-bottom:2px"><span style="width:70px;text-align:right;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${k}</span><div style="height:8px;width:${Math.max(8,v/Math.max(...Object.values(byEntite))*80)}px;background:${entColors[k]||'#666'};border-radius:3px"></div><span style="color:var(--dim);font-weight:600">${v}</span></div>`).join('');
 
   document.getElementById('todo-kpis').style.gridTemplateColumns='repeat(5,1fr)';
   document.getElementById('todo-kpis').innerHTML=`
