@@ -1123,6 +1123,11 @@ async function setEntiteAffectee(prospectId,val){
   if(!cfg)return;
   try{await fetch(`${cfg.url}/rest/v1/prospects?id=eq.${prospectId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({entite_affectee:val||null})});}catch(e){}
 }
+async function setContactEntite(pcId,val){
+  (data.prospects||[]).forEach(p=>(p.pcs||[]).forEach(c=>{if(c.pc_id===pcId)c.pc_entite=val;}));
+  if(!cfg)return;
+  try{await fetch(`${cfg.url}/rest/v1/prospect_contacts?id=eq.${pcId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({entite:val||null})});}catch(e){}
+}
 
 async function renderProspects(){
   let allPros=[...data.prospects];
@@ -1242,23 +1247,22 @@ async function renderProspects(){
   }
   document.getElementById('prospects-body').innerHTML=filtersHtml+catHtml+`<table class="tbl"><thead><tr><th style="width:150px">Entreprise</th><th>Contact</th><th style="width:150px">Poste</th><th style="width:120px;text-align:center">Affecté à</th><th style="width:90px;text-align:center">Critères de prospection</th></tr></thead><tbody>
   ${rows.map(p=>{
-    const sel=`<select onchange="setEntiteAffectee('${p.id}',this.value)" style="font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--navy)"><option value="">—</option><option value="BYM"${p.entite_affectee==='BYM'?' selected':''}>BYM</option><option value="IRIS REP"${p.entite_affectee==='IRIS REP'?' selected':''}>IRIS REP</option></select>`;
     const pcs=(p.pcs&&p.pcs.length)?p.pcs:[null];
+    const mkSel=c=>`<select onchange="setContactEntite('${c.pc_id}',this.value)" style="font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--navy)"><option value="">—</option><option value="BYM"${c.pc_entite==='BYM'?' selected':''}>BYM</option><option value="IRIS REP"${c.pc_entite==='IRIS REP'?' selected':''}>IRIS REP</option></select>`;
     return pcs.map((c,idx)=>{
       const first=idx===0;
       const compCell=first?`<div class="td-name" style="font-size:12px;font-weight:600">${p.nom_entreprise||''}</div>`:'';
-      let contactCell='<span style="color:var(--dim);font-size:11px">Aucun contact</span>';let posteCell='';
+      let contactCell='<span style="color:var(--dim);font-size:11px">Aucun contact</span>';let posteCell='';let selCell='';
       if(c){
         const nom=[c.prenom,c.nom].filter(Boolean).join(' ')||c.email||'Sans nom';
         const principal=c.pc_principal?'font-weight:700':'';
         const mail=c.email?`<div style="font-size:10px"><a class="td-link" href="mailto:${c.email}">${c.email}</a></div>`:'';
         const tel=c.telephone?`<div style="font-size:10px;color:var(--dim)">${c.telephone}</div>`:'';
-        const hasNote=c.notes&&c.notes.trim();
-        const noteBtn=`<button onclick="openContactNote('${c.pc_id}')" style="width:16px;height:16px;border-radius:4px;border:1px solid ${hasNote?'var(--blue)':'var(--border)'};background:${hasNote?'rgba(91,155,213,0.08)':'transparent'};color:var(--blue);cursor:pointer;font-size:9px;font-weight:700;line-height:1;display:inline-flex;align-items:center;justify-content:center;padding:0;margin-left:6px" title="Note">${hasNote?'●':'+'}</button>`;
-        contactCell=`<div style="display:flex;align-items:center"><span style="font-size:12px;${principal}">${nom}</span>${noteBtn}</div>${mail}${tel}`;
+        contactCell=`<span style="font-size:12px;${principal}">${nom}</span>${mail}${tel}`;
         posteCell=`<span style="font-size:11px;color:var(--dim)">${c.poste||c.pc_role||''}</span>`;
+        selCell=mkSel(c);
       }
-      return`<tr style="vertical-align:top"><td style="padding-top:10px">${compCell}</td><td style="padding-top:9px">${contactCell}</td><td style="padding-top:10px">${posteCell}</td><td style="text-align:center;padding-top:8px">${first?sel:''}</td><td style="text-align:center;padding-top:10px">${first?critCell(p):''}</td></tr>`;
+      return`<tr style="vertical-align:top"><td style="padding-top:10px">${compCell}</td><td style="padding-top:9px">${contactCell}</td><td style="padding-top:10px">${posteCell}</td><td style="text-align:center;padding-top:8px">${selCell}</td><td style="text-align:center;padding-top:10px">${first?critCell(p):''}</td></tr>`;
     }).join('');
   }).join('')}
   </tbody></table>`;
