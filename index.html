@@ -1111,9 +1111,18 @@ return`<tr style=\"background:${isBymChantier?'rgba(91,155,213,0.04)':''};\" ${i
 // DEALFLOW PROSPECTS
 // ════════════════════════════════════════
 let prospectsFilter='all';
+let prospectsCat='all';
+let prospectsSub='all';
 let irisRepSubTab='preneur';
 function setIrisRepTab(t){irisRepSubTab=t;renderProspects();}
 function filterProspects(btn,v){document.querySelectorAll('.prosp-fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');prospectsFilter=v;renderProspects()}
+function filterProspectsCat(v){prospectsCat=v;prospectsSub='all';renderProspects()}
+function filterProspectsSub(v){prospectsSub=(prospectsSub===v?'all':v);renderProspects()}
+async function setEntiteAffectee(prospectId,val){
+  const p=(data.prospects||[]).find(x=>x.id===prospectId);if(p)p.entite_affectee=val;
+  if(!cfg)return;
+  try{await fetch(`${cfg.url}/rest/v1/prospects?id=eq.${prospectId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({entite_affectee:val||null})});}catch(e){}
+}
 
 async function renderProspects(){
   let allPros=[...data.prospects];
@@ -1149,7 +1158,7 @@ async function renderProspects(){
     const enriched=await Promise.all(pcs.map(async pc=>{
       let contact={};
       try{
-        const res=await supa('contacts',`id=eq.${pc.contact_id}&select=id,prenom,nom,email,telephone,entite_iris`);
+        const res=await supa('contacts',`id=eq.${pc.contact_id}&select=id,prenom,nom,email,telephone,entite_iris,poste`);
         if(res.length)contact=res[0];
       }catch(e){}
       return{...contact,pc_id:pc.id,pc_role:pc.role,pc_statut:pc.statut,pc_principal:pc.is_principal,pc_entite:pc.entite,pc_last_call:pc.last_call,notes:pc.notes};
@@ -1177,8 +1186,22 @@ async function renderProspects(){
     rows=rows.map(p=>({...p,pcs:p.pcs_filtered||p.pcs}));
   }
 
+  // Filtre catégorie (directs / indirects / autre) + sous-catégorie
+  rows=rows.filter(p=>{
+    const cat=(p.categorie||'').toLowerCase();
+    if(prospectsCat==='direct'&&cat!=='direct')return false;
+    if(prospectsCat==='indirect'&&cat!=='indirect')return false;
+    if(prospectsCat==='autre'&&(cat==='direct'||cat==='indirect'))return false;
+    if(prospectsSub!=='all'&&(p.sous_categorie||'').toLowerCase()!==prospectsSub)return false;
+    return true;
+  });
+  const catDefs={direct:[['promoteur','Promoteurs'],['investisseur','Investisseurs'],['bailleur','Bailleurs']],indirect:[['ville','Ville'],['notaire','Notaires'],['architecte','Architecte'],['banque','Banques']]};
+  const catBtn=(v,l)=>`<button class="fbtn${prospectsCat===v?' on':''}" style="font-size:11px;padding:4px 12px" onclick="filterProspectsCat('${v}')">${l}</button>`;
+  const subB=(catDefs[prospectsCat]||[]).map(d=>`<button class="fbtn${prospectsSub===d[0]?' on':''}" style="font-size:11px;padding:4px 12px" onclick="filterProspectsSub('${d[0]}')">${d[1]}</button>`).join('');
+  const catHtml=`<div class="filters" style="margin-bottom:8px">${catBtn('all','Tous')}${catBtn('direct','Prospects directs')}${catBtn('indirect','Prospects indirects')}${catBtn('autre','Autre')}</div>`+(subB?`<div class="filters" style="margin-bottom:12px;padding-left:2px">${subB}</div>`:'');
+
   if(!rows.length){
-    document.getElementById('prospects-body').innerHTML=filtersHtml+'<div class="empty"><div class="empty-ico">🔍</div><div class="empty-text">Aucun prospect pour cette entité</div></div>';return;
+    document.getElementById('prospects-body').innerHTML=filtersHtml+catHtml+'<div class="empty"><div class="empty-ico">🔍</div><div class="empty-text">Aucun prospect pour ce filtre</div></div>';return;
   }
 
   const logoCell=p=>{
@@ -1217,8 +1240,27 @@ async function renderProspects(){
     document.getElementById('prospects-body').innerHTML=filtersHtml+irisRepBlock;
     return;
   }
-  document.getElementById('prospects-body').innerHTML=filtersHtml+`<table class="tbl"><thead><tr><th style="width:80px"></th><th style="width:110px;text-align:center">Entreprise</th><th>Contacts CRM</th><th style="width:90px;text-align:center">Critères de prospection</th></tr></thead><tbody>
-  ${rows.map(p=>`<tr style="vertical-align:top"><td>${logoCell(p)}</td><td style="vertical-align:top;padding-top:10px;text-align:center"><div class="td-name" style="font-size:12px">${p.nom_entreprise||''}</div></td><td>${contactsBlock(p.pcs)}</td><td style="vertical-align:top;padding-top:10px;text-align:center">${critCell(p)}</td></tr>`).join('')}
+  document.getElementById('prospects-body').innerHTML=filtersHtml+catHtml+`<table class="tbl"><thead><tr><th style="width:150px">Entreprise</th><th>Contact</th><th style="width:150px">Poste</th><th style="width:120px;text-align:center">Affecté à</th><th style="width:90px;text-align:center">Critères de prospection</th></tr></thead><tbody>
+  ${rows.map(p=>{
+    const sel=`<select onchange="setEntiteAffectee('${p.id}',this.value)" style="font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--navy)"><option value="">—</option><option value="BYM"${p.entite_affectee==='BYM'?' selected':''}>BYM</option><option value="IRIS REP"${p.entite_affectee==='IRIS REP'?' selected':''}>IRIS REP</option></select>`;
+    const pcs=(p.pcs&&p.pcs.length)?p.pcs:[null];
+    return pcs.map((c,idx)=>{
+      const first=idx===0;
+      const compCell=first?`<div class="td-name" style="font-size:12px;font-weight:600">${p.nom_entreprise||''}</div>`:'';
+      let contactCell='<span style="color:var(--dim);font-size:11px">Aucun contact</span>';let posteCell='';
+      if(c){
+        const nom=[c.prenom,c.nom].filter(Boolean).join(' ')||c.email||'Sans nom';
+        const principal=c.pc_principal?'font-weight:700':'';
+        const mail=c.email?`<div style="font-size:10px"><a class="td-link" href="mailto:${c.email}">${c.email}</a></div>`:'';
+        const tel=c.telephone?`<div style="font-size:10px;color:var(--dim)">${c.telephone}</div>`:'';
+        const hasNote=c.notes&&c.notes.trim();
+        const noteBtn=`<button onclick="openContactNote('${c.pc_id}')" style="width:16px;height:16px;border-radius:4px;border:1px solid ${hasNote?'var(--blue)':'var(--border)'};background:${hasNote?'rgba(91,155,213,0.08)':'transparent'};color:var(--blue);cursor:pointer;font-size:9px;font-weight:700;line-height:1;display:inline-flex;align-items:center;justify-content:center;padding:0;margin-left:6px" title="Note">${hasNote?'●':'+'}</button>`;
+        contactCell=`<div style="display:flex;align-items:center"><span style="font-size:12px;${principal}">${nom}</span>${noteBtn}</div>${mail}${tel}`;
+        posteCell=`<span style="font-size:11px;color:var(--dim)">${c.poste||c.pc_role||''}</span>`;
+      }
+      return`<tr style="vertical-align:top"><td style="padding-top:10px">${compCell}</td><td style="padding-top:9px">${contactCell}</td><td style="padding-top:10px">${posteCell}</td><td style="text-align:center;padding-top:8px">${first?sel:''}</td><td style="text-align:center;padding-top:10px">${first?critCell(p):''}</td></tr>`;
+    }).join('');
+  }).join('')}
   </tbody></table>`;
 }
 
