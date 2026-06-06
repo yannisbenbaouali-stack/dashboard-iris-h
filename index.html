@@ -292,6 +292,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <!-- PROSPECTS -->
       <div class="tab" id="tab-prospects">
         <div class="kpis" id="prospects-kpis"></div>
+        <div style="margin-bottom:16px"><input id="prospects-search" placeholder="Rechercher (entreprise, contact, email, poste...)" oninput="renderProspects()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;width:100%;max-width:420px;background:var(--card);color:var(--text)"></div>
         <div id="prospects-body"></div>
       </div>
 
@@ -1196,6 +1197,16 @@ async function renderProspects(){
     if(prospectsSub!=='all'&&(p.sous_categorie||'').toLowerCase()!==prospectsSub)return false;
     return true;
   });
+  // Recherche texte
+  const psEl=document.getElementById('prospects-search');
+  const psQ=(psEl?psEl.value:'').trim().toLowerCase();
+  if(psQ){
+    rows=rows.filter(p=>{
+      const champs=[p.nom_entreprise,p.criteres_prospection,p.sous_categorie];
+      (p.pcs||[]).forEach(c=>champs.push(c.prenom,c.nom,c.email,c.telephone,c.poste,c.pc_role));
+      return champs.filter(Boolean).join(' ').toLowerCase().includes(psQ);
+    });
+  }
   const catDefs={direct:[['promoteur','Promoteurs'],['investisseur','Investisseurs'],['bailleur','Bailleurs']],indirect:[['ville','Ville'],['notaire','Notaires'],['architecte','Architecte'],['banque','Banques']]};
   const catBtn=(v,l)=>`<button class="fbtn${prospectsCat===v?' on':''}" style="font-size:11px;padding:4px 12px" onclick="filterProspectsCat('${v}')">${l}</button>`;
   const subB=(catDefs[prospectsCat]||[]).map(d=>`<button class="fbtn${prospectsSub===d[0]?' on':''}" style="font-size:11px;padding:4px 12px" onclick="filterProspectsSub('${d[0]}')">${d[1]}</button>`).join('');
