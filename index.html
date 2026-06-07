@@ -2672,7 +2672,7 @@ function renderAudit() {
 /* ===================== END AUDIT ===================== */
 
 /* ===================== MANDATS IRIS REP ===================== */
-let mandatsFilterStatut='all',mandatsSortCol='date_reception',mandatsSortDir='desc';
+let mandatsFilterStatut='all',mandatsSortCol='statut',mandatsSortDir='asc';
 
 function sortMandats(col){
   if(mandatsSortCol===col)mandatsSortDir=mandatsSortDir==='asc'?'desc':'asc';
@@ -2759,6 +2759,8 @@ function renderLocPartenaires(){
 }
 function renderMandats(){
   const src=data.mandats||[];
+  const STATUTS_MANDAT=['Signé','Attente signature','à envoyer','dead'];
+  const statNum=s=>{const i=STATUTS_MANDAT.indexOf(s);return i>=0?i+1:99};
   const lgChip=(bg,bd,txt,extra)=>`<span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--text)"><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:${bg};border:1px solid ${bd};${extra||''}"></span>${txt}</span>`;
   document.getElementById('mandats-kpis').innerHTML=`<div style="display:flex;gap:22px;flex-wrap:wrap;align-items:center;padding:11px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px">
     ${lgChip('#e8f6ee','#b5e0c4','Vert : signé')}
@@ -2767,25 +2769,26 @@ function renderMandats(){
     ${lgChip('#fdecea','#f0b3ab','Rouge : erreur dans le mandat')}
     ${lgChip('#f2f2f2','#cccccc','Gris italique : dead','font-style:italic')}
   </div>`;
-  const statuts=['all','à faire','envoyé','signé','contre-signé','dead'];
-  document.getElementById('mandats-filters').innerHTML=`<div class="filters" style="margin-bottom:12px">${statuts.map(s=>`<button class="fbtn${mandatsFilterStatut===s?' on':''}" onclick="mandatsFilterStatut='${s}';renderMandats()">${s==='all'?'Tous statuts':s}</button>`).join('')}</div>`;
+  const statuts=['all'].concat(STATUTS_MANDAT);
+  document.getElementById('mandats-filters').innerHTML=`<div class="filters" style="margin-bottom:12px">${statuts.map(s=>`<button class="fbtn${mandatsFilterStatut===s?' on':''}" onclick="mandatsFilterStatut='${s}';renderMandats()">${s==='all'?'Tous statuts':statNum(s)+'. '+s}</button>`).join('')}</div>`;
   let filtered=src.slice();
   if(mandatsFilterStatut!=='all')filtered=filtered.filter(m=>m.statut===mandatsFilterStatut);
   const q=(document.getElementById('mandats-search')?.value||'').toLowerCase().trim();
   if(q)filtered=filtered.filter(m=>['code_projet','mandant','nature','objet','adresse','bien','charge','duree','statut','observations'].map(k=>m[k]||'').join(' ').toLowerCase().includes(q));
   const dir=mandatsSortDir==='asc'?1:-1;
   filtered.sort((a,b)=>{
-    let va=a[mandatsSortCol]||'',vb=b[mandatsSortCol]||'';
-    if(['prix_ht','honoraires_ht'].includes(mandatsSortCol)){va=parseFloat(va)||0;vb=parseFloat(vb)||0}
-    else{va=va.toString().toLowerCase();vb=vb.toString().toLowerCase()}
+    let va,vb;
+    if(mandatsSortCol==='statut'){va=statNum(a.statut);vb=statNum(b.statut)}
+    else if(['prix_ht','honoraires_ht'].includes(mandatsSortCol)){va=parseFloat(a[mandatsSortCol])||0;vb=parseFloat(b[mandatsSortCol])||0}
+    else{va=(a[mandatsSortCol]||'').toString().toLowerCase();vb=(b[mandatsSortCol]||'').toString().toLowerCase()}
     return va<vb?-1*dir:va>vb?1*dir:0;
   });
   const fDate=d=>{if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})};
   const fMt=n=>{if(n===null||n===undefined||n==='')return'';return parseFloat(n).toLocaleString('fr-FR')+'\u00a0\u20ac'};
-  const statBadge=s=>{const m={'En cours':'p-med',Sign\u00e9:'p-done',Expir\u00e9:'p-urg',Annul\u00e9:'p-standby'};return`<span class="pill ${m[s]||'p-med'}">${s||''}</span>`};
+  const statBadge=s=>{const m={'Signé':'p-done','Attente signature':'p-med','à envoyer':'p-high',dead:'p-standby'};const n=statNum(s);return`<span class="pill ${m[s]||'p-med'}">${n<99?n+'. ':''}${s||''}</span>`};
   const natureBadge=n=>{const m={Exclusif:'p-urg',Simple:'p-med','Co-exclusif':'p-high'};return`<span class="pill ${m[n]||'p-med'}">${n||''}</span>`};
   const thS=k=>mandatsSortCol===k?(mandatsSortDir==='asc'?' \u25b2':' \u25bc'):'';
-  const mandatColor=m=>{const c=(m.couleur||'').toLowerCase();if(['rouge','vert','jaune','orange','gris'].includes(c))return c;const s=(m.statut||'').toLowerCase();if(s==='dead')return'gris';if(s==='contre-signé'||s==='signé')return'vert';return'jaune';};
+  const mandatColor=m=>{const c=(m.couleur||'').toLowerCase();if(['rouge','vert','jaune','orange','gris'].includes(c))return c;const s=(m.statut||'');if(s==='dead')return'gris';if(s==='Signé'||s==='contre signé')return'vert';if(s==='à envoyer')return'orange';if(s==='Attente signature')return'jaune';return'jaune';};
   const mandatRowCss=col=>({rouge:'background:#fdecea;',vert:'background:#e8f6ee;',jaune:'background:#fff6e0;',orange:'background:#ffe9d6;',gris:'background:#f2f2f2;font-style:italic;opacity:.55;'}[col]||'');
   const cols=[{k:'code_projet',l:'Code'},{k:'date_reception',l:'Date'},{k:'statut',l:'Statut'},{k:'mandant',l:'Mandant'},{k:'nature',l:'Nature'},{k:'objet',l:'Objet'},{k:'adresse',l:'Adresse'},{k:'prix_ht',l:'Prix HT'},{k:'honoraires_ht',l:'Honoraires HT'},{k:'charge',l:'Charge'},{k:'duree',l:'Dur\u00e9e'},{k:'date_expiration',l:'Expiration'}];
   const el=document.getElementById('mandats-body');
