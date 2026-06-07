@@ -285,15 +285,37 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <!-- DEALS -->
       <div class="tab" id="tab-deals">
         <div id="deals-legende" style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:11px;color:var(--text)">
-          <div style="font-weight:700;font-size:12px;margin-bottom:8px;color:var(--text);letter-spacing:.2px">Légende des codes deals</div>
+          <div style="font-weight:700;font-size:12px;margin-bottom:10px;color:var(--text);letter-spacing:.2px">Légende des codes deals</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
             <div>
-              <div style="font-weight:600;color:var(--dim);text-transform:uppercase;font-size:10px;letter-spacing:.4px;margin-bottom:4px">Préfixes par entité</div>
-              <div style="line-height:1.7"><b>IR</b> IRIS REP, conseil en immobilier d entreprise. <b>BYM</b> BYM Construction. <b>UR</b> Urban Rise, marchand de biens. <b>GC</b> Galerie Carrez, agence Tours. <b>RIR</b> RIR SAS, marchand de biens. <b>CCD1</b> Cybelcity.</div>
+              <div style="font-weight:600;color:var(--dim);text-transform:uppercase;font-size:10px;letter-spacing:.4px;margin-bottom:6px">Préfixes par entité</div>
+              <table style="width:100%;border-collapse:collapse;font-size:11px">
+                <thead><tr style="text-align:left;color:var(--dim);border-bottom:1px solid var(--border)"><th style="padding:4px 8px 4px 0;font-weight:600">Code</th><th style="padding:4px 0;font-weight:600">Entité</th></tr></thead>
+                <tbody>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">IR</td><td style="padding:4px 0">IRIS REP, conseil en immobilier d entreprise</td></tr>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">BYM</td><td style="padding:4px 0">BYM Construction, rénovation et travaux</td></tr>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">UR</td><td style="padding:4px 0">Urban Rise, marchand de biens</td></tr>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">GC</td><td style="padding:4px 0">Galerie Carrez, agence Tours</td></tr>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">RIR</td><td style="padding:4px 0">RIR SAS, marchand de biens et conseil énergie</td></tr>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">CCD1</td><td style="padding:4px 0">Cybelcity</td></tr>
+                </tbody>
+              </table>
             </div>
             <div>
-              <div style="font-weight:600;color:var(--dim);text-transform:uppercase;font-size:10px;letter-spacing:.4px;margin-bottom:4px">Suffixes IRIS REP</div>
-              <div style="line-height:1.7"><b>_IV</b> mandat de vente, cession. <b>_IA</b> mandat acquisition pour investisseur, recherche. <b>IRLB</b> mandat locatif bailleur, locative. <b>IRLP</b> mandat locatif preneur, recherche. <b>_CONF</b> mandat confidentiel. <b>IRxx</b> sans suffixe, deal interne non publié sur le site.</div>
+              <div style="font-weight:600;color:var(--dim);text-transform:uppercase;font-size:10px;letter-spacing:.4px;margin-bottom:6px">Suffixes IRIS REP</div>
+              <table style="width:100%;border-collapse:collapse;font-size:11px">
+                <thead><tr style="text-align:left;color:var(--dim);border-bottom:1px solid var(--border)"><th style="padding:4px 8px 4px 0;font-weight:600">Code</th><th style="padding:4px 8px 4px 0;font-weight:600">Nature</th><th style="padding:4px 0;font-weight:600">Catégorie site</th></tr></thead>
+                <tbody>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">_IV</td><td style="padding:4px 8px 4px 0">Mandat de vente</td><td style="padding:4px 0">Cession</td></tr>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">_IA</td><td style="padding:4px 8px 4px 0">Mandat d acquisition investisseur</td><td style="padding:4px 0">Recherche</td></tr>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">IRLB</td><td style="padding:4px 8px 4px 0">Mandat locatif côté bailleur</td><td style="padding:4px 0">Locative</td></tr>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">IRLP</td><td style="padding:4px 8px 4px 0">Mandat locatif côté preneur</td><td style="padding:4px 0">Recherche</td></tr>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">_CONF</td><td style="padding:4px 8px 4px 0">Mandat confidentiel</td><td style="padding:4px 0">Selon nature</td></tr>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700;color:var(--dim)">_PA</td><td style="padding:4px 8px 4px 0;color:var(--dim);font-style:italic">à définir</td><td style="padding:4px 0;color:var(--dim)">à définir</td></tr>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700;color:var(--dim)">_LR</td><td style="padding:4px 8px 4px 0;color:var(--dim);font-style:italic">à définir</td><td style="padding:4px 0;color:var(--dim)">à définir</td></tr>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">IRxx</td><td style="padding:4px 8px 4px 0">Deal interne sans mandat</td><td style="padding:4px 0">Non publié sur le site</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
