@@ -286,13 +286,13 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <div class="tab" id="tab-deals">
         <div id="deals-legende" style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:11px;color:var(--text)">
           <div style="font-weight:700;font-size:12px;margin-bottom:10px;color:var(--text);letter-spacing:.2px">Légende des codes deals</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+          <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:18px">
             <div>
               <div style="font-weight:600;color:var(--dim);text-transform:uppercase;font-size:10px;letter-spacing:.4px;margin-bottom:6px">Préfixes par entité</div>
               <table style="width:100%;border-collapse:collapse;font-size:11px">
                 <thead><tr style="text-align:left;color:var(--dim);border-bottom:1px solid var(--border)"><th style="padding:4px 8px 4px 0;font-weight:600">Code</th><th style="padding:4px 0;font-weight:600">Entité</th></tr></thead>
                 <tbody>
-                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">IR</td><td style="padding:4px 0">IRIS REP, conseil en immobilier d entreprise</td></tr>
+                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">IR</td><td style="padding:4px 0">IRIS REP, conseil immobilier d entreprise</td></tr>
                   <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">BYM</td><td style="padding:4px 0">BYM Construction, rénovation et travaux</td></tr>
                   <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">UR</td><td style="padding:4px 0">Urban Rise, marchand de biens</td></tr>
                   <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">GC</td><td style="padding:4px 0">Galerie Carrez, agence Tours</td></tr>
@@ -302,20 +302,24 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
               </table>
             </div>
             <div>
-              <div style="font-weight:600;color:var(--dim);text-transform:uppercase;font-size:10px;letter-spacing:.4px;margin-bottom:6px">Suffixes IRIS REP</div>
+              <div style="font-weight:600;color:var(--dim);text-transform:uppercase;font-size:10px;letter-spacing:.4px;margin-bottom:6px">Suffixes IRIS REP, profil client × opération</div>
               <table style="width:100%;border-collapse:collapse;font-size:11px">
-                <thead><tr style="text-align:left;color:var(--dim);border-bottom:1px solid var(--border)"><th style="padding:4px 8px 4px 0;font-weight:600">Code</th><th style="padding:4px 8px 4px 0;font-weight:600">Nature</th><th style="padding:4px 0;font-weight:600">Catégorie site</th></tr></thead>
+                <thead>
+                  <tr style="text-align:left;color:var(--dim);border-bottom:1px solid var(--border)">
+                    <th style="padding:4px 6px 4px 0;font-weight:600;text-align:left">Profil</th>
+                    <th style="padding:4px 6px;font-weight:600;text-align:center">Cède (V)</th>
+                    <th style="padding:4px 6px;font-weight:600;text-align:center">Achète (A)</th>
+                    <th style="padding:4px 0 4px 6px;font-weight:600;text-align:center">Loue (L)</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">_IV</td><td style="padding:4px 8px 4px 0">Mandat de vente</td><td style="padding:4px 0">Cession</td></tr>
-                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">_IA</td><td style="padding:4px 8px 4px 0">Mandat d acquisition investisseur</td><td style="padding:4px 0">Recherche</td></tr>
-                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">IRLB</td><td style="padding:4px 8px 4px 0">Mandat locatif côté bailleur</td><td style="padding:4px 0">Locative</td></tr>
-                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">IRLP</td><td style="padding:4px 8px 4px 0">Mandat locatif côté preneur</td><td style="padding:4px 0">Recherche</td></tr>
-                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">_CONF</td><td style="padding:4px 8px 4px 0">Mandat confidentiel</td><td style="padding:4px 0">Selon nature</td></tr>
-                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700;color:var(--dim)">_PA</td><td style="padding:4px 8px 4px 0;color:var(--dim);font-style:italic">à définir</td><td style="padding:4px 0;color:var(--dim)">à définir</td></tr>
-                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700;color:var(--dim)">_LR</td><td style="padding:4px 8px 4px 0;color:var(--dim);font-style:italic">à définir</td><td style="padding:4px 0;color:var(--dim)">à définir</td></tr>
-                  <tr><td style="padding:4px 8px 4px 0;font-family:monospace;font-weight:700">IRxx</td><td style="padding:4px 8px 4px 0">Deal interne sans mandat</td><td style="padding:4px 0">Non publié sur le site</td></tr>
+                  <tr><td style="padding:4px 6px 4px 0"><b>I</b> Institutionnel</td><td style="padding:4px 6px;text-align:center"><span style="font-family:monospace;font-weight:700">_IV</span><div style="font-size:9px;color:var(--dim)">cession</div></td><td style="padding:4px 6px;text-align:center"><span style="font-family:monospace;font-weight:700">_IA</span><div style="font-size:9px;color:var(--dim)">recherche</div></td><td style="padding:4px 0 4px 6px;text-align:center"><span style="font-family:monospace;font-weight:700">_IL</span><div style="font-size:9px;color:var(--dim)">locative bailleur</div></td></tr>
+                  <tr><td style="padding:4px 6px 4px 0"><b>P</b> Particulier</td><td style="padding:4px 6px;text-align:center"><span style="font-family:monospace;font-weight:700">_PV</span><div style="font-size:9px;color:var(--dim)">cession</div></td><td style="padding:4px 6px;text-align:center"><span style="font-family:monospace;font-weight:700">_PA</span><div style="font-size:9px;color:var(--dim)">recherche</div></td><td style="padding:4px 0 4px 6px;text-align:center"><span style="font-family:monospace;font-weight:700">_PL</span><div style="font-size:9px;color:var(--dim)">locative bailleur</div></td></tr>
+                  <tr><td style="padding:4px 6px 4px 0"><b>U</b> Utilisateur</td><td style="padding:4px 6px;text-align:center"><span style="font-family:monospace;font-weight:700">_UV</span><div style="font-size:9px;color:var(--dim)">cession</div></td><td style="padding:4px 6px;text-align:center"><span style="font-family:monospace;font-weight:700">_UA</span><div style="font-size:9px;color:var(--dim)">recherche</div></td><td style="padding:4px 0 4px 6px;text-align:center"><span style="font-family:monospace;font-weight:700">_UL</span><div style="font-size:9px;color:var(--dim)">recherche preneur</div></td></tr>
+                  <tr><td style="padding:4px 6px 4px 0"><b>D</b> Développeur</td><td style="padding:4px 6px;text-align:center"><span style="font-family:monospace;font-weight:700">_DV</span><div style="font-size:9px;color:var(--dim)">cession</div></td><td style="padding:4px 6px;text-align:center"><span style="font-family:monospace;font-weight:700">_DA</span><div style="font-size:9px;color:var(--dim)">recherche</div></td><td style="padding:4px 0 4px 6px;text-align:center"><span style="font-family:monospace;font-weight:700">_DL</span><div style="font-size:9px;color:var(--dim)">locative bailleur</div></td></tr>
                 </tbody>
               </table>
+              <div style="margin-top:6px;font-size:10px;color:var(--dim)">Confidentialité, gérée par la colonne <code style="background:var(--bg);padding:1px 4px;border-radius:3px">confidentiel</code>, pas par un suffixe. Codes IRxx sans suffixe, deals internes non publiés sur le site.</div>
             </div>
           </div>
         </div>
