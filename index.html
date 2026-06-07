@@ -1084,7 +1084,7 @@ function isVitrinable(d){const c=(d.code||'').toUpperCase();return c.startsWith(
 
 function renderDeals(){
   let deals=dealsFilter==='all'?[...data.deals]:data.deals.filter(d=>dealMatchesFilter(d,dealsFilter));
-  deals=deals.filter(d=>d.etape!=='dead');
+  deals=deals.filter(d=>!['dead','cloture'].includes(d.etape));
   if(dealsSuffixFilter){deals=deals.filter(d=>(d.code||'').toUpperCase().endsWith(dealsSuffixFilter.toUpperCase()))}
   if(dealsProfilFilter){deals=deals.filter(d=>(d.profil_client||'').toLowerCase()===dealsProfilFilter.toLowerCase())}
   const q=(document.getElementById('deals-search')?.value||'').toLowerCase().trim();
