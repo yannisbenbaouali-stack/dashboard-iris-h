@@ -1079,6 +1079,7 @@ function dealMatchesFilter(d,filter){
   if(filter==='all')return true;
   const def=DEAL_PREFIXES.find(x=>x.k===filter);
   if(!def)return false;
+  if(filter==='RIR') return d.rir===true || (d.code||'').toUpperCase().startsWith(def.prefix);
   return (d.code||'').toUpperCase().startsWith(def.prefix);
 }
 function isVitrinable(d){const c=(d.code||'').toUpperCase();return c.startsWith('IR')||c.startsWith('GC')}
