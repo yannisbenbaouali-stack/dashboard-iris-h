@@ -2757,16 +2757,18 @@ function renderLocPartenaires(){
 }
 function renderMandats(){
   const src=data.mandats||[];
-  const enCours=src.filter(m=>m.statut==='En cours').length;
-  const signes=src.filter(m=>m.statut==='Signé').length;
-  const expires=src.filter(m=>m.statut==='Expiré').length;
-  const annules=src.filter(m=>m.statut==='dead').length;
+  const aFaire=src.filter(m=>m.statut==='à faire').length;
+  const envoyes=src.filter(m=>m.statut==='envoyé').length;
+  const signes=src.filter(m=>m.statut==='signé'||m.statut==='Signé').length;
+  const cs=src.filter(m=>m.statut==='contre-signé').length;
+  const dead=src.filter(m=>m.statut==='dead').length;
   document.getElementById('mandats-kpis').innerHTML=`
     <div class="kpi"><div class="kpi-label">Total mandats</div><div class="kpi-val">${src.length}</div></div>
-    <div class="kpi orange"><div class="kpi-label">En cours</div><div class="kpi-val">${enCours}</div></div>
-    <div class="kpi green"><div class="kpi-label">Signés</div><div class="kpi-val">${signes}</div></div>
-    <div class="kpi red"><div class="kpi-label">Expirés / Dead</div><div class="kpi-val">${expires+annules}</div></div>`;
-  const statuts=['all','En cours','Signé','Expiré','dead'];
+    <div class="kpi orange"><div class="kpi-label">À faire</div><div class="kpi-val">${aFaire}</div></div>
+    <div class="kpi"><div class="kpi-label">Envoyés</div><div class="kpi-val">${envoyes}</div></div>
+    <div class="kpi green"><div class="kpi-label">Signés</div><div class="kpi-val">${signes+cs}</div></div>
+    <div class="kpi red"><div class="kpi-label">Dead</div><div class="kpi-val">${dead}</div></div>`;
+  const statuts=['all','à faire','envoyé','signé','contre-signé','dead'];
   document.getElementById('mandats-filters').innerHTML=`<div class="filters" style="margin-bottom:12px">${statuts.map(s=>`<button class="fbtn${mandatsFilterStatut===s?' on':''}" onclick="mandatsFilterStatut='${s}';renderMandats()">${s==='all'?'Tous statuts':s}</button>`).join('')}</div>`;
   let filtered=src.slice();
   if(mandatsFilterStatut!=='all')filtered=filtered.filter(m=>m.statut===mandatsFilterStatut);
