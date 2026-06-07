@@ -2757,23 +2757,19 @@ function renderLocPartenaires(){
 }
 function renderMandats(){
   const src=data.mandats||[];
-  const aFaire=src.filter(m=>m.statut==='à faire').length;
-  const envoyes=src.filter(m=>m.statut==='envoyé').length;
-  const signes=src.filter(m=>m.statut==='signé'||m.statut==='Signé').length;
-  const cs=src.filter(m=>m.statut==='contre-signé').length;
-  const dead=src.filter(m=>m.statut==='dead').length;
-  document.getElementById('mandats-kpis').innerHTML=`
-    <div class="kpi"><div class="kpi-label">Total mandats</div><div class="kpi-val">${src.length}</div></div>
-    <div class="kpi orange"><div class="kpi-label">À faire</div><div class="kpi-val">${aFaire}</div></div>
-    <div class="kpi"><div class="kpi-label">Envoyés</div><div class="kpi-val">${envoyes}</div></div>
-    <div class="kpi green"><div class="kpi-label">Signés</div><div class="kpi-val">${signes+cs}</div></div>
-    <div class="kpi red"><div class="kpi-label">Dead</div><div class="kpi-val">${dead}</div></div>`;
+  const lgChip=(bg,bd,txt,extra)=>`<span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--text)"><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:${bg};border:1px solid ${bd};${extra||''}"></span>${txt}</span>`;
+  document.getElementById('mandats-kpis').innerHTML=`<div style="display:flex;gap:22px;flex-wrap:wrap;align-items:center;padding:11px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px">
+    ${lgChip('#e8f6ee','#b5e0c4','Vert : ok / contre-signé')}
+    ${lgChip('#fff6e0','#f0d68a','Jaune : en attente de signature')}
+    ${lgChip('#fdecea','#f0b3ab','Rouge : erreur dans le mandat')}
+    ${lgChip('#f2f2f2','#cccccc','Gris italique : dead','font-style:italic')}
+  </div>`;
   const statuts=['all','à faire','envoyé','signé','contre-signé','dead'];
   document.getElementById('mandats-filters').innerHTML=`<div class="filters" style="margin-bottom:12px">${statuts.map(s=>`<button class="fbtn${mandatsFilterStatut===s?' on':''}" onclick="mandatsFilterStatut='${s}';renderMandats()">${s==='all'?'Tous statuts':s}</button>`).join('')}</div>`;
   let filtered=src.slice();
   if(mandatsFilterStatut!=='all')filtered=filtered.filter(m=>m.statut===mandatsFilterStatut);
   const q=(document.getElementById('mandats-search')?.value||'').toLowerCase().trim();
-  if(q)filtered=filtered.filter(m=>['numero','mandant','nature','objet','bien','charge','duree','statut','observations'].map(k=>m[k]||'').join(' ').toLowerCase().includes(q));
+  if(q)filtered=filtered.filter(m=>['code_projet','mandant','nature','objet','adresse','bien','charge','duree','statut','observations'].map(k=>m[k]||'').join(' ').toLowerCase().includes(q));
   const dir=mandatsSortDir==='asc'?1:-1;
   filtered.sort((a,b)=>{
     let va=a[mandatsSortCol]||'',vb=b[mandatsSortCol]||'';
@@ -2786,19 +2782,20 @@ function renderMandats(){
   const statBadge=s=>{const m={'En cours':'p-med',Sign\u00e9:'p-done',Expir\u00e9:'p-urg',Annul\u00e9:'p-standby'};return`<span class="pill ${m[s]||'p-med'}">${s||''}</span>`};
   const natureBadge=n=>{const m={Exclusif:'p-urg',Simple:'p-med','Co-exclusif':'p-high'};return`<span class="pill ${m[n]||'p-med'}">${n||''}</span>`};
   const thS=k=>mandatsSortCol===k?(mandatsSortDir==='asc'?' \u25b2':' \u25bc'):'';
-  const cols=[{k:'code_projet',l:'Code'},{k:'numero',l:'N\u00b0'},{k:'date_reception',l:'Date'},{k:'statut',l:'Statut'},{k:'mandant',l:'Mandant'},{k:'nature',l:'Nature'},{k:'objet',l:'Objet'},{k:'bien',l:'Bien'},{k:'prix_ht',l:'Prix HT'},{k:'honoraires_ht',l:'Honoraires HT'},{k:'charge',l:'Charge'},{k:'duree',l:'Dur\u00e9e'},{k:'date_expiration',l:'Expiration'},{k:'observations',l:'Observations'}];
+  const mandatColor=m=>{const c=(m.couleur||'').toLowerCase();if(['rouge','vert','jaune','gris'].includes(c))return c;const s=(m.statut||'').toLowerCase();if(s==='dead')return'gris';if(s==='contre-signé'||s==='signé')return'vert';return'jaune';};
+  const mandatRowCss=col=>({rouge:'background:#fdecea;',vert:'background:#e8f6ee;',jaune:'background:#fff6e0;',gris:'background:#f2f2f2;font-style:italic;opacity:.55;'}[col]||'');
+  const cols=[{k:'code_projet',l:'Code'},{k:'date_reception',l:'Date'},{k:'statut',l:'Statut'},{k:'mandant',l:'Mandant'},{k:'nature',l:'Nature'},{k:'objet',l:'Objet'},{k:'adresse',l:'Adresse'},{k:'prix_ht',l:'Prix HT'},{k:'honoraires_ht',l:'Honoraires HT'},{k:'charge',l:'Charge'},{k:'duree',l:'Dur\u00e9e'},{k:'date_expiration',l:'Expiration'},{k:'observations',l:'Observations'}];
   const el=document.getElementById('mandats-body');
   if(!filtered.length){el.innerHTML='<div class="empty"><div class="empty-ico">\ud83d\udccb</div><div class="empty-text">Aucun mandat</div></div>';return}
   el.innerHTML='<div style="overflow-x:auto"><table class="tbl"><thead><tr>'+cols.map(c=>`<th style="cursor:pointer;white-space:nowrap" onclick="sortMandats('${c.k}')">${c.l}${thS(c.k)}</th>`).join('')+'</tr></thead><tbody>'+
-  filtered.map((m,i)=>'<tr style="background:'+(i%2===0?'#fff':'#f8f9fc')+'">'+
+  filtered.map((m,i)=>'<tr style="'+mandatRowCss(mandatColor(m))+'">'+
     '<td style="font-weight:700;color:var(--blue);white-space:nowrap;font-size:11px">'+(m.code_projet||'')+'</td>'+
-    '<td style="font-weight:600;color:var(--navy);white-space:nowrap;font-size:12px">'+(m.numero?String(m.numero).padStart(3,'0'):'')+'</td>'+
     '<td style="white-space:nowrap;font-size:11px">'+fDate(m.date_reception)+'</td>'+
     '<td>'+statBadge(m.statut)+'</td>'+
     '<td style="font-weight:500;font-size:12px">'+(m.mandant||'')+'</td>'+
     '<td>'+natureBadge(m.nature)+'</td>'+
     '<td><span class="pill p-iris" style="font-size:9px">'+(m.objet||'')+'</span></td>'+
-    '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px" title="'+escHtml(m.bien||'')+'">'+(m.bien||'')+'</td>'+
+    '<td style="max-width:240px;font-size:11px;white-space:normal;line-height:1.4" title="'+escHtml(m.adresse||'')+'">'+(m.adresse||'')+'</td>'+
     '<td style="color:var(--green);font-weight:600;text-align:right;white-space:nowrap;font-size:12px">'+fMt(m.prix_ht)+'</td>'+
     '<td style="color:var(--blue);font-weight:600;text-align:right;white-space:nowrap;font-size:12px">'+fMt(m.honoraires_ht)+'</td>'+
     '<td style="color:var(--dim);font-size:11px">'+(m.charge||'')+'</td>'+
