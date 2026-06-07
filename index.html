@@ -1061,7 +1061,7 @@ async function loadCRMTable(){
 // ════════════════════════════════════════
 // DEALS
 // ════════════════════════════════════════
-const ETAPES=[{key:'sourcing',label:'sourcé'},{key:'analyse',label:'Analyse'},{key:'nego',label:'Négo'},{key:'offre',label:'Offre'},{key:'compromis',label:'Compromis'},{key:'acte',label:'Acte'},{key:'travaux',label:'Travaux'},{key:'commercialisation',label:'sourcé'},{key:'to_sell',label:'To Sell'},{key:'cloture',label:'Clôture'},{key:'dead',label:'Dead'},{key:'sous_promesse',label:'Sous promesse'},{key:'puv_signee',label:'PUV signée'},{key:'attente_validation',label:'Attente valid.'},{key:'demarre',label:'Démarré'}];
+const ETAPES=[{key:'sourcing',label:'sourcé'},{key:'analyse',label:'Analyse'},{key:'nego',label:'Négo'},{key:'offre',label:'Offre'},{key:'compromis',label:'Compromis'},{key:'acte',label:'Acte'},{key:'travaux',label:'Travaux'},{key:'commercialisation',label:'sourcé'},{key:'to_sell',label:'To Sell'},{key:'cloture',label:'Clôture'},{key:'dead',label:'Dead'},{key:'sous_promesse',label:'Sous promesse'},{key:'mandat_signe',label:'Mandat signé'},{key:'puv_signee',label:'PUV signée'},{key:'attente_validation',label:'Attente valid.'},{key:'demarre',label:'Démarré'}];
 const ETAPE_ORDER={};ETAPES.forEach((e,i)=>ETAPE_ORDER[e.key]=i);
 const ETAPE_LABEL={};ETAPES.forEach(e=>ETAPE_LABEL[e.key]=e.label);
 const DT={acquisition:'🏠',vente:'💰',chantier:'🏗️',mandat:'🤝',montage:'📐',appel_offres:'📋',gestion:'🔑',chantier_bym:'🏗️',conseil_iris:'🤝'};
