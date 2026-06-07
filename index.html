@@ -243,22 +243,22 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <div id="global-results"></div>
     </div>
     <div class="sb-nav">
-      <button class="nav-item active" onclick="switchTab(this,'todo')"><span class="nav-dot"></span><span>Todo</span><span class="nav-cnt" id="nav-todo-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'audit')"><span class="nav-dot"></span><span>Audit Drive</span><span class="nav-cnt" id="nav-audit-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'charte')"><span class="nav-dot"></span><span>Charte graphique</span></button>
+      <button class="nav-item" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'deals')"><span class="nav-dot"></span><span>Dealflow Projets</span><span class="nav-cnt" id="nav-deals-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'prospects')"><span class="nav-dot"></span><span>Dealflow Prospects</span><span class="nav-cnt" id="nav-prospects-cnt">0</span></button>
-      <button class="nav-item" onclick="switchTab(this,'location')"><span class="nav-dot"></span><span>Location</span><span class="nav-cnt" id="nav-location-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'documents')"><span class="nav-dot"></span><span>Documents</span><span class="nav-cnt" id="nav-documents-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'electricite')"><span class="nav-dot"></span><span>Électricité</span><span class="nav-cnt" id="nav-electricite-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'finance')"><span class="nav-dot"></span><span>Finance</span></button>
-      <button class="nav-item" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'histoire')"><span class="nav-dot"></span><span>Histoire</span><span class="nav-cnt" id="nav-histoire-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'location')"><span class="nav-dot"></span><span>Location</span><span class="nav-cnt" id="nav-location-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'memoire')"><span class="nav-dot"></span><span>Mémoire</span></button>
       <button class="nav-item" onclick="switchTab(this,'organigramme')"><span class="nav-dot"></span><span>Organigramme</span></button>
-      <button class="nav-item" onclick="switchTab(this,'charte')"><span class="nav-dot"></span><span>Charte graphique</span></button>
-      <button class="nav-item" onclick="switchTab(this,'businessplan')"><span class="nav-dot"></span><span>Structuration</span></button>
       <button class="nav-item" onclick="switchTab(this,'outils')"><span class="nav-dot"></span><span>Outils</span></button>
       <button class="nav-item" onclick="switchTab(this,'mandats')"><span class="nav-dot"></span><span>Registre Mandats</span><span class="nav-cnt" id="nav-mandats-cnt">0</span></button>
-      <button class="nav-item" onclick="switchTab(this,'documents')"><span class="nav-dot"></span><span>Documents</span><span class="nav-cnt" id="nav-documents-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
-      <button class="nav-item" onclick="switchTab(this,'audit')"><span class="nav-dot"></span><span>Audit Drive</span><span class="nav-cnt" id="nav-audit-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
-      <button class="nav-item" onclick="switchTab(this,'histoire')"><span class="nav-dot"></span><span>Histoire</span><span class="nav-cnt" id="nav-histoire-cnt">0</span></button>
-      <button class="nav-item" onclick="switchTab(this,'electricite')"><span class="nav-dot"></span><span>Électricité</span><span class="nav-cnt" id="nav-electricite-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'businessplan')"><span class="nav-dot"></span><span>Structuration</span></button>
+      <button class="nav-item active" onclick="switchTab(this,'todo')"><span class="nav-dot"></span><span>Todo</span><span class="nav-cnt" id="nav-todo-cnt">0</span></button>
     </div>
     <div class="sb-footer">
       <div>Supabase connecté</div>
