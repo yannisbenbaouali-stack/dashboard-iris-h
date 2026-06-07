@@ -284,7 +284,19 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 
       <!-- DEALS -->
       <div class="tab" id="tab-deals">
-        <div class="kpis" id="deals-kpis"></div>
+        <div id="deals-legende" style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:11px;color:var(--text)">
+          <div style="font-weight:700;font-size:12px;margin-bottom:8px;color:var(--text);letter-spacing:.2px">Légende des codes deals</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+            <div>
+              <div style="font-weight:600;color:var(--dim);text-transform:uppercase;font-size:10px;letter-spacing:.4px;margin-bottom:4px">Préfixes par entité</div>
+              <div style="line-height:1.7"><b>IR</b> IRIS REP, conseil en immobilier d entreprise. <b>BYM</b> BYM Construction. <b>UR</b> Urban Rise, marchand de biens. <b>GC</b> Galerie Carrez, agence Tours. <b>RIR</b> RIR SAS, marchand de biens. <b>CCD1</b> Cybelcity.</div>
+            </div>
+            <div>
+              <div style="font-weight:600;color:var(--dim);text-transform:uppercase;font-size:10px;letter-spacing:.4px;margin-bottom:4px">Suffixes IRIS REP</div>
+              <div style="line-height:1.7"><b>_IV</b> mandat de vente, cession. <b>_IA</b> mandat acquisition pour investisseur, recherche. <b>IRLB</b> mandat locatif bailleur, locative. <b>IRLP</b> mandat locatif preneur, recherche. <b>_CONF</b> mandat confidentiel. <b>IRxx</b> sans suffixe, deal interne non publié sur le site.</div>
+            </div>
+          </div>
+        </div>
         <input id="deals-search" placeholder="Rechercher un deal (code, nom, adresse, commentaire...)" oninput="renderDeals()" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;background:var(--card);color:var(--text);margin-bottom:12px">
         <div id="deals-body"></div>
       </div>
@@ -1091,11 +1103,6 @@ function renderDeals(){
   const vol=actifs.reduce((a,d)=>a+(d.montant||0),0);
   const totalCA=deals.reduce((s,d)=>s+(d.ca_previ||0),0);
   const enTravaux=deals.filter(d=>d.etape==='travaux').length;
-  document.getElementById('deals-kpis').innerHTML=`
-    <div class="kpi"><div class="kpi-label">Deals actifs</div><div class="kpi-val">${actifs.length}</div></div>
-    <div class="kpi"><div class="kpi-label">Volume total</div><div class="kpi-val">${fmt(vol)||'N/A'}</div></div>
-    <div class="kpi"><div class="kpi-label">CA prévi</div><div class="kpi-val">${fmt(totalCA)||'N/A'}</div></div>
-    <div class="kpi"><div class="kpi-label">En travaux</div><div class="kpi-val">${enTravaux}</div></div>`;
   const eBadge=e=>{const m={BYM:'p-bym','Urban Rise':'p-ur',URBAN_RISE:'p-ur','IRIS REP':'p-iris',IRIS_REP:'p-iris',ARRISTO:'p-arristo','IRIS H':'p-iris',IRIS_H:'p-iris','Galerie Carrez':'p-gc',GALERIE_CARREZ:'p-gc',RIR:'p-rir'};const l={BYM:'BYM','Urban Rise':'Urban Rise',URBAN_RISE:'Urban Rise','IRIS REP':'IRIS REP',IRIS_REP:'IRIS REP',ARRISTO:'ARRISTO','IRIS H':'IRIS H',IRIS_H:'IRIS H','Galerie Carrez':'Galerie Carrez',GALERIE_CARREZ:'Galerie Carrez',RIR:'RIR'};return`<span class="pill ${m[e]||'p-iris'}">${l[e]||e||''}</span>`};
   const etBadge=et=>{const st={dead:'background:#f8717118;color:#f87171;border:1px solid #f8717140',to_sell:'background:#fb923c18;color:#fb923c;border:1px solid #fb923c40',cloture:'background:#41c98e18;color:#41c98e;border:1px solid #41c98e40'};return`<span class="pill" style="font-size:9px;${st[et]||''}">${ETAPE_LABEL[et]||et||''}</span>`};
   const cols=[{k:'code',l:'Code'},{k:'nom',l:'Nom'},{k:'entite',l:'Entité'},{k:'type',l:'Type'},{k:'etape',l:'Étape'},{k:'montant',l:'Montant'},{k:'ca_previ',l:'CA Prévi'},{k:'resultat_previ',l:'Résultat'},{k:'adresse',l:'Adresse'},{k:'commentaire',l:'Commentaire'},{k:'vitrine',l:'Vitrine'}];
