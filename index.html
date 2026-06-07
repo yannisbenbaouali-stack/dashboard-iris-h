@@ -2787,7 +2787,7 @@ function renderMandats(){
   const thS=k=>mandatsSortCol===k?(mandatsSortDir==='asc'?' \u25b2':' \u25bc'):'';
   const mandatColor=m=>{const c=(m.couleur||'').toLowerCase();if(['rouge','vert','jaune','orange','gris'].includes(c))return c;const s=(m.statut||'').toLowerCase();if(s==='dead')return'gris';if(s==='contre-signé'||s==='signé')return'vert';return'jaune';};
   const mandatRowCss=col=>({rouge:'background:#fdecea;',vert:'background:#e8f6ee;',jaune:'background:#fff6e0;',orange:'background:#ffe9d6;',gris:'background:#f2f2f2;font-style:italic;opacity:.55;'}[col]||'');
-  const cols=[{k:'code_projet',l:'Code'},{k:'date_reception',l:'Date'},{k:'statut',l:'Statut'},{k:'mandant',l:'Mandant'},{k:'nature',l:'Nature'},{k:'objet',l:'Objet'},{k:'adresse',l:'Adresse'},{k:'prix_ht',l:'Prix HT'},{k:'honoraires_ht',l:'Honoraires HT'},{k:'charge',l:'Charge'},{k:'duree',l:'Dur\u00e9e'},{k:'date_expiration',l:'Expiration'},{k:'observations',l:'Observations'}];
+  const cols=[{k:'code_projet',l:'Code'},{k:'date_reception',l:'Date'},{k:'statut',l:'Statut'},{k:'mandant',l:'Mandant'},{k:'nature',l:'Nature'},{k:'objet',l:'Objet'},{k:'adresse',l:'Adresse'},{k:'prix_ht',l:'Prix HT'},{k:'honoraires_ht',l:'Honoraires HT'},{k:'charge',l:'Charge'},{k:'duree',l:'Dur\u00e9e'},{k:'date_expiration',l:'Expiration'}];
   const el=document.getElementById('mandats-body');
   if(!filtered.length){el.innerHTML='<div class="empty"><div class="empty-ico">\ud83d\udccb</div><div class="empty-text">Aucun mandat</div></div>';return}
   el.innerHTML='<div style="overflow-x:auto"><table class="tbl"><thead><tr>'+cols.map(c=>`<th style="cursor:pointer;white-space:nowrap" onclick="sortMandats('${c.k}')">${c.l}${thS(c.k)}</th>`).join('')+'</tr></thead><tbody>'+
@@ -2798,13 +2798,12 @@ function renderMandats(){
     '<td style="font-weight:500;font-size:12px">'+(m.mandant||'')+'</td>'+
     '<td>'+natureBadge(m.nature)+'</td>'+
     '<td><span class="pill p-iris" style="font-size:9px">'+(m.objet||'')+'</span></td>'+
-    '<td style="max-width:240px;font-size:11px;white-space:normal;line-height:1.4" title="'+escHtml(m.adresse||'')+'">'+(m.adresse||'')+'</td>'+
+    '<td style="font-size:11px;white-space:normal;line-height:1.4;min-width:180px">'+(m.adresse?(/^recherche/i.test(m.adresse)?escHtml(m.adresse):'<a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(m.adresse)+'" target="_blank" rel="noopener" style="color:var(--text);font-weight:500;text-decoration:none" title="Ouvrir sur Google Maps">'+escHtml(m.adresse)+'</a>'):'')+'</td>'+
     '<td style="color:var(--green);font-weight:600;text-align:right;white-space:nowrap;font-size:12px">'+fMt(m.prix_ht)+'</td>'+
     '<td style="color:var(--blue);font-weight:600;text-align:right;white-space:nowrap;font-size:12px">'+fMt(m.honoraires_ht)+'</td>'+
     '<td style="color:var(--dim);font-size:11px">'+(m.charge||'')+'</td>'+
     '<td style="color:var(--dim);font-size:11px">'+(m.duree||'')+'</td>'+
     '<td style="white-space:nowrap;font-size:11px">'+fDate(m.date_expiration)+'</td>'+
-    '<td style="max-width:200px;font-size:10px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+escHtml(m.observations||'')+'">'+(m.observations||'')+'</td>'+
   '</tr>').join('')+
   '</tbody></table></div>';
 }
