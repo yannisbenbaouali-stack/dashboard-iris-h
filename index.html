@@ -256,7 +256,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'memoire')"><span class="nav-dot"></span><span>Mémoire</span></button>
       <button class="nav-item" onclick="switchTab(this,'organigramme')"><span class="nav-dot"></span><span>Organigramme</span></button>
       <button class="nav-item" onclick="switchTab(this,'outils')"><span class="nav-dot"></span><span>Outils</span></button>
-      <button class="nav-item" onclick="switchTab(this,'references')"><span class="nav-dot"></span><span>Références BYM</span><span class="nav-cnt" id="nav-references-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'references')"><span class="nav-dot"></span><span>Références et opportunités</span><span class="nav-cnt" id="nav-references-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'mandats')"><span class="nav-dot"></span><span>Registre Mandats</span><span class="nav-cnt" id="nav-mandats-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'businessplan')"><span class="nav-dot"></span><span>Structuration</span></button>
       <button class="nav-item active" onclick="switchTab(this,'todo')"><span class="nav-dot"></span><span>Todo</span><span class="nav-cnt" id="nav-todo-cnt">0</span></button>
@@ -785,215 +785,286 @@ function applyHashRoute(){
 window.addEventListener('hashchange',applyHashRoute);
 
 
-// ════════════════════════════════════════
-// RÉFÉRENCES ET OPPORTUNITÉS · BYM
-// ════════════════════════════════════════
-const REF_TABLE='deals_references_bym';
-const REF_TYPES={renovation_complete:'Rénovation complète',creation_cave_vin:'Création cave à vin',cuisine:'Cuisine',salle_de_bain:'Salle de bain',amenagement_commerce:'Aménagement commerce',amenagement_bureau:'Aménagement bureau',decoration_interieure:'Décoration intérieure',autre:'Autre'};
-let refData=[];
-let refFilterS='all', refFilterT='all', refSearch='';
-let _refLoaded=false;
 
+// ════════════════════════════════════════
+// RÉFÉRENCES ET OPPORTUNITÉS · multi entités
+// ════════════════════════════════════════
+const REF_BYM_TYPES={renovation_complete:'Rénovation complète',creation_cave_vin:'Création cave à vin',cuisine:'Cuisine',salle_de_bain:'Salle de bain',amenagement_commerce:'Aménagement commerce',amenagement_bureau:'Aménagement bureau',decoration_interieure:'Décoration intérieure',autre:'Autre'};
+
+const REF_CFG={
+  bym:{table:'deals_references_bym',codeField:'code_reference',codePrefix:'REF',titleField:'titre',
+    statutField:'statut_publication',statutVals:['brouillon','publie'],une:'a_la_une',ordre:'ordre_affichage',
+    photos:['photos_avant','photos_apres'],principale:'photo_principale',orderBy:'ordre_affichage.asc.nullslast,code_reference.asc',
+    fields:[{k:'titre',l:'Titre',t:'title'},{k:'type_prestation',l:'Type',t:'select',opts:REF_BYM_TYPES},{k:'ville_affichage',l:'Ville',t:'text'},{k:'annee_realisation',l:'Année',t:'int'},{k:'surface_travaux_m2',l:'Surface m²',t:'num'},{k:'budget_affichage',l:'Budget',t:'text'},{k:'description_courte',l:'Description courte',t:'area'},{k:'description_longue',l:'Description longue',t:'area'}]},
+  ur:{table:'references_urbanrise',codeField:'slug',codePrefix:'ur-ref-',titleField:'titre',
+    statutField:'statut_publication',statutVals:['brouillon','publie'],une:'a_la_une',ordre:'ordre_affichage',
+    photos:['photos_avant','photos_apres','photos_chantier'],principale:'photo_principale',orderBy:'ordre_affichage.asc.nullslast,titre.asc',
+    fields:[{k:'titre',l:'Titre',t:'title'},{k:'type_bien',l:'Type de bien',t:'text'},{k:'ville_affichage',l:'Ville',t:'text'},{k:'annee_realisation',l:'Année',t:'int'},{k:'surface_m2',l:'Surface m²',t:'num'},{k:'budget_acquisition',l:'Budget acquisition',t:'text'},{k:'budget_travaux',l:'Budget travaux',t:'text'},{k:'description_courte',l:'Description courte',t:'area'},{k:'description_longue',l:'Description longue',t:'area'}]},
+  iris_cession:{table:'irisrep_opportunites',codeField:'reference',codePrefix:'IR-V-',titleField:'titre',
+    statutField:'statut',statutVals:['brouillon','publie','archive'],une:null,ordre:null,
+    photos:['photos_urls'],principale:null,orderBy:'date_creation.desc.nullslast',
+    fixedType:{field:'type',value:'vente'},
+    fields:[{k:'titre',l:'Titre',t:'title'},{k:'type_bien',l:'Type de bien',t:'text'},{k:'ville',l:'Ville',t:'text'},{k:'adresse',l:'Adresse',t:'text'},{k:'surface_totale',l:'Surface m²',t:'num'},{k:'prix_vente',l:'Prix vente €',t:'int'},{k:'honoraires_vente',l:'Honoraires',t:'text'},{k:'description',l:'Description',t:'area'}]},
+  iris_location:{table:'irisrep_opportunites',codeField:'reference',codePrefix:'IR-L-',titleField:'titre',
+    statutField:'statut',statutVals:['brouillon','publie','archive'],une:null,ordre:null,
+    photos:['photos_urls'],principale:null,orderBy:'date_creation.desc.nullslast',
+    fixedType:{field:'type',value:'location'},
+    fields:[{k:'titre',l:'Titre',t:'title'},{k:'type_bien',l:'Type de bien',t:'text'},{k:'ville',l:'Ville',t:'text'},{k:'adresse',l:'Adresse',t:'text'},{k:'surface_totale',l:'Surface m²',t:'num'},{k:'loyer_mensuel',l:'Loyer mensuel €',t:'int'},{k:'honoraires_loc',l:'Honoraires',t:'text'},{k:'description',l:'Description',t:'area'}]},
+  iris_recherches:{table:'irisrep_recherches',codeField:'reference',codePrefix:'IR-R-',titleField:'demandeur_nom',
+    statutField:'statut',statutVals:['active','en_cours','close'],une:null,ordre:null,statutText:true,
+    photos:[],principale:null,orderBy:'date_creation.desc.nullslast',
+    createType:{field:'type',value:'vente'},
+    fields:[{k:'demandeur_nom',l:'Demandeur',t:'title'},{k:'demandeur_type',l:'Profil',t:'text'},{k:'type_bien',l:'Type de bien recherché',t:'text'},{k:'surface_min',l:'Surface min m²',t:'num'},{k:'surface_max',l:'Surface max m²',t:'num'},{k:'budget_max',l:'Budget max €',t:'int'},{k:'description',l:'Besoin',t:'area'},{k:'criteres_specifiques',l:'Critères spécifiques',t:'area'}]}
+};
+
+let refEntity='bym';
+let refIris='cession';
+let refSearch='', refFilterStatut='all';
+let refStore={}, refLoaded={}, refOpen={};
+
+function refSec(){ if(refEntity==='bym')return 'bym'; if(refEntity==='ur')return 'ur'; return 'iris_'+refIris; }
 function refEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function refHdr(pref){return {'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':pref||'return=minimal'};}
+function refRows(sec){return refStore[sec]||[];}
 
-async function loadReferences(){
+async function loadReferences(){ const sec=refSec(); await refLoadSection(sec); }
+async function refLoadSection(sec){
   if(!cfg)return;
-  _refLoaded=true;
-  try{ refData=await supa(REF_TABLE,'order=ordre_affichage.asc.nullslast,code_reference.asc'); }
-  catch(e){ console.warn('refs:',e); refData=[]; }
-  const el=document.getElementById('nav-references-cnt'); if(el)el.textContent=refData.length;
-  if(currentTab==='references') renderReferences();
+  const c=REF_CFG[sec];
+  let params='order='+c.orderBy;
+  if(c.fixedType)params='&'+c.fixedType.field+'=eq.'+c.fixedType.value+'&'+params;
+  refLoaded[sec]=true;
+  try{ refStore[sec]=await supa(c.table,params); }
+  catch(e){ console.warn('refs '+sec+':',e); refStore[sec]=[]; }
+  refUpdateNavCount();
+  if(currentTab==='references' && refSec()===sec) renderReferences();
+}
+function refUpdateNavCount(){
+  let n=0; Object.keys(refStore).forEach(k=>{n+=(refStore[k]||[]).length;});
+  const el=document.getElementById('nav-references-cnt'); if(el)el.textContent=n;
 }
 
-function refStats(){
-  const total=refData.length;
-  const pub=refData.filter(r=>r.statut_publication==='publie').length;
-  const withPhoto=refData.filter(r=>r.photo_principale||(r.photos_avant&&r.photos_avant.length)||(r.photos_apres&&r.photos_apres.length)).length;
-  const brouillon=refData.filter(r=>r.statut_publication!=='publie').length;
-  return {total,pub,withPhoto,brouillon};
+function refStats(sec){
+  const rows=refRows(sec); const c=REF_CFG[sec];
+  const total=rows.length;
+  const pub=rows.filter(r=>r[c.statutField]==='publie').length;
+  const brouillon=rows.filter(r=>(r[c.statutField]||'brouillon')==='brouillon').length;
+  const withPhoto=c.photos.length?rows.filter(r=>refHasPhoto(r,c)).length:null;
+  return {total,pub,brouillon,withPhoto};
 }
-function refTypeOptions(sel){ return Object.keys(REF_TYPES).map(k=>`<option value="${k}"${sel===k?' selected':''}>${REF_TYPES[k]}</option>`).join(''); }
-function refStatCard(id,label,val){ return `<div style="flex:1;min-width:120px;border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--card)"><div style="font-size:22px;font-weight:700" id="${id}">${val}</div><div style="font-size:11px;color:var(--dim)">${label}</div></div>`; }
+function refHasPhoto(r,c){ if(c.principale&&r[c.principale])return true; return c.photos.some(p=>r[p]&&r[p].length); }
+function refStatCard(label,val){ return `<div style="flex:1;min-width:130px;border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--card)"><div style="font-size:24px;font-weight:700">${val}</div><div style="font-size:11px;color:var(--dim)">${label}</div></div>`; }
+
+function refEntityBtn(id,label){
+  const active=refEntity===id;
+  return `<button onclick="refSetEntity('${id}')" style="padding:9px 18px;border-radius:9px;border:1px solid ${active?'var(--blue)':'var(--border)'};background:${active?'var(--blue)':'var(--card)'};color:${active?'#fff':'inherit'};font-weight:600;font-size:13px;cursor:pointer">${label}</button>`;
+}
+function refIrisBtn(id,label){
+  const active=refIris===id;
+  return `<button onclick="refSetIris('${id}')" style="padding:6px 14px;border-radius:8px;border:1px solid ${active?'var(--navy)':'var(--border)'};background:${active?'rgba(14,31,77,.08)':'var(--card)'};color:${active?'var(--navy)':'var(--dim)'};font-weight:600;font-size:12px;cursor:pointer">${label}</button>`;
+}
 
 function renderReferences(){
   const host=document.getElementById('tab-references'); if(!host)return;
   if(!cfg){ host.innerHTML='<div style="padding:20px;color:var(--dim)">Connexion requise.</div>'; return; }
-  if(!_refLoaded){ host.innerHTML='<div style="padding:20px;color:var(--dim)">Chargement…</div>'; loadReferences(); return; }
-  const s=refStats();
-  const types=Array.from(new Set(refData.map(r=>r.type_prestation).filter(Boolean)));
+  const sec=refSec(); const c=REF_CFG[sec];
+  if(!refLoaded[sec]){ refLoadSection(sec); }
+  const s=refStats(sec);
   host.innerHTML=`
+   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+     ${refEntityBtn('bym','BYM')}${refEntityBtn('ur','Urban Rise')}${refEntityBtn('iris','IRIS REP')}
+   </div>
+   ${refEntity==='iris'?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;padding-left:2px">${refIrisBtn('cession','Cession')}${refIrisBtn('location','Location')}${refIrisBtn('recherches','Recherches')}</div>`:''}
    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
-     ${refStatCard('ref-stat-total','Total',s.total)}
-     ${refStatCard('ref-stat-pub','Publiées',s.pub)}
-     ${refStatCard('ref-stat-photo','Avec photos',s.withPhoto)}
-     ${refStatCard('ref-stat-brouillon','Brouillons',s.brouillon)}
+     ${refStatCard('Total',s.total)}${refStatCard('Publiées',s.pub)}${s.withPhoto!=null?refStatCard('Avec photos',s.withPhoto):''}${refStatCard('Brouillons',s.brouillon)}
    </div>
-   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center">
-     <select onchange="refSetFilterS(this.value)" style="padding:7px 9px;border:1px solid var(--border);border-radius:7px;background:var(--card);color:inherit;font-size:12px">
-       <option value="all"${refFilterS==='all'?' selected':''}>Tous statuts</option>
-       <option value="publie"${refFilterS==='publie'?' selected':''}>Publiées</option>
-       <option value="brouillon"${refFilterS==='brouillon'?' selected':''}>Brouillons</option>
+   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center">
+     <select onchange="refSetStatut(this.value)" style="padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:inherit;font-size:12px">
+       <option value="all"${refFilterStatut==='all'?' selected':''}>Tous statuts</option>
+       ${c.statutVals.map(v=>`<option value="${v}"${refFilterStatut===v?' selected':''}>${v}</option>`).join('')}
      </select>
-     <select onchange="refSetFilterT(this.value)" style="padding:7px 9px;border:1px solid var(--border);border-radius:7px;background:var(--card);color:inherit;font-size:12px">
-       <option value="all"${refFilterT==='all'?' selected':''}>Tous types</option>
-       ${types.map(t=>`<option value="${refEsc(t)}"${refFilterT===t?' selected':''}>${REF_TYPES[t]||t}</option>`).join('')}
-     </select>
-     <input value="${refEsc(refSearch)}" oninput="refSetSearch(this.value)" placeholder="Recherche titre, ville, code…" style="flex:1;min-width:180px;padding:7px 9px;border:1px solid var(--border);border-radius:7px;background:var(--card);color:inherit;font-size:12px">
-     <button onclick="loadReferences()" style="padding:7px 12px;border-radius:7px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:12px">Actualiser</button>
+     <input value="${refEsc(refSearch)}" oninput="refSetSearch(this.value)" placeholder="Recherche…" style="flex:1;min-width:200px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:inherit;font-size:12px">
+     <button onclick="refExpandAll(true)" style="padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:12px">Tout déplier</button>
+     <button onclick="refExpandAll(false)" style="padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:12px">Tout replier</button>
+     <button onclick="refLoadSection('${sec}')" style="padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:12px">Actualiser</button>
    </div>
-   <div style="border:1px dashed var(--border);border-radius:10px;padding:12px;margin-bottom:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-     <strong style="font-size:12px">Nouvelle référence</strong>
-     <input id="ref-new-titre" placeholder="Titre" style="flex:1;min-width:200px;padding:7px 9px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:inherit;font-size:12px">
-     <select id="ref-new-type" style="padding:7px 9px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:inherit;font-size:12px"><option value="">Type…</option>${refTypeOptions('')}</select>
-     <input id="ref-new-ville" placeholder="Ville" style="width:160px;padding:7px 9px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:inherit;font-size:12px">
-     <button onclick="refCreate()" style="padding:7px 14px;border-radius:7px;border:none;background:var(--blue);color:#fff;cursor:pointer;font-size:12px;font-weight:600">Créer en brouillon</button>
+   <div style="border:1px dashed var(--border);border-radius:10px;padding:14px;margin-bottom:18px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+     <strong style="font-size:12px">Nouvelle fiche (${refEntityLabel(sec)})</strong>
+     <input id="ref-new-titre" placeholder="${sec==='iris_recherches'?'Nom du demandeur':'Titre'}" style="flex:1;min-width:220px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:inherit;font-size:12px">
+     <input id="ref-new-ville" placeholder="${sec==='iris_recherches'?'Type de bien':'Ville'}" style="width:200px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:inherit;font-size:12px">
+     <button onclick="refCreate()" style="padding:8px 16px;border-radius:8px;border:none;background:var(--blue);color:#fff;cursor:pointer;font-size:12px;font-weight:600">Créer en brouillon</button>
    </div>
    <div id="ref-list"></div>`;
   renderRefList();
 }
+function refEntityLabel(sec){return {bym:'BYM',ur:'Urban Rise',iris_cession:'IRIS · Cession',iris_location:'IRIS · Location',iris_recherches:'IRIS · Recherches'}[sec]||sec;}
 
 function renderRefList(){
   const el=document.getElementById('ref-list'); if(!el)return;
-  let list=refData.slice();
-  if(refFilterS!=='all')list=list.filter(r=>(r.statut_publication||'brouillon')===refFilterS);
-  if(refFilterT!=='all')list=list.filter(r=>r.type_prestation===refFilterT);
-  if(refSearch){const q=refSearch.toLowerCase();list=list.filter(r=>[r.titre,r.ville_affichage,r.code_reference,r.type_prestation].filter(Boolean).join(' ').toLowerCase().includes(q));}
-  list.sort((a,b)=>{const oa=a.ordre_affichage==null?9999:a.ordre_affichage,ob=b.ordre_affichage==null?9999:b.ordre_affichage;return oa-ob||String(a.code_reference||'').localeCompare(String(b.code_reference||''));});
-  el.innerHTML=list.length?list.map(refCard).join(''):'<div style="padding:20px;color:var(--dim);text-align:center">Aucune référence ne correspond.</div>';
+  const sec=refSec(); const c=REF_CFG[sec];
+  let list=refRows(sec).slice();
+  if(refFilterStatut!=='all')list=list.filter(r=>(r[c.statutField]||'brouillon')===refFilterStatut);
+  if(refSearch){const q=refSearch.toLowerCase();list=list.filter(r=>c.fields.concat([{k:c.codeField}]).map(f=>r[f.k]).filter(Boolean).join(' ').toLowerCase().includes(q));}
+  el.innerHTML=list.length?list.map(r=>refCard(sec,r)).join(''):'<div style="padding:24px;color:var(--dim);text-align:center">Aucune fiche'+(refLoaded[sec]?'':' (chargement…)')+'.</div>';
 }
 
-function refImg(url){ return url?`<img src="${refEsc(url)}" style="width:54px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--border);vertical-align:middle" onerror="this.style.opacity=.2">`:''; }
-function refPhotoChips(r,which){
-  const arr=r[which]||[];
+function refImg(url,big){ const w=big?96:74,h=big?72:56; return url?`<img src="${refEsc(url)}" style="width:${w}px;height:${h}px;object-fit:cover;border-radius:8px;border:1px solid var(--border);vertical-align:middle" onerror="this.style.opacity=.2">`:''; }
+function refPhotoChips(sec,r,which){
+  const c=REF_CFG[sec]; const arr=r[which]||[];
   if(!arr.length)return '<span style="color:var(--dim);font-size:11px">aucune</span>';
-  return arr.map((u,i)=>`<span style="display:inline-flex;align-items:center;gap:3px;margin:2px;padding:2px 4px;border:1px solid var(--border);border-radius:6px">${refImg(u)}<button title="Définir principale" onclick="refSetPrincipaleIdx('${r.id}','${which}',${i})" style="border:none;background:none;cursor:pointer;color:#e0a800;font-size:13px">★</button><button title="Supprimer" onclick="refDelPhoto('${r.id}','${which}',${i})" style="border:none;background:none;cursor:pointer;color:#e2554a;font-size:12px">✕</button></span>`).join('');
+  return arr.map((u,i)=>`<span style="display:inline-flex;align-items:center;gap:4px;margin:3px;padding:3px 5px;border:1px solid var(--border);border-radius:8px">${refImg(u)}${c.principale?`<button title="Définir principale" onclick="refSetPrincipaleIdx('${sec}','${r.id}','${which}',${i})" style="border:none;background:none;cursor:pointer;color:#e0a800;font-size:14px">★</button>`:''}<button title="Supprimer" onclick="refDelPhoto('${sec}','${r.id}','${which}',${i})" style="border:none;background:none;cursor:pointer;color:#e2554a;font-size:13px">✕</button></span>`).join('');
 }
 
-function refCard(r){
-  const pub=r.statut_publication==='publie';
-  return `<div style="border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;background:var(--card)">
-   <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-     <div style="display:flex;flex-direction:column;gap:2px">
-       <button onclick="refMove('${r.id}',-1)" title="Monter" style="border:1px solid var(--border);background:var(--bg);border-radius:4px;cursor:pointer;font-size:10px;line-height:1;padding:2px 5px">▲</button>
-       <button onclick="refMove('${r.id}',1)" title="Descendre" style="border:1px solid var(--border);background:var(--bg);border-radius:4px;cursor:pointer;font-size:10px;line-height:1;padding:2px 5px">▼</button>
-     </div>
-     <span style="font-family:monospace;font-size:11px;color:var(--dim);min-width:74px">${refEsc(r.code_reference||'')}</span>
-     <input value="${refEsc(r.titre||'')}" onchange="refField('${r.id}','titre',this.value)" placeholder="Titre" style="flex:1;padding:7px 9px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:inherit;font-size:13px;font-weight:600">
-     <button onclick="refToggleStatut('${r.id}')" style="padding:5px 10px;border-radius:6px;border:1px solid var(--border);cursor:pointer;font-size:11px;background:${pub?'rgba(65,201,142,.15)':'var(--bg)'};color:${pub?'#41c98e':'var(--dim)'}">${pub?'Publié':'Brouillon'}</button>
-     <button onclick="refToggleUne('${r.id}')" title="À la une" style="padding:5px 11px;border-radius:6px;border:1px solid var(--border);cursor:pointer;font-size:14px;background:${r.a_la_une?'rgba(224,168,0,.15)':'var(--bg)'};color:${r.a_la_une?'#e0a800':'var(--dim)'}">★</button>
-   </div>
-   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-     <select onchange="refField('${r.id}','type_prestation',this.value)" style="padding:6px 8px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:inherit;font-size:12px"><option value="">Type…</option>${refTypeOptions(r.type_prestation)}</select>
-     <input value="${refEsc(r.ville_affichage||'')}" onchange="refField('${r.id}','ville_affichage',this.value)" placeholder="Ville" style="padding:6px 8px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:inherit;font-size:12px;width:170px">
-     <input type="number" value="${r.annee_realisation!=null?r.annee_realisation:''}" onchange="refField('${r.id}','annee_realisation',this.value)" placeholder="Année" style="padding:6px 8px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:inherit;font-size:12px;width:90px">
-     <input type="number" value="${r.surface_travaux_m2!=null?r.surface_travaux_m2:''}" onchange="refField('${r.id}','surface_travaux_m2',this.value)" placeholder="m²" style="padding:6px 8px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:inherit;font-size:12px;width:80px">
-   </div>
-   <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-     <textarea onchange="refField('${r.id}','description_courte',this.value)" placeholder="Description courte" style="flex:1;min-width:220px;min-height:46px;padding:7px 9px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:inherit;font-size:12px;resize:vertical;font-family:inherit">${refEsc(r.description_courte||'')}</textarea>
-     <textarea onchange="refField('${r.id}','description_longue',this.value)" placeholder="Description longue" style="flex:2;min-width:260px;min-height:46px;padding:7px 9px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:inherit;font-size:12px;resize:vertical;font-family:inherit">${refEsc(r.description_longue||'')}</textarea>
-   </div>
-   <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid var(--border);padding-top:10px">
-     <div><div style="font-size:11px;color:var(--dim);margin-bottom:4px">Principale</div>${r.photo_principale?refImg(r.photo_principale):'<span style="font-size:11px;color:var(--dim)">aucune</span>'} <button onclick="refSetPrincipaleUrl('${r.id}')" style="border:1px solid var(--border);background:var(--bg);border-radius:6px;cursor:pointer;font-size:11px;padding:3px 7px">URL…</button></div>
-     <div style="flex:1;min-width:200px"><div style="font-size:11px;color:var(--dim);margin-bottom:4px">Avant <button onclick="refAddPhoto('${r.id}','photos_avant')" style="border:1px solid var(--border);background:var(--bg);border-radius:6px;cursor:pointer;font-size:11px;padding:2px 6px">+ ajouter</button></div><div>${refPhotoChips(r,'photos_avant')}</div></div>
-     <div style="flex:1;min-width:200px"><div style="font-size:11px;color:var(--dim);margin-bottom:4px">Après <button onclick="refAddPhoto('${r.id}','photos_apres')" style="border:1px solid var(--border);background:var(--bg);border-radius:6px;cursor:pointer;font-size:11px;padding:2px 6px">+ ajouter</button></div><div>${refPhotoChips(r,'photos_apres')}</div></div>
-   </div>
-  </div>`;
+function refFieldInput(sec,r,f){
+  const id=r.id; const v=r[f.k];
+  const base="padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:inherit;font-size:13px";
+  if(f.t==='select'){
+    return `<label style="display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--dim)">${f.l}<select onchange="refField('${sec}','${id}','${f.k}','${f.t}',this.value)" style="${base}"><option value="">—</option>${Object.keys(f.opts).map(k=>`<option value="${k}"${v===k?' selected':''}>${f.opts[k]}</option>`).join('')}</select></label>`;
+  }
+  if(f.t==='area'){
+    return `<label style="display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--dim);flex:1;min-width:280px">${f.l}<textarea onchange="refField('${sec}','${id}','${f.k}','${f.t}',this.value)" style="${base};min-height:60px;resize:vertical;font-family:inherit">${refEsc(v||'')}</textarea></label>`;
+  }
+  const itype=(f.t==='int'||f.t==='num')?'number':'text';
+  const width=(f.t==='int'||f.t==='num')?'width:130px':(f.t==='title'?'flex:1;min-width:240px':'width:200px');
+  return `<label style="display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--dim);${width}">${f.l}<input type="${itype}" value="${refEsc(v==null?'':v)}" onchange="refField('${sec}','${id}','${f.k}','${f.t}',this.value)" style="${base}"></label>`;
 }
 
-function refSetFilterS(v){refFilterS=v;renderRefList();}
-function refSetFilterT(v){refFilterT=v;renderRefList();}
+function refCard(sec,r){
+  const c=REF_CFG[sec]; const id=r.id; const open=!!refOpen[id];
+  const code=r[c.codeField]||''; const titre=r[c.titleField]||'(sans titre)';
+  const st=r[c.statutField]||'brouillon'; const pub=st==='publie';
+  const stColor=pub?'#41c98e':(st==='archive'?'#9aa5b5':'#e0a800');
+  const stBg=pub?'rgba(65,201,142,.15)':(st==='archive'?'rgba(154,165,181,.15)':'rgba(224,168,0,.15)');
+  const head=`<div onclick="refToggleOpen('${id}')" style="display:flex;align-items:center;gap:12px;cursor:pointer;padding:14px 16px">
+     <span style="font-size:13px;color:var(--dim);transition:.15s;transform:rotate(${open?'90':'0'}deg)">▶</span>
+     <span style="font-family:monospace;font-size:11px;color:var(--dim);min-width:78px">${refEsc(code)}</span>
+     <strong style="flex:1;font-size:14px">${refEsc(titre)}</strong>
+     ${c.une?`<span title="À la une" style="font-size:14px;color:${r[c.une]?'#e0a800':'var(--border)'}">★</span>`:''}
+     <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:${stBg};color:${stColor}">${st}</span>
+   </div>`;
+  if(!open)return `<div style="border:1px solid var(--border);border-radius:12px;margin-bottom:10px;background:var(--card)">${head}</div>`;
+  let body=`<div style="padding:0 16px 16px 16px;border-top:1px solid var(--border)">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin:14px 0">
+      ${c.fields.map(f=>refFieldInput(sec,r,f)).join('')}
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
+      <label style="display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--dim)">Statut<select onchange="refSetRowStatut('${sec}','${id}',this.value)" style="padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:inherit;font-size:13px">${c.statutVals.map(v=>`<option value="${v}"${st===v?' selected':''}>${v}</option>`).join('')}</select></label>
+      ${c.une?`<button onclick="refToggleUne('${sec}','${id}')" style="padding:8px 14px;border-radius:8px;border:1px solid var(--border);cursor:pointer;font-size:13px;background:${r[c.une]?'rgba(224,168,0,.15)':'var(--bg)'};color:${r[c.une]?'#e0a800':'var(--dim)'}">★ À la une</button>`:''}
+      ${c.ordre?`<button onclick="refMove('${sec}','${id}',-1)" style="padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;font-size:12px">▲ Monter</button><button onclick="refMove('${sec}','${id}',1)" style="padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;font-size:12px">▼ Descendre</button>`:''}
+      <button onclick="refDelete('${sec}','${id}')" style="margin-left:auto;padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;font-size:12px;color:#e2554a">Supprimer</button>
+    </div>`;
+  if(c.photos.length){
+    body+='<div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid var(--border);padding-top:14px">';
+    if(c.principale)body+=`<div><div style="font-size:11px;color:var(--dim);margin-bottom:5px">Principale</div>${r[c.principale]?refImg(r[c.principale],true):'<span style="font-size:11px;color:var(--dim)">aucune</span>'} <button onclick="refSetPrincipaleUrl('${sec}','${id}')" style="border:1px solid var(--border);background:var(--bg);border-radius:7px;cursor:pointer;font-size:11px;padding:4px 8px">URL…</button></div>`;
+    c.photos.forEach(p=>{ const lbl={photos_avant:'Avant',photos_apres:'Après',photos_chantier:'Chantier',photos_urls:'Photos'}[p]||p;
+      body+=`<div style="flex:1;min-width:240px"><div style="font-size:11px;color:var(--dim);margin-bottom:5px">${lbl} <button onclick="refAddPhoto('${sec}','${id}','${p}')" style="border:1px solid var(--border);background:var(--bg);border-radius:7px;cursor:pointer;font-size:11px;padding:3px 7px">+ ajouter</button></div><div>${refPhotoChips(sec,r,p)}</div></div>`; });
+    body+='</div>';
+  }
+  body+='</div>';
+  return `<div style="border:1px solid var(--border);border-radius:12px;margin-bottom:10px;background:var(--card)">${head}${body}</div>`;
+}
+
+function refSetEntity(e){refEntity=e;refFilterStatut='all';renderReferences();}
+function refSetIris(s){refIris=s;refFilterStatut='all';renderReferences();}
+function refSetStatut(v){refFilterStatut=v;renderRefList();}
 function refSetSearch(v){refSearch=v;renderRefList();}
+function refToggleOpen(id){refOpen[id]=!refOpen[id];renderRefList();}
+function refExpandAll(open){ const sec=refSec(); refRows(sec).forEach(r=>{refOpen[r.id]=open;}); renderRefList(); }
 
-function refRefreshStats(){
-  const s=refStats(); const set=(i,v)=>{const e=document.getElementById(i);if(e)e.textContent=v;};
-  set('ref-stat-total',s.total);set('ref-stat-pub',s.pub);set('ref-stat-photo',s.withPhoto);set('ref-stat-brouillon',s.brouillon);
-  const nc=document.getElementById('nav-references-cnt');if(nc)nc.textContent=s.total;
-}
-
-async function refPatchRaw(id,patch){
+async function refPatchRaw(sec,id,patch){
+  const c=REF_CFG[sec];
   try{
-    const r=await fetch(`${cfg.url}/rest/v1/${REF_TABLE}?id=eq.${id}`,{method:'PATCH',headers:refHdr('return=minimal'),body:JSON.stringify(patch)});
+    const r=await fetch(`${cfg.url}/rest/v1/${c.table}?id=eq.${id}`,{method:'PATCH',headers:refHdr('return=minimal'),body:JSON.stringify(patch)});
     if(!r.ok)throw new Error('PATCH '+r.status);
   }catch(e){ showToast('Erreur sauvegarde : '+e.message); }
 }
+function refLocal(sec,id){ return refRows(sec).find(x=>x.id===id); }
 
-async function refField(id,field,value){
+async function refField(sec,id,key,type,value){
   let v=value;
-  if(field==='annee_realisation'||field==='duree_semaines'){ v=value===''?null:(parseInt(value)||null); }
-  else if(field==='surface_travaux_m2'){ v=value===''?null:Number(value); }
-  else if(typeof v==='string'){ v=v.trim()||null; }
-  const r=refData.find(x=>x.id===id); if(r)r[field]=v;
-  refRefreshStats();
-  await refPatchRaw(id,{[field]:v});
+  if(type==='int')v=value===''?null:(parseInt(value)||null);
+  else if(type==='num')v=value===''?null:Number(value);
+  else if(typeof v==='string')v=v.trim()||null;
+  const r=refLocal(sec,id); if(r)r[key]=v;
+  if(key===REF_CFG[sec].titleField)renderRefList();
+  await refPatchRaw(sec,id,{[key]:v});
 }
-
-async function refToggleStatut(id){
-  const r=refData.find(x=>x.id===id); if(!r)return;
-  r.statut_publication=r.statut_publication==='publie'?'brouillon':'publie';
-  renderRefList(); refRefreshStats();
-  await refPatchRaw(id,{statut_publication:r.statut_publication});
+async function refSetRowStatut(sec,id,val){
+  const r=refLocal(sec,id); if(r)r[REF_CFG[sec].statutField]=val;
+  renderRefList();
+  await refPatchRaw(sec,id,{[REF_CFG[sec].statutField]:val});
 }
-async function refToggleUne(id){
-  const r=refData.find(x=>x.id===id); if(!r)return;
-  r.a_la_une=!r.a_la_une; renderRefList();
-  await refPatchRaw(id,{a_la_une:r.a_la_une});
+async function refToggleUne(sec,id){
+  const c=REF_CFG[sec]; const r=refLocal(sec,id); if(!r)return;
+  r[c.une]=!r[c.une]; renderRefList();
+  await refPatchRaw(sec,id,{[c.une]:r[c.une]});
 }
-
-async function refMove(id,dir){
-  let sorted=refData.slice().sort((a,b)=>{const oa=a.ordre_affichage==null?9999:a.ordre_affichage,ob=b.ordre_affichage==null?9999:b.ordre_affichage;return oa-ob||String(a.code_reference||'').localeCompare(String(b.code_reference||''));});
-  sorted.forEach((r,i)=>{ if(r.ordre_affichage==null)r.ordre_affichage=i+1; });
+async function refMove(sec,id,dir){
+  const c=REF_CFG[sec]; let sorted=refRows(sec).slice().sort((a,b)=>{const oa=a[c.ordre]==null?9999:a[c.ordre],ob=b[c.ordre]==null?9999:b[c.ordre];return oa-ob;});
+  sorted.forEach((r,i)=>{if(r[c.ordre]==null)r[c.ordre]=i+1;});
   const i=sorted.findIndex(r=>r.id===id); const j=dir<0?i-1:i+1;
   if(i<0||j<0||j>=sorted.length)return;
-  const a=sorted[i],b=sorted[j]; const t=a.ordre_affichage; a.ordre_affichage=b.ordre_affichage; b.ordre_affichage=t;
+  const a=sorted[i],b=sorted[j]; const t=a[c.ordre]; a[c.ordre]=b[c.ordre]; b[c.ordre]=t;
   renderRefList();
-  await Promise.all([refPatchRaw(a.id,{ordre_affichage:a.ordre_affichage}),refPatchRaw(b.id,{ordre_affichage:b.ordre_affichage})]);
+  await Promise.all([refPatchRaw(sec,a.id,{[c.ordre]:a[c.ordre]}),refPatchRaw(sec,b.id,{[c.ordre]:b[c.ordre]})]);
 }
-
-async function refAddPhoto(id,which){
-  const url=prompt('URL de la photo ('+(which==='photos_avant'?'avant':'après')+') :'); if(!url)return;
-  const r=refData.find(x=>x.id===id); if(!r)return;
+async function refAddPhoto(sec,id,which){
+  const c=REF_CFG[sec]; const url=prompt('URL de la photo :'); if(!url)return;
+  const r=refLocal(sec,id); if(!r)return;
   const arr=(r[which]||[]).slice(); arr.push(url.trim()); r[which]=arr;
   const patch={[which]:arr};
-  if(!r.photo_principale){ r.photo_principale=url.trim(); patch.photo_principale=r.photo_principale; }
-  renderRefList(); refRefreshStats();
-  await refPatchRaw(id,patch);
+  if(c.principale&&!r[c.principale]){r[c.principale]=url.trim();patch[c.principale]=r[c.principale];}
+  renderRefList();
+  await refPatchRaw(sec,id,patch);
 }
-async function refDelPhoto(id,which,idx){
-  const r=refData.find(x=>x.id===id); if(!r)return;
+async function refDelPhoto(sec,id,which,idx){
+  const c=REF_CFG[sec]; const r=refLocal(sec,id); if(!r)return;
   const arr=(r[which]||[]).slice(); const removed=arr.splice(idx,1)[0]; r[which]=arr;
   const patch={[which]:arr};
-  if(r.photo_principale===removed){ r.photo_principale=arr[0]||null; patch.photo_principale=r.photo_principale; }
-  renderRefList(); refRefreshStats();
-  await refPatchRaw(id,patch);
+  if(c.principale&&r[c.principale]===removed){r[c.principale]=arr[0]||null;patch[c.principale]=r[c.principale];}
+  renderRefList();
+  await refPatchRaw(sec,id,patch);
 }
-async function refSetPrincipaleIdx(id,which,i){
-  const r=refData.find(x=>x.id===id); if(!r)return;
-  const u=(r[which]||[])[i]; if(!u)return; r.photo_principale=u; renderRefList(); refRefreshStats();
-  await refPatchRaw(id,{photo_principale:u});
+async function refSetPrincipaleIdx(sec,id,which,i){
+  const c=REF_CFG[sec]; const r=refLocal(sec,id); if(!r||!c.principale)return;
+  const u=(r[which]||[])[i]; if(!u)return; r[c.principale]=u; renderRefList();
+  await refPatchRaw(sec,id,{[c.principale]:u});
 }
-async function refSetPrincipaleUrl(id){
-  const r=refData.find(x=>x.id===id); if(!r)return;
-  const url=prompt('URL photo principale :', r.photo_principale||''); if(url===null)return;
-  r.photo_principale=url.trim()||null; renderRefList(); refRefreshStats();
-  await refPatchRaw(id,{photo_principale:r.photo_principale});
+async function refSetPrincipaleUrl(sec,id){
+  const c=REF_CFG[sec]; const r=refLocal(sec,id); if(!r||!c.principale)return;
+  const url=prompt('URL photo principale :',r[c.principale]||''); if(url===null)return;
+  r[c.principale]=url.trim()||null; renderRefList();
+  await refPatchRaw(sec,id,{[c.principale]:r[c.principale]});
 }
-
-async function refCreate(){
-  const titreEl=document.getElementById('ref-new-titre'); if(!titreEl)return;
-  const titre=titreEl.value.trim(); if(!titre){ showToast('Titre requis'); return; }
-  const type=document.getElementById('ref-new-type').value;
-  const ville=document.getElementById('ref-new-ville').value.trim();
-  let maxN=0; refData.forEach(r=>{const m=String(r.code_reference||'').match(/(\d+)\s*$/);if(m)maxN=Math.max(maxN,parseInt(m[1]));});
-  const code='REF'+String(maxN+1).padStart(2,'0');
-  let maxO=0; refData.forEach(r=>{if(typeof r.ordre_affichage==='number')maxO=Math.max(maxO,r.ordre_affichage);});
-  const body={code_reference:code,titre:titre,type_prestation:type||null,ville_affichage:ville||null,statut_publication:'brouillon',a_la_une:false,ordre_affichage:maxO+1};
+async function refDelete(sec,id){
+  if(!confirm('Supprimer cette fiche définitivement ?'))return;
+  const c=REF_CFG[sec];
   try{
-    const r=await fetch(`${cfg.url}/rest/v1/${REF_TABLE}`,{method:'POST',headers:refHdr('return=representation'),body:JSON.stringify(body)});
-    if(!r.ok)throw new Error('POST '+r.status);
+    const r=await fetch(`${cfg.url}/rest/v1/${c.table}?id=eq.${id}`,{method:'DELETE',headers:refHdr('return=minimal')});
+    if(!r.ok)throw new Error('DELETE '+r.status);
+    refStore[sec]=refRows(sec).filter(x=>x.id!==id);
+    refUpdateNavCount(); renderReferences(); showToast('Fiche supprimée');
+  }catch(e){ showToast('Erreur suppression : '+e.message); }
+}
+async function refCreate(){
+  const sec=refSec(); const c=REF_CFG[sec];
+  const titreEl=document.getElementById('ref-new-titre'); if(!titreEl)return;
+  const titre=titreEl.value.trim(); if(!titre){ showToast('Champ requis'); return; }
+  const second=document.getElementById('ref-new-ville').value.trim();
+  let maxN=0; refRows(sec).forEach(r=>{const m=String(r[c.codeField]||'').match(/(\d+)\s*$/);if(m)maxN=Math.max(maxN,parseInt(m[1]));});
+  const code=c.codePrefix+String(maxN+1).padStart(2,'0');
+  const body={[c.codeField]:code,[c.titleField]:titre,[c.statutField]:'brouillon'};
+  if(c.fixedType)body[c.fixedType.field]=c.fixedType.value;
+  if(c.createType)body[c.createType.field]=c.createType.value;
+  if(c.ordre){let maxO=0;refRows(sec).forEach(r=>{if(typeof r[c.ordre]==='number')maxO=Math.max(maxO,r[c.ordre]);});body[c.ordre]=maxO+1;}
+  if(c.une)body[c.une]=false;
+  if(second){ if(sec==='iris_recherches')body.type_bien=second; else if(sec==='iris_cession'||sec==='iris_location')body.ville=second; else body.ville_affichage=second; }
+  try{
+    const r=await fetch(`${cfg.url}/rest/v1/${c.table}`,{method:'POST',headers:refHdr('return=representation'),body:JSON.stringify(body)});
+    if(!r.ok){const tx=await r.text();throw new Error('POST '+r.status+' '+tx.slice(0,120));}
     titreEl.value=''; document.getElementById('ref-new-ville').value='';
-    showToast('Référence '+code+' créée en brouillon');
-    loadReferences();
+    showToast('Fiche '+code+' créée en brouillon');
+    refLoadSection(sec);
   }catch(e){ showToast('Erreur création : '+e.message); }
 }
 
@@ -1012,7 +1083,7 @@ function updateNavCounts(){
   document.getElementById('nav-mandats-cnt').textContent=(data.mandats||[]).length;
   {const a=(data.documents||[]).filter(d=>(d.file_type||'')!=='todo'&&docUrlState(d)!=='ok').length;const el=document.getElementById('nav-documents-cnt');if(el)el.textContent=a;}
   {const el=document.getElementById('nav-location-cnt');if(el)el.textContent=(data.candidats||[]).length;}
-  {const el=document.getElementById('nav-references-cnt');if(el)el.textContent=(refData||[]).length;}
+  {const el=document.getElementById('nav-references-cnt');if(el){let _n=0;try{Object.keys(refStore).forEach(k=>_n+=(refStore[k]||[]).length)}catch(e){}el.textContent=_n;}}
 }
 
 let currentTab='todo';
@@ -1022,7 +1093,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',location:'Location · Candidats coloc Orléans',references:'Références et opportunités · BYM'};
+  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',location:'Location · Candidats coloc Orléans',references:'Références et opportunités'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
