@@ -248,6 +248,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'deals')"><span class="nav-dot"></span><span>Dealflow Projets</span><span class="nav-cnt" id="nav-deals-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'prospects')"><span class="nav-dot"></span><span>Dealflow Prospects</span><span class="nav-cnt" id="nav-prospects-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'dettes')"><span class="nav-dot"></span><span>Dettes croisées CB YB</span></button>
       <button class="nav-item" onclick="switchTab(this,'documents')"><span class="nav-dot"></span><span>Documents</span><span class="nav-cnt" id="nav-documents-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'electricite')"><span class="nav-dot"></span><span>Électricité</span><span class="nav-cnt" id="nav-electricite-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'finance')"><span class="nav-dot"></span><span>Finance</span></button>
@@ -295,6 +296,52 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div class="kpis" id="prospects-kpis"></div>
         <div style="margin-bottom:16px"><input id="prospects-search" placeholder="Rechercher (entreprise, contact, email, poste...)" oninput="renderProspects()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;width:100%;max-width:420px;background:var(--card);color:var(--text)"></div>
         <div id="prospects-body"></div>
+      </div>
+
+      <!-- DETTES CROISEES CB YB -->
+      <div class="tab" id="tab-dettes">
+        <style>
+.dt-grid{display:grid;grid-template-columns:1fr;gap:14px}
+.dt-card{padding:14px 16px}
+.dt-pair{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:720px){.dt-pair{grid-template-columns:1fr}}
+.dt-led{border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.dt-row{display:grid;grid-template-columns:90px 90px 1fr;gap:8px;padding:6px 10px;font-size:12px;border-bottom:1px solid var(--bg);align-items:center}
+.dt-row span:nth-child(1),.dt-row span:nth-child(2){text-align:right;font-variant-numeric:tabular-nums}
+.dt-head{background:var(--navy);color:#fff;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px;border-bottom:none}
+.dt-head span:nth-child(1),.dt-head span:nth-child(2){text-align:right}
+.dt-com{color:var(--dim);font-size:11px}
+.dt-empty span{color:var(--dim2)}
+.dt-tot{background:var(--blue-bg);font-weight:700;border-bottom:none;color:var(--navy)}
+.dt-notes{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:720px){.dt-notes{grid-template-columns:1fr}}
+.dt-notes h4{margin:0 0 8px;font-size:12px;color:var(--navy);text-transform:uppercase;letter-spacing:.4px}
+.dt-notes ul{margin:0;padding-left:16px;font-size:12px;color:var(--text);line-height:1.7}
+</style>
+        <div class="tcard">
+          <div class="tcard-hdr"><span class="tcard-title">Suivi des dettes croisées · dossier 72</span></div>
+          <p style="font-size:12px;color:var(--dim);margin:0">Source : <a href="Dettes_croisees_72.xlsx" download style="color:var(--blue);text-decoration:none">Dettes_croisees_72.xlsx</a>. Montants en euros. Chaque bloc rapproche deux parties (colonne = partie concernée par le montant).</p>
+        </div>
+        <div class="dt-grid">
+<div class="tcard dt-card"><div class="dt-pair"><div class="dt-led"><div class="dt-row dt-head"><span>72</span><span>Christian</span><span>Commentaire</span></div><div class="dt-row"><span>300</span><span>-</span><span class="dt-com">-</span></div><div class="dt-row dt-tot"><span>300</span><span>0</span><span></span></div></div><div class="dt-led"><div class="dt-row dt-head"><span>Yannis</span><span>Wood</span><span>Commentaire</span></div><div class="dt-row"><span>1 179,19</span><span>-</span><span class="dt-com">-</span></div><div class="dt-row dt-tot"><span>1 179,19</span><span>0</span><span></span></div></div></div></div>
+<div class="tcard dt-card"><div class="dt-pair"><div class="dt-led"><div class="dt-row dt-head"><span>Yannis</span><span>Christian</span><span>Commentaire</span></div><div class="dt-row"><span>5 000</span><span>-</span><span class="dt-com">-</span></div><div class="dt-row dt-tot"><span>5 000</span><span>0</span><span></span></div></div><div class="dt-led"><div class="dt-row dt-head"><span>72</span><span>Wood</span><span>Commentaire</span></div><div class="dt-row"><span>-</span><span>3 096</span><span class="dt-com">-</span></div><div class="dt-row"><span>-</span><span>175</span><span class="dt-com">-</span></div><div class="dt-row"><span>-</span><span>3 600</span><span class="dt-com">-</span></div><div class="dt-row"><span>-</span><span>2 400</span><span class="dt-com">-</span></div><div class="dt-row dt-tot"><span>0</span><span>9 271</span><span></span></div></div></div></div>
+<div class="tcard dt-card"><div class="dt-pair"><div class="dt-led"><div class="dt-row dt-head"><span>72</span><span>C2C</span><span>Commentaire</span></div><div class="dt-row dt-empty"><span>-</span><span>-</span><span>-</span></div><div class="dt-row dt-tot"><span>0</span><span>0</span><span></span></div></div><div class="dt-led"><div class="dt-row dt-head"><span>Yannis</span><span>C2C</span><span>Commentaire</span></div><div class="dt-row"><span>-</span><span>493,50</span><span class="dt-com">mise en place copro</span></div><div class="dt-row"><span>-</span><span>321,10</span><span class="dt-com">diag</span></div><div class="dt-row dt-tot"><span>0</span><span>814,60</span><span></span></div></div></div></div>
+<div class="tcard dt-card"><div class="dt-pair"><div class="dt-led"><div class="dt-row dt-head"><span>Yannis</span><span>Galerie Carrez</span><span>Commentaire</span></div><div class="dt-row dt-empty"><span>-</span><span>-</span><span>-</span></div><div class="dt-row dt-tot"><span>0</span><span>0</span><span></span></div></div><div class="dt-led"><div class="dt-row dt-head"><span>Syndic copro</span><span>BYM</span><span>Commentaire</span></div><div class="dt-row"><span>1 600</span><span>-</span><span class="dt-com">-</span></div><div class="dt-row dt-tot"><span>1 600</span><span>0</span><span></span></div></div></div></div>
+<div class="tcard dt-card"><div class="dt-pair"><div class="dt-led"><div class="dt-row dt-head"><span>72</span><span>Yannis</span><span>Commentaire</span></div><div class="dt-row"><span>500</span><span>-</span><span class="dt-com">-</span></div><div class="dt-row dt-tot"><span>500</span><span>0</span><span></span></div></div><div class="dt-led"><div class="dt-row dt-head"><span>Yannis</span><span>78 R+1</span><span>Commentaire</span></div><div class="dt-row"><span>-</span><span>261,57</span><span class="dt-com">diag</span></div><div class="dt-row dt-tot"><span>0</span><span>261,57</span><span></span></div></div></div></div>
+<div class="tcard dt-card"><div class="dt-pair"><div class="dt-led"><div class="dt-row dt-head"><span>Yannis</span><span>78 R+2</span><span>Commentaire</span></div><div class="dt-row"><span>-</span><span>392,33</span><span class="dt-com">diag</span></div><div class="dt-row dt-tot"><span>0</span><span>392,33</span><span></span></div></div><div class="dt-led"><div class="dt-row dt-head"><span>72</span><span>Poussin</span><span>Commentaire</span></div><div class="dt-row"><span>-</span><span>1 680</span><span class="dt-com">-</span></div><div class="dt-row"><span>-</span><span>1 000</span><span class="dt-com">-</span></div><div class="dt-row dt-tot"><span>0</span><span>2 680</span><span></span></div></div></div></div>
+        </div>
+<div class="tcard">
+  <div class="dt-notes">
+    <div>
+      <h4>Questions ouvertes</h4>
+      <ul><li>Quid des plans poussins pour le 72 ?</li><li>Quid de la chèvre ?</li></ul>
+    </div>
+    <div>
+      <h4>TODO</h4>
+      <ul><li>Point sur les plans 78 R+2</li><li>Point sur les parties communes RDC</li><li>Point sur PV d'AG et finances de la copro (compte bancaire, géomètre, assurance non payée)</li><li>Point sur les devis Apave</li></ul>
+    </div>
+  </div>
+</div>
       </div>
 
       <!-- LOCATION - CANDIDATS COLOC ORLEANS -->
@@ -1093,7 +1140,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',location:'Location · Candidats coloc Orléans',references:'Références et opportunités'};
+  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',dettes:'Dettes croisées · CB / YB',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',location:'Location · Candidats coloc Orléans',references:'Références et opportunités'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
