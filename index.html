@@ -244,6 +244,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
     </div>
     <div class="sb-nav">
       <button class="nav-item" onclick="switchTab(this,'audit')"><span class="nav-dot"></span><span>Audit Drive</span><span class="nav-cnt" id="nav-audit-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'bourgogne')"><span class="nav-dot"></span><span>Bourgogne 72 / 78</span><span class="nav-cnt" id="nav-bourgogne-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'charte')"><span class="nav-dot"></span><span>Charte graphique</span></button>
       <button class="nav-item" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'deals')"><span class="nav-dot"></span><span>Dealflow Projets</span><span class="nav-cnt" id="nav-deals-cnt">0</span></button>
@@ -282,6 +283,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div class="charts-row" id="todo-charts"></div>
         <div id="todo-filters"></div>
         <div class="tcard"><div class="tcard-hdr"><span class="tcard-title" id="todo-count"></span><input id="todo-search" placeholder="Rechercher..." oninput="renderTodo()" style="margin-left:auto;padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-family:var(--font);font-size:11px;outline:none;width:200px;background:var(--bg);color:var(--text)"></div><div id="todo-body"></div></div>
+      </div>
+
+      <!-- BOURGOGNE 72/78 -->
+      <div class="tab" id="tab-bourgogne">
+        <div class="tcard"><div class="tcard-hdr"><span class="tcard-title" id="bourgogne-count"></span><input id="bourgogne-search" placeholder="Rechercher..." oninput="renderBourgogne()" style="margin-left:auto;padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-family:var(--font);font-size:11px;outline:none;width:200px;background:var(--bg);color:var(--text)"></div><div id="bourgogne-body"></div></div>
       </div>
 
       <!-- DEALS -->
@@ -1124,8 +1130,34 @@ function render(){
   renderPartenaires();
 }
 
+function isBourgogne(t){return ['BYM02','BYM08','72RB'].includes(t.code_projet)||/bourgogne/i.test(t.projet||'');}
+
+function renderBourgogne(){
+  const all=(data.taches_v2||[]).filter(t=>(t.type_tache||'classique')==='classique'&&isBourgogne(t));
+  const q=(document.getElementById('bourgogne-search')?.value||'').toLowerCase().trim();
+  const match=t=>!q||[t.titre,t.description,t.entite,t.projet,t.code_projet,t.attente_de].filter(Boolean).join(' ').toLowerCase().includes(q);
+  const s72=all.filter(t=>(t.code_projet==='BYM02'||t.code_projet==='72RB'||/72/.test(t.projet||''))&&match(t));
+  const s78=all.filter(t=>(t.code_projet==='BYM08'||/78/.test(t.projet||''))&&match(t));
+  const a72=s72.filter(t=>t.statut!=='fait').length, a78=s78.filter(t=>t.statut!=='fait').length;
+  const ord={urgente:0,haute:1,moyenne:2,standby:3,fait:9};
+  const so=arr=>arr.slice().sort((a,b)=>(ord[a.priorite]??5)-(ord[b.priorite]??5));
+  const eBadge=e=>{const m={'IRIS H':'p-iris',Perso:'p-infra',BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',ARRISTO:'p-arristo','Galerie Carrez':'p-gc',RIR:'p-rir','C2C.FR':'p-c2c'};return e?`<span class="pill ${m[e]||'p-iris'}">${e}</span>`:''};
+  const pBadge=p=>{const m={urgente:'p-urg',haute:'p-high',moyenne:'p-med',standby:'p-standby',fait:'p-done'};const l={urgente:'Urgent',haute:'Haute',moyenne:'Moyenne',standby:'Standby',fait:'Fait'};return`<span class="pill ${m[p]||'p-med'}">${l[p]||p}</span>`};
+  const sLabel=s=>({a_faire:'A faire',en_cours:'En cours',fait:'Fait',en_attente:'En attente'}[s]||s);
+  const fDate=d=>{if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})};
+  const dCls=d=>{if(!d)return'';const days=Math.round((new Date(d)-Date.now())/864e5);return days<0?'color:var(--red)':days<=3?'color:var(--orange)':'color:var(--dim)'};
+  const sCls=s=>s==='fait'?'color:var(--green)':s==='en_cours'?'color:var(--blue)':'color:var(--dim)';
+  const row=t=>`<tr><td><div class="td-name" style="display:flex;align-items:center;gap:6px">${t.detail?'<span style="color:var(--blue);font-size:10px" title="Détail renseigné">●</span>':''}<span>${t.titre}</span></div><div style="font-size:10px;color:var(--dim)">${t.description||''}</div></td><td><span class="pill p-iris" style="font-size:9px">${t.code_projet||''}</span></td><td>${eBadge(t.entite)}</td><td>${pBadge(t.priorite)}</td><td style="${sCls(t.statut)};font-size:11px">${sLabel(t.statut)}</td><td style="${dCls(t.echeance)};font-size:11px">${fDate(t.echeance)}</td><td>${t.attente_de?`<span class="pill p-att">${t.attente_de}</span>`:''}</td><td style="text-align:center"><button onclick="openTaskDetail('${t.id}')" style="width:24px;height:24px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--blue);cursor:pointer;font-size:14px;font-weight:700;line-height:1">+</button></td></tr>`;
+  const tbl=arr=>arr.length?`<table class="tbl"><thead><tr><th>Tâche</th><th>Code</th><th>Entité</th><th>Priorité</th><th>Statut</th><th>Échéance</th><th>Attente de</th><th style="width:30px"></th></tr></thead><tbody>${so(arr).map(row).join('')}</tbody></table>`:'<div class="empty"><div class="empty-ico">✅</div><div class="empty-text">Aucune tâche</div></div>';
+  document.getElementById('bourgogne-count').textContent=`${all.filter(t=>t.statut!=='fait').length} actives · ${all.length} au total`;
+  document.getElementById('bourgogne-body').innerHTML=`
+    <div style="margin:4px 0 8px;font-weight:700;font-size:14px;color:var(--text)">72 rue de Bourgogne <span style="color:var(--dim);font-weight:500;font-size:11px">· BYM02 · ${a72} actives</span></div>${tbl(s72)}
+    <div style="margin:22px 0 8px;font-weight:700;font-size:14px;color:var(--text)">78 rue de Bourgogne <span style="color:var(--dim);font-weight:500;font-size:11px">· BYM08 · ${a78} actives</span></div>${tbl(s78)}`;
+}
+
 function updateNavCounts(){
-  const tv2=data.taches_v2.filter(t=>(t.type_tache||'classique')==='classique'&&t.statut!=='fait');
+  const tv2=data.taches_v2.filter(t=>(t.type_tache||'classique')==='classique'&&t.statut!=='fait'&&!isBourgogne(t));
+  {const el=document.getElementById('nav-bourgogne-cnt');if(el)el.textContent=data.taches_v2.filter(t=>(t.type_tache||'classique')==='classique'&&t.statut!=='fait'&&isBourgogne(t)).length;}
   document.getElementById('nav-todo-cnt').textContent=tv2.length;
   document.getElementById('nav-deals-cnt').textContent=data.deals.filter(d=>!['cloture','dead'].includes(d.etape)).length;
   document.getElementById('nav-crm-cnt').textContent=(data._crmTotal||data.contacts.length).toLocaleString();
@@ -1142,7 +1174,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',deals:'Dealflow Projets',prospects:'Dealflow Prospects',dettes:'Dettes croisées · CB / YB',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',location:'Location · Candidats coloc Orléans',references:'Références et opportunités'};
+  const titles={todo:'Todo',bourgogne:'Bourgogne · 72 / 78 rue de Bourgogne, Orléans',deals:'Dealflow Projets',prospects:'Dealflow Prospects',dettes:'Dettes croisées · CB / YB',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',location:'Location · Candidats coloc Orléans',references:'Références et opportunités'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
@@ -1150,7 +1182,7 @@ function switchTab(btn,tab){
 }
 
 function renderCurrentTab(){
-  const m={todo:renderTodo,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,documents:renderDocuments,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct,charte:()=>{},location:renderLocation,references:renderReferences};
+  const m={todo:renderTodo,bourgogne:renderBourgogne,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,documents:renderDocuments,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct,charte:()=>{},location:renderLocation,references:renderReferences};
   if(m[currentTab])m[currentTab]();
 }
 
@@ -1200,7 +1232,7 @@ function goToTodoForDeal(code){
 function renderTodo(){
   if(todoMode==='recurrente'){renderTodoRec();return}
   if(todoMode==='rapport'){renderTodoRapport();return}
-  const src=(data.taches_v2||[]).filter(t=>(t.type_tache||'classique')==='classique');
+  const src=(data.taches_v2||[]).filter(t=>(t.type_tache||'classique')==='classique'&&!isBourgogne(t));
   const urgentes=src.filter(t=>t.priorite==='urgente'&&t.statut!=='fait').length;
   const attentes=src.filter(t=>t.attente_de).length;
   const actives=src.filter(t=>t.statut!=='fait').length;
@@ -1222,7 +1254,7 @@ function renderTodo(){
   const codes=['all',...[...new Set(src.map(t=>t.code_projet).filter(Boolean))].sort()];
   document.getElementById('todo-filters').innerHTML=`
     ${todoFilterCode!=='all'?`<div style="margin-bottom:8px;display:flex;align-items:center;gap:8px"><span class="pill p-iris" style="font-size:12px">Projet : ${todoFilterCode}</span><button class="fbtn" onclick="todoFilterCode='all';renderTodo()" style="font-size:10px">✕ Retirer filtre</button></div>`:''}
-    <div class="filters">${ents.map(e=>`<button class="fbtn${todoFilterE===e&&todoFilterProj==='all'?' on':''}" onclick="todoFilterProj='all';todoFilterE='${e}';renderTodo()">${e==='all'?'Toutes':e}</button>`).join('')}<button class="fbtn${todoFilterProj==='72'?' on':''}" onclick="todoFilterE='all';todoFilterProj='72';renderTodo()">72</button><button class="fbtn${todoFilterProj==='78'?' on':''}" onclick="todoFilterE='all';todoFilterProj='78';renderTodo()">78</button></div>
+    <div class="filters">${ents.map(e=>`<button class="fbtn${todoFilterE===e?' on':''}" onclick="todoFilterE='${e}';renderTodo()">${e==='all'?'Toutes':e}</button>`).join('')}</div>
     `;
 
   let filtered=src.slice();
