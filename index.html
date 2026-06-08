@@ -1135,7 +1135,7 @@ function globalSearch(q){
 // ════════════════════════════════════════
 // TODO
 // ════════════════════════════════════════
-let todoFilterE='all',todoFilterS='all',todoFilterCode='all',todoFilterPrio='all',todoMode='classique',todoAttentes=false;
+let todoFilterE='all',todoFilterS='all',todoFilterCode='all',todoFilterPrio='all',todoMode='classique',todoAttentes=false,todoFilterProj='all';
 let todoSortCol='priorite',todoSortDir='asc';
 
 function sortTodo(col){if(todoSortCol===col)todoSortDir=todoSortDir==='asc'?'desc':'asc';else{todoSortCol=col;todoSortDir='asc'}renderTodo()}
@@ -1173,12 +1173,14 @@ function renderTodo(){
   const codes=['all',...[...new Set(src.map(t=>t.code_projet).filter(Boolean))].sort()];
   document.getElementById('todo-filters').innerHTML=`
     ${todoFilterCode!=='all'?`<div style="margin-bottom:8px;display:flex;align-items:center;gap:8px"><span class="pill p-iris" style="font-size:12px">Projet : ${todoFilterCode}</span><button class="fbtn" onclick="todoFilterCode='all';renderTodo()" style="font-size:10px">✕ Retirer filtre</button></div>`:''}
-    <div class="filters">${ents.map(e=>`<button class="fbtn${todoFilterE===e?' on':''}" onclick="todoFilterE='${e}';renderTodo()">${e==='all'?'Toutes':e}</button>`).join('')}</div>
+    <div class="filters">${ents.map(e=>`<button class="fbtn${todoFilterE===e&&todoFilterProj==='all'?' on':''}" onclick="todoFilterProj='all';todoFilterE='${e}';renderTodo()">${e==='all'?'Toutes':e}</button>`).join('')}<button class="fbtn${todoFilterProj==='72'?' on':''}" onclick="todoFilterE='all';todoFilterProj='72';renderTodo()">72</button><button class="fbtn${todoFilterProj==='78'?' on':''}" onclick="todoFilterE='all';todoFilterProj='78';renderTodo()">78</button></div>
     `;
 
   let filtered=src.slice();
   if(todoAttentes)filtered=filtered.filter(t=>t.attente_de);
   if(todoFilterE!=='all')filtered=filtered.filter(t=>t.entite===todoFilterE);
+  if(todoFilterProj==='72')filtered=filtered.filter(t=>t.code_projet==='BYM02'||t.code_projet==='72RB');
+  else if(todoFilterProj==='78')filtered=filtered.filter(t=>t.code_projet==='BYM08');
   if(todoFilterS!=='all')filtered=filtered.filter(t=>t.statut===todoFilterS);
   if(todoFilterCode!=='all')filtered=filtered.filter(t=>t.code_projet===todoFilterCode);
   if(todoFilterPrio!=='all')filtered=filtered.filter(t=>t.priorite===todoFilterPrio&&t.statut!=='fait');
