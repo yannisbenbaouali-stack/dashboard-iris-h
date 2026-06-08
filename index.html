@@ -1162,12 +1162,8 @@ function renderTodo(){
   const entColors={'IRIS H':'#c8a455',Perso:'#888',BYM:'#5B9BD5','Urban Rise':'#a78bfa','IRIS REP':'#c8a455',ARRISTO:'#fb923c','Galerie Carrez':'#22d3ee',RIR:'#fb923c','C2C.FR':'#2C3E50',Autre:'#666'};
   const miniBarHtml=Object.entries(byEntite).sort((a,b)=>a[0].localeCompare(b[0],'fr')).map(([k,v])=>`<div style="display:flex;align-items:center;gap:6px;font-size:10px;margin-bottom:2px"><span style="width:70px;text-align:right;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${k}</span><div style="height:8px;width:${Math.max(8,v/Math.max(...Object.values(byEntite))*80)}px;background:${entColors[k]||'#666'};border-radius:3px"></div><span style="color:var(--dim);font-weight:600">${v}</span></div>`).join('');
 
-  document.getElementById('todo-kpis').style.gridTemplateColumns='repeat(5,1fr)';
+  document.getElementById('todo-kpis').style.gridTemplateColumns='1fr';
   document.getElementById('todo-kpis').innerHTML=`
-    <div class="kpi red" style="cursor:pointer" onclick="todoFilterS='all';todoAttentes=false;todoFilterE='all';todoFilterCode='all';todoFilterPrio='urgente';renderTodo()"><div class="kpi-label">Urgentes</div><div class="kpi-val">${urgentes}</div><div class="kpi-sub">à traiter</div></div>
-    <div class="kpi orange" style="cursor:pointer" onclick="todoAttentes=true;todoFilterS='all';todoFilterE='all';todoFilterCode='all';todoFilterPrio='all';renderTodo()"><div class="kpi-label">En attente</div><div class="kpi-val">${attentes}</div><div class="kpi-sub">tiers à relancer</div></div>
-    <div class="kpi" style="cursor:pointer" onclick="todoFilterS='all';todoAttentes=false;todoFilterE='all';todoFilterCode='all';todoFilterPrio='all';renderTodo()"><div class="kpi-label">Actives</div><div class="kpi-val">${actives}</div><div class="kpi-sub">a_faire + en_cours</div></div>
-    <div class="kpi green" style="cursor:pointer" onclick="todoFilterS='fait';todoAttentes=false;todoFilterE='all';todoFilterCode='all';todoFilterPrio='all';renderTodo()"><div class="kpi-label">Complétées</div><div class="kpi-val">${faites}</div><div class="kpi-sub">terminées</div></div>
     <div class="kpi" style="min-width:160px"><div class="kpi-label">Par entité</div><div style="margin-top:6px">${miniBarHtml}</div></div>`;
 
   document.getElementById('todo-charts').innerHTML='';
