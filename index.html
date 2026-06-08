@@ -2774,7 +2774,7 @@ function renderMandats(){
   let filtered=src.slice();
   if(mandatsFilterStatut!=='all')filtered=filtered.filter(m=>m.statut===mandatsFilterStatut);
   const q=(document.getElementById('mandats-search')?.value||'').toLowerCase().trim();
-  if(q)filtered=filtered.filter(m=>['code_projet','mandant','nature','objet','adresse','bien','charge','duree','statut','observations'].map(k=>m[k]||'').join(' ').toLowerCase().includes(q));
+  if(q)filtered=filtered.filter(m=>['code_projet','mandant','nature','objet','adresse','societe_gestion','client_fonds','nature_locaux','superficie','secteur','charge','duree','statut'].map(k=>m[k]||'').join(' ').toLowerCase().includes(q));
   const dir=mandatsSortDir==='asc'?1:-1;
   filtered.sort((a,b)=>{
     let va,vb;
@@ -2790,24 +2790,48 @@ function renderMandats(){
   const thS=k=>mandatsSortCol===k?(mandatsSortDir==='asc'?' \u25b2':' \u25bc'):'';
   const mandatColor=m=>{const c=(m.couleur||'').toLowerCase();if(['rouge','vert','jaune','orange','gris'].includes(c))return c;const s=(m.statut||'');if(s==='dead')return'gris';if(s==='Signé'||s==='contre signé')return'vert';if(s==='à envoyer')return'orange';if(s==='Attente signature')return'jaune';return'jaune';};
   const mandatRowCss=col=>({rouge:'background:#fdecea;',vert:'background:#e8f6ee;',jaune:'background:#fff6e0;',orange:'background:#ffe9d6;',gris:'background:#f2f2f2;font-style:italic;opacity:.55;'}[col]||'');
-  const cols=[{k:'code_projet',l:'Code'},{k:'date_reception',l:'Date'},{k:'statut',l:'Statut'},{k:'mandant',l:'Mandant'},{k:'nature',l:'Nature'},{k:'objet',l:'Objet'},{k:'adresse',l:'Adresse'},{k:'prix_ht',l:'Prix HT'},{k:'honoraires_ht',l:'Honoraires HT'},{k:'charge',l:'Charge'},{k:'duree',l:'Dur\u00e9e'},{k:'date_expiration',l:'Expiration'}];
+  const cols=[
+    {k:'code_projet',l:'N\u00b0 mandat'},
+    {k:'date_signature',l:'Date signature'},
+    {k:'duree',l:'Dur\u00e9e'},
+    {k:'societe_gestion',l:'Soci\u00e9t\u00e9 gestion'},
+    {k:'client_fonds',l:'Client (fonds)'},
+    {k:'nature_locaux',l:'Nature locaux'},
+    {k:'superficie',l:'Superficie m\u00b2'},
+    {k:'secteur',l:'Secteur'},
+    {k:'statut',l:'Statut'},
+    {k:'mandant',l:'Mandant'},
+    {k:'nature',l:'Type mandat'},
+    {k:'objet',l:'Objet'},
+    {k:'adresse',l:'Adresse'},
+    {k:'prix_ht',l:'Prix HT'},
+    {k:'honoraires_ht',l:'Honoraires HT'},
+    {k:'charge',l:'Charge'},
+    {k:'date_reception',l:'Re\u00e7u le'},
+    {k:'date_expiration',l:'Expiration'}
+  ];
+  const cell=(m,k)=>{
+    if(k==='code_projet')return driveLink(m.code_projet,m.drive_url);
+    if(k==='statut')return statBadge(m.statut);
+    if(k==='nature')return natureBadge(m.nature);
+    if(k==='objet')return m.objet?'<span class="pill p-iris" style="font-size:9px">'+escHtml(m.objet)+'</span>':'';
+    if(k==='adresse')return m.adresse?(/^recherche/i.test(m.adresse)?escHtml(m.adresse):'<a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(m.adresse)+'" target="_blank" rel="noopener" style="color:var(--text);font-weight:500;text-decoration:none" title="Ouvrir sur Google Maps">'+escHtml(m.adresse)+'</a>'):'';
+    if(k==='prix_ht'||k==='honoraires_ht')return fMt(m[k]);
+    if(k==='date_signature'||k==='date_reception'||k==='date_expiration')return fDate(m[k]);
+    return escHtml((m[k]==null?'':m[k]).toString());
+  };
+  const tdStyle=k=>{
+    if(k==='prix_ht')return'font-size:12px;white-space:nowrap;text-align:right;color:var(--green);font-weight:600;';
+    if(k==='honoraires_ht')return'font-size:12px;white-space:nowrap;text-align:right;color:var(--blue);font-weight:600;';
+    if(k==='adresse')return'font-size:11px;white-space:normal;min-width:170px;line-height:1.4;';
+    if(k==='mandant')return'font-size:12px;white-space:normal;min-width:160px;font-weight:500;';
+    if(['charge','duree','secteur','nature_locaux','societe_gestion','client_fonds','superficie'].includes(k))return'font-size:11px;color:var(--dim);white-space:nowrap;';
+    return'font-size:11px;white-space:nowrap;';
+  };
   const el=document.getElementById('mandats-body');
   if(!filtered.length){el.innerHTML='<div class="empty"><div class="empty-ico">\ud83d\udccb</div><div class="empty-text">Aucun mandat</div></div>';return}
   el.innerHTML='<div style="overflow-x:auto"><table class="tbl"><thead><tr>'+cols.map(c=>`<th style="cursor:pointer;white-space:nowrap" onclick="sortMandats('${c.k}')">${c.l}${thS(c.k)}</th>`).join('')+'</tr></thead><tbody>'+
-  filtered.map((m,i)=>'<tr style="'+mandatRowCss(mandatColor(m))+'">'+
-    '<td style="white-space:nowrap;font-size:11px">'+driveLink(m.code_projet,m.drive_url)+'</td>'+
-    '<td style="white-space:nowrap;font-size:11px">'+fDate(m.date_reception)+'</td>'+
-    '<td>'+statBadge(m.statut)+'</td>'+
-    '<td style="font-weight:500;font-size:12px">'+(m.mandant||'')+'</td>'+
-    '<td>'+natureBadge(m.nature)+'</td>'+
-    '<td><span class="pill p-iris" style="font-size:9px">'+(m.objet||'')+'</span></td>'+
-    '<td style="font-size:11px;white-space:normal;line-height:1.4;min-width:180px">'+(m.adresse?(/^recherche/i.test(m.adresse)?escHtml(m.adresse):'<a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(m.adresse)+'" target="_blank" rel="noopener" style="color:var(--text);font-weight:500;text-decoration:none" title="Ouvrir sur Google Maps">'+escHtml(m.adresse)+'</a>'):'')+'</td>'+
-    '<td style="color:var(--green);font-weight:600;text-align:right;white-space:nowrap;font-size:12px">'+fMt(m.prix_ht)+'</td>'+
-    '<td style="color:var(--blue);font-weight:600;text-align:right;white-space:nowrap;font-size:12px">'+fMt(m.honoraires_ht)+'</td>'+
-    '<td style="color:var(--dim);font-size:11px">'+(m.charge||'')+'</td>'+
-    '<td style="color:var(--dim);font-size:11px">'+(m.duree||'')+'</td>'+
-    '<td style="white-space:nowrap;font-size:11px">'+fDate(m.date_expiration)+'</td>'+
-  '</tr>').join('')+
+  filtered.map(m=>'<tr style="'+mandatRowCss(mandatColor(m))+'">'+cols.map(c=>'<td style="'+tdStyle(c.k)+'">'+cell(m,c.k)+'</td>').join('')+'</tr>').join('')+
   '</tbody></table></div>';
 }
 
