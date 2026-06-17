@@ -1461,6 +1461,7 @@ let dealsView='table';
 let _dragInteretId=null;
 const PIPE_COLS=[{k:'etude',l:"En cours d'étude"},{k:'a_envoyer',l:"À envoyer"},{k:'pas_interesse',l:"Pas intéressé"}];
 const PIPE_FAMILLES=[{k:'promoteur',l:'Promoteurs'},{k:'investisseur',l:'Investisseurs bureau'},{k:'industriel',l:'Industriels locataires'}];
+const CARD_BG={etude:'background:rgba(65,201,142,0.16);border:1px solid rgba(65,201,142,0.45)',a_envoyer:'background:rgba(234,179,8,0.18);border:1px solid rgba(234,179,8,0.5)',pas_interesse:'background:rgba(248,113,113,0.16);border:1px solid rgba(248,113,113,0.45)',_:'background:var(--bg);border:1px solid var(--border)'};
 function setDealsView(v){dealsView=v;renderDeals();}
 function dragInteret(ev,id){_dragInteretId=id;try{ev.dataTransfer.effectAllowed='move';}catch(e){}}
 function dropInteret(ev,colonne){ev.preventDefault();if(_dragInteretId){moveInteret(_dragInteretId,colonne);_dragInteretId=null;}}
@@ -1503,8 +1504,8 @@ function renderDealsPipeline(deals){
   return deals.map(d=>{
     const its=(data.deal_interets||[]).filter(x=>x.deal_id===d.id);
     const cols=PIPE_COLS.map(col=>{
-      const inCol=its.filter(x=>(x.colonne||'etude')===col.k);
-      const cards=inCol.map(it=>`<div draggable="true" ondragstart="dragInteret(event,'${it.id}')" style="display:flex;align-items:center;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:5px 7px;margin-bottom:5px;font-size:11px;cursor:grab"><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${_prospName(it.prospect_id)}</span><button onclick="removeInteret('${it.id}')" title="Retirer" style="border:none;background:transparent;color:var(--dim);cursor:pointer;font-size:13px;line-height:1;padding:0 2px">×</button></div>`).join('')||'<div style="font-size:10px;color:var(--dim2);padding:6px 2px">—</div>';
+      const inCol=its.filter(x=>(x.colonne||'etude')===col.k);const cbg=CARD_BG[col.k]||CARD_BG._;
+      const cards=inCol.map(it=>`<div draggable="true" ondragstart="dragInteret(event,'${it.id}')" style="display:flex;align-items:center;gap:4px;${cbg};border-radius:6px;padding:5px 7px;margin-bottom:5px;font-size:11px;cursor:grab"><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${_prospName(it.prospect_id)}</span><button onclick="removeInteret('${it.id}')" title="Retirer" style="border:none;background:transparent;color:var(--dim);cursor:pointer;font-size:13px;line-height:1;padding:0 2px">×</button></div>`).join('')||'<div style="font-size:10px;color:var(--dim2);padding:6px 2px">—</div>';
       return`<div ondragover="event.preventDefault()" ondrop="dropInteret(event,'${col.k}')" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;min-height:70px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--dim);margin-bottom:6px">${col.l} <span style="color:var(--dim2)">${inCol.length}</span></div>${cards}</div>`;
     }).join('');
     const titre=d.adresse||d.nom||'';
