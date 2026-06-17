@@ -1446,7 +1446,7 @@ function sortDeals(c){if(dealsSortCol===c)dealsSortDir=dealsSortDir==='asc'?'des
 function fmt(n){if(!n)return'';return n.toLocaleString('fr-FR')+'€'}
 
 // Préfixes de code par entité (source de vérité du filtrage)
-const DEAL_PREFIXES=[{k:'BYM',label:'BYM',prefix:'BYM'},{k:'UR',label:'Urban Rise',prefix:'UR'},{k:'IR',label:'IRIS REP',prefix:'IR'},{k:'GC',label:'Galerie Carrez',prefix:'GC'},{k:'RIR',label:'RIR',prefix:'RIR'}];
+const DEAL_PREFIXES=[{k:'BYM',label:'BYM',prefix:'BYM'},{k:'UR',label:'Urban Rise',prefix:'UR'},{k:'IR',label:'IRIS REP',prefix:'IR'}];
 function dealMatchesFilter(d,filter){
   if(filter==='all')return true;
   const def=DEAL_PREFIXES.find(x=>x.k===filter);
