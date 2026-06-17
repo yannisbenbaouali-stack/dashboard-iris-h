@@ -1541,22 +1541,27 @@ async function renderProspects(){
   const irisRepSubNav=prospectsFilter==='IRIS REP'?`<div style="display:flex;gap:6px;margin-top:8px;margin-bottom:4px;padding-left:2px"><button class="fbtn${irisRepSubTab==='preneur'?' on':''}" style="font-size:11px;padding:4px 12px" onclick="setIrisRepTab('preneur')">Preneur</button><button class="fbtn${irisRepSubTab==='investisseur'?' on':''}" style="font-size:11px;padding:4px 12px" onclick="setIrisRepTab('investisseur')">Investisseur</button></div>`:'';
   const filtersHtml=`<div class="filters" style="margin-bottom:12px"><button class="fbtn prosp-fbtn${prospectsFilter==='all'?' on':''}" onclick="filterProspects(this,'all')">Tous</button><button class="fbtn prosp-fbtn${prospectsFilter==='BYM'?' on':''}" onclick="filterProspects(this,'BYM')">BYM</button><button class="fbtn prosp-fbtn${prospectsFilter==='IRIS REP'?' on':''}" onclick="filterProspects(this,'IRIS REP')">IRIS REP</button><button class="fbtn prosp-fbtn${prospectsFilter==='Urban Rise'?' on':''}" onclick="filterProspects(this,'Urban Rise')">Urban Rise</button><button class="fbtn prosp-fbtn${prospectsFilter==='ARRISTO'?' on':''}" onclick="filterProspects(this,'ARRISTO')">ARRISTO</button><button class="fbtn prosp-fbtn${prospectsFilter==='Galerie Carrez'?' on':''}" onclick="filterProspects(this,'Galerie Carrez')">Galerie Carrez</button></div>${irisRepSubNav}`;
 
-  // Charger les liaisons prospect_contacts avec les infos contact
-  const allRows=await Promise.all(allPros.map(async p=>{
-    let pcs=[];
+  // Chargement groupe : 2 requetes au lieu de N+1 (147 prospects saturaient la section)
+  let allPcs=[];
+  try{ allPcs=await supa('prospect_contacts','order=is_principal.desc,created_at.asc&select=*'); }catch(e){}
+  const _cids=[...new Set(allPcs.map(pc=>pc.contact_id).filter(Boolean))];
+  const _contactsById={};
+  if(_cids.length){
     try{
-      pcs=await supa('prospect_contacts',`prospect_id=eq.${p.id}&order=is_principal.desc,created_at.asc&select=*`);
+      const _cs=await supa('contacts',`id=in.(${_cids.join(',')})&select=id,prenom,nom,email,telephone,entite_iris,poste`);
+      _cs.forEach(c=>{_contactsById[c.id]=c;});
     }catch(e){}
-    const enriched=await Promise.all(pcs.map(async pc=>{
-      let contact={};
-      try{
-        const res=await supa('contacts',`id=eq.${pc.contact_id}&select=id,prenom,nom,email,telephone,entite_iris,poste`);
-        if(res.length)contact=res[0];
-      }catch(e){}
+  }
+  const _pcsByProspect={};
+  allPcs.forEach(pc=>{(_pcsByProspect[pc.prospect_id]=_pcsByProspect[pc.prospect_id]||[]).push(pc);});
+  const allRows=allPros.map(p=>{
+    const _list=(_pcsByProspect[p.id]||[]).slice().sort((a,b)=>((b.is_principal?1:0)-(a.is_principal?1:0))||String(a.created_at||'').localeCompare(String(b.created_at||'')));
+    const enriched=_list.map(pc=>{
+      const contact=_contactsById[pc.contact_id]||{};
       return{...contact,pc_id:pc.id,pc_role:pc.role,pc_statut:pc.statut,pc_principal:pc.is_principal,pc_entite:pc.entite,pc_last_call:pc.last_call,notes:pc.notes};
-    }));
+    });
     return{...p,pcs:enriched};
-  }));
+  });
 
   // Filtrage par entité : on filtre les contacts de chaque prospect, et on masque les prospects sans contacts pertinents
   const ef=prospectsFilter;
