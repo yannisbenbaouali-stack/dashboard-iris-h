@@ -680,7 +680,7 @@ let cfg=null;
 let authTok=null; let authReady=false; let _authClient=null;
 const SUPA_URL='https://kkznkuwoxoxvapejzytv.supabase.co';
 const SUPA_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtrem5rdXdveG94dmFwZWp6eXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNTQxMTksImV4cCI6MjA4ODkzMDExOX0.Nb7N2FpKvm3NMzS6Nhx4qWoqHZW3-Es3JNPgHxkOWcE';
-let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[],rapports_rediges:[],vilmar:[],mandats:[],vitrines:[],documents:[],candidats:[],locColocs:[],locChambres:[],deal_interets:[]};
+let data={contacts:[],taches:[],taches_v2:[],rec_suivi:[],deals:[],chantiers:[],tresorerie:[],fragments:[],bible:[],skills:[],prospects:[],rapport_hebdo:[],rapports_rediges:[],vilmar:[],mandats:[],vitrines:[],documents:[],candidats:[],locColocs:[],locChambres:[],deal_interets:[],metiers:[]};
 
 function getConfig(){try{const s=JSON.parse(localStorage.getItem(CFG_KEY));if(s&&s.url&&s.key)return s}catch(e){}return null}
 function saveConfig(){
@@ -757,7 +757,7 @@ async function supa(table,params='',fetchAll=false){
 
 async function loadAll(){
   const safe=async fn=>{try{return await fn()}catch(e){console.warn('Warning:',e);return[]}};
-  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats,vitrines,partenaires,h_bible,h_persos,h_chap,h_indices,documents,candidats,locColocs,locChambres,partColoc,chantier_budget,deal_interets]=await Promise.all([
+  const[taches,taches_v2,rec_suivi,deals,chantiers,tresorerie,fragments,bible,skills,prospects,rapport_hebdo,rapports_rediges,vilmar,mandats,vitrines,partenaires,h_bible,h_persos,h_chap,h_indices,documents,candidats,locColocs,locChambres,partColoc,chantier_budget,deal_interets,metiers]=await Promise.all([
     safe(()=>supa('taches','order=created_at.desc')),
     safe(()=>supa('taches_v2','order=created_at.asc')),
     safe(()=>supa('taches_recurrentes_suivi','order=semaine.asc')),
@@ -784,11 +784,12 @@ async function loadAll(){
     safe(()=>supa('chambres_orleans','order=numero.asc')),
     safe(()=>supa('partenaires_coloc','order=created_at.asc')),
     safe(()=>supa('chantier_budget','order=deal_code.asc')),
-    safe(()=>supa('deal_interets','order=ordre.asc,created_at.asc'))
+    safe(()=>supa('deal_interets','order=ordre.asc,created_at.asc')),
+    safe(()=>supa('metiers_ref','order=ordre.asc'))
   ]);
   data.taches=taches;data.taches_v2=taches_v2;data.rec_suivi=rec_suivi;data.deals=deals;
   data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;data.vilmar=vilmar;data.mandats=mandats;data.partenaires=partenaires;data.vitrines=vitrines;data.vitrines=vitrines;
-  data.h_bible=h_bible;data.h_persos=h_persos;data.h_chap=h_chap;data.h_indices=h_indices;data.documents=documents;data.candidats=candidats;data.locColocs=locColocs;data.locChambres=locChambres;data.partColoc=partColoc;data.chantier_budget=chantier_budget;data.deal_interets=deal_interets;
+  data.h_bible=h_bible;data.h_persos=h_persos;data.h_chap=h_chap;data.h_indices=h_indices;data.documents=documents;data.candidats=candidats;data.locColocs=locColocs;data.locChambres=locChambres;data.partColoc=partColoc;data.chantier_budget=chantier_budget;data.deal_interets=deal_interets;data.metiers=metiers;
   try{localStorage.setItem('iris_h_cache',JSON.stringify({data:{...data,contacts:[]},ts:Date.now()}))}catch(e){}
   render();
   const t=new Date();
@@ -1598,6 +1599,49 @@ async function setContactEntite(pcId,val){
   try{await fetch(`${cfg.url}/rest/v1/prospect_contacts?id=eq.${pcId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({entite:val||null})});}catch(e){}
 }
 
+// ===== Colonnes prospects : Metier, Secteur, Localisation =====
+const SECTEURS=['Investisseur','Promoteur','Utilisateur','Collectivité'];
+const LOC_GROUPS=[
+  {t:'Île-de-France',opts:[['IDF','IDF (toute)','IDF'],['75','75 Paris','75'],['77','77 Seine-et-Marne','77'],['78','78 Yvelines','78'],['91','91 Essonne','91'],['92','92 Hauts-de-Seine','92'],['93','93 Seine-Saint-Denis','93'],['94','94 Val-de-Marne','94'],['95','95 Val-d Oise','95']]},
+  {t:'Région Centre-Val de Loire',opts:[['CENTRE','Centre (toute)','Centre'],['18','18 Cher','18'],['28','28 Eure-et-Loir','28'],['36','36 Indre','36'],['37','37 Indre-et-Loire','37'],['41','41 Loir-et-Cher','41'],['45','45 Loiret','45']]},
+  {t:'Granularité',opts:[['hyper_centre','Hyper centre','hyper-centre'],['metropole','Métropole','métropole'],['partout','Partout','partout']]}
+];
+const LOC_SHORT={};LOC_GROUPS.forEach(g=>g.opts.forEach(o=>{LOC_SHORT[o[0]]=o[2];}));
+async function setProspectField(id,field,val){
+  const p=(data.prospects||[]).find(x=>x.id===id);if(p)p[field]=val;
+  if(cfg){try{await fetch(`${cfg.url}/rest/v1/prospects?id=eq.${id}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({[field]:val||null})});}catch(e){}}
+}
+function metierSelect(p){
+  const cur=p.metier||'';
+  const ms=(data.metiers||[]);
+  const cats=[...new Set(ms.map(m=>m.categorie||'Autre'))];
+  const groups=cats.map(c=>`<optgroup label="${c}">`+ms.filter(m=>(m.categorie||'Autre')===c).map(m=>`<option value="${m.nom}"${cur===m.nom?' selected':''}>${m.nom}</option>`).join('')+`</optgroup>`).join('');
+  return `<select onchange="setProspectField('${p.id}','metier',this.value)" style="font-size:11px;padding:3px 5px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--navy);max-width:130px"><option value=""${cur?'':' selected'}>—</option>${groups}</select>`;
+}
+function secteurSelect(p){
+  const cur=p.secteur_activite||'';
+  return `<select onchange="setProspectField('${p.id}','secteur_activite',this.value)" style="font-size:11px;padding:3px 5px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--navy)"><option value=""${cur?'':' selected'}>—</option>${SECTEURS.map(s=>`<option value="${s}"${cur===s?' selected':''}>${s}</option>`).join('')}</select>`;
+}
+function _locSummary(p){const t=Array.isArray(p.localisation)?p.localisation:[];return t.length?t.map(x=>LOC_SHORT[x]||x).join(', '):'<span style="color:var(--dim2)">— définir</span>';}
+function locCell(p){return `<button id="loc-btn-${p.id}" onclick="openLocalisationModal('${p.id}')" style="font-size:10px;text-align:left;max-width:150px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:4px 7px;cursor:pointer;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%">${_locSummary(p)}</button>`;}
+function openLocalisationModal(id){
+  const p=(data.prospects||[]).find(x=>x.id===id);if(!p)return;
+  if(!Array.isArray(p.localisation))p.localisation=[];
+  let ov=document.getElementById('loc-overlay');
+  if(!ov){ov=document.createElement('div');ov.id='loc-overlay';ov.style.cssText='position:fixed;inset:0;background:rgba(14,31,77,.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';ov.onclick=e=>{if(e.target===ov)ov.remove()};document.body.appendChild(ov);}
+  const body=LOC_GROUPS.map(g=>`<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">${g.t}</div><div style="display:flex;flex-wrap:wrap;gap:6px">${g.opts.map(o=>{const on=p.localisation.includes(o[0]);return `<label style="display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:4px 8px;border:1px solid ${on?'var(--blue)':'var(--border)'};border-radius:7px;cursor:pointer;background:${on?'rgba(91,155,213,0.1)':'var(--card)'}"><input type="checkbox" ${on?'checked':''} onchange="toggleLocalisation('${id}','${o[0]}',this.checked)" style="margin:0">${o[1]}</label>`}).join('')}</div></div>`).join('');
+  ov.innerHTML=`<div style="background:var(--card);max-width:520px;width:100%;max-height:82vh;overflow-y:auto;border-radius:14px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div style="font-size:15px;font-weight:700;color:var(--text)">Localisation · ${p.nom_entreprise||''}</div><button onclick="document.getElementById('loc-overlay').remove()" style="border:none;background:var(--bg);width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:16px;color:var(--dim)">×</button></div>${body}</div>`;
+}
+async function toggleLocalisation(id,token,on){
+  const p=(data.prospects||[]).find(x=>x.id===id);if(!p)return;
+  if(!Array.isArray(p.localisation))p.localisation=[];
+  if(on){if(!p.localisation.includes(token))p.localisation.push(token);}else{p.localisation=p.localisation.filter(t=>t!==token);}
+  openLocalisationModal(id);
+  const btn=document.getElementById('loc-btn-'+id);if(btn)btn.innerHTML=_locSummary(p);
+  if(cfg){try{await fetch(`${cfg.url}/rest/v1/prospects?id=eq.${id}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({localisation:p.localisation})});}catch(e){}}
+}
+
+
 async function renderProspects(){
   let allPros=[...data.prospects];
   // Tri : ordre d'ajout, sauf "A creuser" avant dernier et "dead" en dernier
@@ -1725,7 +1769,7 @@ async function renderProspects(){
     document.getElementById('prospects-body').innerHTML=filtersHtml+irisRepBlock;
     return;
   }
-  document.getElementById('prospects-body').innerHTML=filtersHtml+catHtml+`<table class="tbl"><thead><tr><th style="width:150px">Entreprise</th><th>Contact</th><th style="width:150px">Poste</th><th style="width:120px;text-align:center">Affecté à</th><th style="width:90px;text-align:center">Critères de prospection</th></tr></thead><tbody>
+  document.getElementById('prospects-body').innerHTML=filtersHtml+catHtml+`<table class="tbl"><thead><tr><th style="width:150px">Entreprise</th><th>Contact</th><th style="width:150px">Poste</th><th style="width:130px">Métier</th><th style="width:120px">Secteur</th><th style="width:150px">Localisation</th><th style="width:120px;text-align:center">Affecté à</th><th style="width:90px;text-align:center">Critères de prospection</th></tr></thead><tbody>
   ${rows.map(p=>{
     const pcs=(p.pcs&&p.pcs.length)?p.pcs:[null];
     const mkSel=c=>`<select onchange="setContactEntite('${c.pc_id}',this.value)" style="font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--navy)"><option value="">—</option><option value="BYM"${c.pc_entite==='BYM'?' selected':''}>BYM</option><option value="IRIS REP"${c.pc_entite==='IRIS REP'?' selected':''}>IRIS REP</option></select>`;
@@ -1742,7 +1786,7 @@ async function renderProspects(){
         posteCell=`<span style="font-size:11px;color:var(--dim)">${c.poste||c.pc_role||''}</span>`;
         selCell=mkSel(c);
       }
-      return`<tr style="vertical-align:top"><td style="padding-top:10px">${compCell}</td><td style="padding-top:9px">${contactCell}</td><td style="padding-top:10px">${posteCell}</td><td style="text-align:center;padding-top:8px">${selCell}</td><td style="text-align:center;padding-top:10px">${first?critCell(p):''}</td></tr>`;
+      return`<tr style="vertical-align:top"><td style="padding-top:10px">${compCell}</td><td style="padding-top:9px">${contactCell}</td><td style="padding-top:10px">${posteCell}</td><td style="padding-top:8px">${first?metierSelect(p):''}</td><td style="padding-top:8px">${first?secteurSelect(p):''}</td><td style="padding-top:8px">${first?locCell(p):''}</td><td style="text-align:center;padding-top:8px">${selCell}</td><td style="text-align:center;padding-top:10px">${first?critCell(p):''}</td></tr>`;
     }).join('');
   }).join('')}
   </tbody></table>`;
