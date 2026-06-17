@@ -1460,9 +1460,9 @@ function isVitrinable(d){const c=(d.code||'').toUpperCase();return c.startsWith(
 // ===== Pipeline potentiels interets (par deal) =====
 let dealsView='table';
 let _dragInteretId=null;
-const PIPE_COLS=[{k:'etude',l:"En cours d'étude"},{k:'a_envoyer',l:"À envoyer"},{k:'pas_interesse',l:"Pas intéressé"}];
+const PIPE_COLS=[{k:'aproposer',l:"À proposer"},{k:'etude',l:"À l'étude"},{k:'relancer',l:"À relancer"},{k:'offre',l:"Offre en cours"},{k:'refuser',l:"À refuser"}];
 const PIPE_FAMILLES=[{k:'promoteur',l:'Promoteurs'},{k:'investisseur',l:'Investisseurs bureau'},{k:'industriel',l:'Industriels locataires'}];
-const CARD_BG={etude:'background:rgba(65,201,142,0.16);border:1px solid rgba(65,201,142,0.45)',a_envoyer:'background:rgba(234,179,8,0.18);border:1px solid rgba(234,179,8,0.5)',pas_interesse:'background:rgba(248,113,113,0.16);border:1px solid rgba(248,113,113,0.45)',_:'background:var(--bg);border:1px solid var(--border)'};
+const CARD_BG={aproposer:'background:#2c2c2a;border:1px solid #2c2c2a;color:#fff',etude:'background:rgba(239,159,39,0.18);border:1px solid rgba(239,159,39,0.55)',relancer:'background:rgba(234,179,8,0.20);border:1px solid rgba(234,179,8,0.55)',offre:'background:rgba(65,201,142,0.18);border:1px solid rgba(65,201,142,0.5)',refuser:'background:rgba(248,113,113,0.16);border:1px solid rgba(248,113,113,0.5)',_:'background:var(--bg);border:1px solid var(--border)'};
 function setDealsView(v){dealsView=v;renderDeals();}
 function dragInteret(ev,id){_dragInteretId=id;try{ev.dataTransfer.effectAllowed='move';}catch(e){}}
 function dropInteret(ev,colonne){ev.preventDefault();if(_dragInteretId){moveInteret(_dragInteretId,colonne);_dragInteretId=null;}}
@@ -1487,7 +1487,7 @@ async function _insertInterets(rows){
 }
 async function addInteretProspect(dealId,prospectId){
   if((data.deal_interets||[]).some(x=>x.deal_id===dealId&&x.prospect_id===prospectId))return;
-  const created=await _insertInterets([{deal_id:dealId,prospect_id:prospectId,colonne:'etude',agent:'claude'}]);
+  const created=await _insertInterets([{deal_id:dealId,prospect_id:prospectId,colonne:'aproposer',agent:'claude'}]);
   created.forEach(c=>data.deal_interets.push(c));
   renderInteretModalList(dealId);renderDeals();
 }
@@ -1495,7 +1495,7 @@ async function addInteretFamille(dealId,sousCat){
   const exist=new Set((data.deal_interets||[]).filter(x=>x.deal_id===dealId).map(x=>x.prospect_id));
   const cibles=(data.prospects||[]).filter(p=>(p.sous_categorie||'').toLowerCase()===sousCat&&!exist.has(p.id));
   if(!cibles.length)return;
-  const created=await _insertInterets(cibles.map(p=>({deal_id:dealId,prospect_id:p.id,colonne:'a_envoyer',agent:'claude'})));
+  const created=await _insertInterets(cibles.map(p=>({deal_id:dealId,prospect_id:p.id,colonne:'aproposer',agent:'claude'})));
   created.forEach(c=>data.deal_interets.push(c));
   renderInteretModalList(dealId);renderDeals();
 }
@@ -1505,19 +1505,19 @@ function renderDealsPipeline(deals){
   return deals.map(d=>{
     const its=(data.deal_interets||[]).filter(x=>x.deal_id===d.id);
     const cols=PIPE_COLS.map(col=>{
-      const inCol=its.filter(x=>(x.colonne||'etude')===col.k);const cbg=CARD_BG[col.k]||CARD_BG._;
+      const inCol=its.filter(x=>(x.colonne||'aproposer')===col.k);const cbg=CARD_BG[col.k]||CARD_BG._;
       const cards=inCol.map(it=>`<div draggable="true" ondragstart="dragInteret(event,'${it.id}')" style="display:flex;align-items:center;gap:4px;${cbg};border-radius:6px;padding:5px 7px;margin-bottom:5px;font-size:11px;cursor:grab"><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${_prospName(it.prospect_id)}</span><button onclick="removeInteret('${it.id}')" title="Retirer" style="border:none;background:transparent;color:var(--dim);cursor:pointer;font-size:13px;line-height:1;padding:0 2px">×</button></div>`).join('')||'<div style="font-size:10px;color:var(--dim2);padding:6px 2px">—</div>';
       return`<div ondragover="event.preventDefault()" ondrop="dropInteret(event,'${col.k}')" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;min-height:70px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--dim);margin-bottom:6px">${col.l} <span style="color:var(--dim2)">${inCol.length}</span></div>${cards}</div>`;
     }).join('');
     const titre=d.adresse||d.nom||'';
-    return`<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:12px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:13px"><span style="font-family:monospace;font-weight:700;color:var(--blue)">${d.code||''}</span><span style="font-weight:600">${titre}</span><button class="fbtn" style="margin-left:auto;font-size:11px;padding:4px 10px" onclick="openInteretModal('${d.id}')">+ Ajouter un potentiel intérêt</button></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">${cols}</div></div>`;
+    return`<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:12px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:13px"><span style="font-family:monospace;font-weight:700;color:var(--blue)">${d.code||''}</span><span style="font-weight:600">${titre}</span><button class="fbtn" style="margin-left:auto;font-size:11px;padding:4px 10px" onclick="openInteretModal('${d.id}')">+ Ajouter un potentiel intérêt</button></div><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">${cols}</div></div>`;
   }).join('');
 }
 function openInteretModal(dealId){
   let ov=document.getElementById('interet-overlay');
   if(!ov){ov=document.createElement('div');ov.id='interet-overlay';ov.style.cssText='position:fixed;inset:0;background:rgba(14,31,77,.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';ov.onclick=e=>{if(e.target===ov)ov.remove()};document.body.appendChild(ov);}
   const d=(data.deals||[]).find(x=>x.id===dealId)||{};
-  ov.innerHTML=`<div style="background:var(--card);max-width:560px;width:100%;max-height:82vh;overflow-y:auto;border-radius:14px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><div style="font-size:15px;font-weight:700;color:var(--text)">Ajouter un potentiel intérêt · ${d.code||''}</div><button onclick="document.getElementById('interet-overlay').remove()" style="border:none;background:var(--bg);width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:16px;color:var(--dim)">×</button></div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Ajouter une famille (vers À envoyer)</div><div class="filters" style="margin-bottom:14px">${PIPE_FAMILLES.map(f=>{const n=(data.prospects||[]).filter(p=>(p.sous_categorie||'').toLowerCase()===f.k).length;return`<button class="fbtn" onclick="addInteretFamille('${dealId}','${f.k}')">${f.l} <span style="color:var(--dim)">${n}</span></button>`}).join('')}</div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Client individuel (vers En cours d'étude)</div><input id="interet-search" placeholder="Rechercher un prospect..." oninput="renderInteretModalList('${dealId}')" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;outline:none;background:var(--bg);color:var(--text);margin-bottom:8px"><div id="interet-list"></div></div>`;
+  ov.innerHTML=`<div style="background:var(--card);max-width:560px;width:100%;max-height:82vh;overflow-y:auto;border-radius:14px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><div style="font-size:15px;font-weight:700;color:var(--text)">Ajouter un potentiel intérêt · ${d.code||''}</div><button onclick="document.getElementById('interet-overlay').remove()" style="border:none;background:var(--bg);width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:16px;color:var(--dim)">×</button></div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Ajouter une famille (vers À proposer)</div><div class="filters" style="margin-bottom:14px">${PIPE_FAMILLES.map(f=>{const n=(data.prospects||[]).filter(p=>(p.sous_categorie||'').toLowerCase()===f.k).length;return`<button class="fbtn" onclick="addInteretFamille('${dealId}','${f.k}')">${f.l} <span style="color:var(--dim)">${n}</span></button>`}).join('')}</div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Client individuel (vers À proposer)</div><input id="interet-search" placeholder="Rechercher un prospect..." oninput="renderInteretModalList('${dealId}')" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;outline:none;background:var(--bg);color:var(--text);margin-bottom:8px"><div id="interet-list"></div></div>`;
   renderInteretModalList(dealId);
 }
 function renderInteretModalList(dealId){
@@ -1642,6 +1642,44 @@ async function toggleLocalisation(id,token,on){
 }
 
 
+// ===== Qualification des contacts (personne) : Recherche actif x operation + Zone =====
+const RECH_GROUPS=[
+  {t:"Type d'actif",opts:[['bureaux','Bureaux'],['logistique','Logistique'],['activite','Activité'],['commerce','Commerce'],['residentiel','Résidentiel'],['terrain','Terrain']]},
+  {t:'Opération',opts:[['acquisition','Acquisition'],['location','Location'],['vente','Vente']]}
+];
+const RECH_SHORT={bureaux:'Bureaux',logistique:'Log.',activite:'Activité',commerce:'Commerce',residentiel:'Résid.',terrain:'Terrain',acquisition:'acq.',location:'loc.',vente:'vente'};
+window._pcQual=window._pcQual||{};
+function _qualSummary(rech,zone){
+  const r=(rech||[]).map(t=>RECH_SHORT[t]||t).join(', ');
+  const z=(zone||[]).map(t=>LOC_SHORT[t]||t).join(', ');
+  if(!r&&!z)return '<span style="color:var(--dim2)">— qualifier</span>';
+  return (r||'')+(r&&z?' · ':'')+(z?'<span style="color:var(--dim)">'+z+'</span>':'');
+}
+function qualifCell(c){
+  window._pcQual[c.pc_id]={recherche:Array.isArray(c.pc_recherche)?c.pc_recherche.slice():[],zone:Array.isArray(c.pc_zone)?c.pc_zone.slice():[]};
+  const q=window._pcQual[c.pc_id];
+  return `<button id="qual-btn-${c.pc_id}" onclick="openQualifModal('${c.pc_id}')" style="font-size:10px;text-align:left;max-width:170px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:4px 7px;cursor:pointer;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%">${_qualSummary(q.recherche,q.zone)}</button>`;
+}
+function openQualifModal(pcId){
+  const q=window._pcQual[pcId]||{recherche:[],zone:[]};window._pcQual[pcId]=q;
+  let ov=document.getElementById('qual-overlay');
+  if(!ov){ov=document.createElement('div');ov.id='qual-overlay';ov.style.cssText='position:fixed;inset:0;background:rgba(14,31,77,.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';ov.onclick=e=>{if(e.target===ov)ov.remove()};document.body.appendChild(ov);}
+  const grp=(title,opts,arr,axis)=>`<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">${title}</div><div style="display:flex;flex-wrap:wrap;gap:6px">${opts.map(o=>{const on=arr.includes(o[0]);return `<label style="display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:4px 8px;border:1px solid ${on?'var(--blue)':'var(--border)'};border-radius:7px;cursor:pointer;background:${on?'rgba(91,155,213,0.1)':'var(--card)'}"><input type="checkbox" ${on?'checked':''} onchange="toggleQual('${pcId}','${axis}','${o[0]}',this.checked)" style="margin:0">${o[1]}</label>`}).join('')}</div></div>`;
+  const rech=RECH_GROUPS.map(g=>grp(g.t,g.opts,q.recherche,'recherche')).join('');
+  const zone=LOC_GROUPS.map(g=>grp(g.t,g.opts,q.zone,'zone')).join('');
+  ov.innerHTML=`<div style="background:var(--card);max-width:560px;width:100%;max-height:84vh;overflow-y:auto;border-radius:14px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div style="font-size:15px;font-weight:700;color:var(--text)">Qualification du contact</div><button onclick="document.getElementById('qual-overlay').remove()" style="border:none;background:var(--bg);width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:16px;color:var(--dim)">×</button></div><div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px">Recherche</div>${rech}<div style="font-size:12px;font-weight:700;color:var(--navy);margin:14px 0 8px">Zone géographique</div>${zone}</div>`;
+}
+async function toggleQual(pcId,axis,token,on){
+  const q=window._pcQual[pcId]||{recherche:[],zone:[]};window._pcQual[pcId]=q;
+  let arr=Array.isArray(q[axis])?q[axis]:[];
+  if(on){if(!arr.includes(token))arr=arr.concat([token]);}else{arr=arr.filter(t=>t!==token);}
+  q[axis]=arr;
+  openQualifModal(pcId);
+  const btn=document.getElementById('qual-btn-'+pcId);if(btn)btn.innerHTML=_qualSummary(q.recherche,q.zone);
+  if(cfg){try{await fetch(`${cfg.url}/rest/v1/prospect_contacts?id=eq.${pcId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({[axis]:arr})});}catch(e){}}
+}
+
+
 async function renderProspects(){
   let allPros=[...data.prospects];
   // Tri : ordre d'ajout, sauf "A creuser" avant dernier et "dead" en dernier
@@ -1680,7 +1718,7 @@ async function renderProspects(){
     const _list=(_pcsByProspect[p.id]||[]).slice().sort((a,b)=>((b.is_principal?1:0)-(a.is_principal?1:0))||String(a.created_at||'').localeCompare(String(b.created_at||'')));
     const enriched=_list.map(pc=>{
       const contact=_contactsById[pc.contact_id]||{};
-      return{...contact,pc_id:pc.id,pc_role:pc.role,pc_statut:pc.statut,pc_principal:pc.is_principal,pc_entite:pc.entite,pc_last_call:pc.last_call,notes:pc.notes};
+      return{...contact,pc_id:pc.id,pc_role:pc.role,pc_statut:pc.statut,pc_principal:pc.is_principal,pc_entite:pc.entite,pc_last_call:pc.last_call,notes:pc.notes,pc_recherche:pc.recherche,pc_zone:pc.zone};
     });
     return{...p,pcs:enriched};
   });
@@ -1769,7 +1807,7 @@ async function renderProspects(){
     document.getElementById('prospects-body').innerHTML=filtersHtml+irisRepBlock;
     return;
   }
-  document.getElementById('prospects-body').innerHTML=filtersHtml+catHtml+`<table class="tbl"><thead><tr><th style="width:150px">Entreprise</th><th>Contact</th><th style="width:150px">Poste</th><th style="width:130px">Métier</th><th style="width:120px">Secteur</th><th style="width:150px">Localisation</th><th style="width:120px;text-align:center">Affecté à</th><th style="width:90px;text-align:center">Critères de prospection</th></tr></thead><tbody>
+  document.getElementById('prospects-body').innerHTML=filtersHtml+catHtml+`<table class="tbl"><thead><tr><th style="width:150px">Entreprise</th><th>Contact</th><th style="width:150px">Poste</th><th style="width:130px">Métier</th><th style="width:120px">Secteur</th><th style="width:150px">Localisation</th><th style="width:170px">Qualification</th><th style="width:120px;text-align:center">Affecté à</th><th style="width:90px;text-align:center">Critères de prospection</th></tr></thead><tbody>
   ${rows.map(p=>{
     const pcs=(p.pcs&&p.pcs.length)?p.pcs:[null];
     const mkSel=c=>`<select onchange="setContactEntite('${c.pc_id}',this.value)" style="font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--navy)"><option value="">—</option><option value="BYM"${c.pc_entite==='BYM'?' selected':''}>BYM</option><option value="IRIS REP"${c.pc_entite==='IRIS REP'?' selected':''}>IRIS REP</option></select>`;
@@ -1786,7 +1824,7 @@ async function renderProspects(){
         posteCell=`<span style="font-size:11px;color:var(--dim)">${c.poste||c.pc_role||''}</span>`;
         selCell=mkSel(c);
       }
-      return`<tr style="vertical-align:top"><td style="padding-top:10px">${compCell}</td><td style="padding-top:9px">${contactCell}</td><td style="padding-top:10px">${posteCell}</td><td style="padding-top:8px">${first?metierSelect(p):''}</td><td style="padding-top:8px">${first?secteurSelect(p):''}</td><td style="padding-top:8px">${first?locCell(p):''}</td><td style="text-align:center;padding-top:8px">${selCell}</td><td style="text-align:center;padding-top:10px">${first?critCell(p):''}</td></tr>`;
+      return`<tr style="vertical-align:top"><td style="padding-top:10px">${compCell}</td><td style="padding-top:9px">${contactCell}</td><td style="padding-top:10px">${posteCell}</td><td style="padding-top:8px">${first?metierSelect(p):''}</td><td style="padding-top:8px">${first?secteurSelect(p):''}</td><td style="padding-top:8px">${first?locCell(p):''}</td><td style="padding-top:8px">${c?qualifCell(c):''}</td><td style="text-align:center;padding-top:8px">${selCell}</td><td style="text-align:center;padding-top:10px">${first?critCell(p):''}</td></tr>`;
     }).join('');
   }).join('')}
   </tbody></table>`;
