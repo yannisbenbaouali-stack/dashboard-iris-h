@@ -786,7 +786,7 @@ async function loadAll(){
     safe(()=>supa('chantier_budget','order=deal_code.asc')),
     safe(()=>supa('deal_interets','order=ordre.asc,created_at.asc')),
     safe(()=>supa('metiers_ref','order=ordre.asc')),
-    safe(()=>supa('prospect_contacts','select=id,prospect_id,contact_id,is_principal,recherche,zone&order=is_principal.desc'))
+    safe(()=>supa('prospect_contacts','select=id,prospect_id,contact_id,is_principal,recherche,zone,metier&order=is_principal.desc'))
   ]);
   data.taches=taches;data.taches_v2=taches_v2;data.rec_suivi=rec_suivi;data.deals=deals;
   data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;data.vilmar=vilmar;data.mandats=mandats;data.partenaires=partenaires;data.vitrines=vitrines;data.vitrines=vitrines;
@@ -1607,22 +1607,54 @@ function renderDealsPipeline(deals){
     return`<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:12px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:13px"><span style="font-family:monospace;font-weight:700;color:var(--blue)">${d.code||''}</span><span style="font-weight:600">${titre}</span><button class="fbtn" style="margin-left:auto;font-size:11px;padding:4px 10px" onclick="openInteretModal('${d.id}')">+ Ajouter un potentiel intérêt</button></div><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">${cols}</div></div>`;
   }).join('');
 }
+const SECTEUR_COLS=[{k:'investisseur',l:'Investisseur'},{k:'promoteur',l:'Promoteur'},{k:'collectivite',l:'Collectivité'},{k:'autre',l:'Autre'}];
+function _secteurOf(m){m=(m||'').toLowerCase();
+  if(/promoteur|am[ée]nageur|constructeur|btp/.test(m))return 'promoteur';
+  if(/investisseur|asset|marchand|cgp|crowdfunding|bailleur|fonci/.test(m))return 'investisseur';
+  if(/collectivit|association|institution|public/.test(m))return 'collectivite';
+  return 'autre';
+}
+function _metierOptions(cur){
+  const ms=(data.metiers||[]);const cats=[...new Set(ms.map(m=>m.categorie||'Autre'))];
+  return `<option value=""${cur?'':' selected'}>—</option>`+cats.map(c=>`<optgroup label="${c}">`+ms.filter(m=>(m.categorie||'Autre')===c).map(m=>`<option value="${m.nom}"${cur===m.nom?' selected':''}>${m.nom}</option>`).join('')+`</optgroup>`).join('');
+}
+async function setPcMetier(pcId,val){
+  const q=window._pcQual[pcId]||{recherche:[],zone:[]};q.metier=val;window._pcQual[pcId]=q;
+  const pc=(data.prospect_contacts||[]).find(x=>x.id===pcId);if(pc)pc.metier=val;
+  const btn=document.getElementById('qual-btn-'+pcId);if(btn&&typeof _qualSummary==='function')btn.innerHTML=_qualSummary(q.recherche,q.zone);
+  openQualifModal(pcId);
+  if(cfg){try{await fetch(`${cfg.url}/rest/v1/prospect_contacts?id=eq.${pcId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({metier:val||null})});}catch(e){}}
+}
 function openInteretModal(dealId){
   let ov=document.getElementById('interet-overlay');
   if(!ov){ov=document.createElement('div');ov.id='interet-overlay';ov.style.cssText='position:fixed;inset:0;background:rgba(14,31,77,.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';ov.onclick=e=>{if(e.target===ov)ov.remove()};document.body.appendChild(ov);}
   const d=(data.deals||[]).find(x=>x.id===dealId)||{};
-  ov.innerHTML=`<div style="background:var(--card);max-width:560px;width:100%;max-height:82vh;overflow-y:auto;border-radius:14px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><div style="font-size:15px;font-weight:700;color:var(--text)">Ajouter un potentiel intérêt · ${d.code||''}</div><button onclick="document.getElementById('interet-overlay').remove()" style="border:none;background:var(--bg);width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:16px;color:var(--dim)">×</button></div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Ajouter une famille (vers À proposer)</div><div class="filters" style="margin-bottom:14px">${PIPE_FAMILLES.map(f=>{const n=(data.prospects||[]).filter(p=>(p.sous_categorie||'').toLowerCase()===f.k).length;return`<button class="fbtn" onclick="addInteretFamille('${dealId}','${f.k}')">${f.l} <span style="color:var(--dim)">${n}</span></button>`}).join('')}</div><div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Client individuel (vers À proposer)</div><input id="interet-search" placeholder="Rechercher un prospect..." oninput="renderInteretModalList('${dealId}')" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;outline:none;background:var(--bg);color:var(--text);margin-bottom:8px"><div id="interet-list"></div></div>`;
+  ov.innerHTML=`<div style="background:var(--card);max-width:1000px;width:100%;max-height:86vh;overflow-y:auto;border-radius:14px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><div style="font-size:15px;font-weight:700;color:var(--text)">Ajouter un potentiel intérêt · ${d.code||''}</div><button onclick="document.getElementById('interet-overlay').remove()" style="border:none;background:var(--bg);width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:16px;color:var(--dim)">×</button></div><div style="font-size:11px;color:var(--dim);margin-bottom:10px">Personnes référentes, classées par secteur d'activité. Le métier se règle dans la qualification du contact (onglet Prospects).</div><input id="interet-search" placeholder="Rechercher une entreprise ou une personne..." oninput="renderInteretModalList('${dealId}')" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;outline:none;background:var(--bg);color:var(--text);margin-bottom:12px"><div id="interet-list"></div></div>`;
   renderInteretModalList(dealId);
 }
 function renderInteretModalList(dealId){
   const el=document.getElementById('interet-list');if(!el)return;
   const si=document.getElementById('interet-search');
   const q=(si?si.value:'').toLowerCase().trim();
-  const exist=new Set((data.deal_interets||[]).filter(x=>x.deal_id===dealId).map(x=>x.prospect_id));
-  let list=(data.prospects||[]).filter(p=>p.nom_entreprise);
-  if(q)list=list.filter(p=>(p.nom_entreprise||'').toLowerCase().includes(q)||(p.sous_categorie||'').toLowerCase().includes(q));
-  list=list.slice(0,80);
-  el.innerHTML=`<div style="max-height:300px;overflow-y:auto">${list.map(p=>{const deja=exist.has(p.id);return`<div style="display:flex;align-items:center;gap:8px;padding:6px 4px;border-bottom:1px solid var(--bg)"><div style="flex:1;min-width:0"><div style="font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.nom_entreprise}</div><div style="font-size:9px;color:var(--dim)">${p.sous_categorie||''}</div></div><div style="display:flex;align-items:center;gap:6px">${_modalContactSelect(p)}<button class="fbtn" style="font-size:11px;padding:3px 10px" onclick="addInteretProspect('${dealId}','${p.id}',(document.getElementById('pcsel-${p.id}')||{}).value)">+</button></div></div>`}).join('')||'<div style="font-size:11px;color:var(--dim);padding:8px">Aucun prospect</div>'}</div>`;
+  const exist=new Set((data.deal_interets||[]).filter(x=>x.deal_id===dealId&&x.contact_id).map(x=>x.contact_id));
+  let people=(data.prospect_contacts||[]).map(pc=>{
+    const comp=_prospName(pc.prospect_id);
+    const c=(data.pcContactsById||{})[pc.contact_id]||{};
+    const nm=`${c.prenom||''} ${c.nom||''}`.trim();
+    return {pc,comp,nm,metier:pc.metier||'',sec:_secteurOf(pc.metier)};
+  }).filter(x=>x.comp);
+  if(q)people=people.filter(x=>(x.comp+' '+x.nm+' '+x.metier).toLowerCase().includes(q));
+  const cols=SECTEUR_COLS.map(sc=>{
+    const items=people.filter(x=>x.sec===sc.k);
+    const rows=items.length?items.map(x=>{
+      const deja=exist.has(x.pc.id);
+      const label=x.nm?`${x.comp} <span style="color:var(--dim)">(${x.nm})</span>`:x.comp;
+      const add=deja?'<span style="font-size:9px;color:var(--green)">ajouté</span>':`<button class="fbtn" style="font-size:11px;padding:2px 8px" onclick="addInteretProspect('${dealId}','${x.pc.prospect_id}','${x.pc.id}')">+</button>`;
+      return `<div style="display:flex;align-items:center;gap:6px;padding:5px 4px;border-bottom:0.5px solid var(--bg)"><div style="flex:1;min-width:0"><div style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${label}</div><div style="font-size:9px;color:var(--dim)">${x.metier||'—'}</div></div>${add}</div>`;
+    }).join(''):'<div style="font-size:10px;color:var(--dim2);padding:6px 2px">—</div>';
+    return `<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;min-height:80px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--dim);margin-bottom:6px">${sc.l} <span style="color:var(--dim2)">${items.length}</span></div><div style="max-height:340px;overflow-y:auto">${rows}</div></div>`;
+  }).join('');
+  el.innerHTML=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">${cols}</div>`;
 }
 
 
@@ -1752,7 +1784,7 @@ function _qualSummary(rech,zone){
   return (r||'')+(r&&z?' · ':'')+(z?'<span style="color:var(--dim)">'+z+'</span>':'');
 }
 function qualifCell(c){
-  window._pcQual[c.pc_id]={recherche:Array.isArray(c.pc_recherche)?c.pc_recherche.slice():[],zone:Array.isArray(c.pc_zone)?c.pc_zone.slice():[]};
+  window._pcQual[c.pc_id]={recherche:Array.isArray(c.pc_recherche)?c.pc_recherche.slice():[],zone:Array.isArray(c.pc_zone)?c.pc_zone.slice():[],metier:c.pc_metier||''};
   const q=window._pcQual[c.pc_id];
   return `<button id="qual-btn-${c.pc_id}" onclick="openQualifModal('${c.pc_id}')" style="font-size:10px;text-align:left;max-width:170px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:4px 7px;cursor:pointer;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%">${_qualSummary(q.recherche,q.zone)}</button>`;
 }
@@ -1763,7 +1795,8 @@ function openQualifModal(pcId){
   const grp=(title,opts,arr,axis)=>`<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">${title}</div><div style="display:flex;flex-wrap:wrap;gap:6px">${opts.map(o=>{const on=arr.includes(o[0]);return `<label style="display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:4px 8px;border:1px solid ${on?'var(--blue)':'var(--border)'};border-radius:7px;cursor:pointer;background:${on?'rgba(91,155,213,0.1)':'var(--card)'}"><input type="checkbox" ${on?'checked':''} onchange="toggleQual('${pcId}','${axis}','${o[0]}',this.checked)" style="margin:0">${o[1]}</label>`}).join('')}</div></div>`;
   const rech=RECH_GROUPS.map(g=>grp(g.t,g.opts,q.recherche,'recherche')).join('');
   const zone=LOC_GROUPS.map(g=>grp(g.t,g.opts,q.zone,'zone')).join('');
-  ov.innerHTML=`<div style="background:var(--card);max-width:560px;width:100%;max-height:84vh;overflow-y:auto;border-radius:14px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div style="font-size:15px;font-weight:700;color:var(--text)">Qualification du contact</div><button onclick="document.getElementById('qual-overlay').remove()" style="border:none;background:var(--bg);width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:16px;color:var(--dim)">×</button></div><div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px">Recherche</div>${rech}<div style="font-size:12px;font-weight:700;color:var(--navy);margin:14px 0 8px">Zone géographique</div>${zone}</div>`;
+  const metierSel=`<div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px">Métier (sous-catégorie, référent)</div><select onchange="setPcMetier('${pcId}',this.value)" style="font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:7px;background:var(--card);color:var(--navy);margin-bottom:14px;min-width:240px">${_metierOptions(q.metier)}</select>`;
+  ov.innerHTML=`<div style="background:var(--card);max-width:560px;width:100%;max-height:84vh;overflow-y:auto;border-radius:14px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div style="font-size:15px;font-weight:700;color:var(--text)">Qualification du contact</div><button onclick="document.getElementById('qual-overlay').remove()" style="border:none;background:var(--bg);width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:16px;color:var(--dim)">×</button></div>${metierSel}<div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px">Recherche</div>${rech}<div style="font-size:12px;font-weight:700;color:var(--navy);margin:14px 0 8px">Zone géographique</div>${zone}</div>`;
 }
 async function toggleQual(pcId,axis,token,on){
   const q=window._pcQual[pcId]||{recherche:[],zone:[]};window._pcQual[pcId]=q;
@@ -1814,7 +1847,7 @@ async function renderProspects(){
     const _list=(_pcsByProspect[p.id]||[]).slice().sort((a,b)=>((b.is_principal?1:0)-(a.is_principal?1:0))||String(a.created_at||'').localeCompare(String(b.created_at||'')));
     const enriched=_list.map(pc=>{
       const contact=_contactsById[pc.contact_id]||{};
-      return{...contact,pc_id:pc.id,pc_role:pc.role,pc_statut:pc.statut,pc_principal:pc.is_principal,pc_entite:pc.entite,pc_last_call:pc.last_call,notes:pc.notes,pc_recherche:pc.recherche,pc_zone:pc.zone};
+      return{...contact,pc_id:pc.id,pc_role:pc.role,pc_statut:pc.statut,pc_principal:pc.is_principal,pc_entite:pc.entite,pc_last_call:pc.last_call,notes:pc.notes,pc_recherche:pc.recherche,pc_zone:pc.zone,pc_metier:pc.metier};
     });
     return{...p,pcs:enriched};
   });
