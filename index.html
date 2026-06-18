@@ -248,6 +248,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'charte')"><span class="nav-dot"></span><span>Charte graphique</span></button>
       <button class="nav-item" style="display:none" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'deals')"><span class="nav-dot"></span><span>Dealflow Projets</span><span class="nav-cnt" id="nav-deals-cnt">0</span></button>
+      <button class="nav-item" onclick="openIrisRepConseil(this)"><span class="nav-dot"></span><span>IRIS REP · Conseil</span></button>
       <button class="nav-item" onclick="switchTab(this,'prospects')"><span class="nav-dot"></span><span>Dealflow Prospects</span><span class="nav-cnt" id="nav-prospects-cnt">0</span></button>
       <button class="nav-item" style="display:none" onclick="switchTab(this,'documents')"><span class="nav-dot"></span><span>Documents</span><span class="nav-cnt" id="nav-documents-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'electricite')"><span class="nav-dot"></span><span>Électricité</span><span class="nav-cnt" id="nav-electricite-cnt">0</span></button>
@@ -1173,6 +1174,7 @@ function updateNavCounts(){
 
 let currentTab='todo';
 function switchTab(btn,tab){
+  _matchExpandAll=false;
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -1514,8 +1516,9 @@ function _pcName(pcId){const pc=(data.prospect_contacts||[]).find(x=>x.id===pcId
 function _interetLabel(it){const comp=_prospName(it.prospect_id);const per=it.contact_id?_pcName(it.contact_id):'';return per?`${comp} (${per})`:comp;}
 function _contactSelect(it){const pcs=_pcsForProspect(it.prospect_id);if(!pcs.length)return'';const opts='<option value="">— contact</option>'+pcs.map(pc=>{const c=(data.pcContactsById||{})[pc.contact_id]||{};const nm=`${c.prenom||''} ${c.nom||''}`.trim()||'Contact';return `<option value="${pc.id}"${(it.contact_id||'')===pc.id?' selected':''}>${nm}</option>`}).join('');return `<select onchange="setInteretContact('${it.id}',this.value)" style="font-size:10px;padding:2px 4px;border:1px solid var(--border);border-radius:5px;background:var(--card);color:var(--navy);max-width:120px">${opts}</select>`;}
 function _modalContactSelect(p){const pcs=_pcsForProspect(p.id);if(!pcs.length)return'';const opts=pcs.map(pc=>{const c=(data.pcContactsById||{})[pc.contact_id]||{};const nm=`${c.prenom||''} ${c.nom||''}`.trim()||'Contact';return `<option value="${pc.id}"${pc.is_principal?' selected':''}>${nm}</option>`}).join('');return `<select id="pcsel-${p.id}" style="font-size:10px;padding:2px 4px;border:1px solid var(--border);border-radius:5px;background:var(--bg);color:var(--navy);max-width:120px">${opts}</select>`;}
-let _matchOpen=null;
+let _matchOpen=null;let _matchExpandAll=false;
 function toggleMatch(id){_matchOpen=_matchOpen===id?null:id;renderDeals();}
+function openIrisRepConseil(btn){dealsFilter='IR';dealsNature='conseil';dealsView='matching';switchTab(btn,'deals');_matchExpandAll=true;document.getElementById('topbar-title').textContent="IRIS REP · Conseil immobilier d'entreprise";renderDeals();}
 // ===== Matching 2 colonnes : criteres mandat (operation deduite du suffixe + actif/zone) vs contacts qualifies =====
 const MATCH_OP={V:'acquisition',A:'vente',L:'location'};
 const MATCH_OP_LBL={acquisition:'Acquéreurs',location:'Preneurs',vente:'Cédants'};
@@ -1577,7 +1580,7 @@ function renderMatchingOverview(deals){
   if(!deals.length)return '<div style="text-align:center;padding:2rem;color:var(--dim)">Aucun deal</div>';
   return deals.map(d=>{
     const its=(data.deal_interets||[]).filter(x=>x.deal_id===d.id);
-    const open=_matchOpen===d.id;
+    const open=_matchExpandAll||_matchOpen===d.id;
     const seg=PIPE_COLS.map(col=>{const n=its.filter(x=>(x.colonne||'aproposer')===col.k).length;return `<div style="flex:1;text-align:center;padding:6px 2px;border-radius:6px;${CARD_BG[col.k]||CARD_BG._}"><div style="font-size:16px;font-weight:700;line-height:1.1">${n}</div><div style="font-size:9px">${col.l}</div></div>`;}).join('');
     const titre=d.adresse||d.nom||'';
     let detail='';
@@ -1589,7 +1592,7 @@ function renderMatchingOverview(deals){
       }).join('');
       detail=`<div style="border-top:0.5px solid var(--border);margin-top:10px;padding-top:10px"><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">${cols}</div><button class="fbtn" style="margin-top:10px;font-size:11px;padding:4px 10px" onclick="openInteretModal('${d.id}')">+ Ajouter un potentiel intérêt</button></div>`;
     }
-    return `<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:10px"><div onclick="toggleMatch('${d.id}')" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer"><span style="color:var(--dim);font-size:11px">${open?'▾':'▸'}</span><span style="font-family:monospace;font-weight:700;color:var(--blue)">${d.code||''}</span><span style="font-weight:600;font-size:13px">${titre}</span><span style="margin-left:auto;font-size:10px;color:var(--dim)">${its.length} candidat${its.length>1?'s':''}</span></div><div style="display:flex;gap:6px">${seg}</div>${detail}</div>`;
+    return `<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:10px"><div onclick="toggleMatch('${d.id}')" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer"><span style="color:var(--dim);font-size:11px">${open?'▾':'▸'}</span><span style="font-family:monospace;font-weight:700;color:var(--blue)">${d.code||''}</span><span style="font-weight:600;font-size:13px">${d.adresse?`<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.adresse)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:inherit;text-decoration:underline">${d.adresse}</a>`:(d.nom||'')}</span><span style="margin-left:auto;font-size:10px;color:var(--dim)">${its.length} candidat${its.length>1?'s':''}</span></div><div style="display:flex;gap:6px">${seg}</div>${detail}</div>`;
   }).join('');
 }
 
