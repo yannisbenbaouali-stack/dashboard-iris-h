@@ -1516,6 +1516,63 @@ function _contactSelect(it){const pcs=_pcsForProspect(it.prospect_id);if(!pcs.le
 function _modalContactSelect(p){const pcs=_pcsForProspect(p.id);if(!pcs.length)return'';const opts=pcs.map(pc=>{const c=(data.pcContactsById||{})[pc.contact_id]||{};const nm=`${c.prenom||''} ${c.nom||''}`.trim()||'Contact';return `<option value="${pc.id}"${pc.is_principal?' selected':''}>${nm}</option>`}).join('');return `<select id="pcsel-${p.id}" style="font-size:10px;padding:2px 4px;border:1px solid var(--border);border-radius:5px;background:var(--bg);color:var(--navy);max-width:120px">${opts}</select>`;}
 let _matchOpen=null;
 function toggleMatch(id){_matchOpen=_matchOpen===id?null:id;renderDeals();}
+// ===== Matching 2 colonnes : criteres mandat (operation deduite du suffixe + actif/zone) vs contacts qualifies =====
+const MATCH_OP={V:'acquisition',A:'vente',L:'location'};
+const MATCH_OP_LBL={acquisition:'Acquéreurs',location:'Preneurs',vente:'Cédants'};
+const ZONE_IDF=['75','77','78','91','92','93','94','95'];
+const ZONE_CENTRE=['18','28','36','37','41','45'];
+let _match2Deal=null;
+function _dealOperation(d){const m=/_([IPUD])([VAL])$/.exec((d.code||'').toUpperCase());if(!m)return null;return MATCH_OP[m[2]]||null;}
+function _zoneExpand(arr){const out=new Set(arr||[]);if(out.has('IDF'))ZONE_IDF.forEach(x=>out.add(x));if(out.has('CENTRE'))ZONE_CENTRE.forEach(x=>out.add(x));return out;}
+function _zoneMatch(a,b){if(!a||!a.length||!b||!b.length)return true;const A=_zoneExpand(a),B=_zoneExpand(b);for(const x of A){if(x==='hyper_centre'||x==='metropole'||x==='partout')continue;if(B.has(x))return true;}return false;}
+function _matchContactsForDeal(d){
+  const op=_dealOperation(d);
+  const actif=Array.isArray(d.match_actif)?d.match_actif:[];
+  const zone=Array.isArray(d.match_zone)?d.match_zone:[];
+  return (data.prospect_contacts||[]).filter(pc=>{
+    const rech=Array.isArray(pc.recherche)?pc.recherche:[];
+    const z=Array.isArray(pc.zone)?pc.zone:[];
+    if(!rech.length&&!z.length)return false;
+    if(op&&!rech.includes(op))return false;
+    if(actif.length&&!actif.some(a=>rech.includes(a)))return false;
+    if(zone.length&&!_zoneMatch(zone,z))return false;
+    return true;
+  });
+}
+async function toggleDealMatch(dealId,axis,token,on){
+  const d=(data.deals||[]).find(x=>x.id===dealId);if(!d)return;
+  let arr=Array.isArray(d[axis])?d[axis].slice():[];
+  if(on){if(!arr.includes(token))arr.push(token);}else{arr=arr.filter(t=>t!==token);}
+  d[axis]=arr;renderDeals();
+  if(cfg){try{await fetch(`${cfg.url}/rest/v1/deals?id=eq.${dealId}`,{method:'PATCH',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({[axis]:arr})});}catch(e){}}
+}
+function selectMatch2(id){_match2Deal=id;renderDeals();}
+function _crit(d,axis,opts){return opts.map(o=>{const on=Array.isArray(d[axis])&&d[axis].includes(o[0]);return `<label style="display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:3px 7px;border:1px solid ${on?'var(--blue)':'var(--border)'};border-radius:6px;cursor:pointer;background:${on?'rgba(91,155,213,0.1)':'var(--card)'}"><input type="checkbox" ${on?'checked':''} onchange="toggleDealMatch('${d.id}','${axis}','${o[0]}',this.checked)" style="margin:0">${o[1]}</label>`}).join('');}
+function renderMatching2(deals){
+  if(!deals.length)return '<div style="text-align:center;padding:2rem;color:var(--dim)">Aucun deal</div>';
+  if(_match2Deal&&!deals.some(d=>d.id===_match2Deal))_match2Deal=null;
+  if(!_match2Deal)_match2Deal=deals[0].id;
+  const sel=deals.find(d=>d.id===_match2Deal);
+  const left=deals.map(d=>{
+    const n=(data.deal_interets||[]).filter(x=>x.deal_id===d.id).length;
+    const op=_dealOperation(d);
+    const active=d.id===_match2Deal;
+    return `<div onclick="selectMatch2('${d.id}')" style="padding:9px 11px;border-radius:8px;margin-bottom:6px;cursor:pointer;border:1px solid ${active?'var(--blue)':'var(--border)'};background:${active?'rgba(91,155,213,0.08)':'var(--card)'}"><div style="display:flex;align-items:center;gap:6px"><span style="font-family:monospace;font-weight:700;color:var(--blue);font-size:11px">${d.code||''}</span>${op?`<span style="font-size:9px;color:var(--dim);background:var(--bg);padding:1px 5px;border-radius:4px">${MATCH_OP_LBL[op]||op}</span>`:''}<span style="margin-left:auto;font-size:10px;color:var(--dim)">${n}</span></div><div style="font-size:11px;color:var(--text);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d.adresse||d.nom||''}</div></div>`;
+  }).join('');
+  const op=_dealOperation(sel);
+  const pool=_matchContactsForDeal(sel);
+  const existSet=new Set((data.deal_interets||[]).filter(x=>x.deal_id===sel.id&&x.contact_id).map(x=>x.contact_id));
+  const critBar=`<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--dim);font-weight:700;margin-bottom:6px">Critères du mandat ${op?`· opération <b style="color:var(--navy)">${MATCH_OP_LBL[op]||op}</b> (suffixe)`:'· opération non déduite'}</div><div style="font-size:9px;color:var(--dim);margin:6px 0 4px">Type d'actif</div><div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px">${_crit(sel,'match_actif',RECH_GROUPS[0].opts)}</div><div style="font-size:9px;color:var(--dim);margin:4px 0">Zone</div><div style="display:flex;flex-wrap:wrap;gap:5px">${LOC_GROUPS.map(g=>_crit(sel,'match_zone',g.opts)).join('')}</div></div>`;
+  const poolHtml=pool.length?pool.map(pc=>{
+    const comp=_prospName(pc.prospect_id);const c=(data.pcContactsById||{})[pc.contact_id]||{};const nm=`${c.prenom||''} ${c.nom||''}`.trim()||'Contact';
+    const rech=(Array.isArray(pc.recherche)?pc.recherche:[]).map(t=>RECH_SHORT[t]||t).join(', ');
+    const z=(Array.isArray(pc.zone)?pc.zone:[]).map(t=>LOC_SHORT[t]||t).join(', ');
+    const deja=existSet.has(pc.id);
+    return `<div style="display:flex;align-items:center;gap:8px;padding:6px 4px;border-bottom:1px solid var(--bg)"><div style="flex:1;min-width:0"><div style="font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${comp} <span style="color:var(--dim)">(${nm})</span></div><div style="font-size:9px;color:var(--dim)">${rech}${rech&&z?' · ':''}${z}</div></div>${deja?'<span style="font-size:10px;color:var(--green)">retenu</span>':`<button class="fbtn" style="font-size:11px;padding:3px 10px" onclick="addInteretProspect('${sel.id}','${pc.prospect_id}','${pc.id}')">+</button>`}</div>`;
+  }).join(''):'<div style="font-size:11px;color:var(--dim);padding:10px 4px">Aucun contact qualifié compatible. Qualifie des contacts (onglet Prospection) ou élargis les critères.</div>';
+  const right=`<div style="font-weight:600;font-size:13px;margin-bottom:10px"><span style="font-family:monospace;color:var(--blue)">${sel.code||''}</span> ${sel.adresse||sel.nom||''}</div>${critBar}<div style="font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--dim);font-weight:700;margin-bottom:6px">Contacts qualifiés compatibles <span style="color:var(--blue)">${pool.length}</span></div><div style="max-height:460px;overflow-y:auto">${poolHtml}</div>`;
+  return `<div style="display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start"><div style="max-height:560px;overflow-y:auto;padding-right:2px">${left}</div><div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px">${right}</div></div>`;
+}
 function renderMatchingOverview(deals){
   if(!deals.length)return '<div style="text-align:center;padding:2rem;color:var(--dim)">Aucun deal</div>';
   return deals.map(d=>{
@@ -1594,9 +1651,10 @@ function renderDeals(){
   const filtersHtml=`<div class="filters" style="margin-bottom:12px">${filterBtns.map(b=>`<button class="fbtn deals-fbtn${dealsFilter===b.k?' on':''}" onclick="filterDeals(this,'${b.k}')">${b.l}</button>`).join('')}</div>`;
   const natureHtml=dealsFilter==='IR'?`<div class="filters deals-nature-bar" style="margin:-4px 0 12px;padding:8px 10px;background:rgba(91,155,213,0.06);border:1px solid var(--border);border-radius:8px;align-items:center"><span style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;font-weight:600;margin-right:4px">Nature de deal</span>${DEAL_NATURES.map(n=>`<button class="fbtn deals-nbtn${dealsNature===n.k?' on':''}" onclick="filterDealsNature(this,'${n.k}')">${n.l}</button>`).join('')}</div>`:'';
   const entIco=e=>({BYM:'🏗️','Urban Rise':'🏠',URBAN_RISE:'🏠','IRIS REP':'🔍',IRIS_REP:'🔍',ARRISTO:'🤝','IRIS H':'🏛️',IRIS_H:'🏛️','Galerie Carrez':'🎨',GALERIE_CARREZ:'🎨',RIR:'⚡'}[e]||'📋');
-  const viewToggle=`<div class="filters" style="margin-bottom:12px"><button class="fbtn${dealsView==='table'?' on':''}" onclick="setDealsView('table')">Tableau</button><button class="fbtn${dealsView==='pipeline'?' on':''}" onclick="setDealsView('pipeline')">Pipeline</button><button class="fbtn${dealsView==='matching'?' on':''}" onclick="setDealsView('matching')">Vue d'ensemble</button></div>`;
+  const viewToggle=`<div class="filters" style="margin-bottom:12px"><button class="fbtn${dealsView==='table'?' on':''}" onclick="setDealsView('table')">Tableau</button><button class="fbtn${dealsView==='pipeline'?' on':''}" onclick="setDealsView('pipeline')">Pipeline</button><button class="fbtn${dealsView==='matching'?' on':''}" onclick="setDealsView('matching')">Vue d'ensemble</button><button class="fbtn${dealsView==='match2'?' on':''}" onclick="setDealsView('match2')">Matching 2 colonnes</button></div>`;
   if(dealsView==='pipeline'){document.getElementById('deals-body').innerHTML=viewToggle+filtersHtml+natureHtml+renderDealsPipeline(deals);applySuffixLegendState();return;}
   if(dealsView==='matching'){document.getElementById('deals-body').innerHTML=viewToggle+filtersHtml+natureHtml+renderMatchingOverview(deals);applySuffixLegendState();return;}
+  if(dealsView==='match2'){document.getElementById('deals-body').innerHTML=viewToggle+filtersHtml+natureHtml+renderMatching2(deals);applySuffixLegendState();return;}
   document.getElementById('deals-body').innerHTML=viewToggle+filtersHtml+natureHtml+`<table class="tbl"><thead><tr>${cols.map(c=>{let cls='';if(dealsSortCol===c.k)cls=dealsSortDir==='asc'?' ▲':' ▼';return`<th style="cursor:pointer" onclick="sortDeals('${c.k}')">${c.l}${cls}</th>`}).join('')}</tr></thead><tbody>
   ${deals.length?deals.map(d=>{const canVitrine=isVitrinable(d);let vCell='';if(canVitrine){const vVente=(data.vitrines||[]).find(x=>x.deal_id===d.id&&x.annonce_type==='vente');const vCommer=(data.vitrines||[]).find(x=>x.deal_id===d.id&&x.annonce_type==='commercialisation');const statDot=(v,lbl)=>{if(!v)return'';const c={brouillon:'#999',publie:'#41c98e',archive:'#fb923c'}[v.statut_publication]||'#999';const sl={brouillon:'Brouillon',publie:'Publié',archive:'Archivé'}[v.statut_publication]||'?';return`<span style=\"width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;flex-shrink:0\" title=\"${lbl} · ${sl}\"></span>`};const btnVente=d.vitrine_vente_actif?`<div style=\"display:flex;align-items:center;gap:3px\">${statDot(vVente,'Vente')}<button class=\"fbtn\" style=\"font-size:10px;padding:2px 6px;background:var(--green-bg);color:#1a8a4a;border-color:#c5e8d1\" onclick=\"openVitrineModal('${d.id}','vente')\" title=\"Éditer annonce vente\">Vente ✏️</button><button class=\"fbtn\" style=\"font-size:10px;padding:2px 5px;background:#fee;color:#c62828;border-color:#f5c6c6\" onclick=\"quickDeactivateVitrine('${d.id}','vente')\">🔕</button></div>`:`<button class=\"fbtn\" style=\"font-size:10px;padding:2px 8px;background:rgba(91,155,213,0.1);color:var(--blue);border-color:var(--blue)\" onclick=\"activateVitrine('${d.id}','vente')\">Vente</button>`;const btnCommer=d.vitrine_commer_actif?`<div style=\"display:flex;align-items:center;gap:3px\">${statDot(vCommer,'sourcé')}<button class=\"fbtn\" style=\"font-size:10px;padding:2px 6px;color:#3C3489\" onclick=\"openVitrineModal('${d.id}','commercialisation')\" title=\"Éditer annonce commercialisation\">sourcé ✏️</button><button class=\"fbtn\" style=\"font-size:10px;padding:2px 5px;background:#fee;color:#c62828;border-color:#f5c6c6\" onclick=\"quickDeactivateVitrine('${d.id}','commercialisation')\">🔕</button></div>`:`<button class=\"fbtn\" style=\"font-size:10px;padding:2px 8px;background:rgba(127,119,221,0.1);color:#3C3489;border-color:#a095e0\" onclick=\"activateVitrine('${d.id}','commercialisation')\">sourcé</button>`;vCell=`<div style=\"display:flex;flex-direction:column;gap:4px\">${btnVente}${btnCommer}</div>`}const isBymChantier=d.entite==='BYM'&&['travaux','demarre','sous_promesse','attente_validation','compromis','acte'].includes(d.etape);
 return`<tr style=\"background:${isBymChantier?'rgba(91,155,213,0.04)':''};\" ${isBymChantier?`onclick=\"openChantierModal('${d.code}','${(d.nom||'').replace(/\"/g,'').replace(/`/g,'')}')\" title=\"Cliquer pour ouvrir la fiche chantier\"`:''} ><td><a href=\"#\" onclick=\"goToTodoForDeal('${d.code||''}');return false\" style=\"color:var(--blue);font-weight:600;text-decoration:none;font-size:12px\" title=\"Voir les tâches ${d.code}\">${d.code||''}</a></td><td class=\"td-name\">${entIco(d.entite)} ${d.adresse?`<a href=\"https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.adresse)}\" target=\"_blank\" rel=\"noopener\" onclick=\"event.stopPropagation()\" style=\"color:var(--text);font-weight:600;text-decoration:none\" title=\"Ouvrir sur Google Maps\">${d.adresse}</a>`:`${d.nom||''}`}</td><td>${DL[d.type]||d.type||''}</td><td>${etBadge(d.etape)}</td><td style=\"font-size:11px\">${[d.client_prenom,d.client_nom].filter(Boolean).join(' ')}</td><td style=\"color:var(--green);font-weight:500\">${fmt(d.montant)}</td><td style=\"color:var(--blue)\">${fmt(d.ca_ht)}</td><td style=\"font-size:10px;color:var(--dim);font-style:italic;max-width:280px;white-space:pre-wrap;word-break:break-word;line-height:1.4\">${d.commentaire||''}</td><td style=\"font-size:11px;font-family:monospace;font-weight:600\">${dealMandatLinks(d.mandat)}</td><td style=\"text-align:center;font-size:11px\">${d.rir?'<span style=\\"background:#41c98e22;color:#1a8a4a;padding:2px 8px;border-radius:6px;font-weight:600;font-size:10px\\">oui</span>':'<span style=\\"color:var(--dim);font-size:10px\\">non</span>'}</td></tr>`}).join(''):`<tr><td colspan=\"${cols.length}\" style=\"text-align:center;padding:2rem;color:var(--dim)\">Aucun deal</td></tr>`}
