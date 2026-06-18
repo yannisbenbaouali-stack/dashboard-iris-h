@@ -1582,11 +1582,12 @@ function renderMatchingOverview(deals){
     const titre=d.adresse||d.nom||'';
     let detail='';
     if(open){
-      const lignes=its.length?its.map(it=>{
-        const opts=PIPE_COLS.map(col=>`<option value="${col.k}"${(it.colonne||'aproposer')===col.k?' selected':''}>${col.l}</option>`).join('');
-        return `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--bg)"><span style="flex:1;font-size:12px">${_interetLabel(it)}</span>${_contactSelect(it)}<select onchange="moveInteret('${it.id}',this.value)" style="font-size:11px;padding:3px 5px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--navy)">${opts}</select><button onclick="removeInteret('${it.id}')" title="Retirer" style="border:none;background:transparent;color:var(--dim);cursor:pointer;font-size:14px;line-height:1">×</button></div>`;
-      }).join(''):'<div style="font-size:11px;color:var(--dim);padding:4px 0">Aucun candidat pour le moment.</div>';
-      detail=`<div style="border-top:0.5px solid var(--border);margin-top:10px;padding-top:10px">${lignes}<button class="fbtn" style="margin-top:8px;font-size:11px;padding:4px 10px" onclick="openInteretModal('${d.id}')">+ Ajouter un potentiel intérêt</button></div>`;
+      const cols=PIPE_COLS.map(col=>{
+        const inCol=its.filter(x=>(x.colonne||'aproposer')===col.k);const cbg=CARD_BG[col.k]||CARD_BG._;
+        const cards=inCol.map(it=>`<div draggable="true" ondragstart="dragInteret(event,'${it.id}')" style="display:flex;align-items:center;gap:4px;${cbg};border-radius:6px;padding:5px 7px;margin-bottom:5px;font-size:11px;cursor:grab"><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${_interetLabel(it)}</span><button onclick="removeInteret('${it.id}')" title="Retirer" style="border:none;background:transparent;color:inherit;opacity:.6;cursor:pointer;font-size:13px;line-height:1;padding:0 2px">×</button></div>`).join('')||'<div style="font-size:10px;color:var(--dim2);padding:6px 2px">—</div>';
+        return `<div ondragover="event.preventDefault()" ondrop="dropInteret(event,'${col.k}')" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;min-height:70px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--dim);margin-bottom:6px">${col.l} <span style="color:var(--dim2)">${inCol.length}</span></div>${cards}</div>`;
+      }).join('');
+      detail=`<div style="border-top:0.5px solid var(--border);margin-top:10px;padding-top:10px"><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">${cols}</div><button class="fbtn" style="margin-top:10px;font-size:11px;padding:4px 10px" onclick="openInteretModal('${d.id}')">+ Ajouter un potentiel intérêt</button></div>`;
     }
     return `<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:10px"><div onclick="toggleMatch('${d.id}')" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer"><span style="color:var(--dim);font-size:11px">${open?'▾':'▸'}</span><span style="font-family:monospace;font-weight:700;color:var(--blue)">${d.code||''}</span><span style="font-weight:600;font-size:13px">${titre}</span><span style="margin-left:auto;font-size:10px;color:var(--dim)">${its.length} candidat${its.length>1?'s':''}</span></div><div style="display:flex;gap:6px">${seg}</div>${detail}</div>`;
   }).join('');
