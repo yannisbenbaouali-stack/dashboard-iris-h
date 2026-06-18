@@ -2832,6 +2832,7 @@ const AUDIT_DATA = {
   generated: '2026-05-07',
   convention_dossier: '[N] - [CODE] - [AAMMJJ] - [adresse postale complète]',
   convention_dwg: '[N] - [CODE] - [adresse] - [VERSION]',
+  convention_mandat: '[AAMMJJ]_[CODE]_Mandat_[Vente|Recherche]_[NOM]',
 
   bym: [
     {code:'BYM02',n:2,check:'cohérent',conf:'ok',drive:'2 - BYM02 - 260316 - 72, rue de Bourgogne, 45000 Orléans',adresse:'72, rue de Bourgogne, 45000 Orléans',etape:'démarré',note:'',action:'Rien à faire.'},
@@ -3043,6 +3044,7 @@ function renderAudit() {
   <div style="font-size:11px;padding:8px 12px;background:var(--bg);border-radius:6px;margin-bottom:8px;color:var(--dim);display:flex;gap:20px;flex-wrap:wrap">
     <span>📁 Dossiers : <code style="background:var(--card);padding:1px 6px;border-radius:3px">[N] - [CODE] - [AAMMJJ] - [adresse]</code></span>
     <span>📐 DWG : <code style="background:var(--card);padding:1px 6px;border-radius:3px">[N] - [CODE] - [adresse] - [VERSION]</code></span>
+    <span>📄 Mandats : <code style="background:var(--card);padding:1px 6px;border-radius:3px">[AAMMJJ]_[CODE]_Mandat_[Vente|Recherche]_[NOM]</code></span>
     <span style="margin-left:auto;color:var(--dim)">Mis à jour : ${AUDIT_DATA.generated}</span>
   </div>
   <div class="tcard">
