@@ -412,6 +412,18 @@
   .process-section-label::after {
     content: ''; flex: 1; height: 1px; background: var(--card-border);
   }
+
+/* === grille boutons docs (refonte acces rapide) === */
+.docgroup-h{font-family:'Georgia',serif;font-size:15px;color:#1a1a1a;border-left:4px solid #b8860b;padding-left:11px;margin:26px 0 12px;font-weight:700;}
+.docgroup-h:first-of-type{margin-top:8px;}
+.docgrid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;}
+.docbtn{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1.5px solid #1a1a1a;color:#1a1a1a;border-radius:8px;padding:11px 16px;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer;font-family:inherit;transition:.12s;line-height:1.2;}
+.docbtn:hover{background:#b8860b;border-color:#b8860b;color:#fff;}
+.docbtn .ic{font-size:13px;opacity:.6;font-weight:400;}
+.docbtn:hover .ic{opacity:1;}
+.docbtn.soon{border-style:dashed;border-color:#c4c0b8;color:#9a948b;font-weight:500;}
+.docbtn.soon:hover{background:#faf8f3;color:#9a948b;border-color:#c4c0b8;}
+.docbtn.soon .tag{font-size:9px;text-transform:uppercase;letter-spacing:.6px;background:#f0eee9;color:#9a948b;padding:2px 6px;border-radius:4px;}
 </style>
 </head>
 <body>
@@ -433,417 +445,62 @@
 
     <!-- VOLET IRIS REP -->
     <div class="volet-section active" id="volet-iris">
-
-      <div class="section-title">Brique 1 enrichie, focus opérationnel</div>
-      <div class="doc-grid">
-
-        <div class="doc-card">
-          <div class="doc-type">Communication</div>
-          <h3>Communication brique 1 + Plaquette</h3>
-          <span class="doc-status status-existant">Manuel et plaquette disponibles</span>
-          <div class="doc-desc">Document unifié regroupant la charte éditoriale socle et la stratégie LinkedIn opérationnelle. Partie 1, socle éditorial 20 pages A4 (identité IRIS Real Estate Partners, slogan Réunir Créer Investir, 5 audiences L1 à L5, 8 principes de voix, vocabulaire patrimonial validé, charte graphique or noir ivoire, gabarits signatures, structures par canal, 5 pitchs commerciaux courts, 6 do and don't). Partie 2, exécution LinkedIn 18 pages A4 (cible brique 1 hiérarchisée, 6 piliers éditoriaux avec quotas, cadence 3 posts perso et 1 post page par semaine, phase amorçage 4 semaines, calendrier rolling 12 mois M0 mai 2026 à M12 mai 2027, 36 idées de posts, 6 templates, hashtags, engagement 30 minutes hebdo, KPI M12 300 000 à 500 000 impressions, 800 à 1200 followers, 15 à 25 RDV, 2 à 4 propositions). Partie 3, protocoles (routines quotidienne, hebdo, mensuelle, trimestrielle, checklist pré publication 9 points, workflow Claude et stagiaire). Tutoiement interne, vouvoiement institutionnel strict en externe. <br><br>Inclut le plan de communication 12 mois sur la brique 1 Asset Advisory, audit concurrents (Aalto, Theop, Foncières et Territoires), stratégie éditoriale 4 piliers, calendrier mois par mois, LinkedIn personnel et corporate, livre blanc trimestriel marché tertiaire CVL, KPI 4 typologies. Prompt prêt à copier-coller dans une nouvelle conversation Claude. <br><br>Plaquette institutionnelle IRIS REP, dernière version Quicksand, format A3 paysage plié 2 volets, 4 pages A4. Couverture noir et or, "Une signature locale, une exigence institutionnelle", "Deux lignes, six missions", présentation des 3 lignes de service et grille tarifaire indicative des Packs, dos avec coordonnées Tours Orléans Paris et QR code site. Évolutive en HTML avant export PDF puis Canva Pro.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> 2 pages HTML reliées, 38 pages A4, plan 12 mois à produire<br>
-            <strong>Statut</strong> Manuel v1 disponible, plan 12 mois prompt prêt<br>
-            <strong>Mise à jour</strong> Mai 2026<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill iris" style="width:80%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="communication_iris_rep_charte_editoriale.html" class="doc-action" target="_blank">Ouvrir charte</a>
-            <a href="iris_rep_strategie_communication_brique1_linkedin.html" class="doc-action" target="_blank">Ouvrir LinkedIn</a>
-            <a href="#" class="doc-action" onclick="alert('Le prompt du plan de communication 12 mois est dans la conversation Claude. Copie-colle dans une nouvelle conversation pour produire le plan.'); return false;">Voir prompt plan 12 mois</a>
-            <a href="#" class="doc-action" onclick="openPlaquetteModal(); return false;">Ouvrir plaquette</a>
-          </div>
-        </div>
-
-        <div class="doc-card">
-          <div class="doc-type">Roadmap brique 1</div>
-          <h3>IRIS REP B1 ROADMAP</h3>
-          <span class="doc-status status-existant">Disponible</span>
-          <div class="doc-desc">Roadmap brique 1 complète. 6 missions IRIS Investment Management classées par facilité de vente (Audit, ESG, Travaux, Acquisition, Patrimonial, Pilotage). Tableau croisé typologies × missions avec qualificatifs. Cash flow mensuel sur 24 mois. Concurrents CVL et nationaux. Partenaires obligatoires en tableau. Slogan Réunir, Créer, Investir.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> Page HTML, imprimable<br>
-            <strong>Statut</strong> Document de base, à enrichir<br>
-            <strong>Mise à jour</strong> Mai 2026<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill iris" style="width:80%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="brique1_iris_rep_roadmap.html" class="doc-action" target="_blank">Ouvrir</a>
-            <a href="conditions_passage_briques.html" class="doc-action" target="_blank">Conditions de passage des briques</a>
-          </div>
-        </div>
-
-        <div class="doc-card">
-          <div class="doc-type">Stratégie de prospection</div>
-          <h3>IRIS REP B1 PROCESS DE VENTE</h3>
-          <span class="doc-status status-existant">Disponible</span>
-          <div class="doc-desc"><strong>KPI brique 1 M0 à M12</strong><br>100 cibles qualifiées sur les 5 audiences L1 à L5, 5 mandats signés à M12 pour 30 000 000 euros AUM et 150 000 euros de CA.<br><br>Encart unique regroupant la stratégie de prospection, l'audit concurrentiel CVL exhaustif (30 acteurs locaux, 4 nationaux, 14 SCPI, 60+ clients potentiels), le top prospection priorisé 440 cibles et le tableur stratégique de pilotage.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> Pages HTML + tableur XLSX<br>
-            <strong>Statut</strong> Documents de pilotage, à enrichir<br>
-            <strong>Mise à jour</strong> Mai 2026<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill iris" style="width:82%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="brique1_iris_rep_prospection.html" class="doc-action" target="_blank">Process de vente</a>
-            <a href="brique1_iris_rep_top_prospection.html" class="doc-action" target="_blank">Prospection clients</a>
-            <a href="IRIS_REP_Clients_Brique1_v3.xlsx" class="doc-action" download>Tableur stratégique</a>
-            <a href="benchmark_ecosystemes_integres.html" class="doc-action" target="_blank">Audit concurrents</a>
-          </div>
-        </div>
-
+      <div class="docgroup-h">Brique 1, Asset Advisory</div>
+      <div class="docgrid">
+        <a class="docbtn" href="brique1_iris_rep_roadmap.html" target="_blank"><span class="ic">↗</span>Roadmap</a>
+        <a class="docbtn" href="brique1_iris_rep_prospection.html" target="_blank"><span class="ic">↗</span>Process de vente</a>
+        <a class="docbtn" href="brique1_iris_rep_top_prospection.html" target="_blank"><span class="ic">↗</span>Prospection, 440 cibles</a>
+        <a class="docbtn" href="IRIS_REP_Clients_Brique1_v3.xlsx" download><span class="ic">⬇</span>Tableur cibles</a>
+        <a class="docbtn" href="benchmark_ecosystemes_integres.html" target="_blank"><span class="ic">↗</span>Audit concurrents</a>
+        <a class="docbtn" href="communication_iris_rep_charte_editoriale.html" target="_blank"><span class="ic">↗</span>Charte editoriale</a>
+        <a class="docbtn" href="iris_rep_strategie_communication_brique1_linkedin.html" target="_blank"><span class="ic">↗</span>Communication LinkedIn</a>
+        <a class="docbtn" href="brique1_iris_rep_plaquette.html" target="_blank"><span class="ic">↗</span>Plaquette HTML</a>
+        <a class="docbtn" href="assets/iris_rep/IRIS_REP_Plaquette.pdf" download><span class="ic">⬇</span>Plaquette PDF</a>
+        <a class="docbtn" href="conditions_passage_briques.html" target="_blank"><span class="ic">↗</span>Conditions de passage des briques</a>
       </div>
-
-      <div class="section-title">Brique 2, Property Management et carte G</div>
-      <div class="doc-grid">
-        <div class="doc-card">
-          <div class="doc-type">Brique 2</div>
-          <h3>Property Management et carte G</h3>
-          <span class="doc-status status-todo">À venir</span>
-          <div class="doc-desc">Property Management, carte G, garantie Galian, 80 000 000 euros AUM, 500 000 euros de CA. Documents et focus opérationnel à produire à l'ouverture de la brique.</div>
-          <div class="doc-meta">
-            <strong>Période</strong> M12 à M24<br>
-            <strong>Statut</strong> Brique non démarrée, à enrichir
-          </div>
-        </div>
+      <div class="docgroup-h">Vision 5 briques et book strategique</div>
+      <div class="docgrid">
+        <a class="docbtn" href="le_book_iris_rep_v3.pdf" target="_blank"><span class="ic">↗</span>Book IRIS REP, briques 1 a 5</a>
+        <a class="docbtn" href="schema_directeur.html" target="_blank"><span class="ic">↗</span>Schema directeur</a>
+        <button class="docbtn" onclick="openDocById(17); return false;"><span class="ic">⬇</span>Roadmap metier 2, Excel</button>
       </div>
-
-      <div class="section-title">Brique 3, Facility Management</div>
-      <div class="doc-grid">
-        <div class="doc-card">
-          <div class="doc-type">Brique 3</div>
-          <h3>Facility Management</h3>
-          <span class="doc-status status-todo">À venir</span>
-          <div class="doc-desc">Facility Management en délégation, 150 000 000 euros AUM, 1 500 000 euros de CA. Documents et focus opérationnel à produire à l'ouverture de la brique.</div>
-          <div class="doc-meta">
-            <strong>Période</strong> M24 à M36<br>
-            <strong>Statut</strong> Brique non démarrée, à enrichir
-          </div>
-        </div>
+      <div class="docgroup-h">Briques 2 a 5, a ouvrir</div>
+      <div class="docgrid">
+        <button class="docbtn soon">Brique 2, Property Management et carte G<span class="tag">a produire</span></button>
+        <button class="docbtn soon">Brique 3, Facility Management<span class="tag">a produire</span></button>
+        <button class="docbtn soon">Brique 4, Fund Management et agrement AMF<span class="tag">a produire</span></button>
+        <button class="docbtn soon">Brique 5, Investisseur compte de tiers<span class="tag">a produire</span></button>
       </div>
-
-      <div class="section-title">Brique 4, Fund Management et agrément AMF, IRIS REIM</div>
-      <div class="doc-grid">
-        <div class="doc-card">
-          <div class="doc-type">Brique 4</div>
-          <h3>Fund Management et agrément AMF, IRIS REIM</h3>
-          <span class="doc-status status-todo">À venir</span>
-          <div class="doc-desc">Filialisation IRIS REIM SAS, agrément AMF SGP, premier FIA Loire Value Add I, 250 000 000 euros AUM. Documents et focus opérationnel à produire à l'ouverture de la brique.</div>
-          <div class="doc-meta">
-            <strong>Période</strong> M36 à M60<br>
-            <strong>Statut</strong> Brique non démarrée, à enrichir
-          </div>
-        </div>
-      </div>
-
-      <div class="section-title">Brique 5, Investisseur pour compte de tiers</div>
-      <div class="doc-grid">
-        <div class="doc-card">
-          <div class="doc-type">Brique 5</div>
-          <h3>Investisseur pour compte de tiers</h3>
-          <span class="doc-status status-todo">À venir</span>
-          <div class="doc-desc">Investisseur pour compte de tiers, JV institutionnelles, 300 000 000 à 400 000 000 euros AUM. Documents et focus opérationnel à produire à l'ouverture de la brique.</div>
-          <div class="doc-meta">
-            <strong>Période</strong> M60 et plus<br>
-            <strong>Statut</strong> Brique non démarrée, à enrichir
-          </div>
-        </div>
-      </div>
-
-      <div class="section-title">Book stratégique global</div>
-      <div class="doc-grid">
-        <div class="doc-card">
-          <div class="doc-type">Book mentor</div>
-          <h3>IRIS REP - brique 1 à 5</h3>
-          <span class="doc-status status-existant">Disponible v3</span>
-          <div class="doc-desc">Roadmap brique par brique en mode mentor. 42 pages format A4 fond blanc imprimable. Audit critique du site irisrep.com, clarification REP versus REIM, 5 briques séquentielles avec catalogues de Packs, scoring client, partenaires obligatoires, organigrammes évolutifs, exemples concrets de réussites et d'échecs.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> PDF · 42 pages<br>
-            <strong>Statut</strong> Document de base, à enrichir<br>
-            <strong>Mise à jour</strong> Mai 2026, version 3<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill iris" style="width:75%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="#" class="doc-action" onclick="openDoc('le_book_iris_rep_v3.pdf'); return false;">Ouvrir</a>
-            <a href="#" class="doc-action ghost" onclick="alert('Demander à Claude la version v4 enrichie'); return false;">Enrichir</a>
-          </div>
-        </div>
-
-        <div class="doc-card">
-          <div class="doc-type">Document complémentaire</div>
-          <h3>Audit et roadmap (markdown)</h3>
-          <span class="doc-status status-existant">Disponible</span>
-          <div class="doc-desc">Document markdown source du book v2. Version texte structurée pour intégration dashboard et synchronisation avec l'onglet Structuration / Schéma directeur.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> Markdown<br>
-            <strong>Statut</strong> Synchronisé avec onglet Structuration<br>
-            <strong>Mise à jour</strong> Mai 2026
-          </div>
-          <div class="doc-actions">
-            <a href="schema_directeur.html" class="doc-action">Ouvrir</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-title">Documents complémentaires</div>
-      <div class="doc-grid">
-        <div class="doc-card">
-          <div class="doc-type">Tableur stratégique</div>
-          <h3>IRIS REP métier 2, roadmap Excel</h3>
-          <span class="doc-status status-existant">Disponible</span>
-          <div class="doc-desc">Fichier Excel multi onglets, 7 feuilles : vue d'ensemble 3 métiers, roadmap 5 briques, concurrents par brique, clients CVL par brique, tarification benchmarkée, étapes réglementaires, plan 90 jours.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> XLSX · 7 onglets<br>
-            <strong>Statut</strong> Source de pilotage stratégique
-          </div>
-          <div class="doc-actions">
-            <a href="#" class="doc-action" onclick="openDocById(17); return false;">Ouvrir</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-title">Trajectoire 5 briques, points clés stratégiques</div>
-      <div class="key-points">
-        <div class="label">Points clés stratégiques</div>
-        <h4>Trajectoire pure player CVL avec plafond AUM 300 à 400 millions d'euros à 10 ans</h4>
-        <ul>
-          <li>Brique 1 (M0 à M12), Asset Advisory pur, 5 Packs commerciaux (Audit, Pilotage, Acquisition, Patrimonial, ESG), 30 millions AUM, 150 000 euros CA</li>
-          <li>Brique 2 (M12 à M24), Property Management, carte G, garantie Galian 110 000 euros, 80 millions AUM, 500 000 euros CA</li>
-          <li>Brique 3 (M24 à M36), Facility Management en délégation, 150 millions AUM, 1,5 million CA</li>
-          <li>Brique 4 (M36 à M60), Filialisation IRIS REIM SAS, agrément AMF SGP, premier FIA Loire Value Add I, 250 millions AUM</li>
-          <li>Brique 5 (M60+), Investisseur compte de tiers, JV institutionnelles, 300 à 400 millions AUM, 18 à 25 personnes</li>
-          <li>Stratégie de marque : IRIS REP unique M0-M36, ajout IRIS REIM filialisée à M36 (catégorie réglementaire AMF distincte)</li>
-        </ul>
-      </div>
-
     </div>
 
     <!-- VOLET BYM -->
     <div class="volet-section" id="volet-bym">
-
-      <div class="section-title">Book stratégique Brique A</div>
-      <div class="doc-grid">
-        <div class="doc-card">
-          <div class="doc-type">Roadmap mentor</div>
-          <h3>Brique A, Roadmap M0 à M12</h3>
-          <span class="doc-status status-existant">Livré</span>
-          <div class="doc-desc">Roadmap consolidée Brique A BYM Construction, calquée sur la méthodologie book IRIS REP. 9 sections : état actuel, quadriptyque 4 briques séquentielles, 6 missions chantier classées par facilité commerciale, tableau croisé typologies clients × missions, calendrier opérationnel M0 à M12, modélisation cash flow Brique A, partenaires à activer, outils BTP utilisés, KPI durs de passage à la Brique B. Cible 2026 : 2 000 000 à 3 000 000 d'euros de CA, 12 à 15 compagnons, RGE sur 4 corps d'état, 15 chantiers en permanence.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> HTML autonome dashboard<br>
-            <strong>Statut</strong> Version initiale livrée mai 2026<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill bym" style="width:80%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="brique1_bym_roadmap.html" class="doc-action">Ouvrir</a>
-          </div>
-        </div>
-
-        <div class="doc-card">
-          <div class="doc-type">Stratégie commerciale</div>
-          <h3>Brique A, Commercialisation</h3>
-          <span class="doc-status status-existant">Livré</span>
-          <div class="doc-desc">Stratégie de commercialisation Brique A. 8 sections : 15 prérequis non négociables avant de prospecter, 5 canaux d'acquisition (agences immobilières, archis et AMO, plateformes RGE, prescription groupe IRIS, Google SEO local), pitch BYM en 3 minutes adapté par cible, 8 objections clients courantes et réponses, séquences commerciales Mission par Mission avec discipline d'acomptes, pipeline cible mensuel et taux de conversion, outil de scoring sous traitants 7 critères, suivi commercial dans les tables Supabase. Prompt audit concurrentiel BTP CVL et IDF Sud prêt à lancer.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> HTML autonome dashboard<br>
-            <strong>Statut</strong> Version initiale livrée mai 2026<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill bym" style="width:75%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="brique1_bym_commercialisation.html" class="doc-action">Ouvrir</a>
-          </div>
-        </div>
-
-        <div class="doc-card">
-          <div class="doc-type">Annexe opérationnelle</div>
-          <h3>Brique A, RGE et MaPrimeRénov</h3>
-          <span class="doc-status status-existant">Livré</span>
-          <div class="doc-desc">Feuille de route opérationnelle RGE Qualibat sur 4 corps d'état (1132 ou 1133 gros œuvre, Qualifelec électricité portée par Yannis CAP, 5311 ou 5313 plomberie chauffage, 7141 ou 7142 isolation), procédure d'obtention étape par étape avec coûts détaillés, positionnement mandataire MaPrimeRénov mixte (BYM perçoit la prime à la place du client), partenariat délégataire CEE 6e période 2026 à 2030, calendrier d'implémentation sur 12 mois, 5 risques majeurs et plan de mitigation, indicateurs de pilotage mensuels.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> HTML autonome dashboard<br>
-            <strong>Statut</strong> Version initiale livrée mai 2026<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill bym" style="width:85%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="brique1_bym_rge_maprimerenov.html" class="doc-action">Ouvrir</a>
-          </div>
-        </div>
-
-        <div class="doc-card">
-          <div class="doc-type">Planning opérationnel</div>
-          <h3>Brique A, Planning mois par mois</h3>
-          <span class="doc-status status-existant">Livré</span>
-          <div class="doc-desc">Planning opérationnel mois par mois Brique A sur 12 mois (M0 mai 2026 à M12 mai 2027). 8 sections : 5 principes de pilotage non négociables, vue d'ensemble Gantt simplifié des 8 chantiers structurants avec chemin critique RGE, T1 fondations réglementaires et commerciales détaillé M0 à M3, T2 obtention RGE et industrialisation détaillé M4 à M6, T3 accélération commerciale et premier tertiaire détaillé M7 à M9, T4 validation KPI et bilan détaillé M10 à M12, 5 jalons critiques numérotés (RGE acquis, conducteur travaux senior recruté, premier MaPrimeRénov mandataire encaissé, première référence tertiaire light livrée, validation collégiale 6 KPI durs), 3 rituels de pilotage (hebdo vendredi 17h, mensuel premier lundi, trimestriel premier vendredi), 5 signaux faibles à intercepter (marge brute sous 25%, DSO sup 60 jours, conversion sous 25%, reprises sup 2% CA, trésorerie sous 30 jours charges). Chaque action a un propriétaire nommé et un livrable concret.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> HTML autonome dashboard<br>
-            <strong>Statut</strong> Version initiale livrée mai 2026<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill bym" style="width:90%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="brique1_bym_planning_operationnel.html" class="doc-action">Ouvrir</a>
-          </div>
-        </div>
-
-        <div class="doc-card">
-          <div class="doc-type">Document existant</div>
-          <h3>Organigramme BYM</h3>
-          <span class="doc-status status-existant">Disponible</span>
-          <div class="doc-desc">Organigramme actuel de BYM Construction, intégré au dashboard via l'onglet Structuration. Sera enrichi à mesure du recrutement des conducteurs de travaux, compagnons et encadrants.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> HTML interactif<br>
-            <strong>Statut</strong> Synchronisé dashboard
-          </div>
-          <div class="doc-actions">
-            <a href="organigramme_bym.html" class="doc-action">Ouvrir</a>
-          </div>
-        </div>
-
-        <div class="doc-card">
-          <div class="doc-type">Business plan financier</div>
-          <h3>BP financier 3 ans 2026 à 2028</h3>
-          <span class="doc-status status-existant">Livré</span>
-          <div class="doc-desc">Business plan financier BYM Construction sur 3 exercices (2026, 2027, 2028) au format Word. 8 sections : synthèse exécutive, état actuel BYM au 9 mai 2026, hypothèses structurantes du plan (coûts directs, frais structure, REM dirigeants, IS, délais paiement BTP), compte de résultat prévisionnel détaillé avec marge brute, REM dirigeants chargée, EBITDA et résultat net, plan de trésorerie 2026 à 2028 avec variation BFR et besoin de financement de 500 000 euros à mobiliser sur 2026, roadmap stratégique brique par brique avec KPI durs de passage, points bloquants et plan d'action 90 jours (RGE, audit assurance, audit social, mandataire MaPrimeRénov), indicateurs de pilotage à suivre mensuellement. Cible 2026 CA 2 000 000 d'euros, 2027 CA 4 000 000 d'euros, 2028 CA 7 000 000 d'euros. Cible salariale 30 000 euros nets mensuels par dirigeant atteinte en 2030.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> Document Word téléchargeable<br>
-            <strong>Statut</strong> Version initiale livrée mai 2026<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill bym" style="width:70%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="BYM_Construction_Business_Plan_2026_2028.docx" class="doc-action" download>Télécharger</a>
-          </div>
-        </div>
+      <div class="docgroup-h">Brique A, M0 a M12</div>
+      <div class="docgrid">
+        <a class="docbtn" href="brique1_bym_roadmap.html" target="_blank"><span class="ic">↗</span>Roadmap M0 a M12</a>
+        <a class="docbtn" href="brique1_bym_commercialisation.html" target="_blank"><span class="ic">↗</span>Commercialisation</a>
+        <a class="docbtn" href="brique1_bym_rge_maprimerenov.html" target="_blank"><span class="ic">↗</span>RGE et MaPrimeRenov</a>
+        <a class="docbtn" href="brique1_bym_planning_operationnel.html" target="_blank"><span class="ic">↗</span>Planning mois par mois</a>
+        <a class="docbtn" href="organigramme_bym.html" target="_blank"><span class="ic">↗</span>Organigramme</a>
+        <a class="docbtn" href="BYM_Construction_Business_Plan_2026_2028.docx" download><span class="ic">⬇</span>BP financier 2026 a 2028</a>
       </div>
-
-      <div class="section-title">Plan de communication 12 mois</div>
-      <div class="doc-grid">
-        <div class="doc-card">
-          <div class="doc-type">Plan de com</div>
-          <h3>Plan de communication BYM</h3>
-          <span class="doc-status status-todo">À produire</span>
-          <div class="doc-desc">Plan de communication 12 mois pour BYM Construction. Audit communication concurrents BTP locaux et nationaux, stratégie éditoriale particuliers puis tertiaire, présence Google Maps et Houzz, avis Trustpilot, partenariats agents immobiliers, plaquette dédiée RGE et MaPrimeRénov'. Sera produit après finalisation du book BYM, sur le même modèle que le plan IRIS REP.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> À produire après book BYM<br>
-            <strong>Statut</strong> En attente de prompt dédié<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill bym" style="width:5%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="#" class="doc-action ghost" onclick="alert('À démarrer après production du book BYM. Demander à Claude un prompt plan de com BYM 12 mois.'); return false;">Briefer</a>
-          </div>
-        </div>
-
-        <div class="doc-card">
-          <div class="doc-type">Plaquette commerciale</div>
-          <h3>Plaquette commerciale BYM</h3>
-          <span class="doc-status status-todo">À produire</span>
-          <div class="doc-desc">Plaquette commerciale dédiée BYM Construction, format A4, segmentée par typologie de client (particuliers résidentiel, tertiaire, marchés publics). À produire après obtention du statut RGE.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> Canva éditable<br>
-            <strong>Statut</strong> À démarrer
-          </div>
-          <div class="doc-actions">
-            <a href="#" class="doc-action ghost" onclick="alert('À produire après book BYM et obtention RGE'); return false;">Briefer</a>
-          </div>
-        </div>
+      <div class="docgroup-h">A produire</div>
+      <div class="docgrid">
+        <button class="docbtn soon" onclick="alert('A demarrer apres production du book BYM. Demander a Claude un prompt plan de com BYM 12 mois.')">Plan de communication BYM<span class="tag">a produire</span></button>
+        <button class="docbtn soon" onclick="alert('A produire apres book BYM et obtention RGE')">Plaquette commerciale BYM<span class="tag">a produire</span></button>
       </div>
-
-      <div class="section-title">Trajectoire 4 briques, points clés stratégiques</div>
-      <div class="key-points">
-        <div class="label">Points clés stratégiques</div>
-        <h4>Trois holdings actionnaires : IRIS H 33%, GARV HOLDING 34%, BAGUETI JR H 33%</h4>
-        <ul>
-          <li>Brique A, Stabilisation TCE résidentiel CVL : 15 chantiers en permanence, 2 à 3 millions CA, 12 à 15 compagnons, RGE obtenu</li>
-          <li>Brique B, Industrialisation et tertiaire CVL : 30 chantiers, 4 à 6 millions CA, partenariat formalisé avec IRIS REP Asset Services pour les capex</li>
-          <li>Brique C, Marchés publics et grands chantiers : capacité réponse appel d'offres jusqu'à 5 millions par marché</li>
-          <li>Brique D, Plein régime : 6 à 10 millions CA, EBITDA 1 million, objectif 10 000 euros nets mensuels par dirigeant atteint</li>
-          <li>Statut RGE obligatoire pour MaPrimeRénov' et CEE, à obtenir en priorité brique A</li>
-          <li>Synergies fortes avec IRIS REP Asset Services (capex tertiaires) et Urban Rise / RIR (opérations marchand de biens)</li>
-        </ul>
-      </div>
-
     </div>
 
     <!-- VOLET URBAN RISE / ARRISTO -->
     <div class="volet-section" id="volet-arristo">
-
-      <div class="section-title">Book stratégique</div>
-      <div class="doc-grid">
-        <div class="doc-card">
-          <div class="doc-type">Book mentor</div>
-          <h3>Le book Urban Rise et ARRISTO</h3>
-          <span class="doc-status status-todo">À cadrer</span>
-          <div class="doc-desc">Roadmap brique par brique pour Urban Rise et ARRISTO. À cadrer ensemble avant production. Périmètre, objectifs, ambition financière, articulation entre Urban Rise (marchand de biens), RIR (marchand de biens et conseil rénovation énergétique), ARRISTO (réseau pro). Mode mentor identique aux books IRIS REP et BYM.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> À produire en HTML puis PDF<br>
-            <strong>Statut</strong> En attente de cadrage stratégique<br>
-            <strong>Action</strong> Définir avec Yannis le périmètre et l'ambition<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill arristo" style="width:5%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="#" class="doc-action ghost" onclick="alert('Cadrage stratégique à faire : périmètre Urban Rise vs ARRISTO vs RIR, ambition financière, horizon temporel, articulation entre les 3 entités.'); return false;">Cadrer</a>
-          </div>
-        </div>
+      <div class="docgroup-h">Urban Rise et ARRISTO, a cadrer</div>
+      <div class="docgrid">
+        <button class="docbtn soon" onclick="alert('Premier livrable a produire avant tout autre document Urban Rise et ARRISTO. Demander a Claude une note de cadrage en 5 questions structurantes.')">Cadrage strategique prealable<span class="tag">a produire</span></button>
+        <button class="docbtn soon" onclick="alert('A demarrer apres cadrage du book Urban Rise et ARRISTO')">Book Urban Rise et ARRISTO<span class="tag">a produire</span></button>
+        <button class="docbtn soon" onclick="alert('Le prompt du plan de communication est dans la conversation Claude.')">Plan de communication<span class="tag">a produire</span></button>
       </div>
-
-      <div class="section-title">Plan de communication 12 mois</div>
-      <div class="doc-grid">
-        <div class="doc-card">
-          <div class="doc-type">Plan de com</div>
-          <h3>Plan de communication Urban Rise et ARRISTO</h3>
-          <span class="doc-status status-todo">À produire</span>
-          <div class="doc-desc">Plan de communication à structurer après cadrage du book. Approche probable : positionnement marchand de biens premium CVL pour Urban Rise, communication réseau professionnel et événements pour ARRISTO.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> À produire après book Urban Rise et ARRISTO<br>
-            <strong>Statut</strong> En attente de prompt dédié<br>
-            <strong>Progression</strong>
-            <div class="progress-bar"><div class="progress-fill arristo" style="width:0%"></div></div>
-          </div>
-          <div class="doc-actions">
-            <a href="#" class="doc-action ghost" onclick="alert('À démarrer après cadrage du book Urban Rise et ARRISTO'); return false;">Briefer</a>
-          </div>
-        </div>
-
-        <div class="doc-card">
-          <div class="doc-type">Note de cadrage</div>
-          <h3>Cadrage stratégique préalable</h3>
-          <span class="doc-status status-todo">À écrire</span>
-          <div class="doc-desc">Note de cadrage stratégique avant tout livrable. Définir précisément : 1) Le périmètre exact d'Urban Rise (marchand de biens, géographie, segments visés), 2) Le modèle ARRISTO (membre payant, événementiel, apport d'affaires), 3) L'articulation avec RIR, 4) L'ambition financière à 5 ans, 5) L'organigramme cible.</div>
-          <div class="doc-meta">
-            <strong>Format</strong> Note structurante<br>
-            <strong>Statut</strong> À démarrer
-          </div>
-          <div class="doc-actions">
-            <a href="#" class="doc-action" onclick="alert('Premier livrable à produire avant tout autre document Urban Rise et ARRISTO. Demander à Claude une note de cadrage en 5 questions structurantes.'); return false;">Démarrer</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-title">Points clés stratégiques</div>
-      <div class="key-points">
-        <div class="label">Points clés stratégiques</div>
-        <h4>Activités complémentaires aux briques 4 et 5 d'IRIS REP et aux briques B et C de BYM</h4>
-        <ul>
-          <li>Urban Rise, marchand de biens IRIS H 100%, opportunités sur le tissu CVL et IDF Sud</li>
-          <li>Synergies brique 4 et 5 IRIS REIM : Urban Rise et RIR pourront devenir co-investisseurs sur les opérations IRIS REIM (LP ou GP des club deals à terme)</li>
-          <li>Synergies BYM : Urban Rise commande à BYM les travaux de repositionnement de ses opérations marchand de biens</li>
-          <li>ARRISTO comme réseau professionnel facilitateur d'apport d'affaires multi-entités</li>
-          <li>RIR (49% IRIS H, 51% Vélibor Klepic) : marchand de biens et conseil rénovation énergétique, à articuler avec Urban Rise</li>
-          <li>Périmètre exact ARRISTO et modèle économique à préciser</li>
-        </ul>
-      </div>
-
     </div>
-
-  </div><!-- /mode-bp -->
+</div><!-- /mode-bp -->
 
   <!-- ═══════ MODE PROCESS ═══════ -->
   <div id="mode-process" style="display:none">
