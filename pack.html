@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Pack chaudière ENGIE · IRIS H</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0e1f4d;--navy2:#162a5c;--navy3:#1d3570;
+  --blue:#5B9BD5;--blue2:#7AB3E0;--blue-bg:rgba(91,155,213,0.08);--blue-border:rgba(91,155,213,0.2);
+  --bg:#f5f3f0;--card:#fff;--border:#e2e6ef;--border2:#d1d5e0;
+  --text:#1a1d2b;--dim:#7a7f8e;--dim2:#b0b4c0;
+  --green:#2ecc71;--green-bg:#eafaf1;--red:#e74c3c;--red-bg:#fdecea;
+  --orange:#f39c12;--orange-bg:#fef5e7;--amber:#d4a017;
+  --font:'Nunito Sans',sans-serif;
+}
+html,body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
+.wrap{max-width:920px;margin:0 auto;padding:32px 28px 80px}
+
+.header{margin-bottom:24px}
+.titre{font-size:28px;font-weight:800;color:var(--navy);letter-spacing:-0.5px;margin-bottom:4px}
+.titre .accent{color:var(--blue);font-weight:300}
+.sub{font-size:12px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+
+.intro{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 26px;margin-bottom:22px;font-size:14px;line-height:1.65}
+.intro strong{color:var(--navy);font-weight:700}
+
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.kpi-lab{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:6px}
+.kpi-val{font-size:22px;font-weight:800;color:var(--navy);line-height:1}
+.kpi-sub{font-size:11px;color:var(--dim);margin-top:5px}
+
+.step{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:16px;position:relative}
+.step-hdr{display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.step-num{flex-shrink:0;width:34px;height:34px;border-radius:9px;background:var(--navy);color:#fff;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.step-titre{font-size:17px;font-weight:700;color:var(--navy);line-height:1.3}
+.step-tag{margin-left:auto;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:0.8px;text-transform:uppercase;white-space:nowrap}
+.tag-email{background:var(--blue-bg);color:var(--navy)}
+.tag-paiement{background:var(--orange-bg);color:var(--amber)}
+.tag-remb{background:var(--green-bg);color:#27ae60}
+.step-body{font-size:14px;line-height:1.6}
+.step-body p{margin-bottom:8px}
+.step-body strong{color:var(--navy);font-weight:700}
+
+.who{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;background:var(--navy);color:#fff;margin-right:6px}
+.who.vil{background:var(--blue);color:#0a1730}
+
+.bank{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-top:12px;font-size:13px;line-height:1.7}
+.bank-lab{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:6px}
+.bank code{font-family:'SF Mono','Monaco','Consolas',monospace;font-size:13px;color:var(--navy);font-weight:700;background:var(--blue-bg);padding:2px 7px;border-radius:5px}
+
+.mail{background:var(--bg);border:1px solid var(--border);border-radius:10px;margin-top:12px;overflow:hidden}
+.mail-head{background:var(--card);border-bottom:1px solid var(--border);padding:10px 16px;font-size:12px;color:var(--dim)}
+.mail-head b{color:var(--navy)}
+.mail-obj{font-size:13.5px;font-weight:700;color:var(--navy);padding:10px 16px 4px}
+.mail-body{padding:4px 16px 16px;font-size:13.5px;line-height:1.6;color:var(--text);white-space:pre-line}
+.mail-pj{display:inline-block;background:var(--blue-bg);color:var(--navy);font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:6px;margin:8px 16px 16px}
+
+.amounts{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.amt{flex:1;min-width:140px;background:var(--green-bg);border:1px solid #b7e4c7;border-radius:10px;padding:12px 16px}
+.amt-lab{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#27ae60;font-weight:700;margin-bottom:4px}
+.amt-val{font-size:18px;font-weight:800;color:#1e8449}
+
+.total-line{background:var(--navy);color:#fff;border-radius:12px;padding:18px 24px;margin-top:8px;display:flex;justify-content:space-between;align-items:center}
+.total-line .lab{font-size:12px;letter-spacing:1px;text-transform:uppercase;font-weight:700;opacity:.85}
+.total-line .val{font-size:24px;font-weight:800}
+
+@media(max-width:680px){
+  .wrap{padding:20px 16px 60px}
+  .kpis{grid-template-columns:1fr}
+  .step{padding:18px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="titre">Pack chaudière <span class="accent">ENGIE</span></div>
+    <div class="sub">Procédure remboursement et paiement · pour Junior</div>
+  </div>
+
+  <div class="intro">
+    Objet : MB règle directement le solde de la chaudière ENGIE Home Services posée au <strong>124 rue de Beaujardin, Tours</strong>, et rembourse à Yannis les sommes déjà avancées. Facture ENGIE n° <strong>7BI34620849</strong> du 08/12/2025, total <strong>5831.31 euros TTC</strong>. Cinq étapes ci dessous, dans l'ordre.
+  </div>
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="kpi-lab">MB vers ENGIE</div>
+      <div class="kpi-val">2041.91 €</div>
+      <div class="kpi-sub">Solde restant à régler</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lab">Remboursements MB vers Yannis</div>
+      <div class="kpi-val">3789.40 €</div>
+      <div class="kpi-sub">1749.40 + 2040.00</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lab">Total facture</div>
+      <div class="kpi-val">5831.31 €</div>
+      <div class="kpi-sub">TTC, facture 7BI34620849</div>
+    </div>
+  </div>
+
+  <!-- ETAPE 1 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num">1</div>
+      <div class="step-titre">Email Yannis vers Vilmar, facture ENGIE jointe</div>
+      <div class="step-tag tag-email">Email</div>
+    </div>
+    <div class="step-body">
+      <p><span class="who">Yannis</span> envoie à <span class="who vil">Vilmar</span> la facture ENGIE pour déclencher le paiement par MB.</p>
+      <div class="mail">
+        <div class="mail-head"><b>De</b> Yannis Benbaouali · <b>À</b> Vilmar</div>
+        <div class="mail-obj">Objet : Facture chaudière ENGIE à régler par MB</div>
+        <div class="mail-body">Bonjour Vilmar,
+
+Tu trouveras en pièce jointe la facture ENGIE Home Services n° 7BI34620849 pour la chaudière posée au 124 rue de Beaujardin à Tours.
+
+Le solde restant à régler à ENGIE est de 2041.91 euros, à virer directement sur le compte ENGIE indiqué sur la facture (IBAN FR76 3000 4013 2800 0128 1962 204).
+
+Merci de procéder au paiement et de me confirmer une fois fait.
+
+Cordialement,
+Yannis</div>
+        <div class="mail-pj">Pièce jointe : facture_ENGIE_7BI34620849.pdf</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPE 2 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num">2</div>
+      <div class="step-titre">Paiement MB vers ENGIE</div>
+      <div class="step-tag tag-paiement">Paiement</div>
+    </div>
+    <div class="step-body">
+      <p><span class="who vil">MB</span> verse <strong>2041.91 euros</strong> directement à ENGIE Home Services sur le compte ci dessous.</p>
+      <div class="bank">
+        <div class="bank-lab">RIB ENGIE Home Services</div>
+        Bénéficiaire : ENGIE HOME SERVICES<br>
+        IBAN : <code>FR76 3000 4013 2800 0128 1962 204</code><br>
+        BIC : <code>BNPAFRPPXXX</code><br>
+        Banque : BNP Paribas · Référence : 7BI34620849
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPE 3 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num">3</div>
+      <div class="step-titre">Email Vilmar vers Yannis, factures jointes</div>
+      <div class="step-tag tag-email">Email</div>
+    </div>
+    <div class="step-body">
+      <p><span class="who vil">Vilmar</span> confirme le paiement à <span class="who">Yannis</span> et joint les factures.</p>
+      <div class="mail">
+        <div class="mail-head"><b>De</b> Vilmar · <b>À</b> Yannis Benbaouali</div>
+        <div class="mail-obj">Objet : Paiement ENGIE effectué, factures jointes</div>
+        <div class="mail-body">Bonjour Yannis,
+
+Le règlement de 2041.91 euros a été effectué auprès d'ENGIE Home Services.
+
+Tu trouveras en pièce jointe les factures correspondantes.
+
+Cordialement,
+Vilmar</div>
+        <div class="mail-pj">Pièces jointes : factures</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPE 4 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num">4</div>
+      <div class="step-titre">Remboursement MB vers Yannis</div>
+      <div class="step-tag tag-remb">Remboursement</div>
+    </div>
+    <div class="step-body">
+      <p><span class="who vil">MB</span> rembourse à <span class="who">Yannis</span> les avances déjà payées, <strong>au plus tôt</strong>, sur son RIB personnel.</p>
+      <div class="amounts">
+        <div class="amt">
+          <div class="amt-lab">Remboursement 1</div>
+          <div class="amt-val">1749.40 €</div>
+        </div>
+        <div class="amt">
+          <div class="amt-lab">Remboursement 2</div>
+          <div class="amt-val">2040.00 €</div>
+        </div>
+      </div>
+      <div class="total-line">
+        <span class="lab">Total remboursé à Yannis</span>
+        <span class="val">3789.40 €</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPE 5 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num">5</div>
+      <div class="step-titre">Email final Yannis, clôture opération</div>
+      <div class="step-tag tag-email">Email</div>
+    </div>
+    <div class="step-body">
+      <p><span class="who">Yannis</span> confirme la clôture : remboursements reçus, paiement ENGIE effectué, rappel de la facture globale de pose.</p>
+      <div class="mail">
+        <div class="mail-head"><b>De</b> Yannis Benbaouali · <b>À</b> Vilmar</div>
+        <div class="mail-obj">Objet : Opération chaudière ENGIE clôturée</div>
+        <div class="mail-body">Bonjour Vilmar,
+
+Les remboursements ont bien été reçus et le paiement à ENGIE est effectué.
+
+Pour rappel, je te joins la facture globale de pose de la chaudière.
+
+Merci à toi, l'opération est clôturée de mon côté.
+
+Cordialement,
+Yannis</div>
+        <div class="mail-pj">Pièce jointe : facture_ENGIE_7BI34620849.pdf</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

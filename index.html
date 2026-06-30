@@ -252,6 +252,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'prospects')"><span class="nav-dot"></span><span>Dealflow Prospects</span><span class="nav-cnt" id="nav-prospects-cnt">0</span></button>
       <button class="nav-item" style="display:none" onclick="switchTab(this,'documents')"><span class="nav-dot"></span><span>Documents</span><span class="nav-cnt" id="nav-documents-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'electricite')"><span class="nav-dot"></span><span>Électricité</span><span class="nav-cnt" id="nav-electricite-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'pack')"><span class="nav-dot"></span><span>Pack chaudière</span></button>
       <button class="nav-item" onclick="switchTab(this,'finance')"><span class="nav-dot"></span><span>Finance</span></button>
       <button class="nav-item" style="display:none" onclick="switchTab(this,'histoire')"><span class="nav-dot"></span><span>Histoire</span><span class="nav-cnt" id="nav-histoire-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'location')"><span class="nav-dot"></span><span>Location</span><span class="nav-cnt" id="nav-location-cnt">0</span></button>
@@ -547,6 +548,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <!-- ELECTRICITE -->
       <div class="tab" id="tab-electricite">
         <iframe id="electricite-frame" src="electricien.html?v=1" style="width:100%;height:calc(100vh - 100px);border:none;border-radius:12px;background:var(--bg)"></iframe>
+      </div>
+      <div class="tab" id="tab-pack">
+        <iframe id="pack-frame" src="pack.html?v=1" style="width:100%;height:calc(100vh - 100px);border:none;border-radius:12px;background:var(--bg)"></iframe>
       </div>
       <div class="tab" id="tab-references"></div>
 
@@ -1180,7 +1184,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',bourgogne:'Bourgogne · 72 / 78 rue de Bourgogne, Orléans',deals:'Dealflow Projets',prospects:'Dealflow Prospects',dettes:'Dettes croisées · CB / YB',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',location:'Location · Candidats coloc Orléans',references:'Références et opportunités'};
+  const titles={todo:'Todo',bourgogne:'Bourgogne · 72 / 78 rue de Bourgogne, Orléans',deals:'Dealflow Projets',prospects:'Dealflow Prospects',dettes:'Dettes croisées · CB / YB',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',pack:'Pack chaudière ENGIE · Procédure Junior',location:'Location · Candidats coloc Orléans',references:'Références et opportunités'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
