@@ -854,7 +854,7 @@ const REF_BYM_TYPES={renovation_complete:'Rénovation complète',creation_cave_v
 const REF_CFG={
   bym:{table:'deals_references_bym',codeField:'code_reference',codePrefix:'REF',titleField:'titre',
     statutField:'statut_publication',statutVals:['brouillon','publie'],une:'a_la_une',ordre:'ordre_affichage',
-    photos:['photos_avant','photos_apres'],principale:'photo_principale',orderBy:'ordre_affichage.asc.nullslast,code_reference.asc',
+    photos:['photos_avant','photos_process','photos_apres'],principale:'photo_principale',orderBy:'ordre_affichage.asc.nullslast,code_reference.asc',
     fields:[{k:'titre',l:'Titre',t:'title'},{k:'type_prestation',l:'Type',t:'select',opts:REF_BYM_TYPES},{k:'ville_affichage',l:'Ville',t:'text'},{k:'annee_realisation',l:'Année',t:'int'},{k:'surface_travaux_m2',l:'Surface m²',t:'num'},{k:'budget_affichage',l:'Budget',t:'text'},{k:'description_courte',l:'Description courte',t:'area'},{k:'description_longue',l:'Description longue',t:'area'}]},
   ur:{table:'references_urbanrise',codeField:'slug',codePrefix:'ur-ref-',titleField:'titre',
     statutField:'statut_publication',statutVals:['brouillon','publie'],une:'a_la_une',ordre:'ordre_affichage',
@@ -1016,7 +1016,7 @@ function refCard(sec,r){
   if(c.photos.length){
     body+='<div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid var(--border);padding-top:14px">';
     if(c.principale)body+=`<div><div style="font-size:11px;color:var(--dim);margin-bottom:5px">Principale</div>${r[c.principale]?refImg(r[c.principale],true):'<span style="font-size:11px;color:var(--dim)">aucune</span>'} <button onclick="refSetPrincipaleUrl('${sec}','${id}')" style="border:1px solid var(--border);background:var(--bg);border-radius:7px;cursor:pointer;font-size:11px;padding:4px 8px">URL…</button></div>`;
-    c.photos.forEach(p=>{ const lbl={photos_avant:'Avant',photos_apres:'Après',photos_chantier:'Chantier',photos_urls:'Photos'}[p]||p;
+    c.photos.forEach(p=>{ const lbl={photos_avant:'Avant',photos_process:'Pendant',photos_apres:'Après',photos_chantier:'Chantier',photos_urls:'Photos'}[p]||p;
       body+=`<div style="flex:1;min-width:240px"><div style="font-size:11px;color:var(--dim);margin-bottom:5px">${lbl} <button onclick="refAddPhoto('${sec}','${id}','${p}')" style="border:1px solid var(--border);background:var(--bg);border-radius:7px;cursor:pointer;font-size:11px;padding:3px 7px">+ ajouter</button></div><div>${refPhotoChips(sec,r,p)}</div></div>`; });
     body+='</div>';
   }
