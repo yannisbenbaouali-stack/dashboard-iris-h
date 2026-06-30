@@ -197,5 +197,6594 @@ function resetFilters() {
 
 renderGrid(RAW_DATA);
 </script>
+<style>
+.typo-nav{background:#1a1a1a;border-radius:8px;padding:16px 20px;margin:32px 0 8px;}
+.typo-nav h2{color:#b8860b;font-family:Georgia,serif;font-size:20px;margin:0 0 12px;}
+.typo-nav a{display:inline-block;margin:4px 10px 4px 0;color:#f5f3f0;font-size:12px;text-decoration:none;border:1px solid #b8860b;padding:5px 10px;border-radius:4px;}
+.typo-nav a:hover{background:#b8860b;color:#1a1a1a;}
+.typo-sec{background:#fff;border-radius:8px;padding:20px 24px;margin:18px 0;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.typo-sec h3{font-family:Georgia,serif;color:#1a1a1a;font-size:18px;margin:0 0 4px;border-left:4px solid #b8860b;padding-left:12px;}
+.typo-sec .desc{font-size:13px;color:#555;margin:0 0 14px;line-height:1.5;}
+.typo-sec .cnt{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#b8860b;font-weight:600;margin-bottom:10px;}
+.typo-tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.typo-tbl th{background:#1a1a1a;color:#fff;text-align:left;padding:8px 10px;font-weight:600;position:sticky;top:0;}
+.typo-tbl td{border-bottom:1px solid #eee;padding:7px 10px;vertical-align:top;color:#333;}
+.typo-tbl tr:nth-child(even) td{background:#faf8f3;}
+.tbl-wrap{overflow-x:auto;max-height:640px;overflow-y:auto;border:1px solid #eee;border-radius:6px;}
+.bA{background:#d4edda;color:#155724;padding:1px 7px;border-radius:3px;font-weight:600;}
+.bB{background:#fcf3cf;color:#7d6608;padding:1px 7px;border-radius:3px;font-weight:600;}
+.bC{background:#fadbd8;color:#78281f;padding:1px 7px;border-radius:3px;font-weight:600;}
+</style>
+<div class="typo-nav"><h2>Onglets typologie, données intégrales Excel v3</h2>
+<div class="desc" style="color:#d8d4ce;font-size:12px;margin-bottom:10px;">Reprise complète des 12 onglets par typologie du tableur, toutes colonnes conservées (SIREN, forme, score, AUM, actifs CVL, décideur cible). Doublons possibles avec le tableau de prospition priorisée ci dessus, conservés volontairement pour fidélité au tableur source.</div>
+<a href="#T1_FO_Struct">Typologie 1</a>
+<a href="#T2_FoncFamiliales">Typologie 2</a>
+<a href="#T3_SCPI_Inst">Typologie 3</a>
+<a href="#T4_FoncCotees">Typologie 4</a>
+<a href="#T5_Banques">Typologie 5</a>
+<a href="#T6_Public">Typologie 6</a>
+<a href="#T7_Sante_Univ">Typologie 7</a>
+<a href="#T8_ParticFortunes">Typologie 8</a>
+<a href="#T9_Bailleurs">Typologie 9</a>
+<a href="#T10_Prescripteurs">Typologie 10</a>
+<a href="#T11_PropOccupants">Typologie 11</a>
+<a href="#FO_Vinicoles_Loire">Family offices vinicoles Loire</a>
+</div>
+<section class="typo-sec" id="T1_FO_Struct">
+<h3>Typologie 1, Family offices structurés et grandes fortunes patrimoniales</h3>
+<div class="desc">Family offices structurés français HNW/UHNW, et grandes fortunes patrimoniales accessibles via prescripteurs ou réseau professionnel.</div>
+<div class="cnt">25 entrées · 12 colonnes</div>
+<div class="tbl-wrap"><table class="typo-tbl"><thead><tr>
+<th>#</th>
+<th>Nom commercial</th>
+<th>Raison sociale</th>
+<th>SIREN</th>
+<th>Siège / Adresse</th>
+<th>Téléphone</th>
+<th>Email</th>
+<th>Dirigeant / Décideur</th>
+<th>Profil</th>
+<th>Score /5</th>
+<th>Sous-cat</th>
+<th>Note /10</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>Family Office Arnault</td>
+<td>Groupe Arnault SE</td>
+<td>à enrichir</td>
+<td>41 av Montaigne, 75008 Paris</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Arnault (Bernard Arnault)</td>
+<td>Family office Arnault via Holding patrimoniale, cible UHNW</td>
+<td>5</td>
+<td><span class="bC">C</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Famille Bettencourt-Meyers (Téthys)</td>
+<td>Téthys SCA</td>
+<td>à enrichir</td>
+<td>27-29 rue des Poissonniers, 92200 Neuilly-sur-Seine</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Bettencourt-Meyers</td>
+<td>Famille L&#x27;Oréal, FO Téthys SCA</td>
+<td>5</td>
+<td><span class="bC">C</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Famille Pinault (Artémis)</td>
+<td>Artémis SAS</td>
+<td>à enrichir</td>
+<td>12 rue François 1er, 75008 Paris</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Pinault (François-Henri Pinault)</td>
+<td>Family office Pinault Artémis</td>
+<td>5</td>
+<td><span class="bC">C</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Famille Wertheimer (Mousse Partners)</td>
+<td>Mousse Partners</td>
+<td>à enrichir</td>
+<td>New York + Paris</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Wertheimer (Chanel)</td>
+<td>Family office Wertheimer Chanel</td>
+<td>5</td>
+<td><span class="bC">C</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Famille Decaux (FCDC)</td>
+<td>Decaux Frères Holding</td>
+<td>à enrichir</td>
+<td>Neuilly-sur-Seine 92</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Decaux</td>
+<td>FO JCDecaux famille</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Famille Mulliez (AFM)</td>
+<td>Association Familiale Mulliez</td>
+<td>à enrichir</td>
+<td>Roubaix 59</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Mulliez (AFM)</td>
+<td>FO AFM (Auchan, Decathlon, Boulanger, Leroy Merlin)</td>
+<td>5</td>
+<td><span class="bC">C</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Famille Hermès Dumas</td>
+<td>Famille Hermès Dumas</td>
+<td>à enrichir</td>
+<td>Paris 75008</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Hermès Dumas (Axel Dumas)</td>
+<td>FO Hermès branche Dumas</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Famille Bolloré</td>
+<td>Bolloré Famille Holding</td>
+<td>à enrichir</td>
+<td>92800 Puteaux</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Bolloré</td>
+<td>FO Bolloré famille</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Famille Hériard Dubreuil (Rémy Cointreau)</td>
+<td>Andromède SCA</td>
+<td>à enrichir</td>
+<td>Paris</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Hériard Dubreuil</td>
+<td>FO Rémy Cointreau famille</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Famille Bouygues</td>
+<td>Bouygues Famille SCA</td>
+<td>à enrichir</td>
+<td>Paris</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Bouygues (Martin Bouygues)</td>
+<td>FO Bouygues famille</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Famille Dassault</td>
+<td>GIMD</td>
+<td>à enrichir</td>
+<td>Paris 75008</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Dassault</td>
+<td>GIMD Groupe Industriel Marcel Dassault</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Famille Niel (NJJ)</td>
+<td>NJJ Holding SAS</td>
+<td>à enrichir</td>
+<td>Paris</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Xavier Niel</td>
+<td>FO Niel NJJ</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Famille Drahi</td>
+<td>Patrick Drahi Famille Holding</td>
+<td>à enrichir</td>
+<td>Suisse + IDF</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Patrick Drahi</td>
+<td>FO Drahi Altice</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Famille Pelliccia (Sergio Tacchini ex)</td>
+<td>Pelliccia Family</td>
+<td>à enrichir</td>
+<td>Paris IDF</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Pelliccia</td>
+<td>FO mode patrimonial</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Famille Lambert (LDC)</td>
+<td>Famille Lambert LDC</td>
+<td>à enrichir</td>
+<td>Sablé-sur-Sarthe 72</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Lambert (LDC volailles)</td>
+<td>FO LDC familial</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Famille Besnier (Lactalis)</td>
+<td>Famille Besnier Lactalis</td>
+<td>à enrichir</td>
+<td>Laval 53</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Besnier (Emmanuel Besnier)</td>
+<td>FO Besnier Lactalis</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Famille Bel</td>
+<td>Famille Bel Fromageries</td>
+<td>à enrichir</td>
+<td>Paris IDF</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Bel (Antoine Fiévet)</td>
+<td>FO Bel patrimonial</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Famille Rocher</td>
+<td>Groupe Rocher Famille</td>
+<td>à enrichir</td>
+<td>La Gacilly 56</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Rocher (Bris Rocher)</td>
+<td>FO Yves Rocher Groupe Rocher</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Famille Carmichael (immobilier IDF)</td>
+<td>Carmichael Family</td>
+<td>à enrichir</td>
+<td>Paris IDF</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Carmichael</td>
+<td>FO immobilier patrimonial Paris</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Famille Bonnigal (Touraine)</td>
+<td>Bonnigal Holding Familiale</td>
+<td>à enrichir</td>
+<td>Touraine 37</td>
+<td>à enrichir</td>
+<td>via réseau</td>
+<td>Famille Bonnigal</td>
+<td>Famille patrimoniale tourangelle, à approfondir via notaires</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Famille tourangelle 1 (à identifier)</td>
+<td>Holding patrimoniale Tours</td>
+<td>à enrichir</td>
+<td>Tours 37</td>
+<td>à enrichir</td>
+<td>via notaires Daloz Tantot Maupu</td>
+<td>À identifier</td>
+<td>Famille patrimoniale tourangelle non structurée, sourcing notaires</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Famille orléanaise 1 (à identifier)</td>
+<td>Holding patrimoniale Orléans</td>
+<td>à enrichir</td>
+<td>Orléans 45</td>
+<td>à enrichir</td>
+<td>via notaires Fournier Hourdé-Cleret Magy Salmon-Boutot</td>
+<td>À identifier</td>
+<td>Famille patrimoniale orléanaise non structurée, sourcing notaires</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Famille blésoise (à identifier)</td>
+<td>Holding patrimoniale Blois</td>
+<td>à enrichir</td>
+<td>Blois 41</td>
+<td>à enrichir</td>
+<td>via notaires Blois</td>
+<td>À identifier</td>
+<td>Famille patrimoniale blésoise, sourcing notaires</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Famille chartraine (à identifier)</td>
+<td>Holding patrimoniale Chartres</td>
+<td>à enrichir</td>
+<td>Chartres 28</td>
+<td>à enrichir</td>
+<td>via notaires Gouin-Pothier</td>
+<td>À identifier</td>
+<td>Famille patrimoniale chartraine, sourcing notaires</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Famille berrichonne (à identifier)</td>
+<td>Holding patrimoniale Bourges</td>
+<td>à enrichir</td>
+<td>Bourges 18</td>
+<td>à enrichir</td>
+<td>via notaires Bourges</td>
+<td>À identifier</td>
+<td>Famille patrimoniale berrichonne, sourcing notaires</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>7</td>
+</tr>
+</tbody></table></div></section>
+<section class="typo-sec" id="T2_FoncFamiliales">
+<h3>Typologie 2, Foncières familiales tertiaires CVL et IDF</h3>
+<div class="desc">Sociétés familiales détenant 5 à 30 immeubles tertiaires. Recherche partiellement bloquée par crédits Pappers, base à enrichir via requêtes NAF 6820B, 6831Z, 6832A en CVL et IDF.</div>
+<div class="cnt">12 entrées · 13 colonnes</div>
+<div class="tbl-wrap"><table class="typo-tbl"><thead><tr>
+<th>#</th>
+<th>Raison sociale</th>
+<th>SIREN</th>
+<th>Forme</th>
+<th>Siège</th>
+<th>Téléphone</th>
+<th>Email</th>
+<th>Dirigeant</th>
+<th>Profil bref</th>
+<th>Source</th>
+<th>Score /5</th>
+<th>Sous-cat</th>
+<th>Note /10</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>SCI ORLEANS ESPACE</td>
+<td>344027461</td>
+<td>SCI</td>
+<td>23-25 av de la Libération, 45000 Orléans</td>
+<td>nc</td>
+<td>nc</td>
+<td>À confirmer Pappers</td>
+<td>Location bureaux NAF 6820B Orléans centre</td>
+<td>Societe.com</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>2</td>
+<td>SCI ADH</td>
+<td>391632072</td>
+<td>SCI</td>
+<td>6 bis rue Jeanne d&#x27;Arc, 45000 Orléans</td>
+<td>nc</td>
+<td>nc</td>
+<td>À confirmer Pappers</td>
+<td>Location locaux tertiaires Orléans hypercentre</td>
+<td>Societe.com</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>SCI M.P.A.</td>
+<td>447844085</td>
+<td>SCI</td>
+<td>21 rue de la République, 45000 Orléans</td>
+<td>nc</td>
+<td>nc</td>
+<td>À confirmer Pappers</td>
+<td>Location biens propres NAF 6820B Orléans</td>
+<td>PagesJaunes</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>4</td>
+<td>CENTRE VAL DE LOIRE IMMOBILIER</td>
+<td>423897727</td>
+<td>À confirmer</td>
+<td>Saint-Cyr-sur-Loire 37540</td>
+<td>nc</td>
+<td>nc</td>
+<td>À confirmer Pappers</td>
+<td>Société immobilière régionale Touraine</td>
+<td>Verif.com</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>5</td>
+<td>GROUPE COUTANT FINANCES</td>
+<td>à enrichir</td>
+<td>SAS familiale</td>
+<td>Orléans 45</td>
+<td>via site officiel</td>
+<td>via site</td>
+<td>Famille Coutant</td>
+<td>Promoteur-marchand de biens depuis 1994 Orléans Métropole, parc patrimonial</td>
+<td>Site officiel</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>6</td>
+<td>DEROX GROUPE (MDB Promotion)</td>
+<td>à enrichir</td>
+<td>SAS familiale</td>
+<td>Orléans 45</td>
+<td>via mdbpromotion.com</td>
+<td>via site</td>
+<td>Famille Derox</td>
+<td>Promoteur Orléans, détient actifs patrimoine résiduel post-VEFA</td>
+<td>Site officiel</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>7</td>
+<td>TERRAVIA</td>
+<td>à enrichir</td>
+<td>SAS</td>
+<td>Orléans/Tours/Blois</td>
+<td>via terravia.fr</td>
+<td>via site</td>
+<td>Direction Terravia</td>
+<td>Promoteur CVL 20 ans, parc en gestion</td>
+<td>Site officiel</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>8</td>
+<td>COFFIM GROUPE</td>
+<td>à enrichir</td>
+<td>SAS familiale</td>
+<td>Loiret 45</td>
+<td>via LinkedIn COFFIM</td>
+<td>nc</td>
+<td>Direction COFFIM</td>
+<td>Promoteur immobilier Loiret</td>
+<td>LinkedIn</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>9</td>
+<td>P2I PROMOTION</td>
+<td>à enrichir</td>
+<td>SAS</td>
+<td>Orléans</td>
+<td>via p2i.fr</td>
+<td>via site</td>
+<td>Direction P2i</td>
+<td>Promoteur Orléans, actifs en patrimoine</td>
+<td>Site officiel</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>10</td>
+<td>BEGUET ASSOCIES</td>
+<td>à enrichir</td>
+<td>SAS</td>
+<td>Paris + agence CVL</td>
+<td>via beguetassocies.fr</td>
+<td>via site</td>
+<td>Famille Béguet</td>
+<td>Marchand biens prestige Paris-CVL, parc tertiaire confidentiel</td>
+<td>Site officiel</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>11</td>
+<td>DURAND-MONTOUCHE</td>
+<td>à enrichir</td>
+<td>Famille</td>
+<td>Orléans</td>
+<td>via dmimmo.com</td>
+<td>via site</td>
+<td>Famille Durand-Montouché</td>
+<td>Promoteur historique Orléans, parc en gestion</td>
+<td>Site officiel</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>À enrichir vague 2 via Pappers, requêtes NAF 6820B / 6831Z / 6832A sur 18, 28, 36, 37, 41, 45 et 75, 77, 78, 91, 92, 93, 94, 95 avec filtres CA &gt;200 000 et effectifs 1 à 19. Objectif 60 entrées CVL + 50 IDF.</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table></div></section>
+<section class="typo-sec" id="T3_SCPI_Inst">
+<h3>Typologie 3, SCPI et foncières institutionnelles avec actifs CVL</h3>
+<div class="desc">SGP agréées AMF et foncières patrimoniales avec actifs CVL gérés à distance. Cible Pilotage local délégué CVL.</div>
+<div class="cnt">60 entrées · 14 colonnes</div>
+<div class="tbl-wrap"><table class="typo-tbl"><thead><tr>
+<th>#</th>
+<th>Nom commercial</th>
+<th>Raison sociale</th>
+<th>SIREN</th>
+<th>Siège</th>
+<th>Téléphone</th>
+<th>Email</th>
+<th>Dirigeant principal</th>
+<th>AUM France</th>
+<th>Actifs CVL</th>
+<th>Décideur cible</th>
+<th>Score /5</th>
+<th>Sous-cat</th>
+<th>Note /10</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>Sofidy (Tikehau)</td>
+<td>SOFIDY</td>
+<td>338826332</td>
+<td>303 sq des Champs Élysées, 91026 Evry-Courcouronnes</td>
+<td>01 69 87 02 00</td>
+<td>contact@sofidy.com</td>
+<td>Olivier Loussouarn (DG Inv) ; Jean-Marc Peter (DG)</td>
+<td>4,8 Md€</td>
+<td>Oui Tours, Chartres, Bourges (Immorente, Efimmo 1)</td>
+<td>DAM</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Aestiam</td>
+<td>AESTIAM</td>
+<td>642037162</td>
+<td>9 rue de Téhéran, 75008 Paris</td>
+<td>01 55 27 35 00</td>
+<td>contact@aestiam.com</td>
+<td>Alexandre Claudet (Pdt DG)</td>
+<td>1,4 Md€</td>
+<td>Oui Aestiam Pierre Rendement Tours/Chartres, Aestiam Horizon Orléans</td>
+<td>DAM / Dir Immo</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Perial AM</td>
+<td>PERIAL ASSET MANAGEMENT</td>
+<td>775696446</td>
+<td>34 rue Guersant, 75017 Paris</td>
+<td>01 56 43 11 00</td>
+<td>contact@perial.com</td>
+<td>Eric Cosserat (Pdt) ; Yann Videcoq (DG)</td>
+<td>5,3 Md€</td>
+<td>Oui SCPI Perial O2 Orléans</td>
+<td>DAM</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Atland Voisin</td>
+<td>ATLAND VOISIN</td>
+<td>310057625</td>
+<td>15 Place Grangier, 21000 Dijon</td>
+<td>03 80 68 09 30</td>
+<td>contact@atland-voisin.com</td>
+<td>Jean-Christophe Antoine (Pdt) ; Martin Jacquesson (DG délégué)</td>
+<td>3 Md€</td>
+<td>Oui Epargne Pierre régions 47%</td>
+<td>DI / DG</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>5</td>
+<td>La Française REM</td>
+<td>LA FRANCAISE REAL ESTATE MANAGERS</td>
+<td>399922699</td>
+<td>128 bd Raspail, 75006 Paris</td>
+<td>01 44 56 10 00</td>
+<td>contact@la-francaise.com</td>
+<td>Philippe Depoux (Pdt)</td>
+<td>18 Md€</td>
+<td>Oui LF Croissance &amp; Territoires Tours Blois Orléans</td>
+<td>DAM Bureaux</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Amundi Immobilier</td>
+<td>AMUNDI IMMOBILIER</td>
+<td>315429837</td>
+<td>91-93 bd Pasteur, 75015 Paris</td>
+<td>01 76 33 30 30</td>
+<td>contact.immobilier@amundi.com</td>
+<td>Antoine Aubry (DG depuis 04/2024)</td>
+<td>26 Md€</td>
+<td>Oui Edissimmo Chartres, Rivoli Avenir Patrimoine</td>
+<td>DAM Tertiaire</td>
+<td>5</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Praemia REIM France (ex-Primonial)</td>
+<td>PRAEMIA REIM FRANCE</td>
+<td>531231124</td>
+<td>36 rue de Naples, 75008 Paris</td>
+<td>01 44 21 70 00</td>
+<td>contact@praemia-reim.com</td>
+<td>Grégory Frapet (Pdt Directoire)</td>
+<td>36 Md€ groupe</td>
+<td>À confirmer via Primovie/PFO/PFO2</td>
+<td>DAM Bureaux</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>8</td>
+<td>BNP Paribas REIM France</td>
+<td>BNP PARIBAS REIM FRANCE</td>
+<td>300794278</td>
+<td>50 cours de l&#x27;Ile Seguin, 92100 Boulogne-Billancourt</td>
+<td>01 55 65 23 55</td>
+<td>contact-reim@bnpparibas.com</td>
+<td>Sigrid Duhamel ; Nathalie Charles (VP CS)</td>
+<td>15 Md€</td>
+<td>Oui Accimmo Pierre, France Investipierre Chartres Orléans, Capiforce Pierre Orléans</td>
+<td>DAM France</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>9</td>
+<td>AEW Patrimoine (AEW Ciloger)</td>
+<td>AEW CILOGER</td>
+<td>332565460</td>
+<td>22 rue du Docteur Lancereaux, 75008 Paris</td>
+<td>01 56 69 50 50</td>
+<td>contact@aewpatrimoine.com</td>
+<td>Christian Delaire (CEO AEW Europe)</td>
+<td>35 Md€</td>
+<td>Oui AEW Commerces Europe Orléans, Pierre Plus Blois</td>
+<td>DAM Retail/Bureaux France</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Magellim REIM (ex-Foncière Magellan)</td>
+<td>FONCIERE MAGELLAN</td>
+<td>à confirmer</td>
+<td>38 av Pierre 1er de Serbie, 75008 Paris</td>
+<td>01 53 89 09 60</td>
+<td>contact@magellim.com</td>
+<td>Steven Perron (Fondateur Pdt)</td>
+<td>1,8 Md€</td>
+<td>À confirmer stratégie régions</td>
+<td>DAM</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Cap Foncières &amp; Territoires</td>
+<td>CAP FONCIERES &amp; TERRITOIRES</td>
+<td>799481817</td>
+<td>22 av Foch, 54000 Nancy</td>
+<td>03 83 41 26 17</td>
+<td>contact@foncieres-et-territoires.com</td>
+<td>Frédéric Durand (Pdt)</td>
+<td>200 M€</td>
+<td>À confirmer villes moyennes</td>
+<td>DG / DAM</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Atlantique Murs Régions (BPGO)</td>
+<td>SCPI ATLANTIQUE MUR REGIONS / OTOKTONE 3I</td>
+<td>342803236</td>
+<td>2 rue Françoise Sagan, 44800 Saint-Herblain</td>
+<td>02 51 89 73 00</td>
+<td>contact@bpgo.fr</td>
+<td>Dir BPGO Grand Ouest Gestion d&#x27;Actifs</td>
+<td>1 Md€</td>
+<td>Oui SCPI bureaux régionale</td>
+<td>DAM</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Norma Capital</td>
+<td>NORMA CAPITAL</td>
+<td>814238879</td>
+<td>113 bd Haussmann, 75008 Paris</td>
+<td>01 86 95 90 70</td>
+<td>contact@normacapital.fr</td>
+<td>Faïz Hebbadj (Pdt) ; Thibault Feuillet (DG)</td>
+<td>1,5 Md€</td>
+<td>Oui NCap Régions Orléans Blois Bourges</td>
+<td>DAM</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Iroko</td>
+<td>IROKO SGP</td>
+<td>883362113</td>
+<td>8 rue Marbeuf, 75008 Paris</td>
+<td>01 80 49 76 76</td>
+<td>contact@iroko.eu</td>
+<td>Gautier Delabrousse-Mayoux (Pdt) ; Phong Hua (DI)</td>
+<td>1,5 Md€</td>
+<td>Oui Iroko Zen Bourges</td>
+<td>DI</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Theoreim</td>
+<td>THEOREIM</td>
+<td>882005622</td>
+<td>105-109 rue du Faubourg Saint-Honoré, 75008 Paris</td>
+<td>01 47 03 12 19</td>
+<td>contact@theoreim.com</td>
+<td>Romain Welsch (Pdt) ; Marc Emirian (DI)</td>
+<td>600 M€</td>
+<td>À confirmer SCPI LOG IN</td>
+<td>DI</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Mata Capital IM</td>
+<td>MATA CAPITAL IM</td>
+<td>814170148</td>
+<td>18 rue Jean Giraudoux, 75016 Paris</td>
+<td>01 55 04 79 60</td>
+<td>contact@matacapital.com</td>
+<td>Jean-Baptiste Pracca (DG) ; Xavier Faure (DAM)</td>
+<td>2,4 Md€</td>
+<td>À confirmer SCPI Osmo Energie</td>
+<td>DAM Retail</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Fiducial Gérance</td>
+<td>FIDUCIAL GERANCE</td>
+<td>314094709</td>
+<td>41 av Gambetta, 92928 Paris La Défense</td>
+<td>01 49 97 56 80</td>
+<td>contact@fiducial-gerance.fr</td>
+<td>Yves Brisson (Pdt)</td>
+<td>2 Md€</td>
+<td>Oui Ficommerce Proximité Sofipierre Tours Bourges Chartres</td>
+<td>DAM</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Corum AM</td>
+<td>CORUM ASSET MANAGEMENT</td>
+<td>531636546</td>
+<td>1 rue Euler, 75008 Paris</td>
+<td>01 53 75 90 04</td>
+<td>contact@corum.fr</td>
+<td>Frédéric Puzin (Pdt CS) ; Philippe Cervesi (DI)</td>
+<td>6 Md€</td>
+<td>Oui poche France CVL ponctuel</td>
+<td>DI</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Paref Gestion</td>
+<td>PAREF GESTION</td>
+<td>380373753</td>
+<td>153 bd Haussmann, 75008 Paris</td>
+<td>01 40 29 86 86</td>
+<td>contact@paref.com</td>
+<td>Antoine de Oliveira e Castro (PDG) ; Anne Schwartz (DG)</td>
+<td>2 Md€</td>
+<td>Oui Paref Hexa Chartres Interpierre France</td>
+<td>DAM</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Swiss Life AM France</td>
+<td>SWISS LIFE ASSET MANAGERS FRANCE</td>
+<td>499320059</td>
+<td>Tour la Marseillaise, 13002 Marseille</td>
+<td>01 41 27 50 00</td>
+<td>contact-am@swisslife.fr</td>
+<td>Fabian Hürzeler (Pdt) ; Béatrice Guedj (Dir Recherche)</td>
+<td>32 Md€</td>
+<td>À confirmer France diversifiée</td>
+<td>DAM Bureaux</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Sienna Real Estate (GBL)</td>
+<td>SIENNA REAL ESTATE FRANCE</td>
+<td>417824075</td>
+<td>21 bd Haussmann, 75009 Paris</td>
+<td>01 53 53 80 80</td>
+<td>contact@sienna-im.com</td>
+<td>Jean-Marc Leverne (Pdt) ; Jean-François Bay (DG)</td>
+<td>5 Md€ RE</td>
+<td>À confirmer</td>
+<td>DI France</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Sogécap Real Estate</td>
+<td>SOGECAP</td>
+<td>086380730</td>
+<td>Tour D2, 92919 Paris La Défense</td>
+<td>01 58 98 78 00</td>
+<td>contact@sogecap.com</td>
+<td>Philippe Perret (DG) ; Lubomira Rochet (Pdt CA)</td>
+<td>130 Md€ vie / 10 Md€ immo</td>
+<td>À confirmer compte propre</td>
+<td>Dir Immobilier</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Atream</td>
+<td>ATREAM SGP</td>
+<td>822706800</td>
+<td>89-91 rue du Faubourg Saint-Honoré, 75008 Paris</td>
+<td>01 75 31 50 99</td>
+<td>contact@atream.com</td>
+<td>Pascal Savary (Pdt)</td>
+<td>2,5 Md€</td>
+<td>À confirmer</td>
+<td>DAM</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Voisin (Atland)</td>
+<td>VOISIN</td>
+<td>308052165</td>
+<td>19 rue Vauban, 21000 Dijon</td>
+<td>03 80 68 09 30</td>
+<td>contact@voisin.fr</td>
+<td>Jean-Christophe Antoine (Pdt)</td>
+<td>inclus Atland</td>
+<td>Oui Foncia Vendôme Régions Tours Bourges</td>
+<td>DAM</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Consultim AM</td>
+<td>CONSULTIM ASSET MANAGEMENT</td>
+<td>881473771</td>
+<td>3 allée Alphonse Fillion, 44120 Vertou</td>
+<td>02 51 86 53 00</td>
+<td>contact@consultim-am.com</td>
+<td>Andràs Boros (Pdt) ; Édouard Fourniau</td>
+<td>400 M€</td>
+<td>À confirmer</td>
+<td>DI</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Axipit Real Estate Partners</td>
+<td>AXIPIT REAL ESTATE PARTNERS</td>
+<td>894233444</td>
+<td>6 av Marceau, 75008 Paris</td>
+<td>01 58 56 26 80</td>
+<td>contact@axipit.com</td>
+<td>Guillaume Riquier (DG depuis 06/2025)</td>
+<td>300 M€</td>
+<td>À confirmer</td>
+<td>DAM</td>
+<td>2</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>27</td>
+<td>Aalto REIM</td>
+<td>AALTO REIM</td>
+<td>850614223</td>
+<td>801 av des Champs Blancs, 35510 Cesson-Sévigné</td>
+<td>02 23 21 22 23</td>
+<td>contact@aaltoreim.com</td>
+<td>Stefan Jakcic (Pdt) ; Sébastien Penel (DG)</td>
+<td>127 M€</td>
+<td>À confirmer Grand Ouest</td>
+<td>Pdt / DG</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Remake AM</td>
+<td>REMAKE ASSET MANAGEMENT</td>
+<td>893186338</td>
+<td>2 rue Washington, 75008 Paris</td>
+<td>01 70 36 87 20</td>
+<td>contact@remake.fr</td>
+<td>Nicolas Kert (Pdt) ; David Seksig (DG)</td>
+<td>1 Md€</td>
+<td>À confirmer Remake Live</td>
+<td>DI</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Advenis REIM</td>
+<td>ADVENIS REIM</td>
+<td>824276794</td>
+<td>52 rue de Bassano, 75008 Paris</td>
+<td>01 55 60 03 00</td>
+<td>contact@advenis-reim.com</td>
+<td>Vincent Ribeiro (Pdt)</td>
+<td>1,5 Md€</td>
+<td>À confirmer Renovalys Tours Orléans</td>
+<td>DAM France</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Euryale AM</td>
+<td>EURYALE ASSET MANAGEMENT</td>
+<td>521556598</td>
+<td>91 bd Pasteur, 75015 Paris</td>
+<td>01 42 79 50 30</td>
+<td>contact@euryale-am.fr</td>
+<td>Jean-Jacques Olivié (Fondateur) ; David Finck (DG)</td>
+<td>3,3 Md€</td>
+<td>Oui possible Pierval Santé France</td>
+<td>DAM Santé</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>31</td>
+<td>Inter Gestion REIM</td>
+<td>INTER GESTION REIM</td>
+<td>345004436</td>
+<td>38 av de l&#x27;Opéra, 75002 Paris</td>
+<td>01 56 62 00 60</td>
+<td>contact@inter-gestion.com</td>
+<td>Jean-François Chaury (Pdt)</td>
+<td>700 M€</td>
+<td>Oui Cristal Rente Cristal Life régions CVL</td>
+<td>DAM</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Greenman Arth</td>
+<td>GREENMAN ARTH</td>
+<td>887518173</td>
+<td>1 rue de la Paix, 75002 Paris</td>
+<td>01 44 50 81 50</td>
+<td>contact@gmaessentialis.com</td>
+<td>Abhishek Jha (Pdt) ; John Wilkinson (DG)</td>
+<td>300 M€</td>
+<td>À confirmer</td>
+<td>DI France</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Alderan</td>
+<td>ALDERAN</td>
+<td>538704479</td>
+<td>4 av Georges Mandel, 75116 Paris</td>
+<td>01 56 89 21 60</td>
+<td>contact@alderan.fr</td>
+<td>Rémy Bourgeon (Pdt) ; Benjamin Le Baut (DG)</td>
+<td>1,8 Md€</td>
+<td>Oui possible Activimmo régions</td>
+<td>DAM Logistique</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>34</td>
+<td>Sogenial Immobilier</td>
+<td>SOGENIAL IMMOBILIER</td>
+<td>322982075</td>
+<td>135 av de Wagram, 75017 Paris</td>
+<td>01 56 79 09 33</td>
+<td>contact@sogenial.fr</td>
+<td>Jean-Marie Souclier (Pdt)</td>
+<td>700 M€</td>
+<td>Oui probable Cœur de Régions</td>
+<td>DAM</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>35</td>
+<td>Altixia REIM</td>
+<td>ALTIXIA REIM</td>
+<td>524012375</td>
+<td>49 av d&#x27;Iéna, 75116 Paris</td>
+<td>01 85 09 23 25</td>
+<td>contact@altixia.fr</td>
+<td>Xavier Alvarez Roman (Fondateur Pdt)</td>
+<td>300 M€</td>
+<td>Oui SCPI Cadence XII régions 65%</td>
+<td>DI</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>36</td>
+<td>Kyaneos AM</td>
+<td>KYANEOS ASSET MANAGEMENT</td>
+<td>829352201</td>
+<td>60 rue de la Chapelle, 30133 Les Angles</td>
+<td>04 90 16 04 50</td>
+<td>contact@kyaneosam.com</td>
+<td>Jérémie Rouzaud (Fondateur Pdt)</td>
+<td>400 M€</td>
+<td>À confirmer résidentiel sud-est</td>
+<td>Pdt</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>37</td>
+<td>Klépierre</td>
+<td>KLEPIERRE SA</td>
+<td>780152914</td>
+<td>26 bd des Capucines, 75009 Paris</td>
+<td>01 40 67 57 40</td>
+<td>contact@klepierre.com</td>
+<td>Jean-Marc Jestin (Pdt Directoire)</td>
+<td>20 Md€</td>
+<td>Oui CC Tours Châteauroux à confirmer</td>
+<td>DAM France</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>38</td>
+<td>Klépierre Management</td>
+<td>KLEPIERRE MANAGEMENT</td>
+<td>562100214</td>
+<td>26 bd des Capucines, 75009 Paris</td>
+<td>01 40 67 57 40</td>
+<td>contact@klepierre.com</td>
+<td>Direction Jestin</td>
+<td>inclus</td>
+<td>Oui</td>
+<td>DAM Régions</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>39</td>
+<td>Mercialys</td>
+<td>MERCIALYS</td>
+<td>424064707</td>
+<td>16-18 rue du 4 Septembre, 75002 Paris</td>
+<td>01 53 65 64 00</td>
+<td>contact@mercialys.com</td>
+<td>Vincent Ravat (Pdt Directoire)</td>
+<td>3 Md€</td>
+<td>Oui probable régions à vérifier Tours Orléans</td>
+<td>Dir Immo</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>40</td>
+<td>Carmila</td>
+<td>CARMILA</td>
+<td>381844471</td>
+<td>58 av Émile Zola, 92100 Boulogne-Billancourt</td>
+<td>01 86 90 60 00</td>
+<td>contact@carmila.com</td>
+<td>Marie Cheval (Pdt Directoire)</td>
+<td>5 Md€</td>
+<td>Oui galeries Carrefour CVL Chambray Saran Olivet Bourges</td>
+<td>DAM France</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>41</td>
+<td>Icade Foncière Tertiaire</td>
+<td>ICADE SA</td>
+<td>582074944</td>
+<td>27 rue Camille Desmoulins, 92130 Issy-les-Moulineaux</td>
+<td>01 41 57 70 00</td>
+<td>contact@icade.fr</td>
+<td>Nicolas Joly (DG)</td>
+<td>12 Md€</td>
+<td>À vérifier parc CVL</td>
+<td>DAM Bureaux Régions</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>42</td>
+<td>Gecina</td>
+<td>GECINA SA</td>
+<td>592014476</td>
+<td>14-16 rue des Capucines, 75002 Paris</td>
+<td>01 40 40 50 50</td>
+<td>contact@gecina.fr</td>
+<td>Beñat Ortega (DG)</td>
+<td>18 Md€</td>
+<td>Faible 95% IDF</td>
+<td>DAM</td>
+<td>1</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>43</td>
+<td>Argan</td>
+<td>ARGAN</td>
+<td>393430608</td>
+<td>21 rue Beffroy, 92200 Neuilly-sur-Seine</td>
+<td>01 47 47 47 60</td>
+<td>contact@argan.fr</td>
+<td>Ronan Le Lan (Pdt Directoire)</td>
+<td>3 Md€+</td>
+<td>Oui logistique CVL confirmé</td>
+<td>DAM / DT</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>44</td>
+<td>Frey</td>
+<td>FREY SA</td>
+<td>398248591</td>
+<td>1 rue René Cassin, 51430 Bezannes</td>
+<td>03 26 89 36 70</td>
+<td>contact@frey.fr</td>
+<td>Antoine Frey (PDG)</td>
+<td>1,5 Md€</td>
+<td>À vérifier retail parks Orléans Tours</td>
+<td>DAM</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>45</td>
+<td>Cofinimmo</td>
+<td>COFINIMMO SA Belgique</td>
+<td>succursale FR</td>
+<td>Bd de la Woluwe 58, 1200 Bruxelles + bureau Paris</td>
+<td>+32 2 373 00 00</td>
+<td>info@cofinimmo.be</td>
+<td>Jean-Pierre Hanin (CEO)</td>
+<td>6 Md€ groupe</td>
+<td>Oui EHPAD cliniques France</td>
+<td>Dir Acquisitions FR</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>46</td>
+<td>Aedifica</td>
+<td>AEDIFICA SA Belgique</td>
+<td>succursale FR</td>
+<td>Rue Belliard 40, 1040 Bruxelles</td>
+<td>+32 2 626 50 70</td>
+<td>info@aedifica.eu</td>
+<td>Stefaan Gielens (CEO)</td>
+<td>6 Md€</td>
+<td>Oui healthcare France</td>
+<td>Dir Acquisitions FR</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>47</td>
+<td>Healthcare Activos</td>
+<td>HEALTHCARE ACTIVOS YIELD SOCIMI</td>
+<td>succursale FR</td>
+<td>Madrid + Paris</td>
+<td>n/a</td>
+<td>info@healthcareactivos.com</td>
+<td>Jorge Guarner (CEO)</td>
+<td>1,5 Md€</td>
+<td>À confirmer santé France</td>
+<td>Dir Acquisitions FR</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>48</td>
+<td>Catella France</td>
+<td>CATELLA FRANCE SAS</td>
+<td>412670374</td>
+<td>4 rue Paul Baudry, 75008 Paris</td>
+<td>01 56 79 79 79</td>
+<td>france@catella.fr</td>
+<td>Olivier Boussard (DG France)</td>
+<td>16 Md€ groupe</td>
+<td>À confirmer</td>
+<td>DAM France</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>49</td>
+<td>Lazard Frères Gestion</td>
+<td>LAZARD FRERES GESTION SAS</td>
+<td>352213373</td>
+<td>25 rue de Courcelles, 75008 Paris</td>
+<td>01 44 13 01 11</td>
+<td>contact@lazardfreresgestion.fr</td>
+<td>François-Marc Durand (Pdt)</td>
+<td>40 Md€ groupe</td>
+<td>Faible poche RE</td>
+<td>Dir Real Assets</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>50</td>
+<td>Generali Real Estate France</td>
+<td>GENERALI FRANCE</td>
+<td>572044949</td>
+<td>2 rue Pillet-Will, 75009 Paris</td>
+<td>01 58 38 80 00</td>
+<td>contact@generali.fr</td>
+<td>Aldo Mazzocco (CEO GRE)</td>
+<td>30 Md€ groupe</td>
+<td>Oui probable compte propre Tours Orléans</td>
+<td>Dir Immo France</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>51</td>
+<td>AXA IM Alts</td>
+<td>AXA REAL ESTATE INVESTMENT MANAGERS FRANCE</td>
+<td>397991670</td>
+<td>Tour Majunga, 92800 Puteaux</td>
+<td>01 44 45 70 00</td>
+<td>contact@axa-im.com</td>
+<td>Isabelle Scemama (Pdte AXA IM Alts)</td>
+<td>90 Md€ RE monde</td>
+<td>À confirmer fonds core</td>
+<td>DAM France Tertiaire</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>52</td>
+<td>Allianz Real Estate France</td>
+<td>ALLIANZ REAL ESTATE FRANCE</td>
+<td>632024527</td>
+<td>1 cours Michelet, 92800 Puteaux</td>
+<td>01 58 85 85 85</td>
+<td>contact@allianz.fr</td>
+<td>Michel Ohana (Dir France)</td>
+<td>80 Md€ groupe RE</td>
+<td>À confirmer</td>
+<td>DAM France</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>53</td>
+<td>Groupama Immobilier</td>
+<td>GROUPAMA IMMOBILIER</td>
+<td>413114760</td>
+<td>8-10 rue d&#x27;Astorg, 75008 Paris</td>
+<td>01 44 56 77 77</td>
+<td>contact@groupama-immobilier.com</td>
+<td>Eric Donnet (DG)</td>
+<td>4 Md€</td>
+<td>Oui possible Groupama Centre-Atlantique CVL</td>
+<td>DAM</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>54</td>
+<td>CNP Assurances Immobilier</td>
+<td>CNP ASSURANCES SA</td>
+<td>341737062</td>
+<td>4 place Raoul Dautry, 75015 Paris</td>
+<td>01 42 18 88 88</td>
+<td>contact@cnp.fr</td>
+<td>Marie-Aude Thépaut (DG)</td>
+<td>400 Md€ vie / 10 Md€ immo</td>
+<td>À confirmer CVL compte propre</td>
+<td>Dir Immo</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>55</td>
+<td>Predica (CA Assurances)</td>
+<td>PREDICA</td>
+<td>334028123</td>
+<td>50-56 rue de la Procession, 75015 Paris</td>
+<td>01 57 72 46 00</td>
+<td>contact@ca-assurances.com</td>
+<td>Olivier Mariée (DG CAA)</td>
+<td>300 Md€ vie / 15 Md€ immo</td>
+<td>Oui probable CVL via CA Centre Loire Touraine</td>
+<td>Dir Immo</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>56</td>
+<td>MACSF Épargne Retraite</td>
+<td>MACSF ASSURANCES</td>
+<td>775665631</td>
+<td>10 cours du Triangle, 92800 Puteaux</td>
+<td>01 71 23 39 00</td>
+<td>contact@macsf.fr</td>
+<td>Stéphane Dessirier (DG)</td>
+<td>30 Md€</td>
+<td>À confirmer</td>
+<td>Dir Immo</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>57</td>
+<td>Arkéa REIM</td>
+<td>ARKEA REIM</td>
+<td>882830201</td>
+<td>Le Relecq-Kerhuon (29) + bureau Paris</td>
+<td>02 98 00 22 22</td>
+<td>contact@arkea-reim.com</td>
+<td>Christophe Murciani (Pdt)</td>
+<td>1 Md€</td>
+<td>À confirmer filiale CM Arkéa</td>
+<td>DAM</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>58</td>
+<td>Eternam (Cyrus)</td>
+<td>ETERNAM</td>
+<td>519310529</td>
+<td>50 bd Haussmann, 75009 Paris</td>
+<td>01 47 70 88 00</td>
+<td>contact@eternam.com</td>
+<td>Frédéric Béghin (Pdt)</td>
+<td>1,5 Md€</td>
+<td>À confirmer club deals régions</td>
+<td>DI</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>59</td>
+<td>Stam Europe</td>
+<td>STAM EUROPE</td>
+<td>482306783</td>
+<td>17 av George V, 75008 Paris</td>
+<td>01 56 89 11 00</td>
+<td>contact@stameurope.com</td>
+<td>Antoine de Brugière (DG)</td>
+<td>3,5 Md€</td>
+<td>À confirmer value add CVL</td>
+<td>DAM France</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>60</td>
+<td>M Capital Partners</td>
+<td>M CAPITAL</td>
+<td>502379035</td>
+<td>6 rue Paul Valéry, 75116 Paris</td>
+<td>01 76 21 30 80</td>
+<td>contact@mcapital.fr</td>
+<td>Olivier Quéant (DG) ; Edouard Schlumberger (RE)</td>
+<td>1 Md€</td>
+<td>À confirmer Lifento Patrimoine</td>
+<td>Dir Real Estate</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+</tbody></table></div></section>
+<section class="typo-sec" id="T4_FoncCotees">
+<h3>Typologie 4, Foncières institutionnelles cotées et grands assureurs</h3>
+<div class="desc">Foncières SIIC et assureurs nationaux avec actifs tertiaires en CVL. Cibles Mission Pilotage local délégué.</div>
+<div class="cnt">54 entrées · 13 colonnes</div>
+<div class="tbl-wrap"><table class="typo-tbl"><thead><tr>
+<th>#</th>
+<th>Raison sociale</th>
+<th>SIREN</th>
+<th>Forme</th>
+<th>Siège</th>
+<th>Téléphone</th>
+<th>Email</th>
+<th>Dirigeant principal</th>
+<th>Profil bref</th>
+<th>Actifs CVL</th>
+<th>Score /5</th>
+<th>Sous-cat</th>
+<th>Note /10</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>CARMILA SA</td>
+<td>381844471</td>
+<td>SA cotée</td>
+<td>58 av Émile Zola, 92100 Boulogne-Billancourt</td>
+<td>01 56 69 30 00</td>
+<td>via carmila.com</td>
+<td>Marie Cheval (PDG)</td>
+<td>Foncière cotée centres comm. Carrefour</td>
+<td>Oui Orléans Cap Saran, Place d&#x27;Arc</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>2</td>
+<td>KLEPIERRE SA</td>
+<td>780152914</td>
+<td>SA cotée</td>
+<td>26 bd des Capucines, 75009 Paris</td>
+<td>01 40 67 57 40</td>
+<td>investor.relations@klepierre.com</td>
+<td>Jean-Marc Jestin (PDR)</td>
+<td>Foncière européenne centres commerciaux</td>
+<td>Présence régionale historique à vérifier</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>MERCIALYS SA</td>
+<td>424064707</td>
+<td>SA cotée</td>
+<td>16-18 rue du 4 Septembre, 75002 Paris</td>
+<td>01 53 65 64 00</td>
+<td>investor.relations@mercialys.com</td>
+<td>Vincent Ravat (PDG)</td>
+<td>Foncière centres commerciaux mid-size</td>
+<td>Tours mentionné &lt;2% portefeuille</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>4</td>
+<td>UNIBAIL-RODAMCO-WESTFIELD SE</td>
+<td>682024096</td>
+<td>SE cotée</td>
+<td>7 place du Chancelier Adenauer, 75016 Paris</td>
+<td>01 53 43 73 03</td>
+<td>corporate.communication@urw.com</td>
+<td>Jean-Marie Tritant (CEO)</td>
+<td>Foncière mondiale</td>
+<td>Pas d&#x27;actif CVL identifié</td>
+<td>1</td>
+<td><span class="bC">C</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>FREY SA</td>
+<td>398248591</td>
+<td>SA cotée</td>
+<td>1 rue René Cassin, 51430 Bezannes</td>
+<td>03 26 36 27 27</td>
+<td>contact@frey.fr</td>
+<td>Antoine Frey (PDG)</td>
+<td>Foncière retail park nouvelle génération</td>
+<td>Présence retail park à vérifier</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>6</td>
+<td>PATRIMOINE ET COMMERCE SA</td>
+<td>391297210</td>
+<td>SA cotée</td>
+<td>154 rue de l&#x27;Université, 75007 Paris</td>
+<td>01 46 99 47 35</td>
+<td>contact@patrimoineetcommerce.com</td>
+<td>Eric Duval (PDG)</td>
+<td>Foncière retail commerces périphérie</td>
+<td>Actifs régionaux CVL probable</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>7</td>
+<td>ARGAN SA</td>
+<td>393430608</td>
+<td>SA cotée</td>
+<td>21 rue Beffroy, 92200 Neuilly-sur-Seine</td>
+<td>01 47 47 05 46</td>
+<td>argan@argan.fr</td>
+<td>Ronan Le Lan (DG)</td>
+<td>Foncière logistique premium</td>
+<td>Oui entrepôt Meung-sur-Loire 45</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>8</td>
+<td>ICADE SA</td>
+<td>582074944</td>
+<td>SA cotée</td>
+<td>27 rue Camille Desmoulins, 92130 Issy-les-Moulineaux</td>
+<td>01 41 57 70 00</td>
+<td>relations.investisseurs@icade.fr</td>
+<td>Nicolas Joly (DG)</td>
+<td>Foncière tertiaire mixte + santé + promotion</td>
+<td>Antenne Tours 23 rue Blaise Pascal</td>
+<td>5</td>
+<td><span class="bC">C</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>9</td>
+<td>COVIVIO SA</td>
+<td>364800060</td>
+<td>SA cotée</td>
+<td>30 av Kléber, 75116 Paris</td>
+<td>01 58 97 50 00</td>
+<td>contact@covivio.fr</td>
+<td>Christophe Kullmann (DG)</td>
+<td>Foncière bureaux Paris + hôtels + résidentiel</td>
+<td>Pas d&#x27;actif CVL identifié</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>10</td>
+<td>GECINA SA</td>
+<td>592014476</td>
+<td>SA cotée</td>
+<td>14-16 rue des Capucines, 75002 Paris</td>
+<td>01 40 40 50 50</td>
+<td>contact@gecina.fr</td>
+<td>Beñat Ortega (DG)</td>
+<td>Foncière bureaux Paris/IDF exclusif</td>
+<td>Faible 95% IDF</td>
+<td>1</td>
+<td><span class="bC">C</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td>11</td>
+<td>SOCIÉTÉ FONCIÈRE LYONNAISE SFL</td>
+<td>552040982</td>
+<td>SA cotée</td>
+<td>42 rue Washington, 75008 Paris</td>
+<td>01 42 97 27 00</td>
+<td>investor.relations@sflparis.com</td>
+<td>Aude Grant (DG)</td>
+<td>Foncière prime Paris CBD exclusif</td>
+<td>Pas d&#x27;actif province</td>
+<td>1</td>
+<td><span class="bC">C</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td>12</td>
+<td>FONCIÈRE INEA SA</td>
+<td>420063507</td>
+<td>SA cotée</td>
+<td>16 rue Vivienne, 75002 Paris</td>
+<td>01 42 86 56 51</td>
+<td>contact@fonciere-inea.com</td>
+<td>Philippe Rosio (PDG)</td>
+<td>Foncière bureaux régions 88%</td>
+<td>Oui Orléans dans patrimoine</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>13</td>
+<td>COFINIMMO SA</td>
+<td>BE 0426184049</td>
+<td>SA belge cotée</td>
+<td>Bd de la Woluwe 58, 1200 Bruxelles</td>
+<td>+32 2 373 00 00</td>
+<td>info@cofinimmo.be</td>
+<td>Jean-Pierre Hanin (CEO)</td>
+<td>Foncière healthcare belge</td>
+<td>Probables via portefeuille France</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>14</td>
+<td>AEDIFICA SA</td>
+<td>BE 0877248501</td>
+<td>SCA belge cotée</td>
+<td>Av Louise 331-333, 1050 Bruxelles</td>
+<td>+32 2 626 07 70</td>
+<td>info@aedifica.eu</td>
+<td>Stefaan Gielens (CEO)</td>
+<td>Foncière senior housing Europe</td>
+<td>Présence France probable CVL</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>15</td>
+<td>EMEIS SA (ex-Orpea)</td>
+<td>401251566</td>
+<td>SA cotée</td>
+<td>12 rue Jean Jaurès, 92800 Puteaux</td>
+<td>01 47 75 78 07</td>
+<td>contact@emeis.com</td>
+<td>Laurent Guillot (DG)</td>
+<td>Opérateur EHPAD foncière interne</td>
+<td>1 résidence senior CVL confirmée</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>16</td>
+<td>CLARIANE SA (ex-Korian)</td>
+<td>447800475</td>
+<td>SA cotée</td>
+<td>21-25 rue Balzac, 75008 Paris</td>
+<td>01 55 37 52 00</td>
+<td>contact@clariane.com</td>
+<td>Sophie Boissard (DG)</td>
+<td>Opérateur EHPAD Korian</td>
+<td>EHPAD CVL multiples</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>17</td>
+<td>DOMUSVI</td>
+<td>311862184</td>
+<td>SAS</td>
+<td>1 quai Eblé, 75007 Paris</td>
+<td>01 53 17 38 80</td>
+<td>contact@domusvi.com</td>
+<td>Yann Coléou (DG)</td>
+<td>Opérateur EHPAD</td>
+<td>Multiples CVL</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>18</td>
+<td>GENERALI REAL ESTATE FRANCE</td>
+<td>538616988</td>
+<td>SAS</td>
+<td>2 rue Pillet-Will, 75009 Paris</td>
+<td>01 58 38 79 80</td>
+<td>contact@generalirealestate.fr</td>
+<td>Aldo Mazzocco (CEO)</td>
+<td>Asset manager immo Generali 38,5 Md€</td>
+<td>Probables</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>19</td>
+<td>AXA IM ALTS</td>
+<td>393051826</td>
+<td>SAS</td>
+<td>Tour Majunga, 92800 Puteaux</td>
+<td>01 44 45 70 00</td>
+<td>contact.france@axa-im-alts.com</td>
+<td>Isabelle Scemama (CEO)</td>
+<td>Asset manager immo AXA</td>
+<td>Régions probables</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>20</td>
+<td>BNP PARIBAS REIM FRANCE</td>
+<td>300794278</td>
+<td>SAS</td>
+<td>167 quai Bataille de Stalingrad, 92867 Issy-les-Moulineaux</td>
+<td>01 55 65 23 00</td>
+<td>contact.bnppreim@bnpparibas.com</td>
+<td>Nathalie Charles (Global Head)</td>
+<td>Asset manager immo BNPP</td>
+<td>CVL probable</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>21</td>
+<td>LA FRANÇAISE REAL ESTATE MANAGERS</td>
+<td>309983941</td>
+<td>SAS</td>
+<td>128 bd Raspail, 75006 Paris</td>
+<td>01 44 56 10 00</td>
+<td>contact@la-francaise.com</td>
+<td>David Rendall (DG REM)</td>
+<td>Asset manager SCPI/OPCI 18 Md€</td>
+<td>Régions dont CVL via SCPI</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>22</td>
+<td>AMUNDI IMMOBILIER</td>
+<td>315429837</td>
+<td>SAS</td>
+<td>91-93 bd Pasteur, 75015 Paris</td>
+<td>01 76 32 70 00</td>
+<td>contact.immobilier@amundi.com</td>
+<td>Marc Bertrand (DG)</td>
+<td>Asset manager immo Amundi</td>
+<td>Régions via SCPI</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>23</td>
+<td>PRIMONIAL REIM</td>
+<td>531990547</td>
+<td>SAS</td>
+<td>36 rue de Naples, 75008 Paris</td>
+<td>01 44 21 70 00</td>
+<td>contact@primonialreim.com</td>
+<td>Grégory Frapet (Pdt)</td>
+<td>Asset manager SCPI/OPCI</td>
+<td>CVL probable</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>24</td>
+<td>PERIAL ASSET MANAGEMENT</td>
+<td>433717142</td>
+<td>SAS</td>
+<td>9 rue Jadin, 75017 Paris</td>
+<td>01 56 43 11 00</td>
+<td>contact@perial.com</td>
+<td>Yann Videcoq (DG)</td>
+<td>Asset manager SCPI PFO/PFO2</td>
+<td>Régions</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>25</td>
+<td>SOFIDY SA</td>
+<td>338826332</td>
+<td>SA</td>
+<td>303 sq des Champs Élysées, 91026 Évry</td>
+<td>01 69 87 02 00</td>
+<td>contact@sofidy.com</td>
+<td>Jean-Marc Coly (DG)</td>
+<td>Asset manager SCPI Immorente</td>
+<td>Régions, CVL probable</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>26</td>
+<td>PAREF GESTION</td>
+<td>380373753</td>
+<td>SAS</td>
+<td>8 rue Auber, 75009 Paris</td>
+<td>01 40 29 86 86</td>
+<td>contact@paref.com</td>
+<td>Antoine Castro (DG)</td>
+<td>Asset manager SCPI Novapierre</td>
+<td>À confirmer</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>27</td>
+<td>NORMA CAPITAL</td>
+<td>791658339</td>
+<td>SAS</td>
+<td>16 rue de la Banque, 75002 Paris</td>
+<td>01 76 21 18 00</td>
+<td>contact@norma-capital.fr</td>
+<td>Faïz Hebbadj (DG)</td>
+<td>SCPI Fair Invest Vendôme Régions</td>
+<td>Cible régions directe</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>28</td>
+<td>CORUM ASSET MANAGEMENT</td>
+<td>749907010</td>
+<td>SAS</td>
+<td>1 rue Euler, 75008 Paris</td>
+<td>01 53 75 10 00</td>
+<td>contact@corum.fr</td>
+<td>Frédéric Puzin (Pdt)</td>
+<td>Asset manager SCPI</td>
+<td>À confirmer</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>29</td>
+<td>FIDUCIAL GÉRANCE</td>
+<td>314080383</td>
+<td>SAS</td>
+<td>41 rue du Capitaine Guynemer, 92925 Paris La Défense</td>
+<td>01 49 97 56 56</td>
+<td>contact@fiducial.fr</td>
+<td>Christian Latouche (Pdt Fiducial)</td>
+<td>Asset manager SCPI Multimmobilier</td>
+<td>À confirmer</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>30</td>
+<td>ATLAND VOISIN</td>
+<td>309211633</td>
+<td>SAS</td>
+<td>1 rue de la Boétie, 75008 Paris</td>
+<td>01 40 75 91 84</td>
+<td>contact@atland-voisin.fr</td>
+<td>Lionel Védie de la Heslière (DG)</td>
+<td>Asset manager SCPI Immo Évolutif</td>
+<td>À confirmer</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>31</td>
+<td>CNP ASSURANCES</td>
+<td>341737062</td>
+<td>SA cotée</td>
+<td>4 promenade Cœur de Ville, 92130 Issy-les-Moulineaux</td>
+<td>01 42 18 88 88</td>
+<td>service.relations@cnp.fr</td>
+<td>Marie-Aude Thépaut (DG)</td>
+<td>Assureur</td>
+<td>Détient actifs immo directs France</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>32</td>
+<td>AXA FRANCE IARD</td>
+<td>722057460</td>
+<td>SA</td>
+<td>313 Terrasses de l&#x27;Arche, 92727 Nanterre</td>
+<td>01 47 74 15 15</td>
+<td>service.clients@axa.fr</td>
+<td>Patrick Cohen (DG)</td>
+<td>Assureur</td>
+<td>Actifs immo directs province</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>33</td>
+<td>ALLIANZ VIE</td>
+<td>340234962</td>
+<td>SA</td>
+<td>1 cours Michelet, 92800 Puteaux</td>
+<td>01 58 85 85 85</td>
+<td>service.clients@allianz.fr</td>
+<td>Fabien Wathle (DG)</td>
+<td>Assureur</td>
+<td>Portefeuille France</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>34</td>
+<td>GENERALI VIE</td>
+<td>602062481</td>
+<td>SA</td>
+<td>2 rue Pillet-Will, 75009 Paris</td>
+<td>01 58 38 81 14</td>
+<td>service.clients@generali.fr</td>
+<td>Jean-Laurent Granier (Pdt)</td>
+<td>Assureur</td>
+<td>Poche immobilière France</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>35</td>
+<td>BNP PARIBAS CARDIF</td>
+<td>382983922</td>
+<td>SA</td>
+<td>8 rue du Port, 92728 Nanterre</td>
+<td>01 41 42 70 00</td>
+<td>service.client@cardif.com</td>
+<td>Pauline Leclerc-Glorieux (DG)</td>
+<td>Assureur</td>
+<td>Détient via BNPP REIM</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>36</td>
+<td>ABEILLE ASSURANCES (ex-Aviva)</td>
+<td>732028154</td>
+<td>SA</td>
+<td>70 av de l&#x27;Europe, 92270 Bois-Colombes</td>
+<td>01 76 62 50 00</td>
+<td>service.clients@abeille-assurances.fr</td>
+<td>Patrick Dixneuf (DG)</td>
+<td>Assureur</td>
+<td>Poche immobilier France</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>37</td>
+<td>MMA IARD MUTUELLES</td>
+<td>775652126</td>
+<td>SA mutuelle</td>
+<td>14 bd Marie et Alexandre Oyon, 72030 Le Mans</td>
+<td>02 43 39 35 00</td>
+<td>contact@mma.fr</td>
+<td>Pascal Demurger (DG Covéa)</td>
+<td>Assureur Covéa</td>
+<td>Portefeuille immo régions</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>38</td>
+<td>MAAF ASSURANCES</td>
+<td>542073580</td>
+<td>SA mutuelle</td>
+<td>Chaban, 79180 Chauray</td>
+<td>05 49 32 50 00</td>
+<td>contact@maaf.fr</td>
+<td>Pascal Demurger (DG Covéa)</td>
+<td>Assureur Covéa</td>
+<td>Portefeuille immo</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>39</td>
+<td>GMF ASSURANCES</td>
+<td>398972901</td>
+<td>SA mutuelle</td>
+<td>148 rue Anatole France, 92300 Levallois-Perret</td>
+<td>01 47 54 50 00</td>
+<td>contact@gmf.fr</td>
+<td>Pascal Demurger (DG Covéa)</td>
+<td>Assureur Covéa</td>
+<td>Portefeuille immo</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>40</td>
+<td>CRÉDIT AGRICOLE ASSURANCES (CAA)</td>
+<td>451746077</td>
+<td>SA</td>
+<td>16-18 bd Vaugirard, 75015 Paris</td>
+<td>01 57 72 46 46</td>
+<td>contact@ca-assurances.fr</td>
+<td>Olivier Gavalda (DG)</td>
+<td>Assureur</td>
+<td>Très présent CVL via CA</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>41</td>
+<td>PRÉDICA</td>
+<td>334028123</td>
+<td>SA</td>
+<td>50-56 rue de la Procession, 75015 Paris</td>
+<td>01 43 23 03 11</td>
+<td>contact@predica.fr</td>
+<td>Olivier Mariée (DG CAA)</td>
+<td>Assureur vie groupe CA</td>
+<td>Actifs immo directs France</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>42</td>
+<td>MACSF EPARGNE RETRAITE</td>
+<td>433012405</td>
+<td>SA</td>
+<td>10 cours du Triangle, 92800 Puteaux</td>
+<td>01 71 14 16 00</td>
+<td>contact@macsf.fr</td>
+<td>Stéphane Dessirier (DG)</td>
+<td>Assureur professions santé</td>
+<td>Patrimoine immo direct</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>43</td>
+<td>MAIF</td>
+<td>775709702</td>
+<td>SA mutuelle</td>
+<td>200 av Salvador Allende, 79038 Niort</td>
+<td>05 49 73 87 00</td>
+<td>contact@maif.fr</td>
+<td>Pascal Demurger (DG)</td>
+<td>Assureur mutualiste</td>
+<td>Actifs immo régions</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>44</td>
+<td>MACIF</td>
+<td>781452511</td>
+<td>SA mutuelle</td>
+<td>2-4 rue de Pied-de-Fond, 79037 Niort</td>
+<td>05 49 32 50 50</td>
+<td>contact@macif.fr</td>
+<td>Adrien Couret (DG Aéma)</td>
+<td>Assureur Aéma Groupe</td>
+<td>Patrimoine immo France</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>45</td>
+<td>SCOR SE</td>
+<td>562033357</td>
+<td>SE cotée</td>
+<td>5 av Kléber, 75116 Paris</td>
+<td>01 58 44 70 00</td>
+<td>corporate@scor.com</td>
+<td>Thierry Léger (DG)</td>
+<td>Réassureur</td>
+<td>Allocation immo réduite</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>46</td>
+<td>NEXITY SA</td>
+<td>444346795</td>
+<td>SA cotée</td>
+<td>19 rue de Vienne, 75008 Paris</td>
+<td>01 85 55 10 00</td>
+<td>contact@nexity.fr</td>
+<td>Véronique Bédague (PDG)</td>
+<td>Promoteur + asset management tertiaire</td>
+<td>CVL</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>47</td>
+<td>ALTAREA SCA</td>
+<td>335480877</td>
+<td>SCA cotée</td>
+<td>87 rue de Richelieu, 75002 Paris</td>
+<td>01 44 95 51 00</td>
+<td>contact@altarea.com</td>
+<td>Alain Taravella (Pdt)</td>
+<td>Foncière mixte commerces + bureaux</td>
+<td>CC régionaux</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>48</td>
+<td>SOGEPROM (SocGen Immo)</td>
+<td>542081715</td>
+<td>SAS</td>
+<td>75 rue Saint-Lazare, 75009 Paris</td>
+<td>01 53 43 27 27</td>
+<td>sogeprom@socgen.com</td>
+<td>Frédéric Rostand (Pdt)</td>
+<td>Promoteur Société Générale</td>
+<td>Antenne Tours-Orléans confirmée</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>49</td>
+<td>NHOOD SERVICES FRANCE</td>
+<td>882472413</td>
+<td>SAS</td>
+<td>100 av de Flandre, 75019 Paris</td>
+<td>nc</td>
+<td>contact@nhood.com</td>
+<td>Antoine Grolin (CEO)</td>
+<td>Asset/property manager Mulliez gère Auchan</td>
+<td>Tours Chambray, Saint-Pierre-des-Corps</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>50</td>
+<td>APSYS</td>
+<td>388944557</td>
+<td>SAS</td>
+<td>7 rue Meyerbeer, 75009 Paris</td>
+<td>01 44 51 14 14</td>
+<td>contact@apsys-group.com</td>
+<td>Maurice Bansay (Pdt)</td>
+<td>Foncière-promoteur CC</td>
+<td>L&#x27;Heure Tranquille Tours 100% depuis 2016</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>51</td>
+<td>IMMOBILIÈRE CARREFOUR</td>
+<td>482279789</td>
+<td>SAS</td>
+<td>93 av de Paris, 91300 Massy</td>
+<td>01 64 50 80 00</td>
+<td>nc</td>
+<td>direction Carrefour Property</td>
+<td>Foncière interne Carrefour</td>
+<td>Hypers Tours, Orléans, Bourges</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>52</td>
+<td>CASINO IMMOBILIER</td>
+<td>428268023</td>
+<td>SAS</td>
+<td>1 cours Antoine Guichard, 42008 Saint-Étienne</td>
+<td>04 77 45 31 31</td>
+<td>nc</td>
+<td>direction Casino</td>
+<td>Foncière interne Casino</td>
+<td>Murs Géant/Casino CVL</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>53</td>
+<td>FONCIÈRE EURIS</td>
+<td>702023508</td>
+<td>SA cotée</td>
+<td>83 rue du Faubourg Saint-Honoré, 75008 Paris</td>
+<td>01 44 71 13 33</td>
+<td>contact@euris-rallye.fr</td>
+<td>Jean-Charles Naouri (Pdt)</td>
+<td>Holding Casino-Rallye</td>
+<td>Exposition CVL résiduelle</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>54</td>
+<td>HEALTHCARE ACTIVOS FRANCE</td>
+<td>à rechercher</td>
+<td>SAS</td>
+<td>Paris</td>
+<td>nc</td>
+<td>nc</td>
+<td>Direction France</td>
+<td>Foncière healthcare ibérique expansion France</td>
+<td>À confirmer</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+</tbody></table></div></section>
+<section class="typo-sec" id="T5_Banques">
+<h3>Typologie 5, Banques régionales et banques privées CVL + IDF</h3>
+<div class="desc">Caisses régionales, banques mutualistes et banques privées. Cibles double, audit parc d&#x27;agences et prescription via banque privée.</div>
+<div class="cnt">40 entrées · 12 colonnes</div>
+<div class="tbl-wrap"><table class="typo-tbl"><thead><tr>
+<th>#</th>
+<th>Nom commercial</th>
+<th>Raison sociale</th>
+<th>SIREN</th>
+<th>Siège / Adresse</th>
+<th>Téléphone</th>
+<th>Email</th>
+<th>Dirigeant / Décideur</th>
+<th>Profil</th>
+<th>Score /5</th>
+<th>Sous-cat</th>
+<th>Note /10</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>CA Touraine Poitou</td>
+<td>Caisse Régionale Crédit Agricole Mutuel Touraine Poitou</td>
+<td>à confirmer</td>
+<td>Siège social 18 rue Salvador Allende, 86000 Poitiers + admin 45 bd Winston Churchill, 37041 Tours</td>
+<td>02 47 39 80 00</td>
+<td>via formulaire</td>
+<td>Nathalie Mourlon (DG, 2023)</td>
+<td>Banque régionale dominante 37 et 86, 4 centres Banque Privée Indre-et-Loire et Vienne</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>2</td>
+<td>CA Centre Loire</td>
+<td>Caisse Régionale Crédit Agricole Mutuel Centre Loire</td>
+<td>398823958</td>
+<td>8 allée Pierre Gilles de Gennes, 18000 Bourges</td>
+<td>02 48 67 70 00</td>
+<td>via formulaire</td>
+<td>DG CA Centre Loire</td>
+<td>Banque dominante 18, 36, 41, 45 partiel</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>3</td>
+<td>CA Val de France</td>
+<td>Caisse Régionale Crédit Agricole Mutuel Val de France</td>
+<td>à confirmer</td>
+<td>1 rue Daniel Boutet, 28000 Chartres</td>
+<td>02 37 18 75 00</td>
+<td>via formulaire</td>
+<td>DG CA Val de France</td>
+<td>Banque dominante 28 et 41 partiel</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>4</td>
+<td>CA Ile-de-France</td>
+<td>Caisse Régionale Crédit Agricole Mutuel Ile-de-France</td>
+<td>à confirmer</td>
+<td>26 quai de la Rapée, 75012 Paris</td>
+<td>01 44 73 22 22</td>
+<td>via formulaire</td>
+<td>DG CA IDF</td>
+<td>Banque dominante IDF, dont Banque Privée Tours antenne</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Caisse Épargne Loire Centre</td>
+<td>Caisse Epargne et Prévoyance Loire-Centre</td>
+<td>383952470</td>
+<td>7 rue d&#x27;Escures, 45000 Orléans</td>
+<td>02 38 78 51 51</td>
+<td>via formulaire</td>
+<td>Président Directoire CE Loire Centre</td>
+<td>Caisse régionale BPCE couvrant 18 28 36 37 41 45 partiel</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Caisse Épargne Île-de-France</td>
+<td>Caisse Epargne IDF</td>
+<td>382900942</td>
+<td>19 rue du Louvre, 75001 Paris</td>
+<td>01 58 06 32 80</td>
+<td>via formulaire</td>
+<td>Président Directoire CE IDF</td>
+<td>Caisse régionale BPCE IDF</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Banque Populaire Val de France BPVF</td>
+<td>Banque Populaire Val de France</td>
+<td>549800373</td>
+<td>Siège Saint-Quentin-en-Yvelines + régional 11-13 place Général de Gaulle, 45000 Orléans</td>
+<td>01 30 14 41 00</td>
+<td>via formulaire</td>
+<td>DG BPVF</td>
+<td>Banque BPCE couvrant Yvelines, Eure-et-Loir, Loiret, Loir-et-Cher</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Banque Populaire Rives de Paris</td>
+<td>Banque Populaire Rives de Paris</td>
+<td>552002313</td>
+<td>76-78 av de France, 75013 Paris</td>
+<td>01 73 07 47 00</td>
+<td>via formulaire</td>
+<td>DG BP Rives de Paris</td>
+<td>Banque BPCE IDF Paris</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Crédit Mutuel Centre Europe</td>
+<td>Fédération régionale Crédit Mutuel Centre</td>
+<td>327540945</td>
+<td>Faubourg Madeleine, 45000 Orléans</td>
+<td>02 38 53 84 00</td>
+<td>via formulaire</td>
+<td>Pdt FR CM Centre</td>
+<td>Banque mutualiste régionale CVL</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Crédit Mutuel Île-de-France</td>
+<td>FR CM IDF</td>
+<td>à confirmer</td>
+<td>47 rue du Louvre, 75001 Paris</td>
+<td>01 47 33 18 18</td>
+<td>via formulaire</td>
+<td>DG CM IDF</td>
+<td>Banque mutualiste IDF</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Crédit Mutuel Centre Patrimoine</td>
+<td>Filiale gestion privée CM Centre</td>
+<td>à rattacher</td>
+<td>Orléans + Tours antennes</td>
+<td>02 38 53 84 00</td>
+<td>via formulaire</td>
+<td>Direction gestion privée CM Centre</td>
+<td>Banque privée filiale CM Centre Europe</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>12</td>
+<td>CA Touraine Poitou Banque Privée</td>
+<td>Centres affaires CA TP Banque Privée</td>
+<td>rattaché CA TP</td>
+<td>Bd Winston Churchill, Tours + 16 rue Victor Hugo, 86000 Poitiers</td>
+<td>02 47 39 80 00</td>
+<td>via formulaire</td>
+<td>Direction Banque Privée CA TP</td>
+<td>Banque privée régionale, cible apport HNW patrimoniaux</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>13</td>
+<td>CA Centre Loire Banque Privée</td>
+<td>Centres affaires CA CL Banque Privée</td>
+<td>rattaché CA CL</td>
+<td>Bourges, Orléans, Châteauroux</td>
+<td>02 48 67 70 00</td>
+<td>via formulaire</td>
+<td>Direction Banque Privée CA CL</td>
+<td>Banque privée régionale CVL</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Caisse Épargne Loire Centre Banque Privée</td>
+<td>CELC Banque Privée</td>
+<td>rattaché CELC</td>
+<td>7 rue d&#x27;Escures, 45000 Orléans + antennes</td>
+<td>02 38 78 51 51</td>
+<td>via formulaire</td>
+<td>Direction Banque Privée CELC</td>
+<td>Banque privée filiale CELC</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>15</td>
+<td>BPVF Banque Privée</td>
+<td>BPVF gestion privée</td>
+<td>rattaché BPVF</td>
+<td>Orléans + Chartres + Yvelines</td>
+<td>02 38 79 60 00</td>
+<td>via formulaire</td>
+<td>Direction Banque Privée BPVF</td>
+<td>Banque privée filiale BPVF</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>16</td>
+<td>BNP Paribas Banque Privée Tours</td>
+<td>BNP Paribas Wealth Management Tours</td>
+<td>rattaché BNPP</td>
+<td>Place Jean Jaurès, 37000 Tours (antenne)</td>
+<td>02 47 47 27 27</td>
+<td>via formulaire</td>
+<td>Direction Banque Privée Tours</td>
+<td>Antenne nationale BNPP Wealth Management Tours</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>17</td>
+<td>BNP Paribas Banque Privée Orléans</td>
+<td>BNPP WM Orléans</td>
+<td>rattaché BNPP</td>
+<td>Place de la République, 45000 Orléans</td>
+<td>02 38 53 27 27</td>
+<td>via formulaire</td>
+<td>Direction BNPP Orléans</td>
+<td>Antenne nationale BNPP Wealth Management Orléans</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Société Générale Private Banking Tours</td>
+<td>SG Private Banking Tours</td>
+<td>rattaché SG</td>
+<td>5-7 rue Marceau, 37000 Tours</td>
+<td>02 47 31 35 35</td>
+<td>via formulaire</td>
+<td>Direction SG Private Banking</td>
+<td>Antenne SG Tours</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Société Générale Private Banking Orléans</td>
+<td>SG Private Banking Orléans</td>
+<td>rattaché SG</td>
+<td>Place du Martroi, 45000 Orléans</td>
+<td>02 38 53 23 23</td>
+<td>via formulaire</td>
+<td>Direction SG Private Banking</td>
+<td>Antenne SG Orléans</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>20</td>
+<td>HSBC Continental Europe Private Bank</td>
+<td>HSBC Continental Europe SA</td>
+<td>775670284</td>
+<td>38 avenue Kléber, 75116 Paris</td>
+<td>01 40 70 70 40</td>
+<td>via formulaire</td>
+<td>Direction France HSBC PB</td>
+<td>Banque privée IDF, clients HNW</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>21</td>
+<td>La Banque Postale Wealth Management</td>
+<td>La Banque Postale</td>
+<td>421100645</td>
+<td>115 rue de Sèvres, 75275 Paris Cedex 06</td>
+<td>01 55 44 00 00</td>
+<td>via formulaire</td>
+<td>Direction LBP Wealth Management</td>
+<td>Banque postale, gestion privée nationale</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Crédit du Nord (fusion SG) IDF</td>
+<td>Société Générale</td>
+<td>552120222</td>
+<td>29 bd Haussmann, 75009 Paris</td>
+<td>01 42 14 20 00</td>
+<td>via formulaire</td>
+<td>Direction commerciale SG</td>
+<td>Post-fusion Crédit du Nord intégré SG</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Banque Palatine</td>
+<td>Banque Palatine SA</td>
+<td>542104245</td>
+<td>42 rue d&#x27;Anjou, 75008 Paris</td>
+<td>01 55 27 95 99</td>
+<td>via formulaire</td>
+<td>Pdt Directoire Banque Palatine</td>
+<td>Banque privée groupe BPCE, clients entrepreneurs IDF</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Neuflize OBC</td>
+<td>ABN AMRO Neuflize OBC</td>
+<td>552002313</td>
+<td>3 av Hoche, 75008 Paris</td>
+<td>01 56 21 80 00</td>
+<td>via formulaire</td>
+<td>Pdt Neuflize OBC</td>
+<td>Banque privée ABN AMRO, clients HNW IDF</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Lazard Frères Banque</td>
+<td>Lazard Frères Banque SA</td>
+<td>352213373</td>
+<td>175 bd Haussmann, 75008 Paris</td>
+<td>01 44 13 01 11</td>
+<td>via formulaire</td>
+<td>Pdt Lazard Frères Banque</td>
+<td>Banque d&#x27;affaires + gestion privée</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Edmond de Rothschild Private Bank</td>
+<td>Edmond de Rothschild SA</td>
+<td>775670319</td>
+<td>47 rue du Faubourg Saint-Honoré, 75008 Paris</td>
+<td>01 40 17 25 25</td>
+<td>via formulaire</td>
+<td>Pdt EdR France</td>
+<td>Banque privée HNW IDF, clients patrimoniaux</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>27</td>
+<td>Rothschild Martin Maurel</td>
+<td>Rothschild Martin Maurel SA</td>
+<td>572061684</td>
+<td>29 av de Messine, 75008 Paris</td>
+<td>01 40 74 40 74</td>
+<td>via formulaire</td>
+<td>Pdt RMM</td>
+<td>Banque privée HNW IDF, fortunes patrimoniales</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Indosuez Wealth Management France</td>
+<td>CA Indosuez Wealth (France) SA</td>
+<td>529702075</td>
+<td>17 rue du Docteur Lancereaux, 75008 Paris</td>
+<td>01 40 75 75 75</td>
+<td>via formulaire</td>
+<td>Pdt Indosuez France</td>
+<td>Banque privée CA Group, HNW</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Pictet &amp; Cie (Europe) SA</td>
+<td>Banque Pictet &amp; Cie SA</td>
+<td>à confirmer</td>
+<td>30 av Élysées, 75008 Paris</td>
+<td>01 56 88 71 00</td>
+<td>via formulaire</td>
+<td>Pdt Pictet France</td>
+<td>Banque privée suisse, clients UHNW</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Lombard Odier &amp; Cie</td>
+<td>Lombard Odier &amp; Cie</td>
+<td>à confirmer</td>
+<td>8 rue Royale, 75008 Paris</td>
+<td>01 49 26 50 00</td>
+<td>via formulaire</td>
+<td>Pdt Lombard Odier France</td>
+<td>Banque privée suisse, clients UHNW</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>31</td>
+<td>Mirabaud France</td>
+<td>Mirabaud SAS</td>
+<td>à confirmer</td>
+<td>13 av Hoche, 75008 Paris</td>
+<td>01 53 89 22 22</td>
+<td>via formulaire</td>
+<td>Pdt Mirabaud France</td>
+<td>Banque privée suisse, family offices</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Banque Hottinguer</td>
+<td>Banque Hottinguer SA</td>
+<td>à confirmer</td>
+<td>63 rue de Lille, 75007 Paris</td>
+<td>01 45 50 80 00</td>
+<td>via formulaire</td>
+<td>Pdt Banque Hottinguer</td>
+<td>Banque privée familiale française, HNW</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>33</td>
+<td>ODDO BHF</td>
+<td>ODDO BHF SCA</td>
+<td>552069863</td>
+<td>12 bd de la Madeleine, 75009 Paris</td>
+<td>01 44 51 85 00</td>
+<td>via formulaire</td>
+<td>Pdt ODDO BHF</td>
+<td>Banque d&#x27;affaires + gestion privée HNW France-Allemagne</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>34</td>
+<td>Milleis Banque</td>
+<td>Milleis Banque SA</td>
+<td>à confirmer</td>
+<td>8-10 rue de Sèze, 75009 Paris</td>
+<td>01 53 06 50 00</td>
+<td>via formulaire</td>
+<td>Pdt Milleis</td>
+<td>Banque privée française, ex-Barclays France</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>35</td>
+<td>Delubac &amp; Cie</td>
+<td>Banque Delubac &amp; Cie</td>
+<td>à confirmer</td>
+<td>16 place Saléon Terras, 07160 Le Cheylard + bureau Paris</td>
+<td>01 44 95 80 80</td>
+<td>via formulaire</td>
+<td>Pdt Delubac</td>
+<td>Banque privée familiale, antennes IDF</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>36</td>
+<td>Banque Transatlantique</td>
+<td>Banque Transatlantique SA</td>
+<td>à confirmer</td>
+<td>26 av Franklin Roosevelt, 75008 Paris</td>
+<td>01 56 88 77 77</td>
+<td>via formulaire</td>
+<td>Pdt Banque Transatlantique</td>
+<td>Banque privée groupe CM-CIC, expatriés et HNW</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>37</td>
+<td>BforBank</td>
+<td>BforBank SA</td>
+<td>à confirmer</td>
+<td>Tour Egée, 11 al de l&#x27;Arche, 92400 Courbevoie</td>
+<td>01 79 92 33 00</td>
+<td>via formulaire</td>
+<td>Pdt BforBank</td>
+<td>Banque digitale CA Group, gestion patrimoniale en ligne</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>38</td>
+<td>Boursorama Banque</td>
+<td>Boursorama SA</td>
+<td>351058151</td>
+<td>44 rue Traversière, 92772 Boulogne-Billancourt</td>
+<td>01 46 09 49 49</td>
+<td>via formulaire</td>
+<td>Pdt Boursorama</td>
+<td>Banque digitale SG Group, gestion patrimoniale en ligne</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>39</td>
+<td>Caisse d&#x27;Épargne IDF Banque Privée</td>
+<td>CE IDF Banque Privée</td>
+<td>rattaché CE IDF</td>
+<td>19 rue du Louvre, 75001 Paris</td>
+<td>01 58 06 32 80</td>
+<td>via formulaire</td>
+<td>Direction Banque Privée CE IDF</td>
+<td>Banque privée filiale CE IDF</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>40</td>
+<td>BP Rives de Paris Banque Privée</td>
+<td>BPRP Banque Privée</td>
+<td>rattaché BPRP</td>
+<td>76-78 av de France, 75013 Paris</td>
+<td>01 73 07 47 00</td>
+<td>via formulaire</td>
+<td>Direction Banque Privée BPRP</td>
+<td>Banque privée filiale BP Rives de Paris</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+</tbody></table></div></section>
+<section class="typo-sec" id="T6_Public">
+<h3>Typologie 6, Personnes publiques et collectivités CVL + IDF</h3>
+<div class="desc">Régions, départements, métropoles, communes, SEM, SPL, CDC Banque des Territoires. Cibles AMO, Audit, ESG Décret Tertiaire.</div>
+<div class="cnt">45 entrées · 12 colonnes</div>
+<div class="tbl-wrap"><table class="typo-tbl"><thead><tr>
+<th>#</th>
+<th>Nom officiel</th>
+<th>Forme</th>
+<th>SIREN</th>
+<th>Siège</th>
+<th>Téléphone</th>
+<th>Email</th>
+<th>Décideur cible</th>
+<th>Nom identifié</th>
+<th>Score /5</th>
+<th>Sous-cat</th>
+<th>Note /10</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>Région Centre-Val de Loire</td>
+<td>Région</td>
+<td>234500023</td>
+<td>9 rue Saint-Pierre Lentin, CS 94117, 45041 Orléans Cedex 1</td>
+<td>02 38 70 30 30</td>
+<td>contact@centre-valdeloire.fr</td>
+<td>Dir. patrimoine immo régional / DGS</td>
+<td>F. Bonneau (Pdt)</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Département du Loiret 45</td>
+<td>Département</td>
+<td>224500017</td>
+<td>3 rue Chateaubriand, BP 6417, 45100 Orléans</td>
+<td>02 38 25 45 45</td>
+<td>conseildepartemental@loiret.fr</td>
+<td>Direction immobilier départemental</td>
+<td>Marc Gaudet (Pdt)</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Département Indre-et-Loire 37</td>
+<td>Département</td>
+<td>223700019</td>
+<td>Place de la Préfecture, 37927 Tours Cedex 9</td>
+<td>02 47 31 47 31</td>
+<td>contact@departement-touraine.fr</td>
+<td>Direction du patrimoine immo</td>
+<td>P. Brynhole (Pdt)</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Département Cher 18</td>
+<td>Département</td>
+<td>221800014</td>
+<td>Hôtel du département, place Marcel Plaisant, CS 30322, 18023 Bourges Cedex</td>
+<td>02 48 25 25 25</td>
+<td>contact@departement18.fr</td>
+<td>Direction du patrimoine bâti</td>
+<td>Jacques Fleury (Pdt)</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Département Indre 36</td>
+<td>Département</td>
+<td>223600016</td>
+<td>Place de la Victoire, CS 20639, 36020 Châteauroux</td>
+<td>02 54 27 34 36</td>
+<td>contact@indre.fr</td>
+<td>Direction patrimoine immo</td>
+<td>M. Fleury (Pdt)</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Département Eure-et-Loir 28</td>
+<td>Département</td>
+<td>222800010</td>
+<td>Place Châtelet, CS 70403, 28008 Chartres</td>
+<td>02 37 23 58 28</td>
+<td>contact@eurelien.fr</td>
+<td>Direction patrimoine immo</td>
+<td>C. Lecomte (Pdt)</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Département Loir-et-Cher 41</td>
+<td>Département</td>
+<td>224100010</td>
+<td>Hôtel du département, place de la République, 41020 Blois</td>
+<td>02 54 58 41 41</td>
+<td>contact@departement41.fr</td>
+<td>Direction de l&#x27;immobilier</td>
+<td>P. Brun (Pdt)</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Tours Métropole Val de Loire</td>
+<td>Métropole EPCI</td>
+<td>243700754</td>
+<td>60 av Marcel Dassault, CS 30651, 37206 Tours Cedex 3</td>
+<td>02 47 80 11 11</td>
+<td>contact@tours-metropole.fr</td>
+<td>Direction bâtiments et patrimoine immo</td>
+<td>DGS Frédéric Baudin-Cullière</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Orléans Métropole</td>
+<td>Métropole EPCI</td>
+<td>244500468</td>
+<td>Espace Saint-Marc, 5 place du 6 juin 1944, 45000 Orléans</td>
+<td>02 38 78 75 75</td>
+<td>contact@orleans-metropole.fr</td>
+<td>DGA Patrimoine / Direction patrimoine immo</td>
+<td>DGS Bertrand Langlet ; DGA Arnaud Soulé</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>10</td>
+<td>CA Bourges Plus</td>
+<td>CA EPCI</td>
+<td>241800507</td>
+<td>23-31 bd du Maréchal Foch, 18020 Bourges</td>
+<td>02 48 48 58 58</td>
+<td>contact@agglo-bourgesplus.fr</td>
+<td>Direction patrimoine / commande publique</td>
+<td>DGS</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Châteauroux Métropole</td>
+<td>CA EPCI</td>
+<td>243600327</td>
+<td>Place de la République, CS 80509, 36012 Châteauroux</td>
+<td>02 54 08 33 00</td>
+<td>contact@chateauroux-metropole.fr</td>
+<td>Direction des bâtiments</td>
+<td>DGS mutualisé</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Chartres Métropole</td>
+<td>CA EPCI</td>
+<td>200033181</td>
+<td>Hôtel de Ville, place des Halles, 28000 Chartres</td>
+<td>02 37 23 40 00</td>
+<td>contact@chartres-metropole.fr</td>
+<td>Direction patrimoine bâti</td>
+<td>DGS / DGA bâtiment</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Agglopolys Blois</td>
+<td>CA EPCI</td>
+<td>200030385</td>
+<td>1 rue Honoré de Balzac, 41000 Blois</td>
+<td>02 54 90 35 35</td>
+<td>contact@agglopolys.fr</td>
+<td>Direction patrimoine bâti</td>
+<td>DGS mutualisé</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Ville de Tours</td>
+<td>Commune</td>
+<td>213702616</td>
+<td>1-3 rue des Minimes, 37000 Tours</td>
+<td>02 47 21 60 00</td>
+<td>mairie@ville-tours.fr</td>
+<td>Direction patrimoine immo / DGS</td>
+<td>DGS mutualisé</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Ville d&#x27;Orléans</td>
+<td>Commune</td>
+<td>214502346</td>
+<td>Place de l&#x27;Étape, 45040 Orléans Cedex 1</td>
+<td>02 38 79 22 22</td>
+<td>mairie@orleans-metropole.fr</td>
+<td>DGA Patrimoine mutualisée</td>
+<td>DGS Bertrand Langlet</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Ville de Bourges</td>
+<td>Commune</td>
+<td>211800339</td>
+<td>11 rue Jacques-Rimbault, 18000 Bourges</td>
+<td>02 48 57 80 00</td>
+<td>mairie@ville-bourges.fr</td>
+<td>Direction bâtiments / DGS</td>
+<td>Yann Galut (Maire)</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Ville de Blois</td>
+<td>Commune</td>
+<td>214100182</td>
+<td>9 place Saint-Louis, 41000 Blois</td>
+<td>02 54 44 50 50</td>
+<td>mairie@blois.fr</td>
+<td>Direction patrimoine</td>
+<td>Florent Gaspard (Dir Patrimoine)</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Ville de Chartres</td>
+<td>Commune</td>
+<td>212800858</td>
+<td>Hôtel de Ville, place des Halles, 28000 Chartres</td>
+<td>02 37 23 40 00</td>
+<td>mairie@chartres.fr</td>
+<td>Direction patrimoine bâti</td>
+<td>DGS mutualisé</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Ville de Châteauroux</td>
+<td>Commune</td>
+<td>213600448</td>
+<td>Place de la République, 36000 Châteauroux</td>
+<td>02 54 08 33 00</td>
+<td>mairie@chateauroux-metropole.fr</td>
+<td>Direction des bâtiments</td>
+<td>DGS mutualisé</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Ville Romorantin-Lanthenay</td>
+<td>Commune</td>
+<td>214101938</td>
+<td>Hôtel de Ville, place de la Paix, 41200 Romorantin</td>
+<td>02 54 94 41 41</td>
+<td>mairie@romorantin.fr</td>
+<td>DGS / services techniques</td>
+<td>DGS</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Ville de Vierzon</td>
+<td>Commune</td>
+<td>211802792</td>
+<td>BP 70603, 18106 Vierzon Cedex</td>
+<td>02 48 52 65 00</td>
+<td>mairie@ville-vierzon.fr</td>
+<td>DGS / services techniques</td>
+<td>DGS</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Ville de Vendôme</td>
+<td>Commune</td>
+<td>214102696</td>
+<td>BP 80174, 41106 Vendôme Cedex</td>
+<td>02 54 89 42 00</td>
+<td>mairie@vendome.eu</td>
+<td>DGS / services techniques</td>
+<td>DGS</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Ville d&#x27;Issoudun</td>
+<td>Commune</td>
+<td>213600885</td>
+<td>BP 130, 36105 Issoudun Cedex</td>
+<td>02 54 03 39 00</td>
+<td>mairie@issoudun.fr</td>
+<td>DGS / services techniques</td>
+<td>DGS</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Ville de Pithiviers</td>
+<td>Commune</td>
+<td>214502528</td>
+<td>BP 30119, 45302 Pithiviers Cedex</td>
+<td>02 38 30 50 02</td>
+<td>mairie@ville-pithiviers.fr</td>
+<td>DGS / services techniques</td>
+<td>DGS</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Ville de Montargis</td>
+<td>Commune</td>
+<td>214502080</td>
+<td>6 rue Gambetta, 45200 Montargis</td>
+<td>02 38 95 10 00</td>
+<td>mairie@montargis.fr</td>
+<td>DGS / services techniques</td>
+<td>DGS</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>26</td>
+<td>SET Société d&#x27;Équipement de la Touraine</td>
+<td>SEM</td>
+<td>584801625</td>
+<td>12 av de la République, 37000 Tours</td>
+<td>02 47 31 14 00</td>
+<td>contact@set.fr</td>
+<td>Direction immobilière / DG Groupe SET (2 SEM + 2 SPL)</td>
+<td>DG du Groupe SET</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>27</td>
+<td>SET Aménagement</td>
+<td>SPL</td>
+<td>filiale SET</td>
+<td>12 av de la République, 37000 Tours</td>
+<td>02 47 31 14 00</td>
+<td>contact@set.fr</td>
+<td>DG SPL</td>
+<td>DG SET groupe</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>28</td>
+<td>SET Investissement</td>
+<td>SAS foncière Groupe SET</td>
+<td>filiale SET</td>
+<td>12 av de la République, 37000 Tours</td>
+<td>02 47 31 14 00</td>
+<td>contact@set.fr</td>
+<td>DG foncière tertiaire / industrielle</td>
+<td>DG</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Société d&#x27;Efficacité Énergétique (SEE Groupe SET)</td>
+<td>SAS</td>
+<td>filiale SET</td>
+<td>12 av de la République, 37000 Tours</td>
+<td>02 47 31 14 00</td>
+<td>contact@set.fr</td>
+<td>DG rénovation énergétique bâti public</td>
+<td>DG</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>30</td>
+<td>SEMDO Société Économie Mixte Développement Orléanais</td>
+<td>SEM</td>
+<td>307718734</td>
+<td>6 av Jean Zay, 45000 Orléans</td>
+<td>02 38 78 79 80</td>
+<td>contact@semdo.fr</td>
+<td>Direction immobilière / DG</td>
+<td>DG SEMDO</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>31</td>
+<td>SPL Orléans Énergies</td>
+<td>SPL</td>
+<td>979446242</td>
+<td>Hôtel de Ville, 45000 Orléans</td>
+<td>nc</td>
+<td>contact@semdo.fr</td>
+<td>DG</td>
+<td>DG</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>32</td>
+<td>SEM Loiret Énergies</td>
+<td>SEM création 2024</td>
+<td>à confirmer</td>
+<td>Hôtel du département, 45000 Orléans</td>
+<td>02 38 25 45 45</td>
+<td>nc</td>
+<td>DG EnR</td>
+<td>DG</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Val de Berry (OPH Cher)</td>
+<td>OPH + SEM Patrimoniale 530293497</td>
+<td>271800013</td>
+<td>6 place Marcel Plaisant, 18000 Bourges</td>
+<td>02 48 23 27 27</td>
+<td>contact@valdeberry.fr</td>
+<td>Direction patrimoine</td>
+<td>DG Val de Berry</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>34</td>
+<td>SEM Patrimoniale du Cher</td>
+<td>SEM</td>
+<td>530293497</td>
+<td>Place Marcel Plaisant, 18000 Bourges</td>
+<td>nc</td>
+<td>nc</td>
+<td>DG</td>
+<td>DG</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>35</td>
+<td>SPL C&#x27;Chartres Aménagement</td>
+<td>SPL</td>
+<td>514950104</td>
+<td>Hôtel de Ville, 28000 Chartres</td>
+<td>02 37 23 41 41</td>
+<td>contact@chartres-amenagement.com</td>
+<td>Direction opérations / DG</td>
+<td>DG SPL</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>36</td>
+<td>Préfecture région CVL + Loiret</td>
+<td>Service déconcentré État</td>
+<td>174500009</td>
+<td>181 rue de Bourgogne, 45042 Orléans</td>
+<td>02 38 81 40 00</td>
+<td>pref-courrier@loiret.gouv.fr</td>
+<td>Secrétariat général aux affaires régionales</td>
+<td>SGAR</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>37</td>
+<td>Préfecture Indre-et-Loire</td>
+<td>Service déconcentré État</td>
+<td>173700019</td>
+<td>15 rue Bernard Palissy, 37925 Tours Cedex 9</td>
+<td>02 47 64 37 37</td>
+<td>pref-courrier@indre-et-loire.gouv.fr</td>
+<td>SG / Direction patrimoine immobilier État</td>
+<td>SG préfecture</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>38</td>
+<td>CDC Banque des Territoires DR CVL</td>
+<td>EPIC (CDC)</td>
+<td>180020026</td>
+<td>Orléans (locaux dédiés)</td>
+<td>02 38 79 12 00</td>
+<td>centre-val-de-loire@caissedesdepots.fr</td>
+<td>Directeur régional</td>
+<td>Fabien Ducasse (DR CVL)</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>39</td>
+<td>Ville de Paris + Département Paris</td>
+<td>Commune-Département</td>
+<td>217500016 / 227500055</td>
+<td>Hôtel de Ville, place de l&#x27;Hôtel de Ville, 75004 Paris</td>
+<td>39 75</td>
+<td>dpa@paris.fr</td>
+<td>DCPA Direction Constructions Publiques</td>
+<td>Directeur DCPA</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>40</td>
+<td>Région Île-de-France</td>
+<td>Région</td>
+<td>237500079</td>
+<td>2 rue Simone Veil, 93400 Saint-Ouen-sur-Seine</td>
+<td>01 53 85 53 85</td>
+<td>nc</td>
+<td>Direction immobilier régional / Pôle Patrimoine</td>
+<td>DGS / Dir Immobilier</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>41</td>
+<td>Département Yvelines 78</td>
+<td>Département</td>
+<td>227800010</td>
+<td>Hôtel du département, 2 place André Mignot, 78012 Versailles</td>
+<td>01 39 07 78 78</td>
+<td>nc</td>
+<td>Direction bâtiments départementaux</td>
+<td>DGS</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>42</td>
+<td>Département Hauts-de-Seine 92</td>
+<td>Département</td>
+<td>229200506</td>
+<td>57 rue des Longues Raies, 92731 Nanterre</td>
+<td>01 47 29 30 31</td>
+<td>nc</td>
+<td>Direction bâtiments</td>
+<td>DGS</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>43</td>
+<td>Département Seine-Saint-Denis 93</td>
+<td>Département</td>
+<td>229300082</td>
+<td>Esplanade Jean Moulin, 93006 Bobigny</td>
+<td>01 43 93 93 93</td>
+<td>nc</td>
+<td>Direction du patrimoine</td>
+<td>DGS</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>44</td>
+<td>Société des Grands Projets (ex SGP)</td>
+<td>EPIC</td>
+<td>525046017</td>
+<td>2 mail de la Petite Espagne, 93210 Saint-Denis</td>
+<td>nc</td>
+<td>contact@grandparisexpress.fr</td>
+<td>Direction immobilière / SGP Immobilier</td>
+<td>Antoine Bourguignon (SGP Immo)</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>45</td>
+<td>CDC Banque des Territoires DR IDF</td>
+<td>EPIC</td>
+<td>180020026</td>
+<td>9 rue Eblé, 75007 Paris</td>
+<td>01 49 55 67 89</td>
+<td>nc</td>
+<td>Directeur régional IDF</td>
+<td>DR IDF Banque des Territoires</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+</tbody></table></div></section>
+<section class="typo-sec" id="T7_Sante_Univ">
+<h3>Typologie 7, Établissements publics santé et universitaires CVL + IDF</h3>
+<div class="desc">CHRU, CHR, CH, Universités, CROUS, INRAE, BRGM. Cibles Audit AMO, ESG, Décret Tertiaire.</div>
+<div class="cnt">42 entrées · 12 colonnes</div>
+<div class="tbl-wrap"><table class="typo-tbl"><thead><tr>
+<th>#</th>
+<th>Nom officiel</th>
+<th>Forme</th>
+<th>SIREN</th>
+<th>Siège</th>
+<th>Téléphone</th>
+<th>Email</th>
+<th>Décideur cible</th>
+<th>Nom identifié</th>
+<th>Score /5</th>
+<th>Sous-cat</th>
+<th>Note /10</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>CHRU de Tours</td>
+<td>EPS CHU</td>
+<td>263700096</td>
+<td>2 bd Tonnellé, 37044 Tours Cedex 9</td>
+<td>02 47 47 47 47</td>
+<td>direction.communication@chu-tours.fr</td>
+<td>Direction patrimoine biomédical services techniques</td>
+<td>DG Floriane Rivière ; Dir patrimoine Ivy Mouchel</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>2</td>
+<td>CHU d&#x27;Orléans (ex-CHR)</td>
+<td>EPS CHU</td>
+<td>264500091</td>
+<td>14 av de l&#x27;Hôpital, CS 86709, 45067 Orléans Cedex 2</td>
+<td>02 38 51 44 44</td>
+<td>direction@chu-orleans.fr</td>
+<td>Direction services techniques et travaux</td>
+<td>DG Sébastien Vial</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>3</td>
+<td>CH Jacques Cœur Bourges</td>
+<td>EPS</td>
+<td>261800072</td>
+<td>145 av François Mitterrand, 18000 Bourges</td>
+<td>02 48 48 49 21</td>
+<td>nc</td>
+<td>Direction travaux et patrimoine</td>
+<td>Direction CH</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>CH Châteauroux-Le Blanc</td>
+<td>EPS</td>
+<td>263600033</td>
+<td>216 av de Verdun, 36000 Châteauroux</td>
+<td>02 54 29 60 00</td>
+<td>nc</td>
+<td>Direction services techniques</td>
+<td>Direction CH (support GHT Indre)</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>5</td>
+<td>CH Simone Veil Blois</td>
+<td>EPS</td>
+<td>264100033</td>
+<td>Mail Pierre Charlot, 41016 Blois Cedex</td>
+<td>02 54 55 66 33</td>
+<td>nc</td>
+<td>Direction travaux et patrimoine</td>
+<td>Direction CH</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>6</td>
+<td>CH de Chartres</td>
+<td>EPS</td>
+<td>262800048</td>
+<td>4 rue Claude Bernard, BP 30407, 28018 Chartres / Le Coudray</td>
+<td>02 37 30 30 30</td>
+<td>nc</td>
+<td>Direction services techniques et travaux</td>
+<td>Direction CH</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>7</td>
+<td>CH de Dreux Victor Jousselin</td>
+<td>EPS</td>
+<td>262800089</td>
+<td>44 av du Pdt JF Kennedy, 28100 Dreux</td>
+<td>02 37 51 53 00</td>
+<td>nc</td>
+<td>Direction travaux</td>
+<td>DG Hugo Montamat</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>8</td>
+<td>CH de Vierzon</td>
+<td>EPS</td>
+<td>261800023</td>
+<td>33 rue Léo Mérigot, 18100 Vierzon</td>
+<td>02 48 52 32 32</td>
+<td>nc</td>
+<td>Direction travaux</td>
+<td>Direction CH</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>9</td>
+<td>CH Romorantin-Lanthenay</td>
+<td>EPS</td>
+<td>264100124</td>
+<td>96 rue des Capucins, 41200 Romorantin</td>
+<td>02 54 88 33 33</td>
+<td>nc</td>
+<td>Direction travaux</td>
+<td>Direction CH</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>10</td>
+<td>CH Vendôme-Montoire</td>
+<td>EPS</td>
+<td>264100249</td>
+<td>98 rue Poterie, 41100 Vendôme</td>
+<td>02 54 23 33 33</td>
+<td>nc</td>
+<td>Direction travaux</td>
+<td>Direction CH</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>11</td>
+<td>CH Amboise-Château-Renault</td>
+<td>EPS</td>
+<td>263700111</td>
+<td>Rue des Ursulines, BP 329, 37403 Amboise</td>
+<td>02 47 23 33 33</td>
+<td>nc</td>
+<td>Direction travaux</td>
+<td>Direction CH</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>12</td>
+<td>CH Paul Martinais Loches</td>
+<td>EPS</td>
+<td>263700137</td>
+<td>Rue des Lochalliers, BP 197, 37601 Loches</td>
+<td>02 47 91 33 33</td>
+<td>nc</td>
+<td>Direction services techniques</td>
+<td>Direction CH</td>
+<td>2</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>13</td>
+<td>CH de Pithiviers</td>
+<td>EPS</td>
+<td>264500158</td>
+<td>10 bd Beauvoir, 45304 Pithiviers</td>
+<td>02 38 30 50 00</td>
+<td>nc</td>
+<td>Direction travaux</td>
+<td>Direction CH GHT Loiret</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>14</td>
+<td>CH Agglomération Montargoise CHAM</td>
+<td>EPS</td>
+<td>264500174</td>
+<td>658 rue des Bourgoins, 45200 Amilly</td>
+<td>02 38 95 91 11</td>
+<td>nc</td>
+<td>Direction travaux</td>
+<td>Direction CH</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>15</td>
+<td>CH George Sand Bourges psychiatrie</td>
+<td>EPS</td>
+<td>261800049</td>
+<td>17 rue du Colombier, 18020 Bourges</td>
+<td>02 48 66 66 66</td>
+<td>nc</td>
+<td>Direction travaux</td>
+<td>Direction CH</td>
+<td>2</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>16</td>
+<td>EPSM Daumézon Fleury-les-Aubrais</td>
+<td>EPSM</td>
+<td>264500083</td>
+<td>1 route de Chanteau, 45400 Fleury-les-Aubrais</td>
+<td>02 38 60 59 00</td>
+<td>nc</td>
+<td>Direction travaux</td>
+<td>Direction CH</td>
+<td>2</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Hôpital Privé Saint-Gatien Tours Elsan</td>
+<td>SAS Elsan</td>
+<td>rattaché Elsan</td>
+<td>8 place de la Cathédrale, 37000 Tours</td>
+<td>02 47 31 39 00</td>
+<td>nc</td>
+<td>Direction immobilière groupe Elsan / Dir établissement</td>
+<td>DG établissement</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Pôle Santé Léonard de Vinci Chambray</td>
+<td>SAS Vivalto Santé</td>
+<td>à confirmer</td>
+<td>2 rue Pierre de Coubertin, 37170 Chambray-lès-Tours</td>
+<td>02 47 47 47 47</td>
+<td>nc</td>
+<td>Direction technique et patrimoine groupe</td>
+<td>DG établissement</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Clinique Saint-Joseph Orléans Elsan</td>
+<td>SAS Elsan</td>
+<td>à confirmer</td>
+<td>14 av de l&#x27;Hôpital, 45000 Orléans</td>
+<td>02 38 51 02 03</td>
+<td>nc</td>
+<td>Direction immobilière Elsan / Dir établissement</td>
+<td>DG établissement</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Clinique Guillaume de Varye Saint-Doulchard</td>
+<td>SAS Elsan</td>
+<td>à confirmer</td>
+<td>Av de Varye, 18230 Saint-Doulchard</td>
+<td>nc</td>
+<td>nc</td>
+<td>Direction Elsan / Dir établissement</td>
+<td>DG</td>
+<td>2</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Université de Tours</td>
+<td>EPCSCP</td>
+<td>193708005</td>
+<td>60 rue du Plat d&#x27;Étain, BP 12050, 37020 Tours Cedex 1</td>
+<td>02 47 36 66 00</td>
+<td>direction.patrimoine@univ-tours.fr</td>
+<td>Direction patrimoine immobilier DPI</td>
+<td>Pdt université ; Dir patrimoine</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Université d&#x27;Orléans</td>
+<td>EPCSCP</td>
+<td>194508552</td>
+<td>Château de la Source, BP 6749, 45067 Orléans Cedex 2</td>
+<td>02 38 41 71 71</td>
+<td>direction.patrimoine@univ-orleans.fr</td>
+<td>Direction patrimoine immobilier et énergie</td>
+<td>Pdt ; Directeur Patrimoine</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>23</td>
+<td>INSA Centre Val de Loire</td>
+<td>EPSCP</td>
+<td>130018336</td>
+<td>88 bd Lahitolle, CS 60013, 18022 Bourges</td>
+<td>02 48 48 40 00</td>
+<td>contact@insa-cvl.fr</td>
+<td>Direction patrimoine</td>
+<td>Directeur INSA-CVL</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>24</td>
+<td>CROUS Orléans-Tours</td>
+<td>EPA</td>
+<td>184500213</td>
+<td>17 av Dauphine, 45000 Orléans</td>
+<td>02 38 22 61 61</td>
+<td>dirpat@crous-orleans-tours.fr</td>
+<td>Direction patrimoine</td>
+<td>DG Mostefa Fliou</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>25</td>
+<td>BRGM (siège)</td>
+<td>EPIC</td>
+<td>582056149</td>
+<td>3 av Claude Guillemin, BP 36009, 45060 Orléans Cedex 2</td>
+<td>02 38 64 34 34</td>
+<td>contact@brgm.fr</td>
+<td>Direction moyens / patrimoine immobilier</td>
+<td>PDG BRGM ; Dir moyens</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>26</td>
+<td>AP-HP Assistance Publique Hôpitaux de Paris</td>
+<td>EPS CHU</td>
+<td>267500452</td>
+<td>55 bd Diderot, CS 22305, 75610 Paris Cedex 12</td>
+<td>01 40 27 30 00</td>
+<td>direction-generale@aphp.fr</td>
+<td>DEFIP Direction économique financière investissement patrimoine</td>
+<td>DEFIP Marianne Kermoal-Berthomé</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>27</td>
+<td>CHU Henri-Mondor AP-HP</td>
+<td>Site AP-HP</td>
+<td>267500452</td>
+<td>51 av du Maréchal de Lattre de Tassigny, 94010 Créteil</td>
+<td>01 49 81 21 11</td>
+<td>nc</td>
+<td>Direction travaux site</td>
+<td>Direction site</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Hôpital Européen Georges-Pompidou AP-HP</td>
+<td>Site AP-HP</td>
+<td>267500452</td>
+<td>20 rue Leblanc, 75015 Paris</td>
+<td>01 56 09 20 00</td>
+<td>nc</td>
+<td>Direction travaux site</td>
+<td>Direction site</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Hôpital Bichat-Claude Bernard AP-HP</td>
+<td>Site AP-HP</td>
+<td>267500452</td>
+<td>46 rue Henri Huchard, 75018 Paris</td>
+<td>01 40 25 80 80</td>
+<td>nc</td>
+<td>Direction travaux site</td>
+<td>Direction site</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>30</td>
+<td>CHU Bicêtre AP-HP</td>
+<td>Site AP-HP</td>
+<td>267500452</td>
+<td>78 rue du Général Leclerc, 94275 Le Kremlin-Bicêtre</td>
+<td>01 45 21 21 21</td>
+<td>nc</td>
+<td>Direction site</td>
+<td>Direction site</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>31</td>
+<td>Université Paris-Saclay</td>
+<td>EPE</td>
+<td>130026024</td>
+<td>Bâtiment Bréguet, 3 rue Joliot-Curie, 91190 Gif-sur-Yvette</td>
+<td>01 69 15 70 76</td>
+<td>direction.patrimoine@universite-paris-saclay.fr</td>
+<td>Direction patrimoine immo</td>
+<td>Présidence ; Dir Patrimoine</td>
+<td>5</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Université Paris Cité</td>
+<td>EPCSCP</td>
+<td>130025835</td>
+<td>85 bd Saint-Germain, 75006 Paris</td>
+<td>01 57 27 90 00</td>
+<td>direction.patrimoine@u-paris.fr</td>
+<td>Direction patrimoine immo</td>
+<td>Présidence ; Dir Patrimoine</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Sorbonne Université</td>
+<td>EPCSCP</td>
+<td>130032872</td>
+<td>21 rue de l&#x27;École de Médecine, 75006 Paris</td>
+<td>01 44 27 44 27</td>
+<td>nc</td>
+<td>Direction du patrimoine</td>
+<td>Direction Patrimoine</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>34</td>
+<td>UVSQ Université Versailles Saint-Quentin</td>
+<td>EPCSCP</td>
+<td>199217554</td>
+<td>55 av de Paris, 78035 Versailles</td>
+<td>01 39 25 78 00</td>
+<td>dpi@uvsq.fr</td>
+<td>Direction transverse patrimoine immo DTPI</td>
+<td>Dir DTPI UVSQ</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>35</td>
+<td>ENS Paris-Saclay</td>
+<td>EPSCP</td>
+<td>130025074</td>
+<td>4 av des Sciences, 91190 Gif-sur-Yvette</td>
+<td>01 81 87 50 00</td>
+<td>dpat@ens-paris-saclay.fr</td>
+<td>Direction Patrimoine DPAT</td>
+<td>Directeur DPAT</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>36</td>
+<td>CROUS de Paris</td>
+<td>EPA</td>
+<td>195100211</td>
+<td>39 av Georges Bernanos, 75005 Paris</td>
+<td>01 40 51 35 35</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>37</td>
+<td>CROUS de Versailles</td>
+<td>EPA</td>
+<td>197801345</td>
+<td>145 bd de la Reine, 78000 Versailles</td>
+<td>01 39 24 52 00</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>38</td>
+<td>INRAE siège + centre CVL</td>
+<td>EPST</td>
+<td>180070039</td>
+<td>147 rue de l&#x27;Université, 75007 Paris / Nouzilly 37</td>
+<td>01 42 75 90 00</td>
+<td>nc</td>
+<td>Direction patrimoine / délégation régionale</td>
+<td>DG INRAE ; Délégué régional CVL</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>39</td>
+<td>CH du Loir-et-Cher (Vendôme + sites)</td>
+<td>EPS</td>
+<td>264100249</td>
+<td>Sites Vendôme et associés</td>
+<td>nc</td>
+<td>nc</td>
+<td>Direction travaux</td>
+<td>Direction CH</td>
+<td>2</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>40</td>
+<td>École Hubert Curien CNRS Orléans</td>
+<td>UMR CNRS</td>
+<td>180089013</td>
+<td>Orléans La Source</td>
+<td>nc</td>
+<td>nc</td>
+<td>DGS CNRS / Service patrimoine régional</td>
+<td>nc</td>
+<td>2</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>41</td>
+<td>SIAP, La Roseraie, La Tourangelle ESH groupées</td>
+<td>ESH</td>
+<td>à dispatcher</td>
+<td>CVL</td>
+<td>nc</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>2</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>42</td>
+<td>Antenne CNRS Orléans région</td>
+<td>nc</td>
+<td>nc</td>
+<td>Orléans</td>
+<td>nc</td>
+<td>nc</td>
+<td>nc</td>
+<td>nc</td>
+<td>1</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+</tbody></table></div></section>
+<section class="typo-sec" id="T8_ParticFortunes">
+<h3>Typologie 8, Particuliers fortunés via prescripteurs (profils types)</h3>
+<div class="desc">Approche systématiquement via prescripteur, jamais en direct. Profils types et canaux d&#x27;apport.</div>
+<div class="cnt">11 entrées · 9 colonnes</div>
+<div class="tbl-wrap"><table class="typo-tbl"><thead><tr>
+<th>#</th>
+<th>Sous-typologie</th>
+<th>Canal d&#x27;apport</th>
+<th>Volume estimé CVL+IDF</th>
+<th>Patrimoine moyen</th>
+<th>Mission prioritaire</th>
+<th>Score /5</th>
+<th>Sous-cat</th>
+<th>Note /10</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>Médecins propriétaires de murs cabinet + résidentiel CVL</td>
+<td>Pôle Santé Léonard de Vinci, Conseil de l&#x27;Ordre, CGP Denormandie</td>
+<td>1500 à 3000 médecins CVL</td>
+<td>1 à 10 M€</td>
+<td>Patrimoniale, Audit</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Notaires patrimoniaux installés CVL</td>
+<td>Réseau direct Yannis + Chambre des Notaires</td>
+<td>200 à 400 notaires CVL</td>
+<td>1 à 5 M€</td>
+<td>Patrimoniale</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Avocats d&#x27;affaires et fiscalistes CVL</td>
+<td>Barreau Tours + Orléans + Réseau pro</td>
+<td>300 à 600 avocats CVL</td>
+<td>1 à 5 M€</td>
+<td>Patrimoniale</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Chefs d&#x27;entreprise patrimoniaux PME-ETI CVL</td>
+<td>CCI Tours + Loiret, ARRISTO</td>
+<td>1500 à 3000 dirigeants CVL</td>
+<td>2 à 30 M€</td>
+<td>Audit, Pilotage, Patrimoniale</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Dirigeants à l&#x27;IPO ou en exit (céréaliers, viticulteurs)</td>
+<td>Banques privées régionales + notaires</td>
+<td>200 à 500 CVL</td>
+<td>5 à 50 M€</td>
+<td>Patrimoniale, Audit, Pilotage</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Médecins IDF (cabinets et résidentiel)</td>
+<td>Conseil de l&#x27;Ordre IDF + CGP</td>
+<td>10 000 à 20 000 médecins IDF</td>
+<td>1 à 10 M€</td>
+<td>Patrimoniale, Audit</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Chefs d&#x27;entreprise PME-ETI IDF en cession</td>
+<td>Banques privées + avocats fiscalistes</td>
+<td>5 000 à 10 000 dirigeants IDF en cession sur 5 ans</td>
+<td>5 à 100 M€</td>
+<td>Patrimoniale, Pilotage</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Sportifs et artistes patrimoniaux</td>
+<td>Cabinets fiscaux spécialisés</td>
+<td>500 à 1000 France</td>
+<td>5 à 30 M€</td>
+<td>Patrimoniale</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Héritiers patrimoniaux post transmission</td>
+<td>Notaires + banques privées</td>
+<td>Pop. fluctuante</td>
+<td>5 à 50 M€</td>
+<td>Patrimoniale, Audit, Pilotage</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Dirigeants Cosmetic Valley en exit</td>
+<td>Cosmétic Valley + banques privées Loiret</td>
+<td>200 à 400 CVL</td>
+<td>10 à 100 M€</td>
+<td>Patrimoniale, Pilotage</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Dirigeants pharma CVL en exit</td>
+<td>Réseau pharma CVL + banques privées</td>
+<td>100 à 300 CVL</td>
+<td>5 à 50 M€</td>
+<td>Patrimoniale, Audit</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+</tbody></table></div></section>
+<section class="typo-sec" id="T9_Bailleurs">
+<h3>Typologie 9, Bailleurs sociaux et logement intermédiaire CVL + IDF</h3>
+<div class="desc">OPH, ESH, SEM bailleurs, logement intermédiaire. Cibles ESG, Décret Tertiaire pour sièges et locaux administratifs.</div>
+<div class="cnt">33 entrées · 12 colonnes</div>
+<div class="tbl-wrap"><table class="typo-tbl"><thead><tr>
+<th>#</th>
+<th>Nom officiel</th>
+<th>Forme</th>
+<th>SIREN</th>
+<th>Siège</th>
+<th>Téléphone</th>
+<th>Email</th>
+<th>Décideur cible</th>
+<th>Nom identifié</th>
+<th>Score /5</th>
+<th>Sous-cat</th>
+<th>Note /10</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>Val Touraine Habitat</td>
+<td>OPH EPIC</td>
+<td>781598248</td>
+<td>7 La Milletière, BP 64127, 37041 Tours Cedex 1</td>
+<td>02 47 31 45 00</td>
+<td>contact@valtourainehabitat.fr</td>
+<td>Direction patrimoine</td>
+<td>DG Val Touraine Habitat</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Touraine Logement ESH</td>
+<td>ESH SA HLM</td>
+<td>684801293</td>
+<td>14 rue du Président Merville, 37000 Tours</td>
+<td>02 47 70 47 70</td>
+<td>contact@touraine-logement.fr</td>
+<td>Direction patrimoine</td>
+<td>DG Touraine Logement</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Tours Métropole Habitat</td>
+<td>OPH EPIC</td>
+<td>351243076</td>
+<td>1 rue Maurice Bedel, 37000 Tours</td>
+<td>02 47 60 13 13</td>
+<td>contact@tmh.fr</td>
+<td>Direction patrimoine</td>
+<td>DG Grégoire Simon ; Pdt CA Emmanuel Denis</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>LogemLoiret OPH</td>
+<td>OPH EPIC</td>
+<td>342143955</td>
+<td>65 rue Croix de Malte, 45000 Orléans</td>
+<td>02 38 53 26 00</td>
+<td>contact@logemloiret.fr</td>
+<td>Direction patrimoine</td>
+<td>DG LogemLoiret</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Les Résidences de l&#x27;Orléanais</td>
+<td>SEM Patrimoniale</td>
+<td>892452731</td>
+<td>16 av de la Mouillère, 45100 Orléans</td>
+<td>02 38 68 39 39</td>
+<td>contact@residences-orleanais.fr</td>
+<td>Direction patrimoine</td>
+<td>DG Les Résidences de l&#x27;Orléanais</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>6</td>
+<td>France Loire ESH</td>
+<td>ESH SA HLM</td>
+<td>673720744</td>
+<td>33 rue du Faubourg de Bourgogne, CS 51557, 45005 Orléans</td>
+<td>02 38 78 30 30</td>
+<td>contact@franceloire.fr</td>
+<td>Direction patrimoine</td>
+<td>DG France Loire</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Val de Berry OPH Cher</td>
+<td>OPH EPIC</td>
+<td>271800013</td>
+<td>6 place Marcel Plaisant, 18000 Bourges</td>
+<td>02 48 23 27 27</td>
+<td>contact@valdeberry.fr</td>
+<td>Direction patrimoine</td>
+<td>DG Val de Berry</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Bourges Habitat</td>
+<td>OPH</td>
+<td>261800023</td>
+<td>Bourges</td>
+<td>02 48 24 14 24</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Scalis (Polylogis)</td>
+<td>ESH SA HLM</td>
+<td>815620463</td>
+<td>14 rue Saint-Luc, 36000 Châteauroux</td>
+<td>02 54 53 35 00</td>
+<td>contact@scalis.polylogis.immo</td>
+<td>Direction patrimoine</td>
+<td>DG Scalis Polylogis</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>10</td>
+<td>OPAC 36 OPHAC de l&#x27;Indre</td>
+<td>OPH</td>
+<td>263600140</td>
+<td>Châteauroux</td>
+<td>02 54 60 65 65</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Terres de Loire Habitat (ex OPH 41)</td>
+<td>OPH EPIC</td>
+<td>349338111</td>
+<td>18 av de l&#x27;Europe, 41000 Blois</td>
+<td>02 54 43 23 23</td>
+<td>contact@terresdeloirehabitat.fr</td>
+<td>Direction patrimoine</td>
+<td>DG Terres de Loire Habitat</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Loir-et-Cher Logement (Jacques Gabriel)</td>
+<td>ESH</td>
+<td>à confirmer</td>
+<td>Blois</td>
+<td>02 54 55 75 00</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Habitat Eurélien OPH 28</td>
+<td>OPH EPIC</td>
+<td>434059192</td>
+<td>6 rue Jean Perrin, 28300 Mainvilliers</td>
+<td>02 37 84 32 32</td>
+<td>contact@habitat-eurelien.fr</td>
+<td>Direction patrimoine</td>
+<td>DG Habitat Eurélien</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Eure-et-Loir Habitat SA HLM</td>
+<td>ESH</td>
+<td>à confirmer</td>
+<td>Chartres</td>
+<td>02 37 18 47 00</td>
+<td>contact@elhabitat.fr</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Chartres Habitat</td>
+<td>OPH intégré Chartres Métropole</td>
+<td>200033181</td>
+<td>Place des Halles, 28000 Chartres</td>
+<td>02 37 23 41 41</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Nouveau Logis Centre Limousin NLCL</td>
+<td>ESH</td>
+<td>à confirmer</td>
+<td>Tours</td>
+<td>02 47 39 27 00</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Immobilière Centre Loire ICL</td>
+<td>ESH</td>
+<td>à confirmer</td>
+<td>Orléans</td>
+<td>nc</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Vallogis</td>
+<td>ESH</td>
+<td>à confirmer</td>
+<td>Tours</td>
+<td>nc</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Pierres et Lumières</td>
+<td>ESH</td>
+<td>à confirmer</td>
+<td>Tours</td>
+<td>nc</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>20</td>
+<td>SIAP Société Immobilière Aménagement Promotion</td>
+<td>ESH</td>
+<td>à confirmer</td>
+<td>Bourges</td>
+<td>nc</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>2</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>21</td>
+<td>La Roseraie SA HLM</td>
+<td>ESH</td>
+<td>à confirmer</td>
+<td>Tours / CVL</td>
+<td>nc</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>2</td>
+<td><span class="bB">B</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>22</td>
+<td>La Tourangelle SA HLM</td>
+<td>ESH</td>
+<td>à confirmer</td>
+<td>Tours</td>
+<td>nc</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>23</td>
+<td>CDC Habitat (groupe)</td>
+<td>SA HLM filiale CDC</td>
+<td>470801168</td>
+<td>33 av Pierre Mendès-France, 75013 Paris</td>
+<td>01 55 03 30 00</td>
+<td>nc</td>
+<td>Direction patrimoine groupe</td>
+<td>DG CDC Habitat</td>
+<td>5</td>
+<td><span class="bC">C</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>24</td>
+<td>CDC Habitat Social</td>
+<td>ESH</td>
+<td>552046484</td>
+<td>33 av Pierre Mendès-France, 75013 Paris</td>
+<td>01 55 03 30 00</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>25</td>
+<td>In&#x27;li (Action Logement Immobilier)</td>
+<td>SA CA</td>
+<td>602052359</td>
+<td>Tour Ariane, 5 place de la Pyramide, 92800 Puteaux</td>
+<td>01 55 17 28 00</td>
+<td>contact@inli.fr</td>
+<td>Direction patrimoine</td>
+<td>DG Eric Balci ; Pdt CA Daniel Weizmann</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Paris Habitat OPH</td>
+<td>OPH EPIC</td>
+<td>344810825</td>
+<td>21 bis rue Claude Bernard, 75253 Paris Cedex 05</td>
+<td>01 71 37 00 00</td>
+<td>contact@parishabitat.fr</td>
+<td>Direction patrimoine immo</td>
+<td>DG Cécile Belard du Plantys ; Pdt CA Éric Pliez</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>27</td>
+<td>RIVP Régie Immobilière Ville Paris</td>
+<td>SEM SA</td>
+<td>552032708</td>
+<td>13 av de la Porte d&#x27;Italie, 75013 Paris</td>
+<td>01 53 79 80 00</td>
+<td>contact@rivp.fr</td>
+<td>Direction patrimoine</td>
+<td>DG Christine Laconde</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>28</td>
+<td>ICF Habitat La Sablière (SNCF)</td>
+<td>ESH</td>
+<td>552022105</td>
+<td>24 rue de Châteaudun, 75009 Paris</td>
+<td>01 55 33 96 00</td>
+<td>nc</td>
+<td>Direction patrimoine IDF</td>
+<td>DG ICF La Sablière</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>29</td>
+<td>ICF Habitat Novedis</td>
+<td>SA</td>
+<td>552022105</td>
+<td>Paris</td>
+<td>nc</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Antin Résidences (Seqens)</td>
+<td>ESH</td>
+<td>315518803</td>
+<td>59 rue de Provence, 75009 Paris</td>
+<td>01 43 12 30 60</td>
+<td>contact@antin-residences.com</td>
+<td>Direction patrimoine</td>
+<td>DG Antin (Seqens)</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>31</td>
+<td>Seqens (ex Domaxis fusionné)</td>
+<td>ESH</td>
+<td>322315557</td>
+<td>14 bd Garibaldi, 92130 Issy-les-Moulineaux</td>
+<td>01 55 95 80 00</td>
+<td>contact@seqens.fr</td>
+<td>Direction patrimoine</td>
+<td>DG Seqens</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Cilgère (Action Logement)</td>
+<td>ESH</td>
+<td>824541148</td>
+<td>19/21 quai d&#x27;Austerlitz, 75013 Paris</td>
+<td>01 84 86 00 00</td>
+<td>nc</td>
+<td>Direction patrimoine</td>
+<td>DG</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Action Logement Services / Groupe</td>
+<td>SAS / Asso</td>
+<td>824541148 / 824581623</td>
+<td>19/21 quai d&#x27;Austerlitz, 75013 Paris</td>
+<td>01 55 30 28 00</td>
+<td>contact@actionlogement.fr</td>
+<td>Direction immo groupe</td>
+<td>DG ALG</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+</tbody></table></div></section>
+<section class="typo-sec" id="T10_Prescripteurs">
+<h3>Typologie 10, CGP et notaires prescripteurs CVL + IDF</h3>
+<div class="desc">Conseillers en gestion de patrimoine et offices notariaux. Prescripteurs indirects vers family offices non structurés et particuliers fortunés.</div>
+<div class="cnt">50 entrées · 12 colonnes</div>
+<div class="tbl-wrap"><table class="typo-tbl"><thead><tr>
+<th>#</th>
+<th>Nom commercial</th>
+<th>Raison sociale</th>
+<th>SIREN</th>
+<th>Siège / Adresse</th>
+<th>Téléphone</th>
+<th>Email</th>
+<th>Dirigeant / Décideur</th>
+<th>Profil</th>
+<th>Score /5</th>
+<th>Sous-cat</th>
+<th>Note /10</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>Hervé Hulme Conseil Patrimoine Tours</td>
+<td>Cabinet Hervé Hulme</td>
+<td>à enrichir</td>
+<td>Tours 37</td>
+<td>via site hervehulme.com</td>
+<td>via site</td>
+<td>Hervé Hulme (fondateur)</td>
+<td>CGP Tours, accompagnement patrimonial global</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Guillaume Sébire (CGP Denormandie)</td>
+<td>Sébire Patrimoine</td>
+<td>à enrichir</td>
+<td>Tours 37</td>
+<td>via site</td>
+<td>via site</td>
+<td>Guillaume Sébire (fondateur)</td>
+<td>Tête de pont CGP Tours réseau IRIS H, spécialisation Denormandie</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Cyrus Conseil Tours</td>
+<td>Cyrus Conseil SA antenne Tours</td>
+<td>rattaché Cyrus</td>
+<td>Tours 37 antenne</td>
+<td>via site cyrusconseil.fr</td>
+<td>via site</td>
+<td>Direction Cyrus Tours</td>
+<td>MFO + CGP, antenne Tours, clientèle HNW</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Cyrus Conseil Paris</td>
+<td>Cyrus Conseil SA</td>
+<td>411183715</td>
+<td>50 bd Haussmann, 75009 Paris</td>
+<td>01 53 93 23 23</td>
+<td>via site</td>
+<td>Meyer Azogui (Pdt)</td>
+<td>Multi family office, gestion patrimoine HNW</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Olifan Group Paris</td>
+<td>Olifan Group SA</td>
+<td>501822167</td>
+<td>1 rue Cambon, 75001 Paris</td>
+<td>01 55 27 84 00</td>
+<td>via site</td>
+<td>Daniel Faurie (Pdt)</td>
+<td>MFO indépendant, expertise patrimoniale globale</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Patrimmofi</td>
+<td>Patrimmofi SA</td>
+<td>à enrichir</td>
+<td>21 av George V, 75008 Paris</td>
+<td>01 56 89 22 60</td>
+<td>via site</td>
+<td>Pdt Patrimmofi</td>
+<td>MFO HNW Paris, structurations patrimoniales</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Witam Multi Family Office</td>
+<td>Witam SA</td>
+<td>à enrichir</td>
+<td>Paris 75008</td>
+<td>01 70 39 41 41</td>
+<td>via site</td>
+<td>Pdt Witam</td>
+<td>MFO indépendant Paris, HNW</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>8</td>
+<td>K&amp;P Finance</td>
+<td>K&amp;P Finance SAS</td>
+<td>à enrichir</td>
+<td>Paris 75008</td>
+<td>01 70 39 49 79</td>
+<td>via site</td>
+<td>Pdt K&amp;P</td>
+<td>MFO indépendant Paris</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Edmond de Rothschild Heritage Paris</td>
+<td>EdR Heritage</td>
+<td>rattaché EdR</td>
+<td>47 rue Faubourg Saint-Honoré, 75008 Paris</td>
+<td>01 40 17 25 25</td>
+<td>via site</td>
+<td>Direction EdR Heritage</td>
+<td>MFO HNW EdR, fortunes patrimoniales</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Privalys</td>
+<td>Privalys SA</td>
+<td>à enrichir</td>
+<td>Paris 75008</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Pdt Privalys</td>
+<td>MFO indépendant Paris</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Hexa Patrimoine</td>
+<td>Hexa Patrimoine SA</td>
+<td>à enrichir</td>
+<td>Paris IDF</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Direction Hexa</td>
+<td>CGP IDF, clientèle HNW</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Compagnie Patrimoine</td>
+<td>Compagnie Patrimoine SA</td>
+<td>à enrichir</td>
+<td>Paris 75008</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Direction Compagnie Patrimoine</td>
+<td>MFO IDF</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Eres Group</td>
+<td>Eres Group SA</td>
+<td>à enrichir</td>
+<td>Paris 75002</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Pdt Eres</td>
+<td>Conseil épargne salariale + patrimoine HNW</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Carat Capital</td>
+<td>Carat Capital SA</td>
+<td>à enrichir</td>
+<td>Paris 75008</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Pdt Carat Capital</td>
+<td>MFO Paris</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Haussmann Patrimoine</td>
+<td>Haussmann Patrimoine SA</td>
+<td>à enrichir</td>
+<td>Paris 75008</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Direction Haussmann Patrimoine</td>
+<td>CGP IDF adhérent CNCGP</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Office NLC Notaires Loire Conseils Tours</td>
+<td>NLC Notaires Loire Conseils</td>
+<td>à enrichir</td>
+<td>Tours + Notre-Dame-d&#x27;Oé + Monnaie 37</td>
+<td>02 47 60 21 21</td>
+<td>via site</td>
+<td>C. Laffon-Dechesne, D. Barat, M. Barbarant, X. Blein, G. Danjou, M. Nieto, H. Douillard, A. Leteuil, C. Guignard</td>
+<td>Office majeur Tours, 9 notaires associés, spécialisation transmission Dutreil donation-partage</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Groupe Monassier Val-de-Loire</td>
+<td>Groupe Monassier</td>
+<td>à enrichir</td>
+<td>Joué-lès-Tours 37 + antenne Orléans 45</td>
+<td>02 47 67 14 14</td>
+<td>via site</td>
+<td>Pierre Jamin, Marion Haye (Joué), Dorothée David (Orléans)</td>
+<td>Office Monassier, transmissions, gestion patrimoine, agricoles viticoles forestiers</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Office Daloz Tours</td>
+<td>Office Daloz</td>
+<td>à enrichir</td>
+<td>Tours 37</td>
+<td>à enrichir</td>
+<td>via notaires.fr</td>
+<td>Maître Daloz et associés</td>
+<td>Office patrimonial historique Tours mentionné roadmap brique 1</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Office Tantot Tours</td>
+<td>Office Tantot</td>
+<td>à enrichir</td>
+<td>Tours 37</td>
+<td>à enrichir</td>
+<td>via notaires.fr</td>
+<td>Maître Tantot et associés</td>
+<td>Office patrimonial Tours mentionné roadmap</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Office Maupu Tours</td>
+<td>Office Maupu</td>
+<td>à enrichir</td>
+<td>Tours 37</td>
+<td>à enrichir</td>
+<td>via notaires.fr</td>
+<td>Maître Maupu et associés</td>
+<td>Office patrimonial Tours mentionné roadmap</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Yves-Marie Gouin et Maud Pothier Chartres</td>
+<td>Office Gouin-Pothier</td>
+<td>à enrichir</td>
+<td>Chartres 28</td>
+<td>à enrichir</td>
+<td>via notaires.fr</td>
+<td>Yves-Marie Gouin, Maud Pothier</td>
+<td>Office Chartres, patrimoine et famille</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Offices Blois (Gambetta, J. Jaurès, Maunoury)</td>
+<td>Offices Blois groupés</td>
+<td>à enrichir</td>
+<td>Blois 41</td>
+<td>à enrichir</td>
+<td>via notaires.fr</td>
+<td>Notaires associés Blois</td>
+<td>Plusieurs offices Blois sur av Gambetta, place Jean Jaurès, av Maunoury</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Office Fournier Orléans</td>
+<td>Office Fournier</td>
+<td>à enrichir</td>
+<td>Orléans 45</td>
+<td>à enrichir</td>
+<td>via notaires.fr</td>
+<td>Maître Fournier et associés</td>
+<td>Office Orléans, patrimonial mentionné roadmap</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Office Hourdé-Cleret Orléans</td>
+<td>Office Hourdé-Cleret</td>
+<td>à enrichir</td>
+<td>Orléans 45</td>
+<td>à enrichir</td>
+<td>via notaires.fr</td>
+<td>Hourdé, Cleret</td>
+<td>Office Orléans patrimonial roadmap</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Office Magy Orléans</td>
+<td>Office Magy</td>
+<td>à enrichir</td>
+<td>Orléans 45</td>
+<td>à enrichir</td>
+<td>via notaires.fr</td>
+<td>Maître Magy et associés</td>
+<td>Office Orléans patrimonial roadmap</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Office Salmon-Boutot Orléans</td>
+<td>Office Salmon-Boutot</td>
+<td>à enrichir</td>
+<td>Orléans 45</td>
+<td>à enrichir</td>
+<td>via notaires.fr</td>
+<td>Salmon, Boutot</td>
+<td>Office Orléans patrimonial roadmap</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>27</td>
+<td>Chambre interdép. notaires Val de Loire</td>
+<td>Chambre régionale Val de Loire</td>
+<td>association</td>
+<td>37 41 45 18 36 28</td>
+<td>via site</td>
+<td>via site</td>
+<td>Bureau Chambre</td>
+<td>Annuaire et instance pro régionale, point d&#x27;entrée prescription</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Offices notariaux Bourges 18000</td>
+<td>Offices Bourges groupés</td>
+<td>à compléter</td>
+<td>Bourges 18</td>
+<td>via annuaire notaires.fr</td>
+<td>via notaires.fr</td>
+<td>Notaires associés Bourges</td>
+<td>Plusieurs offices Bourges patrimoniaux</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Offices notariaux Châteauroux 36000</td>
+<td>Offices Châteauroux</td>
+<td>à compléter</td>
+<td>Châteauroux 36</td>
+<td>via annuaire notaires.fr</td>
+<td>via notaires.fr</td>
+<td>Notaires associés Châteauroux</td>
+<td>Plusieurs offices Châteauroux patrimoniaux</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Offices notariaux Romorantin Vendôme Vierzon</td>
+<td>Offices secondaires CVL</td>
+<td>à compléter</td>
+<td>Romorantin 41, Vendôme 41, Vierzon 18</td>
+<td>à enrichir</td>
+<td>via notaires.fr</td>
+<td>Notaires associés</td>
+<td>Offices secondaires CVL, prescripteurs HNW locaux</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>31</td>
+<td>Étude Cheuvreux Paris</td>
+<td>SCP Cheuvreux et Associés</td>
+<td>à enrichir</td>
+<td>55 bd Haussmann, 75008 Paris</td>
+<td>01 44 90 14 00</td>
+<td>via site</td>
+<td>Maître Bertrand Savouré, Maître Antoine Dejoie</td>
+<td>Étude notariale parisienne majeure transmission HNW</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Étude Le Roy Notaires Paris</td>
+<td>Le Roy Notaires</td>
+<td>à enrichir</td>
+<td>Paris IDF</td>
+<td>à enrichir</td>
+<td>via notaires.fr</td>
+<td>Direction Le Roy</td>
+<td>Étude parisienne transmission</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Étude Allez et Associés Paris</td>
+<td>Allez et Associés</td>
+<td>à enrichir</td>
+<td>Paris IDF</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Maître Allez</td>
+<td>Étude patrimoniale Paris</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>34</td>
+<td>Étude Lasaygues Paris</td>
+<td>Étude Lasaygues</td>
+<td>à enrichir</td>
+<td>Paris IDF</td>
+<td>à enrichir</td>
+<td>via notaires.fr</td>
+<td>Maître Lasaygues</td>
+<td>Étude patrimoniale Paris transmissions</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>35</td>
+<td>Étude Michelez Notaires Paris</td>
+<td>Michelez Notaires</td>
+<td>à enrichir</td>
+<td>Paris IDF</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Maître Michelez</td>
+<td>Étude parisienne, patrimoniale</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>36</td>
+<td>Cabinet Renaud Toulouse Tours</td>
+<td>Cabinet Renaud Toulouse</td>
+<td>à enrichir</td>
+<td>Tours 37</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Cabinet Renaud Toulouse</td>
+<td>Expertise comptable Tours, prescripteur clients patrimoniaux</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>37</td>
+<td>RBA Fondettes (Benjamin Pallaud)</td>
+<td>RBA Expertise</td>
+<td>à enrichir</td>
+<td>Fondettes 37</td>
+<td>à enrichir</td>
+<td>via Pallaud</td>
+<td>Benjamin Pallaud</td>
+<td>Expert-comptable groupe IRIS H, prescripteur interne</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>38</td>
+<td>KPMG Tours</td>
+<td>KPMG SA</td>
+<td>775726417</td>
+<td>Tours antenne 37</td>
+<td>via standard KPMG</td>
+<td>via site</td>
+<td>Direction KPMG Tours</td>
+<td>Cabinet expertise comptable national antenne Tours</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>39</td>
+<td>Mazars Orléans</td>
+<td>Forvis Mazars (ex Mazars)</td>
+<td>784824153</td>
+<td>Orléans antenne 45</td>
+<td>via standard Mazars</td>
+<td>via site</td>
+<td>Direction Mazars Orléans</td>
+<td>Cabinet expertise comptable national antenne Orléans</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>40</td>
+<td>In Extenso CVL</td>
+<td>In Extenso SA</td>
+<td>à enrichir</td>
+<td>Tours et Orléans antennes</td>
+<td>via standard In Extenso</td>
+<td>via site</td>
+<td>Direction In Extenso CVL</td>
+<td>Cabinet expertise comptable CVL</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>41</td>
+<td>CMS Francis Lefebvre</td>
+<td>CMS Francis Lefebvre Avocats</td>
+<td>552053196</td>
+<td>2 rue Ancelle, 92522 Neuilly-sur-Seine</td>
+<td>01 47 38 55 00</td>
+<td>contact@cms-fl.com</td>
+<td>Direction fiscale CMS</td>
+<td>Avocat fiscaliste IDF, partenaire Mission Patrimoniale</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>42</td>
+<td>Bredin Prat fiscal</td>
+<td>Bredin Prat</td>
+<td>à enrichir</td>
+<td>53 quai d&#x27;Orsay, 75007 Paris</td>
+<td>01 44 35 35 35</td>
+<td>via site</td>
+<td>Direction fiscale Bredin Prat</td>
+<td>Avocat fiscaliste premier rang IDF</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>43</td>
+<td>Lapix Lefèvre (Tours)</td>
+<td>Cabinet Lapix Lefèvre</td>
+<td>à enrichir</td>
+<td>Tours 37</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Lapix, Lefèvre</td>
+<td>Cabinet régional fiscal Tours</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>44</td>
+<td>Cabinet Bedin Tours</td>
+<td>Cabinet Bedin Avocats</td>
+<td>à enrichir</td>
+<td>Tours 37</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Bedin</td>
+<td>Cabinet régional fiscal Tours</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>45</td>
+<td>Fidal Tours</td>
+<td>Fidal SA antenne Tours</td>
+<td>rattaché Fidal</td>
+<td>Tours 37</td>
+<td>via standard Fidal</td>
+<td>via site</td>
+<td>Direction Fidal Tours</td>
+<td>Avocat affaires national antenne Tours</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>46</td>
+<td>Fidal Orléans</td>
+<td>Fidal SA antenne Orléans</td>
+<td>rattaché Fidal</td>
+<td>Orléans 45</td>
+<td>via standard Fidal</td>
+<td>via site</td>
+<td>Direction Fidal Orléans</td>
+<td>Avocat affaires national antenne Orléans</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>47</td>
+<td>De Pardieu Brocas Maffei</td>
+<td>De Pardieu Brocas Maffei</td>
+<td>à enrichir</td>
+<td>57 av d&#x27;Iéna, 75116 Paris</td>
+<td>01 53 57 71 71</td>
+<td>via site</td>
+<td>Direction DPB</td>
+<td>Avocat affaires Paris, immobilier et fiscal</td>
+<td>5</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>48</td>
+<td>Racine Avocats</td>
+<td>Racine Avocats SCP</td>
+<td>à enrichir</td>
+<td>40 rue de Courcelles, 75008 Paris</td>
+<td>01 44 82 43 00</td>
+<td>via site</td>
+<td>Direction Racine</td>
+<td>Avocat affaires Paris, immobilier</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>49</td>
+<td>LPA-CGR Avocats</td>
+<td>LPA-CGR</td>
+<td>à enrichir</td>
+<td>136 av des Champs-Élysées, 75008 Paris</td>
+<td>01 53 93 30 00</td>
+<td>via site</td>
+<td>Direction LPA-CGR</td>
+<td>Avocat baux commerciaux, immobilier IDF</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>50</td>
+<td>Reed Smith Paris</td>
+<td>Reed Smith LLP</td>
+<td>à enrichir</td>
+<td>112 av Kléber, 75116 Paris</td>
+<td>01 76 70 40 00</td>
+<td>via site</td>
+<td>Direction Reed Smith Paris</td>
+<td>Cabinet international immobilier IDF</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>4</td>
+</tr>
+</tbody></table></div></section>
+<section class="typo-sec" id="T11_PropOccupants">
+<h3>Typologie 11, Propriétaires occupants ETI patrimoniaux CVL + IDF</h3>
+<div class="desc">ETI 250 à 5000 salariés propriétaires d&#x27;une partie de leur immobilier. Cibles Mission Audit cartographie parc + Mission ESG Décret Tertiaire.</div>
+<div class="cnt">50 entrées · 12 colonnes</div>
+<div class="tbl-wrap"><table class="typo-tbl"><thead><tr>
+<th>#</th>
+<th>Nom commercial</th>
+<th>Raison sociale</th>
+<th>SIREN</th>
+<th>Siège / Adresse</th>
+<th>Téléphone</th>
+<th>Email</th>
+<th>Dirigeant / Décideur</th>
+<th>Profil</th>
+<th>Score /5</th>
+<th>Sous-cat</th>
+<th>Note /10</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>Servier</td>
+<td>Les Laboratoires Servier SAS</td>
+<td>085480796</td>
+<td>50 rue Carnot, 92284 Suresnes Cedex + sites Gidy 45520 + Orléans 45100</td>
+<td>01 55 72 60 00</td>
+<td>via site servier.com</td>
+<td>Olivier Laureau (Pdt Groupe)</td>
+<td>Pharma 1100 employés CVL, sites Gidy + Saran + R&amp;D Tours, patrimoine immo important</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Recipharm Monts</td>
+<td>Recipharm Monts SAS</td>
+<td>à enrichir</td>
+<td>Avenue de Vendôme, 37260 Monts</td>
+<td>02 47 67 67 67</td>
+<td>via site</td>
+<td>Direction Recipharm Monts</td>
+<td>Site pharma 1000+ employés, propriétaire immo industriel et tertiaire</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Christian Dior Parfums</td>
+<td>Parfums Christian Dior SA</td>
+<td>552065187</td>
+<td>33 av Hoche, 75008 Paris + sites production Saint-Jean-de-Braye 45800</td>
+<td>01 40 73 73 73</td>
+<td>via site</td>
+<td>Direction Dior Saint-Jean-de-Braye</td>
+<td>Cosmetic Valley Loiret, site historique propriétaire</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Shiseido Group France</td>
+<td>Shiseido EMEA SAS</td>
+<td>à enrichir</td>
+<td>23 rue de l&#x27;Industrie, 45500 Gien (BPI usine) + Paris siège</td>
+<td>02 38 67 73 73</td>
+<td>via site</td>
+<td>Direction Shiseido Gien</td>
+<td>Cosmetic Valley Gien, site historique propriétaire</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Pierre Fabre Site Gien</td>
+<td>Laboratoires Pierre Fabre</td>
+<td>315203122</td>
+<td>Castres siège + sites Gien 45500</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Direction Pierre Fabre Gien</td>
+<td>Pharma + dermatologie site Gien</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Axéréal</td>
+<td>Axéréal Union de Coopératives Agricoles</td>
+<td>535079850</td>
+<td>10 rue de Stockholm, 45000 Orléans + sites Olivet</td>
+<td>02 38 65 64 64</td>
+<td>via site</td>
+<td>Olivier Buet (DG)</td>
+<td>Coopérative céréalière, siège Orléans, patrimoine immo tertiaire et silos</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Soufflet Groupe (groupe InVivo)</td>
+<td>Établissements Soufflet SA / InVivo</td>
+<td>à enrichir</td>
+<td>Quai Sarrail, 10402 Nogent-sur-Seine + sites CVL</td>
+<td>03 25 39 41 11</td>
+<td>via site</td>
+<td>Direction Soufflet / Thierry Blandinières (InVivo)</td>
+<td>Groupe céréalier, sites CVL, patrimoine immo industriel et tertiaire</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Vivescia</td>
+<td>Vivescia Industries</td>
+<td>à enrichir</td>
+<td>Reims + sites CVL</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Direction Vivescia</td>
+<td>Coopérative céréalière, sites secondaires CVL</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Michelin Sites Tours</td>
+<td>Michelin SA</td>
+<td>855200507</td>
+<td>23 place des Carmes-Déchaux, 63040 Clermont-Ferrand + site Tours Joué-lès-Tours</td>
+<td>02 47 39 39 39</td>
+<td>via site</td>
+<td>Florent Menegaux (Pdt)</td>
+<td>Pneumatiques, site CVL, propriétaire immo industriel</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Saint-Michel Biscuits</td>
+<td>Saint-Michel Biscuits SA</td>
+<td>à enrichir</td>
+<td>Commequiers 85220 siège + site Saint-Michel-sur-Loire 37130</td>
+<td>02 51 49 32 00</td>
+<td>via site</td>
+<td>Direction Saint-Michel</td>
+<td>Agroalimentaire, site CVL propriétaire</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Maison Hardy</td>
+<td>Hardy Cognac SAS</td>
+<td>à enrichir</td>
+<td>Cognac 16 + lien CVL via réseau</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Hardy</td>
+<td>Spiritueux familial</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Groupe Roullier</td>
+<td>Roullier SAS</td>
+<td>à enrichir</td>
+<td>Saint-Malo siège + sites Centre</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Daniel Roullier (Pdt)</td>
+<td>Nutrition végétale, sites secondaires CVL possibles</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Sodebo</td>
+<td>Sodebo SA</td>
+<td>à enrichir</td>
+<td>Saint-Georges-de-Montaigu 85600</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Cossard / Bougro</td>
+<td>Agroalimentaire familial Vendée, exposition CVL limitée</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Bonduelle</td>
+<td>Bonduelle SAS</td>
+<td>à enrichir</td>
+<td>Villeneuve-d&#x27;Ascq 59 + sites CVL</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Bonduelle / Direction</td>
+<td>Agroalimentaire familial coté, sites possibles CVL</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>15</td>
+<td>LDC Volailles</td>
+<td>LDC SA</td>
+<td>552124199</td>
+<td>Sablé-sur-Sarthe 72 + sites CVL</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Lambert</td>
+<td>Volailles familial coté, présence régionale</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Brioche Pasquier</td>
+<td>Brioche Pasquier SAS</td>
+<td>à enrichir</td>
+<td>Cerqueux 49 + sites</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Pasquier</td>
+<td>Boulangerie industrielle familial coté</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Roxane Eaux</td>
+<td>Roxane (groupe Refresco)</td>
+<td>à enrichir</td>
+<td>Sites CVL Saint-Florentin</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Direction Roxane Refresco</td>
+<td>Eaux minérales + soft drinks, sites France</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Pâtisseries Gourmandes (Saint-Vincent)</td>
+<td>Pâtisseries Gourmandes</td>
+<td>à enrichir</td>
+<td>Argentré-du-Plessis 35 + sites</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Saint-Vincent</td>
+<td>Agroalimentaire</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Groupe SEB IDF + sites France</td>
+<td>SEB SA</td>
+<td>300349636</td>
+<td>Écully 69 + sites France</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Stanislas de Gramont (DG)</td>
+<td>Petit électroménager familial coté, sites France</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Eurogerm</td>
+<td>Eurogerm SA</td>
+<td>à enrichir</td>
+<td>Saint-Apollinaire 21 + sites</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Direction Eurogerm</td>
+<td>Ingrédients céréaliers</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Galileo Global Education</td>
+<td>Galileo Global Education France</td>
+<td>à enrichir</td>
+<td>Paris IDF + écoles CVL</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Marc-François Mignot Mahon (Pdt)</td>
+<td>Enseignement supérieur privé, écoles France dont CVL</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Sorbonne Université Holding immobilière</td>
+<td>Sorbonne Université</td>
+<td>voir T7</td>
+<td>Paris</td>
+<td>voir T7</td>
+<td>via site</td>
+<td>Présidence</td>
+<td>Déjà en T7 mais aussi gros propriétaire immo</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Lacoste</td>
+<td>Maus Frères / Sporloisirs SA</td>
+<td>à enrichir</td>
+<td>Bonneterie Troyes (10) + bureaux IDF Paris</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Maus / Thierry Guibert (CEO)</td>
+<td>Mode familial, bureaux IDF, sites manufacture</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Petit Bateau</td>
+<td>Petit Bateau SA</td>
+<td>à enrichir</td>
+<td>Troyes 10 + Paris IDF bureaux</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Direction Petit Bateau Yves Saint Laurent</td>
+<td>Mode enfantine groupe Yves Rocher</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Yves Rocher Groupe Rocher</td>
+<td>Groupe Rocher SAS</td>
+<td>à enrichir</td>
+<td>La Gacilly 56 + IDF bureaux</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Rocher</td>
+<td>Cosmétique familial coté possible exposition CVL via Cosmetic Valley</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Smurfit Westrock papier carton CVL</td>
+<td>Smurfit Westrock</td>
+<td>à enrichir</td>
+<td>Sites CVL emballage</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Direction Smurfit Westrock</td>
+<td>Emballage industrie, sites France dont CVL</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>27</td>
+<td>L&#x27;Oréal Sites CVL</td>
+<td>L&#x27;Oréal SA</td>
+<td>632012100</td>
+<td>Clichy 92 + sites Caudry et CVL</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Nicolas Hieronimus (DG)</td>
+<td>Cosmétique, sites France, Cosmetic Valley</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Procter &amp; Gamble France</td>
+<td>P&amp;G France SAS</td>
+<td>à enrichir</td>
+<td>Asnières 92 + sites CVL</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Direction P&amp;G France</td>
+<td>Cosmétique-hygiène, sites France</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Famille Galimard Parfumerie (Grasse-Cosmetic Valley lien)</td>
+<td>Galimard SAS</td>
+<td>à enrichir</td>
+<td>Grasse 06 + lien Cosmetic Valley</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Galimard</td>
+<td>Parfumerie familiale, faible exposition CVL</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Famille Cointreau (Rémy Cointreau)</td>
+<td>Rémy Cointreau SA</td>
+<td>302178892</td>
+<td>21 bd Haussmann, 75009 Paris + Cognac + sites</td>
+<td>01 44 13 44 13</td>
+<td>via site</td>
+<td>Famille Hériard Dubreuil (Pdte Marie-Amélie de Leusse)</td>
+<td>Spiritueux familial coté, distillerie Saint-Brice</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>31</td>
+<td>Hermès International</td>
+<td>Hermès International SA</td>
+<td>572076396</td>
+<td>24 rue du Faubourg Saint-Honoré, 75008 Paris + sites France</td>
+<td>01 40 17 47 17</td>
+<td>via site</td>
+<td>Famille Hermès Dumas (Pdt Axel Dumas)</td>
+<td>Maroquinerie familial coté, sites France ateliers</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>32</td>
+<td>LVMH Groupe</td>
+<td>LVMH SE</td>
+<td>775670417</td>
+<td>22 av Montaigne, 75008 Paris</td>
+<td>01 44 13 22 22</td>
+<td>via site</td>
+<td>Famille Arnault (Pdt Bernard Arnault)</td>
+<td>Luxe coté, immo et patrimoine considérable, sites France</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Kering Groupe</td>
+<td>Kering SA</td>
+<td>552075020</td>
+<td>40 rue de Sèvres, 75007 Paris</td>
+<td>01 45 64 61 00</td>
+<td>via site</td>
+<td>François-Henri Pinault (Pdt)</td>
+<td>Luxe coté, patrimoine immo significatif</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>34</td>
+<td>Decathlon Groupe Mulliez</td>
+<td>Decathlon SA</td>
+<td>à enrichir</td>
+<td>Villeneuve-d&#x27;Ascq 59 + sites France</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Mulliez</td>
+<td>Sport familial, patrimoine immo retail considérable</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>35</td>
+<td>Auchan</td>
+<td>Auchan Retail France</td>
+<td>410409460</td>
+<td>Villeneuve-d&#x27;Ascq 59 + sites France</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Mulliez</td>
+<td>Distribution familial, parc retail considérable</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>36</td>
+<td>Famille Bel (fromages Bel)</td>
+<td>Bel SA</td>
+<td>542088067</td>
+<td>16 bd Malesherbes, 75008 Paris + sites</td>
+<td>01 40 07 72 50</td>
+<td>via site</td>
+<td>Famille Bel (Antoine Fiévet, Pdt)</td>
+<td>Agroalimentaire familial coté, sites France dont CVL possibles</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>37</td>
+<td>Famille Lactalis</td>
+<td>Groupe Lactalis SA</td>
+<td>331142554</td>
+<td>10 rue Adolphe Beck, 53000 Laval + sites France</td>
+<td>02 43 59 42 00</td>
+<td>via site</td>
+<td>Famille Besnier (Emmanuel Besnier, Pdt)</td>
+<td>Lait familial, sites France dont CVL possibles</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>38</td>
+<td>Famille Danone</td>
+<td>Danone SA</td>
+<td>552032534</td>
+<td>17 bd Haussmann, 75009 Paris + sites France</td>
+<td>01 44 35 20 20</td>
+<td>via site</td>
+<td>Antoine de Saint-Affrique (DG)</td>
+<td>Agroalimentaire coté, sites France dont Évian / Volvic / CVL</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>39</td>
+<td>Famille Dassault (immobilier)</td>
+<td>Groupe Industriel Marcel Dassault</td>
+<td>à enrichir</td>
+<td>9 Rond-Point des Champs-Élysées, 75008 Paris</td>
+<td>01 53 76 90 00</td>
+<td>via site</td>
+<td>Famille Dassault</td>
+<td>Aéronautique + immo Foncière Dassault, IDF</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>40</td>
+<td>Famille Bouygues</td>
+<td>Bouygues SA</td>
+<td>572015246</td>
+<td>32 av Hoche, 75008 Paris</td>
+<td>01 44 20 10 00</td>
+<td>via site</td>
+<td>Famille Bouygues (Martin Bouygues, Olivier Bouygues)</td>
+<td>Diversifié coté, immobilier filiale Bouygues Immobilier</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>41</td>
+<td>Famille Pinault Artémis</td>
+<td>Artémis SAS</td>
+<td>à enrichir</td>
+<td>12 rue François 1er, 75008 Paris</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Pinault (François-Henri Pinault)</td>
+<td>Holding patrimoniale Pinault, immobilier propre</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>42</td>
+<td>Famille Decaux JCDecaux</td>
+<td>JCDecaux SE</td>
+<td>307570747</td>
+<td>17 rue Soyer, 92200 Neuilly-sur-Seine</td>
+<td>01 30 79 79 79</td>
+<td>via site</td>
+<td>Famille Decaux (Jean-François Decaux, Jean-Charles Decaux)</td>
+<td>Publicité urbaine familial coté</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>43</td>
+<td>Famille Wertheimer Chanel</td>
+<td>Chanel SAS</td>
+<td>à enrichir</td>
+<td>135 av Charles de Gaulle, 92521 Neuilly-sur-Seine</td>
+<td>01 46 43 40 00</td>
+<td>via site</td>
+<td>Famille Wertheimer</td>
+<td>Luxe familial, immo propre IDF</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>44</td>
+<td>Famille Vuitton</td>
+<td>Mors Smitt SAS / via LVMH</td>
+<td>rattaché LVMH</td>
+<td>Paris IDF</td>
+<td>via site</td>
+<td>via site</td>
+<td>Famille Vuitton via LVMH</td>
+<td>Famille Vuitton historique LVMH</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>45</td>
+<td>Sucden</td>
+<td>Sucden Group SAS</td>
+<td>à enrichir</td>
+<td>20 rue de la Trémoille, 75008 Paris</td>
+<td>01 56 43 70 00</td>
+<td>via site</td>
+<td>Famille Varsano</td>
+<td>Trading sucre/agro familial Paris</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>46</td>
+<td>Famille Mulliez Auchan global</td>
+<td>Auchan Holding Mulliez Famille</td>
+<td>voir Auchan</td>
+<td>Villeneuve-d&#x27;Ascq 59</td>
+<td>voir Auchan</td>
+<td>via site</td>
+<td>Famille Mulliez (AFM)</td>
+<td>Holding patrimoniale Mulliez Auchan Decathlon Boulanger Leroy Merlin</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>47</td>
+<td>Famille Frey (Frey Foncière)</td>
+<td>Frey SA cf T4</td>
+<td>rattaché T4</td>
+<td>Reims</td>
+<td>voir T4</td>
+<td>voir T4</td>
+<td>Antoine Frey</td>
+<td>Déjà T4, famille fondatrice</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>48</td>
+<td>Famille Tarrès (Sopra Steria Tours)</td>
+<td>Sopra Steria Group</td>
+<td>326820065</td>
+<td>PAE Les Glaisins, 74940 Annecy-le-Vieux + sites Tours et IDF</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Pierre Pasquier (Pdt)</td>
+<td>ESN coté familial, sites Tours et IDF</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>49</td>
+<td>Famille Bolloré</td>
+<td>Bolloré SE</td>
+<td>à enrichir</td>
+<td>Tour Bolloré, 31-32 quai de Dion-Bouton, 92800 Puteaux</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Bolloré</td>
+<td>Holding diversifié familial coté</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>50</td>
+<td>Famille Naouri Casino</td>
+<td>Casino Guichard-Perrachon SA</td>
+<td>554501171</td>
+<td>1 cours Antoine Guichard, 42008 Saint-Étienne</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Naouri (Jean-Charles Naouri)</td>
+<td>Distribution familial coté, patrimoine immo Géant Casino</td>
+<td>3</td>
+<td><span class="bC">C</span></td>
+<td>2</td>
+</tr>
+</tbody></table></div></section>
+<section class="typo-sec" id="FO_Vinicoles_Loire">
+<h3>Family offices vinicoles Loire</h3>
+<div class="desc">Maisons viticoles patrimoniales Val de Loire. Cibles Mission Patrimoniale et Audit pour patrimoine non viticole.</div>
+<div class="cnt">19 entrées · 12 colonnes</div>
+<div class="tbl-wrap"><table class="typo-tbl"><thead><tr>
+<th>#</th>
+<th>Nom commercial</th>
+<th>Raison sociale</th>
+<th>SIREN</th>
+<th>Siège / Adresse</th>
+<th>Téléphone</th>
+<th>Email</th>
+<th>Dirigeant / Décideur</th>
+<th>Profil</th>
+<th>Score /5</th>
+<th>Sous-cat</th>
+<th>Note /10</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>Bouvet Ladubay</td>
+<td>Bouvet Ladubay SAS</td>
+<td>à enrichir</td>
+<td>Rue Ackerman, Saint-Hilaire-Saint-Florent, 49400 Saumur</td>
+<td>02 41 83 83 83</td>
+<td>via site bouvet-ladubay.fr</td>
+<td>Patrice Monmousseau (Pdt, 3e génération famille Monmousseau)</td>
+<td>Maison effervescents Saumur depuis 1851, famille Monmousseau depuis 1932, retour contrôle familial 2015</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Ackerman</td>
+<td>Maison Ackerman SAS</td>
+<td>à enrichir</td>
+<td>19 rue Léopold Palustre, 49400 Saumur</td>
+<td>02 41 53 03 21</td>
+<td>via site ackerman.fr</td>
+<td>Direction Ackerman (groupe Terrena via Loire Propriétés)</td>
+<td>Première maison de vins de Loire fondée 1811</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Langlois-Château</td>
+<td>Langlois-Château SA</td>
+<td>à enrichir</td>
+<td>3 rue Léopold Palustre, 49416 Saumur</td>
+<td>02 41 40 21 40</td>
+<td>via site</td>
+<td>Direction Langlois-Château (filiale Société Jacques Bollinger)</td>
+<td>Maison historique Saumur, filiale Bollinger</td>
+<td>4</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Couly-Dutheil</td>
+<td>Couly-Dutheil SA</td>
+<td>à enrichir</td>
+<td>12 rue Diderot, 37500 Chinon</td>
+<td>02 47 97 20 20</td>
+<td>via site coulydutheil-chinon.com</td>
+<td>Famille Couly (3e et 4e génération)</td>
+<td>Maison emblématique Chinon depuis 1921, Clos de l&#x27;Écho, Clos de l&#x27;Olive</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Bernard Baudry</td>
+<td>Domaine Bernard Baudry SCEA</td>
+<td>à enrichir</td>
+<td>9 chemin de Saintes-Lèves, 37500 Cravant-les-Côteaux</td>
+<td>02 47 93 15 79</td>
+<td>via site bernardbaudry.com</td>
+<td>Bernard Baudry et fils Matthieu Baudry</td>
+<td>Domaine Chinon biodynamie, famille</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Charles Joguet</td>
+<td>Domaine Charles Joguet SAS</td>
+<td>à enrichir</td>
+<td>La Dioterie, 37220 Sazilly</td>
+<td>02 47 58 55 53</td>
+<td>via site</td>
+<td>Direction Joguet (post Charles Joguet)</td>
+<td>Domaine emblématique Chinon, contribution majeure qualité Chinon</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Alphonse Mellot</td>
+<td>Domaine Alphonse Mellot SAS</td>
+<td>à enrichir</td>
+<td>3 rue Porte César, 18300 Sancerre</td>
+<td>02 48 54 07 41</td>
+<td>via site mellot.com</td>
+<td>Famille Mellot (18e génération)</td>
+<td>Maison Sancerre historique, biodynamie, vins premium</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Henri Bourgeois</td>
+<td>Domaine Henri Bourgeois SAS</td>
+<td>à enrichir</td>
+<td>Chavignol, 18300 Sancerre</td>
+<td>02 48 78 53 20</td>
+<td>via site henribourgeois.com</td>
+<td>Famille Bourgeois (4e génération)</td>
+<td>Famille emblématique Sancerre, Chavignol</td>
+<td>5</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Joseph Mellot</td>
+<td>Joseph Mellot SAS</td>
+<td>à enrichir</td>
+<td>Route de Bourges, 18300 Sancerre</td>
+<td>02 48 78 54 54</td>
+<td>via site josephmellot.com</td>
+<td>Famille Mellot</td>
+<td>Maison Sancerre, autre branche famille Mellot</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Lucien Crochet</td>
+<td>Domaine Lucien Crochet SAS</td>
+<td>à enrichir</td>
+<td>Place de l&#x27;Église, 18300 Bué</td>
+<td>02 48 54 08 10</td>
+<td>via site</td>
+<td>Famille Crochet</td>
+<td>Domaine Sancerre patrimonial</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Domaine Vacheron</td>
+<td>Domaine Vacheron SCEA</td>
+<td>à enrichir</td>
+<td>1 rue du Puits Poulton, 18300 Sancerre</td>
+<td>02 48 54 09 93</td>
+<td>via site</td>
+<td>Famille Vacheron</td>
+<td>Sancerre biodynamie famille</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Domaine Boucard (Bourgueil)</td>
+<td>Thierry Boucard EARL</td>
+<td>à enrichir</td>
+<td>1 le Grand Clos, 37140 Ingrandes-de-Touraine</td>
+<td>02 47 96 98 14</td>
+<td>via site</td>
+<td>Thierry Boucard, Daniel Boucard</td>
+<td>Bourgueil famille</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Pascal Jolivet</td>
+<td>Pascal Jolivet SAS</td>
+<td>à enrichir</td>
+<td>Le Chêne Marchand, 18300 Sancerre</td>
+<td>02 48 78 60 04</td>
+<td>via site pascal-jolivet.com</td>
+<td>Pascal Jolivet</td>
+<td>Sancerre Pouilly-Fumé, négoce vigneron</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Domaine Huet (Vouvray)</td>
+<td>Domaine Huet SAS</td>
+<td>à enrichir</td>
+<td>11-13 rue de la Croix Buisée, 37210 Vouvray</td>
+<td>02 47 52 78 87</td>
+<td>via site huet-echansonne.com</td>
+<td>Famille Huet / Hwang</td>
+<td>Vouvray biodynamie, vente 2003 à famille Hwang USA mais référence patrimoniale</td>
+<td>4</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Famille Foreau (Domaine du Clos Naudin)</td>
+<td>Philippe Foreau EARL</td>
+<td>à enrichir</td>
+<td>14 rue de la Croix-Buisée, 37210 Vouvray</td>
+<td>02 47 52 71 46</td>
+<td>via site</td>
+<td>Philippe Foreau</td>
+<td>Vouvray emblématique famille Foreau</td>
+<td>4</td>
+<td><span class="bA">A</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Marc Brédif (Vouvray)</td>
+<td>Marc Brédif SAS</td>
+<td>à enrichir</td>
+<td>87 Quai Loire, 37210 Rochecorbon</td>
+<td>02 47 52 50 07</td>
+<td>via site marcbredif.com</td>
+<td>Direction Marc Brédif (groupe Ladoucette de Loire)</td>
+<td>Vouvray, négoce vigneron Ladoucette</td>
+<td>3</td>
+<td><span class="bB">B</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Famille Bouvet (Vouvray)</td>
+<td>Domaine Vincent Bouvet</td>
+<td>à enrichir</td>
+<td>Vouvray 37</td>
+<td>à enrichir</td>
+<td>via site</td>
+<td>Famille Bouvet</td>
+<td>Vouvray familial</td>
+<td>2</td>
+<td><span class="bB">B</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Saumur-Champigny producteurs (Filliatreau, Hureau)</td>
+<td>Domaines Filliatreau et Hureau</td>
+<td>à enrichir</td>
+<td>Saumur Champigny 49</td>
+<td>à enrichir</td>
+<td>via sites</td>
+<td>Familles Filliatreau et Hureau</td>
+<td>Saumur-Champigny patrimoniaux</td>
+<td>3</td>
+<td><span class="bA">A</span></td>
+<td>7</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Chéreau-Carré (Muscadet)</td>
+<td>Chéreau-Carré</td>
+<td>à enrichir</td>
+<td>Château Coing, 44690 Saint-Fiacre-sur-Maine</td>
+<td>02 40 54 85 24</td>
+<td>via site</td>
+<td>Famille Chéreau</td>
+<td>Muscadet Loire Atlantique adjacent</td>
+<td>2</td>
+<td><span class="bC">C</span></td>
+<td>4</td>
+</tr>
+</tbody></table></div></section>
 </body>
 </html>
