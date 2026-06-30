@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Audit concurrents</title>
 <style>
-  :root{--bg:#faf6ed;--card:#fff;--border:#e0ddd8;--dark:#1a1a1a;--accent:#b8860b;--text:#3a3a3a;--dim:#888}
+  :root{--bg:#1a1a1a;--card:#fff;--border:#e0ddd8;--dark:#1a1a1a;--accent:#b8860b;--text:#3a3a3a;--dim:#888}
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Avenir','Avenir Next','Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);padding:24px 20px 60px}
   .wrap{max-width:1700px;margin:0 auto}
   .back{display:inline-block;margin-bottom:16px;color:var(--accent);text-decoration:none;font-weight:600;font-size:13px}
   .back:hover{text-decoration:underline}
-  .cover{background:linear-gradient(135deg,#1a1a1a,#2a2a2a);color:#faf6ed;border-radius:10px;padding:32px 36px;margin-bottom:22px}
+  .cover{background:#fff; border:2px solid #1a1a1a;color:#1a1a1a;border-radius:10px;padding:32px 36px;margin-bottom:22px}
   .cover h1{font-family:Georgia,serif;font-size:28px;margin-bottom:10px}
   .cover h1 em{color:var(--accent);font-style:italic}
-  .cover p{font-size:14px;line-height:1.6;color:#d8d4ce;max-width:1000px}
+  .cover p{font-size:14px;line-height:1.6;color:#555555;max-width:1000px}
   .legend{font-size:12px;color:var(--dim);margin:14px 0 10px}
   .tablewrap{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow-x:auto;box-shadow:0 2px 16px rgba(0,0,0,.05)}
   table{border-collapse:collapse;width:100%;min-width:1680px;font-size:12px}
   th,td{padding:11px 13px;text-align:left;vertical-align:top;border-bottom:1px solid var(--border)}
-  thead th{background:#1a1a1a;color:#fff;font-weight:600;position:sticky;top:0;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+  thead th{background:#fff; color:#1a1a1a; border:1px solid #1a1a1a;font-weight:600;position:sticky;top:0;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
   tbody tr:hover{background:#fcfaf5}
   td.nom{font-weight:700;color:var(--dark);min-width:160px}
   .geo{color:var(--accent);font-weight:600;font-size:11px;margin-top:3px}

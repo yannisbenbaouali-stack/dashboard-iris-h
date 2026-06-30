@@ -403,19 +403,19 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
             <button class="fbtn" id="orga-btn-bym" onclick="switchOrga('organigramme_bym.html',this)">BYM</button>
             <button class="fbtn" id="orga-btn-gc" onclick="switchOrga('organigramme_gc.html',this)">Galerie Carrez</button>
           </div>
-          <iframe id="organigramme-frame" src="organigramme.html?v=2" style="width:100%;height:calc(100vh - 220px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
+          <iframe id="organigramme-frame" src="organigramme.html?v=2" style="width:100%;height:calc(100vh - 220px);border:none;border-radius:12px;background:#faf6ed"></iframe>
         </div>
 
         <!-- Section Schéma directeur -->
         <div id="struct-section-schema" style="display:none">
-          <iframe id="schema-frame" src="schema_directeur.html?v=1" style="width:100%;height:calc(100vh - 200px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
+          <iframe id="schema-frame" src="schema_directeur.html?v=1" style="width:100%;height:calc(100vh - 200px);border:none;border-radius:12px;background:#faf6ed"></iframe>
         </div>
 
       </div>
 
       <!-- CHARTE GRAPHIQUE -->
       <div class="tab" id="tab-charte">
-        <iframe src="charte_graphique.html?v=1" style="width:100%;height:calc(100vh - 160px);border:none;border-radius:12px;background:#f5f3f0"></iframe>
+        <iframe src="charte_graphique.html?v=1" style="width:100%;height:calc(100vh - 160px);border:none;border-radius:12px;background:#faf6ed"></iframe>
       </div>
 
       <!-- STRUCTURATION -->
@@ -2567,7 +2567,7 @@ function switchStruct(section,btn){
 }
 
 const STRUCT_SOC={
-  iris:{nom:'IRIS REP',objectif:'Lancer le métier asset management et devenir, brique par brique, le gestionnaire d\'actifs tertiaires de référence en Centre Val de Loire. Cinq briques séquentielles sur dix ans, de l\'advisory à la gestion de fonds, agrément AMF à M48, sur le modèle d\'écosystème intégré Aalto REIM.<div style="margin-top:12px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:11px"><span style="background:#1a1a1a;color:#fff;padding:3px 9px;border-radius:5px;white-space:nowrap">1 · Advisory</span><span style="color:#b8860b;font-weight:700">→</span><span style="background:#1a1a1a;color:#fff;padding:3px 9px;border-radius:5px;white-space:nowrap">2 · Property Management</span><span style="color:#b8860b;font-weight:700">→</span><span style="background:#1a1a1a;color:#fff;padding:3px 9px;border-radius:5px;white-space:nowrap">3 · Facility Management</span><span style="color:#b8860b;font-weight:700">→</span><span style="background:#1a1a1a;color:#fff;padding:3px 9px;border-radius:5px;white-space:nowrap">4 · Gestion de fonds AMF</span><span style="color:#b8860b;font-weight:700">→</span><span style="background:#1a1a1a;color:#fff;padding:3px 9px;border-radius:5px;white-space:nowrap">5 · Investisseur compte de tiers</span></div>',kpi:null},
+  iris:{nom:'IRIS REP',objectif:'Lancer le métier asset management et devenir, brique par brique, le gestionnaire d\'actifs tertiaires de référence en Centre Val de Loire. Cinq briques séquentielles sur dix ans, de l\'advisory à la gestion de fonds, agrément AMF à M48, sur le modèle d\'écosystème intégré Aalto REIM.<div style="margin-top:12px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:11px"><span style="background:#fff; color:#1a1a1a; border:1px solid #1a1a1a;padding:3px 9px;border-radius:5px;white-space:nowrap">1 · Advisory</span><span style="color:#b8860b;font-weight:700">→</span><span style="background:#fff; color:#1a1a1a; border:1px solid #1a1a1a;padding:3px 9px;border-radius:5px;white-space:nowrap">2 · Property Management</span><span style="color:#b8860b;font-weight:700">→</span><span style="background:#fff; color:#1a1a1a; border:1px solid #1a1a1a;padding:3px 9px;border-radius:5px;white-space:nowrap">3 · Facility Management</span><span style="color:#b8860b;font-weight:700">→</span><span style="background:#fff; color:#1a1a1a; border:1px solid #1a1a1a;padding:3px 9px;border-radius:5px;white-space:nowrap">4 · Gestion de fonds AMF</span><span style="color:#b8860b;font-weight:700">→</span><span style="background:#fff; color:#1a1a1a; border:1px solid #1a1a1a;padding:3px 9px;border-radius:5px;white-space:nowrap">5 · Investisseur compte de tiers</span></div>',kpi:null},
   bym:{nom:'BYM Construction',objectif:"Structurer l'entreprise de r\u00e9novation et de construction sur \u00cele de France et Centre Val de Loire, industrialiser la production de chantiers et formaliser le partenariat capex avec IRIS REP Asset Services.",kpi:null},
   arristo:{nom:'Urban Rise et ARRISTO',objectif:"D\u00e9velopper l'activit\u00e9 marchand de biens d'Urban Rise et animer le r\u00e9seau professionnel ARRISTO, en synergie avec les op\u00e9rations du groupe.",kpi:null}
 };
@@ -2622,7 +2622,7 @@ function renderStructContent(){
     if(structSoc==='arristo')src='assets/dossiers/UR03_72_rue_de_bourgogne.html?v='+Date.now();
     else{el.innerHTML=ph('Dossier 72 rue de Bourgogne \u00b7 r\u00e9serv\u00e9 Urban Rise et ARRISTO');return;}
   }
-  el.innerHTML='<iframe src="'+src+'" style="width:100%;height:calc(100vh - 300px);border:none;border-radius:12px;background:#f5f3f0"></iframe>';
+  el.innerHTML='<iframe src="'+src+'" style="width:100%;height:calc(100vh - 300px);border:none;border-radius:12px;background:#faf6ed"></iframe>';
 }
 function renderStruct(){
   renderStructHeader();

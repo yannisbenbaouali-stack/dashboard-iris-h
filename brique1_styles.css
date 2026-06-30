@@ -72,9 +72,9 @@ body {
   position: absolute;
   top: 24px;
   right: 24px;
-  background: var(--dark);
-  color: #fff;
-  border: none;
+  background: #fff;
+  color: var(--dark);
+  border: 1px solid var(--dark);
   padding: 8px 14px;
   border-radius: 8px;
   font-size: 12px;
@@ -169,8 +169,9 @@ table {
   font-size: 12.5px;
 }
 th {
-  background: var(--dark);
-  color: #fff;
+  background: #fff;
+  color: var(--dark);
+  border: 1px solid var(--dark);
   padding: 9px 12px;
   text-align: left;
   font-family: 'Helvetica', sans-serif;
@@ -243,8 +244,9 @@ td.neutral { color: var(--text-light); text-align: center; }
 .mission-card .mission-meta strong { color: var(--dark); }
 
 .kpi-box {
-  background: var(--dark);
-  color: #fff;
+  background: #fff;
+  color: var(--dark);
+  border: 1.5px solid var(--dark);
   padding: 22px 26px;
   border-radius: 10px;
   margin: 22px 0;
@@ -262,14 +264,14 @@ td.neutral { color: var(--text-light); text-align: center; }
   font-size: 18px;
   font-weight: 400;
   margin-bottom: 14px;
-  color: #fff;
+  color: var(--dark);
 }
 .kpi-box ul { list-style: none; margin: 0; padding: 0; }
 .kpi-box li {
   padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.12);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
   font-size: 13px;
-  color: rgba(255,255,255,0.92);
+  color: #333333;
 }
 .kpi-box li:last-child { border-bottom: none; }
 .kpi-box li strong { color: var(--accent); }
@@ -326,8 +328,9 @@ td.neutral { color: var(--text-light); text-align: center; }
 }
 
 .code-block {
-  background: #1a1a1a;
-  color: #f0e6d2;
+  background: #fff;
+  color: #1a1a1a;
+  border: 1px solid #1a1a1a;
   padding: 18px 22px;
   border-radius: 8px;
   font-family: 'Monaco', 'Menlo', monospace;
