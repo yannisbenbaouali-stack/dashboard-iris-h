@@ -852,7 +852,7 @@ window.addEventListener('hashchange',applyHashRoute);
 const REF_BYM_TYPES={renovation_complete:'Rénovation complète',creation_cave_vin:'Création cave à vin',cuisine:'Cuisine',salle_de_bain:'Salle de bain',amenagement_commerce:'Aménagement commerce',amenagement_bureau:'Aménagement bureau',decoration_interieure:'Décoration intérieure',autre:'Autre'};
 
 const REF_CFG={
-  bym:{table:'deals_references_bym',codeField:'code_reference',codePrefix:'REF',titleField:'titre',
+  bym:{table:'deals_references_bym',codeField:'code_reference',codePrefix:'BYM-REF-',pad:3,titleField:'titre',
     statutField:'statut_publication',statutVals:['brouillon','publie'],une:'a_la_une',ordre:'ordre_affichage',
     photos:['photos_avant','photos_process','photos_apres'],principale:'photo_principale',orderBy:'ordre_affichage.asc.nullslast,code_reference.asc',
     fields:[{k:'titre',l:'Titre',t:'title'},{k:'type_prestation',l:'Type',t:'select',opts:REF_BYM_TYPES},{k:'ville_affichage',l:'Ville',t:'text'},{k:'annee_realisation',l:'Année',t:'int'},{k:'surface_travaux_m2',l:'Surface m²',t:'num'},{k:'budget_affichage',l:'Budget',t:'text'},{k:'description_courte',l:'Description courte',t:'area'},{k:'description_longue',l:'Description longue',t:'area'}]},
@@ -1112,7 +1112,7 @@ async function refCreate(){
   const titre=titreEl.value.trim(); if(!titre){ showToast('Champ requis'); return; }
   const second=document.getElementById('ref-new-ville').value.trim();
   let maxN=0; refRows(sec).forEach(r=>{const m=String(r[c.codeField]||'').match(/(\d+)\s*$/);if(m)maxN=Math.max(maxN,parseInt(m[1]));});
-  const code=c.codePrefix+String(maxN+1).padStart(2,'0');
+  const code=c.codePrefix+String(maxN+1).padStart(c.pad||2,'0');
   const body={[c.codeField]:code,[c.titleField]:titre,[c.statutField]:'brouillon'};
   if(c.fixedType)body[c.fixedType.field]=c.fixedType.value;
   if(c.createType)body[c.createType.field]=c.createType.value;
