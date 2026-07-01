@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Process de vente</title>
+<link rel="stylesheet" href="brique1_styles.css">
+</head>
+<body>
+<div class="container">
+
+<div class="doc-cover">
+  <button class="print-btn" onclick="window.print()">Imprimer en PDF</button>
+  <div class="tag">Brique 1, Stratégie de prospection, Mai 2026</div>
+  <h1>Process de <em>vente</em></h1>
+  <div class="lead">Comment aller chercher, qualifier et signer les premiers clients de la Mission Audit, ESG, Travaux, Acquisition, Patrimonial et Pilotage. Pitch, objections, séquences, et gestion du sans-track-record.</div>
+  <div class="meta-line"><strong>Périmètre</strong> Brique 1 IRIS Investment Management · <strong>Cycle moyen</strong> 4 à 6 mois entre prospection et signature · <strong>Premier mandat ciblé</strong> M2 à M3</div>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 1</div>
+  <h2>To-do des prérequis avant de prospecter</h2>
+  <div class="section-lead">Quinze prérequis non négociables. Tu ne décroches pas un téléphone tant que ces quinze cases ne sont pas cochées.</div>
+
+  <div class="checkbox-list">
+    <div class="label">Prérequis administratifs et juridiques</div>
+    <ul>
+      <li>AGE IRIS H et modification de l'objet social IRIS REP avec extension explicite asset management, property management, structuration véhicules d'investissement</li>
+      <li>Extension RC pro Galian à l'activité asset advisory et conseil en gestion d'actifs (plafond 1 million euros)</li>
+      <li>Convention de prestations IRIS REP / BYM Construction signée pour la Mission Travaux et Capex (arm's length, tarification de marché documentée)</li>
+      <li>Template convention d'honoraires asset advisory validé par avocat des affaires (De Pardieu, Fidal ou Racine)</li>
+      <li>Convention de partenariat avocat fiscaliste pour la Mission Patrimoniale (CMS Francis Lefebvre, Bredin Prat fiscal, ou cabinet régional Tours)</li>
+    </ul>
+  </div>
+
+  <div class="checkbox-list">
+    <div class="label">Prérequis communication et marque</div>
+    <ul>
+      <li>Refonte du site irisrep.com selon document Brique 1 Annexe Site Web (recentrage du périmètre, alignement architecture, slogan Réunir, Créer, Investir)</li>
+      <li>Plaquette ombrelle IRIS REP 4 pages produite via Canva Pro (cover, IRIS Investment Management avec les 6 missions, IRIS Conseil en immobilier d'entreprise, contact)</li>
+      <li>Mise à jour bio LinkedIn personnel Yannis avec mention asset manager tertiaire CVL</li>
+      <li>Création ou refonte page entreprise LinkedIn IRIS REP avec positionnement asset management plus conseil en immobilier d'entreprise</li>
+      <li>Premier livre blanc trimestriel marché tertiaire CVL T2 2026 brief en cours (publication mi-juin)</li>
+    </ul>
+  </div>
+
+  <div class="checkbox-list">
+    <div class="label">Prérequis outils et processus</div>
+    <ul>
+      <li>Pipeline commercial Mission par Mission opérationnel dans la table prospects Supabase, segmenté par typologie de client</li>
+      <li>Outil de scoring client toxicité fonctionnel (voir section 5 ci-dessous, 9 critères pondérés)</li>
+      <li>30 prospects qualifiés en pipeline par typologie avant le premier rendez-vous</li>
+      <li>Templates de séquences emails et de propositions commerciales validés (5 templates par mission, voir section 6)</li>
+      <li>Trésorerie groupe IRIS H sécurisée pour absorber 50 000 euros de besoin de financement initial brique 1 (apport en compte courant ou ligne bancaire CA Touraine Poitou)</li>
+    </ul>
+  </div>
+
+  <div class="warning">
+    <div class="label">Tentation à éviter</div>
+    <p>Tu vas être tenté de commencer à prospecter avant que ces 15 cases soient toutes cochées, "juste pour tester". Ne le fais pas. Un premier rendez-vous mal préparé brûle un prospect pour 18 mois minimum. Tu perds plus en prospectant trop tôt qu'en attendant 30 jours de plus.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 2</div>
+  <h2>Méthodologie d'identification des besoins client</h2>
+  <div class="section-lead">Avant tout pitch, écoute. Quatre questions de qualification, à poser systématiquement en début de premier rendez-vous.</div>
+
+  <h3>Les quatre questions de qualification</h3>
+  <ol>
+    <li><strong>Question 1 sur le patrimoine.</strong> Combien d'actifs détenez-vous, sur quelle zone, depuis combien de temps, en pleine propriété ou en SCI ? L'objectif est de cartographier le patrimoine en 5 minutes.</li>
+    <li><strong>Question 2 sur le déclencheur.</strong> Qu'est-ce qui vous fait me parler aujourd'hui ? Un évènement précis, une frustration, une transmission, un projet ? Cette question révèle la mission prioritaire.</li>
+    <li><strong>Question 3 sur l'écosystème.</strong> Qui s'occupe aujourd'hui de votre patrimoine ? Notaire, comptable, gestionnaire, vous-même ? Cette question révèle les concurrents en place et le coût de switching.</li>
+    <li><strong>Question 4 sur la décision.</strong> Comment prenez-vous les décisions immobilières dans votre famille ou votre structure ? Cette question révèle le circuit de décision et les sponsors internes.</li>
+  </ol>
+
+  <h3>Mapping question vers mission</h3>
+  <table>
+    <thead><tr><th>Réponse type du prospect</th><th>Mission prioritaire à proposer</th></tr></thead>
+    <tbody>
+      <tr><td>"Je ne sais pas exactement ce que ça vaut, ce que ça rapporte, ce que je devrais faire"</td><td>Mission 1 Audit</td></tr>
+      <tr><td>"Mon expert-comptable me dit que je dois faire quelque chose pour le décret tertiaire"</td><td>Mission 2 ESG et Décret Tertiaire</td></tr>
+      <tr><td>"J'ai un immeuble qui a besoin de gros travaux et je ne sais pas comment m'y prendre"</td><td>Mission 3 Travaux et Capex (avec BYM)</td></tr>
+      <tr><td>"On m'a proposé d'acheter tel actif et je voudrais un avis avant de signer"</td><td>Mission 4 Conseil Acquisition</td></tr>
+      <tr><td>"Mes enfants vont hériter, je veux structurer et optimiser fiscalement"</td><td>Mission 5 Structuration Patrimoniale</td></tr>
+      <tr><td>"Je n'ai plus le temps de m'occuper de mon parc, je voudrais déléguer la stratégie"</td><td>Mission 6 Pilotage</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 3</div>
+  <h2>Pitch type pour les 5 grandes typologies</h2>
+  <div class="section-lead">Chaque pitch tient en 90 secondes. Tu l'apprends par cœur, tu l'adaptes au prospect en 5 minutes de prep, tu le délivres en regardant ton interlocuteur, pas tes notes.</div>
+
+  <h3>Pitch typologie 1, family office non structuré (familles patrimoniales tourangelles)</h3>
+  <div class="insight">
+    <p>"Bonjour, je suis Yannis Benbaouali, je dirige IRIS REP, un cabinet d'asset management dédié au tertiaire en Centre Val de Loire. Je travaille avec des familles qui ont construit un patrimoine immobilier important sur deux ou trois générations et qui se rendent compte qu'à un certain niveau, gérer ça en interne avec un comptable et un notaire ne suffit plus. Mon métier, c'est de regarder votre patrimoine comme le ferait un investisseur institutionnel, vous dire ce qu'il vaut vraiment, ce qu'il pourrait rapporter de plus, et ce qu'il faudrait faire pour le préparer à la prochaine génération. Je commence souvent par un audit en 30 jours, après on voit ensemble ce qui a du sens. Vous voulez qu'on en parle 20 minutes ?"</p>
+  </div>
+
+  <h3>Pitch typologie 2, foncière familiale CVL (5 à 30 immeubles tertiaires)</h3>
+  <div class="insight">
+    <p>"Bonjour, je suis Yannis Benbaouali, IRIS REP. On gère pour le compte de tiers du tertiaire en CVL, principalement pour des foncières familiales et des SCPI nationales qui ont des actifs ici sans relais local fort. Je vois que votre foncière détient un parc de XX immeubles à Tours et Orléans. Ma question, et excusez-moi si elle est directe : qui s'occupe aujourd'hui de votre stratégie d'arbitrage, de votre conformité décret tertiaire, et de votre négociation de baux ? Si la réponse c'est vous-même, je peux probablement vous faire gagner 2 à 3 jours par mois et 0,5 à 1 point de rendement annuel. On en parle ?"</p>
+  </div>
+
+  <h3>Pitch typologie 3, SCPI nationale avec actifs CVL</h3>
+  <div class="insight">
+    <p>"Bonjour, IRIS REP. Vous avez X actifs en CVL gérés depuis Paris ou Évry. Je connais votre portefeuille local par cœur, je connais les locataires, je connais le marché. La plupart des SCPI dans votre cas sous-performent leurs actifs CVL parce qu'aucun gérant n'y descend plus de 4 fois par an. Je vous propose un mandat de pilotage local sur votre périmètre CVL, vous gardez la gouvernance centrale, vous gagnez la proximité opérationnelle. C'est exactement ce qu'a fait Aalto pour le Grand Ouest avant d'obtenir son agrément AMF. On peut commencer par un audit de votre périmètre CVL en 30 jours."</p>
+  </div>
+
+  <h3>Pitch typologie 4, banque régionale (CA Touraine Poitou, Caisse Épargne Loire Centre)</h3>
+  <div class="insight">
+    <p>"Bonjour, IRIS REP. Vous avez un parc d'agences en restructuration et des actifs tertiaires propres dont la rentabilité n'est pas maximisée. Je vous propose deux choses : un audit de votre patrimoine immobilier en 45 jours qui vous dit clairement ce qui vaut le coup d'être conservé, ce qu'il faut arbitrer, et ce qu'il faut repositionner. Et si vous êtes d'accord, on regarde ensemble votre stratégie d'allocation tertiaire CVL pour les 5 prochaines années."</p>
+  </div>
+
+  <h3>Pitch typologie 5, personne publique (SEM SETA Tours, SPL, ville, métropole)</h3>
+  <div class="insight">
+    <p>"Bonjour, IRIS REP. Les collectivités et les SEM détiennent souvent un patrimoine immobilier tertiaire dont la performance n'est pas optimisée parce que ce n'est pas le métier prioritaire. Mon métier c'est exactement ça : auditer le patrimoine public détenu, vous dire ce qui peut être valorisé, mis en conformité décret tertiaire, ou cédé. On peut intervenir en assistance à maîtrise d'ouvrage, en respectant strictement les procédures de marchés publics. Je peux vous présenter une note méthodologique en une page qui pose les bases."</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 4</div>
+  <h2>Gestion des huit objections les plus courantes</h2>
+  <div class="section-lead">Pour chaque objection, la réponse à fournir en moins de 30 secondes. Apprends-les. Tu vas les entendre toutes dans tes 30 premiers rendez-vous.</div>
+
+  <h3>Objection 1, "Vous n'avez pas de track record"</h3>
+  <p><strong>Ta réponse.</strong> "C'est vrai, IRIS REP est récente sur l'asset management. Mais regardez deux choses : premièrement, je ne sors pas de nulle part, je viens de [poste précédent en asset management] où j'ai géré [chiffres précis sur tes années salariées en asset management], donc le track record personnel existe. Deuxièmement, on parle de la Mission Audit, pas d'un mandat de gestion sur 10 ans. Vous me confiez un audit forfait avec un livrable précis dans 30 jours. Si l'audit ne vous convient pas, vous arrêtez là et vous m'aurez payé un forfait raisonnable. Le risque pour vous est nul."</p>
+
+  <h3>Objection 2, "Pourquoi pas Cushman ou JLL ?"</h3>
+  <p><strong>Ta réponse.</strong> "Trois raisons. Un, ils sont à Paris, ils descendront 4 fois par an au mieux. Moi je suis à Tours et à Orléans. Deux, leurs honoraires sont 2 à 3 fois les miens, parce qu'ils ont des bureaux luxueux à La Défense à amortir. Trois, leurs équipes en CVL ne connaissent pas les acteurs locaux, les notaires, les avocats, les bons artisans. Cushman fait du très bon travail à Paris, mais sur un actif tourangeau, je vous mets au défi de comparer la qualité de mon analyse avec la leur. Voulez-vous qu'on regarde ensemble un de vos actifs comme test ?"</p>
+
+  <h3>Objection 3, "Mes honoraires sont déjà élevés avec mon expert-comptable et mon notaire"</h3>
+  <p><strong>Ta réponse.</strong> "Comprendre la confusion mais on ne fait pas le même métier. Votre expert-comptable produit vos comptes, votre notaire fait les actes. Aucun des deux ne vous dit si votre rendement locatif sur l'immeuble du quai de la Loire est dans la moyenne du marché ou s'il sous-performe de 20 pourcent. Aucun des deux ne négocie votre prochain bail commercial. Aucun des deux ne pilote vos travaux capex. C'est ça mon métier. Et ça se finance largement par le surcroît de valeur que je crée."</p>
+
+  <h3>Objection 4, "Je gère mes actifs moi-même depuis 30 ans, ça marche très bien"</h3>
+  <p><strong>Ta réponse.</strong> "Et ça marche bien, je n'en doute pas. Ma question est différente : quand vous transmettrez à vos enfants, est-ce que ça continuera de marcher aussi bien ? Vous avez une base de connaissance qui est dans votre tête. Je propose qu'on la formalise dans un audit, qu'on documente votre stratégie, qu'on prépare votre patrimoine à la prochaine génération. C'est un investissement de transmission, pas une critique de votre gestion."</p>
+
+  <h3>Objection 5, "Je vais réfléchir, recontactez-moi dans 6 mois"</h3>
+  <p><strong>Ta réponse.</strong> "Bien sûr, je comprends. Pour que cette réflexion soit utile, je vous envoie aujourd'hui une note d'analyse rapide d'un de vos actifs publics (un immeuble que je peux voir depuis l'extérieur). En 2 pages. Vous saurez sur quoi on travaillerait concrètement. Pas d'engagement de votre part. Vous me dites votre adresse email ?" Et tu envoies la note en 48h. C'est ce qui débloque 60 pourcent des "je vais réfléchir".</p>
+
+  <h3>Objection 6, "Le décret tertiaire ne me concerne pas vraiment"</h3>
+  <p><strong>Ta réponse.</strong> "Je vais être direct. Si vous avez un actif tertiaire de plus de 1000 m², vous êtes concerné, qu'on le veuille ou non. La déclaration Operat est obligatoire. La sanction en cas d'absence de déclaration peut aller jusqu'à 7500 euros par bâtiment et par an. Et ça augmentera. Je peux vous faire une vérification rapide gratuite sur vos 3 actifs principaux et vous dire en 48h où vous en êtes vraiment."</p>
+
+  <h3>Objection 7, "Vous travaillez avec qui en CVL ?"</h3>
+  <p><strong>Ta réponse pendant les 12 premiers mois sans clients.</strong> "Je suis en train de constituer mon premier portefeuille de mandats. C'est délibéré, je ne prends pas tout, je sélectionne les premiers clients pour construire un track record cohérent. Je peux vous mettre en relation avec mon réseau professionnel ARRISTO et vous donner les coordonnées de notaires partenaires qui peuvent attester de mon professionnalisme. Pour vos confidentialités, je ne donnerai jamais vos données à un autre client, et inversement, je ne révèlerai jamais le nom des autres clients à vous." Cette transparence sur l'absence de référence est plus crédible qu'un faux track record gonflé.</p>
+
+  <h3>Objection 8, "Vos honoraires sont trop élevés"</h3>
+  <p><strong>Ta réponse.</strong> "Comprenez bien ce qu'on vous facture. Ce n'est pas du temps passé, c'est de la création de valeur. Sur un audit, je vous remets un livrable qui vous fait économiser ou gagner 5 à 10 fois mes honoraires en moyenne sur 12 mois. Sur un mandat de pilotage, mes honoraires représentent 0,5 pourcent de votre AUM, et la performance moyenne d'un asset management bien fait, c'est 1,5 à 2 points de rendement supplémentaire par an. Voulez-vous qu'on regarde ensemble le retour sur investissement attendu sur votre cas précis ?"</p>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 5</div>
+  <h2>Outil de scoring client toxicité</h2>
+  <div class="section-lead">Avant de signer, tu notes chaque prospect sur 100. Seuil brique 1 à 65. En dessous, tu refuses, peu importe le chiffre d'affaires immédiat.</div>
+
+  <table>
+    <thead><tr><th>Critère</th><th>Poids</th><th>Source d'évaluation</th></tr></thead>
+    <tbody>
+      <tr><td>Solidité financière du prospect</td><td>15 points</td><td>Pappers MCP, comptes annuels</td></tr>
+      <tr><td>Track record paiement fournisseurs</td><td>10 points</td><td>Altares, vérification PAGE</td></tr>
+      <tr><td>Qualité du portefeuille proposé (état, occupation, locataires)</td><td>15 points</td><td>Audit terrain rapide</td></tr>
+      <tr><td>Cohérence du brief (clarté du besoin)</td><td>10 points</td><td>Évaluation à l'oral en RDV 1</td></tr>
+      <tr><td>Comportement aux premiers échanges (respect, ponctualité)</td><td>10 points</td><td>Notation subjective</td></tr>
+      <tr><td>Acceptation du juste prix vs grille tarifaire AFG</td><td>15 points</td><td>Négociation</td></tr>
+      <tr><td>Absence de litiges en cours</td><td>10 points</td><td>Pappers, recherche jurisprudence</td></tr>
+      <tr><td>Statut PPE et conformité</td><td>10 points</td><td>Pappers conformité-personne-physique</td></tr>
+      <tr><td>Cohérence du mandat avec ta capacité opérationnelle actuelle</td><td>5 points</td><td>Évaluation interne</td></tr>
+    </tbody>
+  </table>
+
+  <table>
+    <thead><tr><th>Score</th><th>Décision</th><th>Conditions</th></tr></thead>
+    <tbody>
+      <tr><td class="good">Supérieur à 70</td><td>Feu vert</td><td>Signature recommandée, conditions standards</td></tr>
+      <tr><td class="mid">50 à 70</td><td>Feu orange</td><td>Négociation conditionnelle, acompte 30 pourcent à la signature, clauses de sortie renforcées</td></tr>
+      <tr><td class="bad">Inférieur à 50</td><td>Feu rouge</td><td>Refus poli, le client n'est pas pour toi</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 6</div>
+  <h2>Stratégie pour les family offices structurés "intouchables"</h2>
+  <div class="section-lead">Les family offices déjà accompagnés par CMS, Lazard, Edmond de Rothschild, Quilvest sont des cibles difficiles mais pas impossibles. Stratégie spécifique.</div>
+
+  <h3>Pourquoi ils sont difficiles</h3>
+  <p>Ces family offices ont déjà un écosystème stable de prestataires. Le coût de switching est élevé pour eux : confidentialité construite sur 10 ans, processus de validation rodés, relations personnelles fortes avec les associés en place. Tu n'arracheras pas un mandat full pilotage à CMS du jour au lendemain.</p>
+
+  <h3>Trois portes d'entrée réalistes</h3>
+
+  <ol>
+    <li><strong>La porte Mission Travaux et Capex.</strong> CMS et Lazard ne font pas de pilotage de travaux. Quand un family office structuré a un actif à repositionner, il cherche un asset manager opérationnel qui peut piloter BYM. C'est ta porte la plus simple.</li>
+    <li><strong>La porte Mission ESG et Décret Tertiaire.</strong> Les conseils traditionnels family office ne sont pas spécialisés sur la conformité tertiaire. Tu peux entrer par cette mission ponctuelle, livrer impeccablement, et te positionner pour la suite.</li>
+    <li><strong>La porte deuxième opinion.</strong> Sur une décision d'acquisition importante, un family office structuré aime avoir une deuxième opinion indépendante. Tu peux te positionner comme "conseil indépendant CVL pour vos acquisitions ou cessions sur la zone".</li>
+  </ol>
+
+  <h3>Comment les approcher</h3>
+  <ol>
+    <li>Ne jamais cold-pitcher un family office structuré. Ils filtrent.</li>
+    <li>Passer systématiquement par un introducteur du réseau ARRISTO ou par un notaire partenaire</li>
+    <li>Le premier contact n'est jamais commercial. C'est un échange d'analyse marché ou un déjeuner d'écosystème</li>
+    <li>La proposition n'arrive qu'au 3e rendez-vous, sur une mission ponctuelle, jamais sur un Pilotage</li>
+    <li>Patience. Cycle de signature 9 à 18 mois. Un mandat décroché à M18 est un mandat qui dure 10 ans.</li>
+  </ol>
+
+  <div class="mentor">
+    <div class="label">Conseil de mentor</div>
+    <p>Les family offices structurés ne te feront pas vivre la première année. Ce sont les family offices non structurés (familles patrimoniales tourangelles dont le patrimoine se gère en interne) qui te font vivre. Concentre 70 pourcent de ton effort commercial sur les non structurés en année 1, 30 pourcent sur les structurés. En année 2, tu inverses au fur et à mesure.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 7</div>
+  <h2>Plan d'attaque commerciale 90 jours</h2>
+  <div class="section-lead">Quatre semaines de préparation, huit semaines de prospection active, premier mandat signé entre M2 et M3.</div>
+
+  <table>
+    <thead><tr><th>Semaine</th><th>Action commerciale</th><th>Cible quantifiée</th></tr></thead>
+    <tbody>
+      <tr><td>S1 à S4</td><td>Préparation, prérequis section 1, qualification 30 prospects en pipeline</td><td>0 RDV, 30 prospects qualifiés</td></tr>
+      <tr><td>S5</td><td>Premier round de RDV qualification, family offices non structurés du réseau ARRISTO</td><td>5 RDV qualification, 2 envois de note d'analyse rapide</td></tr>
+      <tr><td>S6</td><td>Tournée notaires Tours (Daloz, Tantot, Maupu) plus première proposition Mission Audit envoyée</td><td>3 RDV notaires, 1 proposition envoyée</td></tr>
+      <tr><td>S7</td><td>Approche foncières familiales tourangelles via réseau notaires plus relance prospects S5</td><td>4 RDV qualification, 1 proposition envoyée, 1 relance</td></tr>
+      <tr><td>S8</td><td>Approche CGP régionaux Tours via Guillaume Sébire plus première signature de Mission Audit</td><td>2 RDV CGP, 1 SIGNATURE Mission Audit</td></tr>
+      <tr><td>S9 à S10</td><td>Livraison première Mission Audit, montée en charge prospection foncières familiales orléanaises et blésoises</td><td>1 livraison Audit, 6 RDV qualification, 2 propositions envoyées</td></tr>
+      <tr><td>S11</td><td>Approche Sofidy direction immobilière (signal directeur Nantes) et CA Touraine Poitou direction immo</td><td>2 RDV institutionnel, 1 proposition Mission Audit institutionnelle</td></tr>
+      <tr><td>S12</td><td>Bilan trimestre 1, 2 à 3 mandats Audit signés, premier client demande Mission 6 Pilotage</td><td>3 mandats Audit signés, 1 Pilotage en discussion</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-num">Section 8</div>
+  <h2>Templates de séquences emails de relance</h2>
+  <div class="section-lead">Trois templates à utiliser selon le moment du cycle. À personnaliser pour chaque prospect, jamais en masse.</div>
+
+  <h3>Template 1, premier contact à froid via réseau (introducteur)</h3>
+  <div class="code-block">
+Objet : [Prénom Introducteur] m'a parlé de vous, asset management tertiaire CVL
+
+Bonjour [Prénom Prospect],
+
+[Prénom Introducteur] m'a suggéré de vous contacter. Je dirige IRIS REP, un cabinet d'asset management dédié au tertiaire en Centre Val de Loire et Île-de-France.
+
+J'ai compris que [détail spécifique sur le patrimoine ou la situation du prospect, recueilli via l'introducteur]. C'est exactement le type de situation sur laquelle nous travaillons.
+
+Je propose un échange de 30 minutes, à votre convenance, à Tours, Orléans ou en visio. Sans engagement, simplement pour comprendre votre contexte et voir si on peut être utiles.
+
+Mes disponibilités la semaine prochaine : [3 créneaux précis].
+
+Cordialement,
+Yannis Benbaouali
+IRIS REP, Réunir, Créer, Investir
+[téléphone direct] [email]
+  </div>
+
+  <h3>Template 2, relance après premier RDV sans réponse (J+10)</h3>
+  <div class="code-block">
+Objet : Note d'analyse rapide pour [Nom de l'actif principal du prospect]
+
+Bonjour [Prénom],
+
+Suite à notre échange du [date], voici comme promis une note d'analyse rapide de [actif identifié pendant l'échange]. Deux pages, pas plus.
+
+Vous y trouverez : valeur de marché estimée, rendement comparé à la moyenne du marché tertiaire CVL T1 2026, et trois pistes d'optimisation.
+
+Pas d'engagement de votre part. Si vous voulez qu'on creuse une des pistes, on en parle. Sinon, gardez la note pour vos archives.
+
+Cordialement,
+Yannis
+  </div>
+
+  <h3>Template 3, relance trimestrielle douce (J+90 sans suite)</h3>
+  <div class="code-block">
+Objet : Marché tertiaire CVL T2 2026, 3 transactions à retenir
+
+Bonjour [Prénom],
+
+Trois transactions intéressantes ce trimestre en CVL :
+1. [Transaction 1, prix au m², acheteur, vendeur si public]
+2. [Transaction 2]
+3. [Transaction 3]
+
+Ces niveaux permettent d'actualiser la valeur de votre patrimoine tertiaire.
+
+Si vous voulez un échange rapide pour situer votre portefeuille par rapport à ces références, je suis disponible.
+
+Cordialement,
+Yannis
+  </div>
+</div>
+
+<div class="signature">IRIS REP, Brique 1 Stratégie de Prospection, mai 2026, version initiale à enrichir</div>
+
+</div>
+</body>
+</html>
