@@ -967,6 +967,7 @@ function renderRefList(){
   const el=document.getElementById('ref-list'); if(!el)return;
   const sec=refSec(); const c=REF_CFG[sec];
   let list=refRows(sec).slice();
+  if(c.ordre)list.sort((a,b)=>{const oa=a[c.ordre]==null?9999:a[c.ordre],ob=b[c.ordre]==null?9999:b[c.ordre];return oa-ob||String(a[c.codeField]||'').localeCompare(String(b[c.codeField]||''));});
   if(refFilterStatut!=='all')list=list.filter(r=>(r[c.statutField]||'brouillon')===refFilterStatut);
   if(refSearch){const q=refSearch.toLowerCase();list=list.filter(r=>c.fields.concat([{k:c.codeField}]).map(f=>r[f.k]).filter(Boolean).join(' ').toLowerCase().includes(q));}
   el.innerHTML=list.length?list.map(r=>refCard(sec,r)).join(''):'<div style="padding:24px;color:var(--dim);text-align:center">Aucune fiche'+(refLoaded[sec]?'':' (chargement…)')+'.</div>';
@@ -1043,8 +1044,10 @@ async function refPatchRaw(sec,id,patch){
   const c=REF_CFG[sec];
   try{
     const r=await fetch(`${cfg.url}/rest/v1/${c.table}?id=eq.${id}`,{method:'PATCH',headers:refHdr('return=minimal'),body:JSON.stringify(patch)});
-    if(!r.ok)throw new Error('PATCH '+r.status);
-  }catch(e){ showToast('Erreur sauvegarde : '+e.message); }
+    if(r.status===401||r.status===403){showToast('Enregistrement refusé : session Supabase expirée, reconnecte-toi.');return false;}
+    if(!r.ok){const t=await r.text().catch(()=>'');throw new Error('PATCH '+r.status+' '+t.slice(0,80));}
+    return true;
+  }catch(e){ showToast('Erreur sauvegarde : '+e.message); return false; }
 }
 function refLocal(sec,id){ return refRows(sec).find(x=>x.id===id); }
 
@@ -1106,12 +1109,12 @@ async function refUploadFiles(sec,id,which,files){
     const path=`${base}/${which}/${Date.now()}-${i}.${ext}`;
     try{
       const up=await fetch(`${cfg.url}/storage/v1/object/${c.bucket}/${path}`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':f.type,'x-upsert':'true'},body:f});
-      if(!up.ok)throw new Error('HTTP '+up.status);
+      if(!up.ok){const t=await up.text().catch(()=>'');throw new Error((up.status===400||up.status===401||up.status===403?'droits/policy ':'')+'HTTP '+up.status+' '+t.slice(0,60));}
       const url=`${cfg.url}/storage/v1/object/public/${c.bucket}/${path}`;
       arr.push(url); added.push(url); ok++;
     }catch(e){console.error('upload ref',e);fail++;}
   }
-  if(!ok){showToast('Upload échoué'+(fail?` (${fail})`:''));return;}
+  if(!ok){showToast('Upload échoué'+(fail?` (${fail})`:'')+'. Vérifie la connexion / droits bucket.');return;}
   r[which]=arr; const patch={[which]:arr};
   if(c.principale&&!r[c.principale]){r[c.principale]=added[0];patch[c.principale]=added[0];}
   renderRefList();
