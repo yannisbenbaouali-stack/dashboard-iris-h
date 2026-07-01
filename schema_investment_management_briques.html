@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRIS REP, Asset Management délégué et Investment Management</title>
+<style>
+:root{--bg:#faf6ed;--card:#fff;--border:#e0ddd8;--dark:#1a1a1a;--accent:#b8860b;--text:#3a3a3a;--dim:#888;--am:#2f7d6e;--am-bg:#e7f1ee;--reg:#7a3b8a;--reg-bg:#f1e8f4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Avenir','Avenir Next','Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);padding:24px 20px 60px}
+.wrap{max-width:1180px;margin:0 auto}
+.back{display:inline-block;margin-bottom:16px;color:var(--accent);text-decoration:none;font-weight:600;font-size:13px}
+.back:hover{text-decoration:underline}
+.cover{background:linear-gradient(135deg,#1a1a1a,#2a2a2a);color:#faf6ed;border-radius:10px;padding:30px 34px;margin-bottom:18px}
+.cover h1{font-family:Georgia,serif;font-size:26px;margin-bottom:10px}
+.cover h1 em{color:var(--accent);font-style:italic}
+.cover p{font-size:13.5px;line-height:1.6;color:#d8d4ce;max-width:980px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.bracket{border-radius:8px;padding:9px 14px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;display:flex;align-items:center;justify-content:center;text-align:center}
+.br-serv{grid-column:1/4;background:#efe9da;color:#7a6a3a;border:1px solid var(--border)}
+.br-im{grid-column:4/6;background:var(--dark);color:var(--accent);border:1px solid var(--dark)}
+.brick{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 14px 12px;border-top:4px solid var(--accent);box-shadow:0 1px 8px rgba(0,0,0,.04);display:flex;flex-direction:column;min-height:156px}
+.brick.adv{border-top-color:#c9bd96}
+.brick.am3{border-top-color:var(--am)}
+.brick.reg{border-top-color:var(--reg)}
+.brick .num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.5px}
+.brick.am3 .num{color:var(--am)}
+.brick.reg .num{color:var(--reg)}
+.brick h3{font-family:Georgia,serif;font-size:15px;color:var(--dark);margin:4px 0 6px;line-height:1.2}
+.brick .hz{font-size:10.5px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.brick .kpi{font-size:11px;color:#555;line-height:1.5;margin-top:auto}
+.brick .kpi b{color:var(--dark)}
+.brick .tag{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#999;margin-top:7px}
+.frontier{display:flex;align-items:center;gap:12px;background:var(--reg-bg);border:1px solid #ddc6e4;border-left:4px solid var(--reg);border-radius:8px;padding:12px 18px;margin:16px 0;font-size:13px;color:#5a3566;line-height:1.5}
+.frontier b{color:var(--reg)}
+.frontier .pin{font-size:11px;font-weight:700;color:#fff;background:var(--reg);border-radius:5px;padding:3px 9px;white-space:nowrap;letter-spacing:.3px}
+.dist{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+.dcard{border-radius:10px;padding:16px 20px}
+.d3{background:var(--am-bg);border:1px solid #bcd8d0;border-left:4px solid var(--am)}
+.d4{background:var(--reg-bg);border:1px solid #ddc6e4;border-left:4px solid var(--reg)}
+.dcard .h{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.d3 .h{color:var(--am)}.d4 .h{color:var(--reg)}
+.dcard h4{font-family:Georgia,serif;font-size:17px;color:var(--dark);margin-bottom:8px}
+.dcard ul{list-style:none;font-size:12.5px;line-height:1.6;color:#555}
+.dcard li{padding-left:16px;position:relative;margin-bottom:3px}
+.dcard li:before{content:"–";position:absolute;left:0;color:var(--dim)}
+.lbl-row{margin:24px 0 8px}
+.lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--dim)}
+.band{border-radius:8px;padding:11px 16px;display:flex;flex-direction:column;justify-content:center;min-height:58px}
+.band .t{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:3px}
+.band .d{font-size:11.5px;line-height:1.45;color:#555}
+.b-am3{grid-column:4/4;background:var(--am-bg);border:1px solid #bcd8d0;border-left:4px solid var(--am)}
+.b-cap{grid-column:4/6;background:var(--reg-bg);border:1px solid #ddc6e4;border-left:4px solid var(--reg)}
+.b-gp{grid-column:4/6;background:#fdf6e3;border:1px solid var(--border);border-left:4px solid var(--accent)}
+.b-amop{grid-column:4/6;background:var(--am-bg);border:1px solid #bcd8d0;border-left:4px solid var(--am)}
+.synth{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-top:24px;font-size:13px;line-height:1.65;color:#444}
+.synth h4{font-family:Georgia,serif;font-size:16px;color:var(--dark);margin-bottom:8px}
+.synth b{color:var(--dark)}
+.src{background:#fdf6e3;border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:13px 20px;font-size:12px;color:#666;line-height:1.55;margin-top:18px}
+@media print{body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a href="conditions_passage_briques.html" class="back">← Conditions de passage</a>
+<a href="index.html" class="back" style="margin-left:14px">← Dashboard</a>
+
+<div class="cover">
+  <h1>Du conseil à la gestion de fonds, <em>la frontière des deux Asset Management</em></h1>
+  <p>La brique 3 devient Asset Management délégué, gérer l'actif d'un propriétaire sur mandat, sans agrément. La brique 4 est l'Asset Management au sens investment management, gérer les actifs d'un fonds levé, sous agrément AMF. Renommer la brique 3 ne déplace pas cette frontière, ça la prépare. Le facility n'est plus une brique, il sera sous-traité.</p>
+</div>
+
+<div class="grid">
+  <div class="bracket br-serv">Service sur mandat, sans agrément</div>
+  <div class="bracket br-im">Investment Management, régulé AMF</div>
+</div>
+
+<div class="grid" style="margin-top:10px">
+  <div class="brick adv">
+    <span class="num">BRIQUE 1</span>
+    <h3>Asset Advisory pur</h3>
+    <span class="hz">M0 à M12</span>
+    <div class="kpi"><b>30 000 000 euros</b> AUM advisory<br>150 000 euros de CA<br>Aucun capital engagé</div>
+  </div>
+  <div class="brick">
+    <span class="num">BRIQUE 2</span>
+    <h3>Property Management</h3>
+    <span class="hz">M12 à M24</span>
+    <div class="kpi"><b>80 000 000 euros</b> AUM<br>500 000 euros de CA</div>
+  </div>
+  <div class="brick am3">
+    <span class="num">BRIQUE 3</span>
+    <h3>Asset Management délégué</h3>
+    <span class="hz">M24 à M36</span>
+    <div class="kpi"><b>150 000 000 euros</b> AUM<br>1 500 000 euros de CA de gestion<br>Track record gestion 36 mois</div>
+    <div class="tag">Facility sous-traité</div>
+  </div>
+  <div class="brick reg">
+    <span class="num">BRIQUE 4</span>
+    <h3>Fund Management agréé AMF, IRIS REIM</h3>
+    <span class="hz">M36 à M60</span>
+    <div class="kpi"><b>250 000 000 euros</b> AUM<br>5 000 000 euros de CA<br>Agrément SGP, premier club deal</div>
+  </div>
+  <div class="brick reg">
+    <span class="num">BRIQUE 5</span>
+    <h3>Investisseur pour compte de tiers</h3>
+    <span class="hz">M60 et plus</span>
+    <div class="kpi"><b>500 000 000 à 1 000 000 000 euros</b> AUM<br>15 000 000 euros de CA<br>LP institutionnels</div>
+  </div>
+</div>
+
+<div class="frontier">
+  <span class="pin">FRONTIÈRE 3 → 4</span>
+  <div>Le passage de la brique 3 à la brique 4 suppose deux choses qui n'existent pas avant : un <b>véhicule</b> (club deal, FIA) et l'<b>agrément SGP de l'AMF</b>. C'est ce qui sépare la gestion sur mandat de la gestion de fonds.</div>
+</div>
+
+<div class="dist">
+  <div class="dcard d3">
+    <div class="h">Brique 3</div>
+    <h4>Asset Management délégué</h4>
+    <ul>
+      <li>Gérer l'actif d'un propriétaire sur mandat</li>
+      <li>Business plan, stratégie locative, capex, arbitrage</li>
+      <li>Honoraires de gestion, pas de capital engagé</li>
+      <li>Aucun agrément requis, échelon non régulé</li>
+      <li>Construit le track record que l'AMF exige</li>
+    </ul>
+  </div>
+  <div class="dcard d4">
+    <div class="h">Brique 4</div>
+    <h4>Asset Management investment, gestion de fonds</h4>
+    <ul>
+      <li>Gérer les actifs d'un fonds que tu as levé</li>
+      <li>Suppose le véhicule et l'agrément SGP AMF</li>
+      <li>Capitaux de tiers, co-investissement GP</li>
+      <li>Honoraires sur encours plus carried interest</li>
+      <li>Responsabilité fiduciaire de la performance</li>
+    </ul>
+  </div>
+</div>
+
+<div class="lbl-row"><span class="lbl">Les missions de l'Investment Management, à droite de la frontière</span></div>
+<div class="grid" style="gap:10px">
+  <div class="band b-amop">
+    <div class="t">Asset management pour compte de fonds</div>
+    <div class="d">Le prolongement régulé de l'AM délégué de la brique 3, appliqué aux actifs détenus par les véhicules.</div>
+  </div>
+</div>
+<div class="grid" style="gap:10px;margin-top:10px">
+  <div class="band b-cap">
+    <div class="t">Gestion de capitaux pour compte de tiers</div>
+    <div class="d">Cœur réglementé. Ouvert en brique 4 avec l'agrément AMF et IRIS REIM, porté à l'échelle institutionnelle en brique 5.</div>
+  </div>
+</div>
+<div class="grid" style="gap:10px;margin-top:10px">
+  <div class="band b-gp">
+    <div class="t">Détention d'actifs, co-investissement GP</div>
+    <div class="d">GP commitment IRIS H de 1 000 000 euros en brique 4, co-investissement aux côtés des véhicules en brique 5. Détention au travers des fonds.</div>
+  </div>
+</div>
+
+<div class="synth">
+  <h4>L'idée directrice</h4>
+  L'asset management existe sous deux formes qu'il ne faut pas confondre. <b>L'AM comme service sur mandat tient en brique 3</b>, il gère l'actif d'un propriétaire et ne demande aucun agrément. <b>L'AM au sens investment management, gérer les actifs d'un fonds que tu as levé, reste en brique 4</b>, puisqu'il suppose le véhicule et l'agrément. Renommer la brique 3 en Asset Management délégué ne déplace pas cette frontière, ça la prépare mieux, en bâtissant exactement le track record de gestion que l'AMF demande pour la brique 4. Le facility management sort de la trajectoire, il sera sous-traité plutôt qu'exploité en propre.
+</div>
+
+<div class="src">Source, conditions de passage entre briques et schéma directeur IRIS REP. RIR et Urban Rise hors champ. Facility management sous-traité, hors briques. La détention pour compte propre, métier de marchand de biens, ne figure pas sur cette trajectoire.</div>
+
+</div>
+</body>
+</html>
