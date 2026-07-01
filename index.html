@@ -856,20 +856,20 @@ window.addEventListener('hashchange',applyHashRoute);
 const REF_BYM_TYPES={renovation_complete:'Rénovation complète',creation_cave_vin:'Création cave à vin',cuisine:'Cuisine',salle_de_bain:'Salle de bain',amenagement_commerce:'Aménagement commerce',amenagement_bureau:'Aménagement bureau',decoration_interieure:'Décoration intérieure',autre:'Autre'};
 
 const REF_CFG={
-  bym:{table:'deals_references_bym',codeField:'code_reference',codePrefix:'BYM-REF-',pad:3,titleField:'titre',
+  bym:{table:'deals_references_bym',codeField:'code_reference',codePrefix:'BYM-REF-',pad:3,titleField:'titre',bucket:'references-bym',
     statutField:'statut_publication',statutVals:['brouillon','publie'],une:'a_la_une',ordre:'ordre_affichage',
     photos:['photos_avant','photos_process','photos_apres'],principale:'photo_principale',orderBy:'ordre_affichage.asc.nullslast,code_reference.asc',
     fields:[{k:'titre',l:'Titre',t:'title'},{k:'type_prestation',l:'Type',t:'select',opts:REF_BYM_TYPES},{k:'ville_affichage',l:'Ville',t:'text'},{k:'annee_realisation',l:'Année',t:'int'},{k:'surface_travaux_m2',l:'Surface m²',t:'num'},{k:'budget_affichage',l:'Budget',t:'text'},{k:'description_courte',l:'Description courte',t:'area'},{k:'description_longue',l:'Description longue',t:'area'}]},
-  ur:{table:'references_urbanrise',codeField:'slug',codePrefix:'ur-ref-',titleField:'titre',
+  ur:{table:'references_urbanrise',codeField:'slug',codePrefix:'ur-ref-',titleField:'titre',bucket:'urbanrise-references',
     statutField:'statut_publication',statutVals:['brouillon','publie'],une:'a_la_une',ordre:'ordre_affichage',
     photos:['photos_avant','photos_apres','photos_chantier'],principale:'photo_principale',orderBy:'ordre_affichage.asc.nullslast,titre.asc',
     fields:[{k:'titre',l:'Titre',t:'title'},{k:'type_bien',l:'Type de bien',t:'text'},{k:'ville_affichage',l:'Ville',t:'text'},{k:'annee_realisation',l:'Année',t:'int'},{k:'surface_m2',l:'Surface m²',t:'num'},{k:'budget_acquisition',l:'Budget acquisition',t:'text'},{k:'budget_travaux',l:'Budget travaux',t:'text'},{k:'description_courte',l:'Description courte',t:'area'},{k:'description_longue',l:'Description longue',t:'area'}]},
-  iris_cession:{table:'irisrep_opportunites',codeField:'reference',codePrefix:'IR-V-',titleField:'titre',
+  iris_cession:{table:'irisrep_opportunites',codeField:'reference',codePrefix:'IR-V-',titleField:'titre',bucket:'irisrep-photos',
     statutField:'statut',statutVals:['brouillon','publie','archive'],une:null,ordre:null,
     photos:['photos_urls'],principale:null,orderBy:'date_creation.desc.nullslast',
     fixedType:{field:'type',value:'vente'},
     fields:[{k:'titre',l:'Titre',t:'title'},{k:'type_bien',l:'Type de bien',t:'text'},{k:'ville',l:'Ville',t:'text'},{k:'adresse',l:'Adresse',t:'text'},{k:'surface_totale',l:'Surface m²',t:'num'},{k:'prix_vente',l:'Prix vente €',t:'int'},{k:'honoraires_vente',l:'Honoraires',t:'text'},{k:'description',l:'Description',t:'area'}]},
-  iris_location:{table:'irisrep_opportunites',codeField:'reference',codePrefix:'IR-L-',titleField:'titre',
+  iris_location:{table:'irisrep_opportunites',codeField:'reference',codePrefix:'IR-L-',titleField:'titre',bucket:'irisrep-photos',
     statutField:'statut',statutVals:['brouillon','publie','archive'],une:null,ordre:null,
     photos:['photos_urls'],principale:null,orderBy:'date_creation.desc.nullslast',
     fixedType:{field:'type',value:'location'},
@@ -1021,7 +1021,9 @@ function refCard(sec,r){
     body+='<div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid var(--border);padding-top:14px">';
     if(c.principale)body+=`<div><div style="font-size:11px;color:var(--dim);margin-bottom:5px">Principale</div>${r[c.principale]?refImg(r[c.principale],true):'<span style="font-size:11px;color:var(--dim)">aucune</span>'} <button onclick="refSetPrincipaleUrl('${sec}','${id}')" style="border:1px solid var(--border);background:var(--bg);border-radius:7px;cursor:pointer;font-size:11px;padding:4px 8px">URL…</button></div>`;
     c.photos.forEach(p=>{ const lbl={photos_avant:'Avant',photos_process:'Pendant',photos_apres:'Après',photos_chantier:'Chantier',photos_urls:'Photos'}[p]||p;
-      body+=`<div style="flex:1;min-width:240px"><div style="font-size:11px;color:var(--dim);margin-bottom:5px">${lbl} <button onclick="refAddPhoto('${sec}','${id}','${p}')" style="border:1px solid var(--border);background:var(--bg);border-radius:7px;cursor:pointer;font-size:11px;padding:3px 7px">+ ajouter</button></div><div>${refPhotoChips(sec,r,p)}</div></div>`; });
+      const dz='refdz-'+id+'-'+p; const inp='refin-'+id+'-'+p;
+      const btn='padding:3px 8px;border:1px solid var(--border);background:var(--bg);border-radius:7px;cursor:pointer;font-size:11px';
+      body+=`<div id="${dz}" ondragover="refDragOver(event,'${dz}')" ondragleave="refDragLeave(event,'${dz}')" ondrop="refDrop(event,'${sec}','${id}','${p}','${dz}')" style="flex:1;min-width:240px;border:1px dashed var(--border);border-radius:9px;padding:9px;transition:border-color .15s,background .15s"><div style="font-size:11px;color:var(--dim);margin-bottom:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap"><strong style="font-weight:600">${lbl}</strong><input type="file" id="${inp}" accept="image/*" multiple style="display:none" onchange="refUploadFiles('${sec}','${id}','${p}',this.files);this.value=''"><button onclick="document.getElementById('${inp}').click()" style="${btn}">+ fichier</button><button onclick="refAddPhoto('${sec}','${id}','${p}')" style="${btn}">URL</button><span style="font-size:10px;color:var(--dim)">ou glisser déposer</span></div><div>${refPhotoChips(sec,r,p)}</div></div>`; });
     body+='</div>';
   }
   body+='</div>';
@@ -1080,6 +1082,34 @@ async function refAddPhoto(sec,id,which){
   if(c.principale&&!r[c.principale]){r[c.principale]=url.trim();patch[c.principale]=r[c.principale];}
   renderRefList();
   await refPatchRaw(sec,id,patch);
+}
+function refDragOver(ev,dz){ev.preventDefault();const el=document.getElementById(dz);if(el){el.style.borderColor='var(--blue,#5B9BD5)';el.style.background='rgba(91,155,213,.08)';}}
+function refDragLeave(ev,dz){const el=document.getElementById(dz);if(el){el.style.borderColor='var(--border)';el.style.background='transparent';}}
+function refDrop(ev,sec,id,which,dz){ev.preventDefault();refDragLeave(ev,dz);const f=ev.dataTransfer&&ev.dataTransfer.files;if(f&&f.length)refUploadFiles(sec,id,which,f);}
+async function refUploadFiles(sec,id,which,files){
+  if(!files||!files.length)return;
+  const c=REF_CFG[sec]; const r=refLocal(sec,id); if(!r)return;
+  if(!c.bucket){showToast('Aucun bucket configuré');return;}
+  const base=String(r[c.codeField]||id).toLowerCase().replace(/[^a-z0-9._-]+/g,'-');
+  const arr=(r[which]||[]).slice(); const added=[]; let ok=0,fail=0;
+  showToast('Upload en cours…');
+  for(let i=0;i<files.length;i++){
+    const f=files[i]; if(!f.type||!f.type.startsWith('image/')){fail++;continue;}
+    const ext=(f.name.split('.').pop()||'jpg').toLowerCase();
+    const path=`${base}/${which}/${Date.now()}-${i}.${ext}`;
+    try{
+      const up=await fetch(`${cfg.url}/storage/v1/object/${c.bucket}/${path}`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':f.type,'x-upsert':'true'},body:f});
+      if(!up.ok)throw new Error('HTTP '+up.status);
+      const url=`${cfg.url}/storage/v1/object/public/${c.bucket}/${path}`;
+      arr.push(url); added.push(url); ok++;
+    }catch(e){console.error('upload ref',e);fail++;}
+  }
+  if(!ok){showToast('Upload échoué'+(fail?` (${fail})`:''));return;}
+  r[which]=arr; const patch={[which]:arr};
+  if(c.principale&&!r[c.principale]){r[c.principale]=added[0];patch[c.principale]=added[0];}
+  renderRefList();
+  await refPatchRaw(sec,id,patch);
+  showToast(`${ok} photo(s) ajoutée(s)`+(fail?` · ${fail} échec(s)`:''));
 }
 async function refDelPhoto(sec,id,which,idx){
   const c=REF_CFG[sec]; const r=refLocal(sec,id); if(!r)return;
