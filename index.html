@@ -1103,25 +1103,44 @@ function refInitDnD(){
   document.addEventListener('dragleave',e=>{const dz=dzOf(e.target);if(dz&&!dz.contains(e.relatedTarget))hi(dz,false);});
   document.addEventListener('drop',e=>{const dz=dzOf(e.target);if(!dz)return;e.preventDefault();hi(dz,false);const f=e.dataTransfer&&e.dataTransfer.files;if(f&&f.length)refUploadFiles(dz.dataset.sec,dz.dataset.id,dz.dataset.which,f);});
 }
+function refLoadHeic(){ if(window.heic2any)return Promise.resolve(); return new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s);}); }
+function refIsImage(f){ const t=(f.type||'').toLowerCase(); return t.startsWith('image/')||/\.(jpe?g|png|webp|gif|avif|heic|heif|bmp|tiff?)$/i.test(f.name||''); }
+async function refPrepImage(f){
+  const t=(f.type||'').toLowerCase(); const isHeic=t.includes('heic')||t.includes('heif')||/\.hei[cf]$/i.test(f.name||'');
+  if(isHeic){ try{ await refLoadHeic(); const b=await window.heic2any({blob:f,toType:'image/jpeg',quality:.85}); f=new File([Array.isArray(b)?b[0]:b],(f.name||'photo').replace(/\.\w+$/,'')+'.jpg',{type:'image/jpeg'}); }catch(e){console.error('heic',e);} }
+  try{
+    const bmp=await createImageBitmap(f); const max=2200; let w=bmp.width,h=bmp.height;
+    if(Math.max(w,h)>max||f.size>3*1024*1024){
+      const sc=Math.min(1,max/Math.max(w,h)); const cw=Math.round(w*sc),ch=Math.round(h*sc);
+      const cv=document.createElement('canvas'); cv.width=cw; cv.height=ch; cv.getContext('2d').drawImage(bmp,0,0,cw,ch);
+      const blob=await new Promise(r=>cv.toBlob(r,'image/jpeg',.85)); if(blob)f=new File([blob],(f.name||'photo').replace(/\.\w+$/,'')+'.jpg',{type:'image/jpeg'});
+    }
+    if(bmp.close)bmp.close();
+  }catch(e){}
+  return f;
+}
 async function refUploadFiles(sec,id,which,files){
   if(!files||!files.length)return;
   const c=REF_CFG[sec]; const r=refLocal(sec,id); if(!r)return;
   if(!c.bucket){showToast('Aucun bucket configuré');return;}
   const base=String(r[c.codeField]||id).toLowerCase().replace(/[^a-z0-9._-]+/g,'-');
   const arr=(r[which]||[]).slice(); const added=[]; let ok=0,fail=0;
-  showToast('Upload en cours…');
-  for(let i=0;i<files.length;i++){
-    const f=files[i]; if(!f.type||!f.type.startsWith('image/')){fail++;continue;}
-    const ext=(f.name.split('.').pop()||'jpg').toLowerCase();
+  const list=Array.from(files);
+  showToast('Traitement '+list.length+' fichier(s)…');
+  for(let i=0;i<list.length;i++){
+    let f=list[i]; if(!refIsImage(f)){fail++;continue;}
+    try{ f=await refPrepImage(f); }catch(e){}
+    const ct=f.type||'image/jpeg'; const ext=(ct.split('/')[1]||'jpg').replace('jpeg','jpg');
     const path=`${base}/${which}/${Date.now()}-${i}.${ext}`;
+    showToast(`Upload ${i+1}/${list.length}…`);
     try{
-      const up=await fetch(`${cfg.url}/storage/v1/object/${c.bucket}/${path}`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':f.type,'x-upsert':'true'},body:f});
-      if(!up.ok){const t=await up.text().catch(()=>'');throw new Error((up.status===400||up.status===401||up.status===403?'droits/policy ':'')+'HTTP '+up.status+' '+t.slice(0,60));}
+      const up=await fetch(`${cfg.url}/storage/v1/object/${c.bucket}/${path}`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':ct,'x-upsert':'true'},body:f});
+      if(!up.ok){const tx=await up.text().catch(()=>'');throw new Error((up.status===401||up.status===403?'droits/session ':(up.status===400?'format/taille ':''))+'HTTP '+up.status+' '+tx.slice(0,80));}
       const url=`${cfg.url}/storage/v1/object/public/${c.bucket}/${path}`;
       arr.push(url); added.push(url); ok++;
     }catch(e){console.error('upload ref',e);fail++;}
   }
-  if(!ok){showToast('Upload échoué'+(fail?` (${fail})`:'')+'. Vérifie la connexion / droits bucket.');return;}
+  if(!ok){showToast('Upload échoué'+(fail?` (${fail})`:'')+'. Vérifie connexion / session.');return;}
   r[which]=arr; const patch={[which]:arr};
   if(c.principale&&!r[c.principale]){r[c.principale]=added[0];patch[c.principale]=added[0];}
   renderRefList();
