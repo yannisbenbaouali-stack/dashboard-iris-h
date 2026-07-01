@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRIS REP, plaquette commerciale</title>
+<style>
+  :root {
+    --bg: #f5f3f0;
+    --paper: #ffffff;
+    --navy: #1a1a1a;
+    --accent: #b8860b;
+    --text: #3a3a3a;
+    --text-light: #6a6a6a;
+    --line: #d8d5d0;
+    --m1: #4682b4;
+    --m2: #b8860b;
+    --m3: #2e8b57;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 24px auto;
+    background: var(--paper);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    padding: 28mm 22mm;
+    position: relative;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* COVER */
+  .cover {
+    background: var(--navy);
+    color: #fff;
+    padding: 0;
+  }
+  .cover-inner {
+    padding: 40mm 22mm;
+    height: 297mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cover-logo {
+    font-size: 11px;
+    letter-spacing: 6px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .cover h1 {
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    line-height: 1.05;
+    margin-top: 30mm;
+    color: #fff;
+  }
+  .cover-baseline {
+    font-size: 18px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 16px;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+  .cover-rule {
+    width: 60px;
+    height: 2px;
+    background: var(--accent);
+    margin: 24px 0;
+  }
+  .cover-metiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: auto;
+  }
+  .cover-metier {
+    border-left: 2px solid var(--accent);
+    padding: 4px 0 4px 14px;
+  }
+  .cover-metier .num {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .cover-metier .name {
+    font-size: 16px;
+    color: #fff;
+    font-weight: 500;
+  }
+  .cover-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 30mm;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* HEADER pages métier */
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 28px;
+  }
+  .page-header .brand {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--navy);
+  }
+  .page-header .num {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--text-light);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .metier-bandeau {
+    margin-bottom: 32px;
+    padding: 24px 0 28px;
+    border-top: 4px solid var(--accent);
+  }
+  .metier-bandeau .label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .metier-bandeau h2 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 14px;
+  }
+  .metier-bandeau .baseline {
+    font-size: 17px;
+    color: var(--text-light);
+    line-height: 1.5;
+    max-width: 78%;
+  }
+
+  .m1 .metier-bandeau { border-top-color: var(--m1); }
+  .m1 .metier-bandeau .label { color: var(--m1); }
+  .m2 .metier-bandeau { border-top-color: var(--m2); }
+  .m2 .metier-bandeau .label { color: var(--m2); }
+  .m3 .metier-bandeau { border-top-color: var(--m3); }
+  .m3 .metier-bandeau .label { color: var(--m3); }
+
+  .section-title {
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 28px 0 14px;
+    text-transform: uppercase;
+  }
+
+  .services {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+  .service {
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #fafaf8;
+  }
+  .service h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .service p {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  .cibles {
+    border-left: 3px solid var(--accent);
+    padding: 4px 0 4px 18px;
+    margin: 20px 0;
+  }
+  .cibles h3 {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .cibles ul { list-style: none; }
+  .cibles li {
+    font-size: 13.5px;
+    padding: 4px 0;
+    color: var(--text);
+  }
+  .m1 .cibles { border-left-color: var(--m1); }
+  .m1 .cibles h3 { color: var(--m1); }
+  .m2 .cibles { border-left-color: var(--m2); }
+  .m2 .cibles h3 { color: var(--m2); }
+  .m3 .cibles { border-left-color: var(--m3); }
+  .m3 .cibles h3 { color: var(--m3); }
+
+  .differentiateur {
+    background: var(--navy);
+    color: #fff;
+    padding: 22px 24px;
+    border-radius: 8px;
+    margin-top: 28px;
+  }
+  .differentiateur .lab {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .differentiateur p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.92);
+  }
+
+  .grille {
+    margin-top: 26px;
+  }
+  .grille table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  .grille th {
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--navy);
+    color: #fff;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .grille td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .grille tr:last-child td { border-bottom: none; }
+
+  .footer-page {
+    position: absolute;
+    bottom: 14mm;
+    left: 22mm;
+    right: 22mm;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--text-light);
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+
+  .intro-block {
+    background: #fafaf8;
+    border-left: 3px solid var(--accent);
+    padding: 18px 22px;
+    margin-bottom: 28px;
+  }
+  .intro-block p {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.65;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page cover">
+  <div class="cover-inner">
+    <div>
+      <div class="cover-logo">Iris REP · 2026</div>
+    </div>
+    <div>
+      <h1>Acteur intégré<br>de l'immobilier<br>tertiaire régional</h1>
+      <div class="cover-rule"></div>
+      <div class="cover-baseline">Brokerage, asset management et développement<br>d'opérations en Centre Val de Loire et Île-de-France</div>
+    </div>
+    <div>
+      <div class="cover-metiers">
+        <div class="cover-metier">
+          <div class="num">MÉTIER 1</div>
+          <div class="name">Brokerage</div>
+        </div>
+        <div class="cover-metier">
+          <div class="num">MÉTIER 2</div>
+          <div class="name">Asset Services</div>
+        </div>
+        <div class="cover-metier">
+          <div class="num">MÉTIER 3</div>
+          <div class="name">Développement</div>
+        </div>
+      </div>
+      <div class="cover-footer">
+        <div>120 boulevard de Grenelle, 75015 Paris</div>
+        <div>Tours · Orléans · Paris</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page m1">
+  <div class="page-header">
+    <div class="brand">IRIS REP</div>
+    <div class="num">Métier 1 · Brokerage</div>
+  </div>
+
+  <div class="metier-bandeau">
+    <div class="label">Métier 1</div>
+    <h2>IRIS REP Brokerage</h2>
+    <div class="baseline">Conseil et exécution sur la transaction tertiaire en région, du local d'activité au commerce de pied d'immeuble en passant par les bureaux et les opérations de capital markets.</div>
+  </div>
+
+  <div class="intro-block">
+    <p>IRIS REP intervient en mandat de vente, de location ou d'acquisition pour le compte de bailleurs, propriétaires occupants, investisseurs privés et institutionnels. La connaissance fine du marché Centre Val de Loire et l'ancrage local Tours, Orléans et Paris permettent un sourcing off market différenciant.</p>
+  </div>
+
+  <div class="section-title">Nos prestations</div>
+  <div class="services">
+    <div class="service">
+      <h3>Vente d'actifs tertiaires</h3>
+      <p>Mandats de cession bureaux, commerces, locaux d'activité et entrepôts. Sourcing acquéreurs régionaux et nationaux.</p>
+    </div>
+    <div class="service">
+      <h3>Commercialisation locative</h3>
+      <p>Recherche de locataires, négociation et rédaction de baux commerciaux et professionnels. Bail vert et clauses ESG.</p>
+    </div>
+    <div class="service">
+      <h3>Conseil acquéreur</h3>
+      <p>Sourcing off market, analyse, négociation et accompagnement jusqu'à la signature pour investisseurs privés et institutionnels.</p>
+    </div>
+    <div class="service">
+      <h3>Capital markets régional</h3>
+      <p>Cession d'immeubles, de portefeuilles et de droits sociaux en SCI ou SAS. Ingénierie d'opération.</p>
+    </div>
+  </div>
+
+  <div class="cibles">
+    <h3>Cibles clients</h3>
+    <ul>
+      <li>Investisseurs privés patrimoniaux et family offices régionaux</li>
+      <li>Foncières familiales et SCPI détenant des actifs en CVL</li>
+      <li>Propriétaires occupants en arbitrage ou recherche d'actifs</li>
+      <li>Promoteurs et marchands de biens en sortie d'opération</li>
+    </ul>
+  </div>
+
+  <div class="differentiateur">
+    <div class="lab">Notre différenciateur</div>
+    <p>Carte T détenue, intégration native avec le pôle asset management (métier 2) et le pôle développement (métier 3) du groupe. Capacité unique à proposer un cycle complet acquisition, gestion, repositionnement, arbitrage.</p>
+  </div>
+
+  <div class="footer-page">
+    <div>IRIS REP, EURL au capital de 2 500 euros, SIREN 931 541 023</div>
+    <div>Page 2 sur 4</div>
+  </div>
+</div>
+
+<div class="page m2">
+  <div class="page-header">
+    <div class="brand">IRIS REP</div>
+    <div class="num">Métier 2 · Asset Services</div>
+  </div>
+
+  <div class="metier-bandeau">
+    <div class="label">Métier 2</div>
+    <h2>IRIS REP Asset Services</h2>
+    <div class="baseline">Gestion d'actifs tertiaires pour compte de tiers en Centre Val de Loire. Asset management stratégique, property management opérationnel et facility management coordonné.</div>
+  </div>
+
+  <div class="intro-block">
+    <p>IRIS REP Asset Services accompagne les bailleurs et investisseurs sur tout le cycle de vie de leurs actifs tertiaires, de la définition de la stratégie patrimoniale jusqu'à l'exécution opérationnelle quotidienne. Approche intégrée, ancrage CVL, capacité à mobiliser le partenaire travaux interne BYM Construction pour les capex et repositionnements.</p>
+  </div>
+
+  <div class="section-title">Nos prestations</div>
+  <div class="services">
+    <div class="service">
+      <h3>Asset management</h3>
+      <p>Audit de portefeuille, business plan par actif, scénarios de valorisation, arbitrages, suivi des covenants bancaires, reporting investisseur.</p>
+    </div>
+    <div class="service">
+      <h3>Property management</h3>
+      <p>Gestion locative, baux, quittancement, encaissement, charges, contentieux, déclarations, comptabilité dédiée par actif (carte G en cours).</p>
+    </div>
+    <div class="service">
+      <h3>Facility management</h3>
+      <p>Pilotage technique en délégation, plan de maintenance pluriannuel, conformité ERP, conduite des opérations capex avec maîtrise d'œuvre.</p>
+    </div>
+    <div class="service">
+      <h3>Conseil patrimonial</h3>
+      <p>Optimisation fiscale et juridique, structuration de SCI, accompagnement décret tertiaire, audit ESG et plan de mise en conformité.</p>
+    </div>
+  </div>
+
+  <div class="cibles">
+    <h3>Cibles clients</h3>
+    <ul>
+      <li>SCPI et foncières détenant des actifs en CVL sans relais local (Sofidy, Aestiam, Cap Foncières et Territoires)</li>
+      <li>Family offices tourangeaux, orléanais et patrimoines familiaux à structurer</li>
+      <li>Propriétaires occupants en externalisation de fonction immobilière</li>
+      <li>Investisseurs privés patrimoniaux supérieurs à 5 000 000 euros sous gestion</li>
+    </ul>
+  </div>
+
+  <div class="grille">
+    <div class="section-title">Grille tarifaire indicative</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:50%">Mission</th>
+          <th>Base de calcul</th>
+          <th>Tarif IRIS REP</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Audit de portefeuille forfait</td><td>5 à 50 actifs</td><td>5 000 à 25 000 euros HT</td></tr>
+        <tr><td>Asset management récurrent</td><td>Loyers nets quittancés</td><td>5 à 7 pourcent HT</td></tr>
+        <tr><td>Property management</td><td>Loyers TTC quittancés</td><td>3 pourcent HT</td></tr>
+        <tr><td>Commercialisation bail commercial</td><td>Loyer annuel HT</td><td>15 pourcent HT</td></tr>
+        <tr><td>Honoraires sur travaux capex</td><td>Montant travaux HT</td><td>5 à 7 pourcent HT</td></tr>
+        <tr><td>Honoraires de succès arbitrage</td><td>Prix de cession</td><td>0,5 à 1,5 pourcent HT</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer-page">
+    <div>IRIS REP, EURL au capital de 2 500 euros, SIREN 931 541 023</div>
+    <div>Page 3 sur 4</div>
+  </div>
+</div>
+
+<div class="page m3">
+  <div class="page-header">
+    <div class="brand">IRIS REP</div>
+    <div class="num">Métier 3 · Développement</div>
+  </div>
+
+  <div class="metier-bandeau">
+    <div class="label">Métier 3</div>
+    <h2>IRIS REP Développement</h2>
+    <div class="baseline">Promotion immobilière, montage d'opérations et marchand de biens. Structuration sur mesure, co-promotion avec partenaires institutionnels et family offices.</div>
+  </div>
+
+  <div class="intro-block">
+    <p>IRIS REP Développement intervient sur le sourcing, le montage juridique et financier, et l'exécution d'opérations immobilières tertiaires et résidentielles haut de gamme. Capacité à co-investir aux côtés de partenaires investisseurs ou en compte propre via les véhicules du groupe IRIS H.</p>
+  </div>
+
+  <div class="section-title">Nos prestations</div>
+  <div class="services">
+    <div class="service">
+      <h3>Montage d'opérations</h3>
+      <p>Sourcing, faisabilité, structuration juridique et financière, montage du tour de table, financement bancaire, suivi jusqu'à la livraison.</p>
+    </div>
+    <div class="service">
+      <h3>Marchand de biens</h3>
+      <p>Acquisition, restructuration et revente d'actifs sous-exploités. Capacité à mobiliser BYM Construction pour les travaux de repositionnement.</p>
+    </div>
+    <div class="service">
+      <h3>Co-promotion</h3>
+      <p>Partenariat avec promoteurs régionaux pour des opérations mixtes ou tertiaires. Apport en sourcing, foncier ou capital.</p>
+    </div>
+    <div class="service">
+      <h3>AMO et conseil</h3>
+      <p>Assistance maîtrise d'ouvrage pour propriétaires souhaitant repositionner ou densifier leur foncier. Honoraires fixes ou intéressement à la performance.</p>
+    </div>
+  </div>
+
+  <div class="cibles">
+    <h3>Cibles clients</h3>
+    <ul>
+      <li>Promoteurs régionaux en recherche de partenaires sourceurs ou financiers</li>
+      <li>Propriétaires fonciers en arbitrage ou repositionnement</li>
+      <li>Family offices et investisseurs en co-investissement value add</li>
+      <li>Banques régionales en cession de gages immobiliers</li>
+    </ul>
+  </div>
+
+  <div class="differentiateur">
+    <div class="lab">Notre approche</div>
+    <p>Articulation native avec le pôle asset management (métier 2) qui identifie les opportunités de repositionnement sur les portefeuilles sous gestion, et avec le pôle brokerage (métier 1) pour la commercialisation à la sortie. Capacité unique de bouclage du cycle, de l'origination à l'exit.</p>
+  </div>
+
+  <div class="footer-page">
+    <div>IRIS REP, EURL au capital de 2 500 euros, SIREN 931 541 023</div>
+    <div>Page 4 sur 4</div>
+  </div>
+</div>
+
+</body>
+</html>
