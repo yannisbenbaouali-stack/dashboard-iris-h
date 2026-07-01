@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRIS REP, stratégie de communication brique 1, plan 12 mois</title>
+<style>
+  :root{
+    --or:#b8860b; --or-clair:#d4a64a; --noir:#1a1a1a; --ivoire:#f5f3f0;
+    --beige:#faf6ed; --gris:#555; --line:#d8d5d0; --bleu:#e8eef5; --bleu-b:#3a6ea5;
+    --rouge:#fbecec; --rouge-b:#b03a3a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--ivoire);color:#2a2a2a;font-family:Georgia,'Times New Roman',serif;line-height:1.65;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px 80px;}
+  .helv{font-family:'Helvetica Neue',Arial,sans-serif;}
+  a{color:var(--or);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  .cover{background:var(--noir);color:#fff;padding:64px 24px;}
+  .cover-in{max-width:920px;margin:0 auto;}
+  .cover .kick{font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--or);font-weight:600;}
+  .cover h1{font-size:44px;line-height:1.1;margin:22px 0 12px;font-weight:400;}
+  .cover h1 em{color:var(--or);font-style:italic;}
+  .cover .tag{font-size:19px;color:rgba(255,255,255,.72);font-style:italic;}
+  .cover .rule{width:64px;height:2px;background:var(--or);margin:26px 0;}
+  .cover .meta{font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:rgba(255,255,255,.55);letter-spacing:1px;}
+  .cover .slogan{font-style:italic;color:var(--or);font-size:16px;margin-top:8px;}
+
+  .toc{background:#fff;border:1px solid var(--line);border-radius:8px;padding:28px 32px;margin:36px 0;}
+  .toc h2{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--noir);font-family:'Helvetica Neue',Arial,sans-serif;font-weight:700;margin-bottom:14px;}
+  .toc ol{list-style:none;counter-reset:c;}
+  .toc li{counter-increment:c;padding:5px 0;border-bottom:1px dotted var(--line);font-size:15px;}
+  .toc li:last-child{border-bottom:none;}
+  .toc li::before{content:counter(c)". ";color:var(--or);font-weight:700;}
+
+  .chap{margin:52px 0 0;padding-top:8px;}
+  .chap .num{font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--or);font-weight:700;}
+  .chap h2{font-size:30px;line-height:1.15;margin:8px 0 14px;font-weight:400;}
+  .chap h2 em{color:var(--or);font-style:italic;}
+  .chap h3{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--noir);font-weight:700;margin:26px 0 10px;}
+  .chap h4{font-size:18px;margin:20px 0 6px;color:var(--noir);}
+  .chap p{margin:10px 0;}
+  .lead{font-size:16px;color:var(--gris);max-width:760px;margin:6px 0 18px;}
+  ul.clean,ol.clean{margin:10px 0 10px 22px;}
+  ul.clean li,ol.clean li{margin:5px 0;}
+
+  table{width:100%;border-collapse:collapse;font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;margin:16px 0;}
+  th{background:var(--noir);color:#fff;text-align:left;padding:9px 12px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;font-weight:600;}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:nth-child(even) td{background:#fafaf8;}
+
+  .mentor,.insight,.warning{border-radius:6px;padding:16px 20px;margin:20px 0;font-size:15px;}
+  .mentor{background:var(--beige);border-left:3px solid var(--or);font-style:italic;}
+  .insight{background:var(--bleu);border-left:3px solid var(--bleu-b);}
+  .warning{background:var(--rouge);border-left:3px solid var(--rouge-b);}
+  .enc-lab{font-family:'Helvetica Neue',Arial,sans-serif;font-style:normal;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:block;margin-bottom:6px;}
+  .mentor .enc-lab{color:var(--or);}
+  .insight .enc-lab{color:var(--bleu-b);}
+  .warning .enc-lab{color:var(--rouge-b);}
+
+  .code{background:var(--noir);color:#e6e6e6;font-family:'SFMono-Regular',Consolas,monospace;font-size:12px;line-height:1.55;padding:16px 18px;border-radius:6px;overflow-x:auto;margin:16px 0;white-space:pre;}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;}
+  .card{border:1px solid var(--line);border-radius:6px;padding:16px 18px;background:#fff;}
+  .card h4{font-size:15px;margin:0 0 6px;color:var(--noir);}
+  .card p{font-size:13.5px;color:#3a3a3a;margin:0;font-family:'Helvetica Neue',Arial,sans-serif;}
+  .foot{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;color:var(--gris);}
+  .print{position:fixed;top:16px;right:16px;background:var(--or);color:#fff;border:none;padding:8px 14px;border-radius:5px;font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;cursor:pointer;}
+  @media print{.print{display:none;}body{background:#fff;}}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr;}.cover h1{font-size:32px;}}
+</style>
+</head>
+<body>
+<button class="print helv" onclick="window.print()">Imprimer en PDF</button>
+
+<div class="cover">
+  <div class="cover-in">
+    <div class="kick">IRIS Real Estate Partners · Communication · M0 à M12</div>
+    <h1>Stratégie de <em>communication</em><br>brique 1, plan 12 mois</h1>
+    <div class="rule"></div>
+    <div class="tag">Construire l'autorité d'un asset advisor pure player Centre Val de Loire avant la première signature de mandat.</div>
+    <div class="slogan">Réunir, Créer, Investir.</div>
+    <div class="rule"></div>
+    <div class="meta">Document socle communication. Fusion du plan 12 mois tous canaux et de la stratégie LinkedIn brique 1. Version 2.0, juillet 2026.</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="toc">
+  <h2>Sommaire, quatorze chapitres</h2>
+  <ol>
+    <li>Audit communication des concurrents</li>
+    <li>Stratégie éditoriale 12 mois, triptyque et six piliers</li>
+    <li>Plan de production mois par mois</li>
+    <li>Outils et automatisation</li>
+    <li>Stratégie LinkedIn perso et page, détail opérationnel</li>
+    <li>Newsletter et emailing</li>
+    <li>Livre blanc trimestriel</li>
+    <li>Événements et présence physique</li>
+    <li>Relations presse et influence</li>
+    <li>Refonte du site irisrep.com</li>
+    <li>KPI et tableau de bord</li>
+    <li>Budget et ressources</li>
+    <li>Gestion du risque réputationnel</li>
+    <li>Checklist 30 jours pour démarrer</li>
+  </ol>
+</div>
+
+<p class="lead">Une seule ambition. À M12, quand un family office tourangeau, un dirigeant de banque régionale ou un asset manager d'une SCPI institutionnelle prononce les mots asset advisor tertiaire en Centre Val de Loire, le nom d'IRIS REP vient en premier. Contexte exigeant, pas de track record asset management documenté, pas de mandat signé, deux heures par semaine de Yannis, mille euros de budget événements. La réponse est la discipline éditoriale et la production déléguée à Claude.</p>
+
+<!-- 1 -->
+<div class="chap">
+  <div class="num">Chapitre 1</div>
+  <h2>Audit communication des <em>concurrents</em></h2>
+  <p class="lead">Regarder qui parle, comment, à qui, à quelle fréquence. Deux familles. Les pure players régionaux, vrais points de référence pour IRIS REP. Les grandes plateformes, dont la communication montre ce qu'il ne faut pas faire à ce stade.</p>
+
+  <div class="insight"><span class="enc-lab">Insight</span>Les pure players régionaux qui réussissent ont tous adopté la posture de voix de leur territoire. Aalto à Rennes, Foncières et Territoires à Nancy, Avelim à Nantes. Ils n'essaient pas de concurrencer Cushman ou JLL, ils incarnent leur région. C'est la posture à adopter en CVL.</div>
+
+  <h4>Aalto REIM, Rennes, la référence</h4>
+  <p>SGP agréée AMF, 5 103 abonnés LinkedIn, 174 millions d'euros d'AUM, collecte annuelle 47,4 millions d'euros. Publie deux à trois fois par semaine, triple structure transactions, marché, humain. Se fait d'abord inviter sur les plateaux des autres, puis organise ses propres tables rondes. À reprendre, la posture pure player incarné et la régularité. À proscrire, imiter les annonces d'acquisitions et la communication sur les fonds tant qu'il n'y a ni véhicule ni mandat.</p>
+
+  <h4>Foncières et Territoires, Nancy</h4>
+  <p>Format signature, l'Abécédaire de la SCPI, série bi mensuelle de A à Z. Coût de production faible, position d'expert pédagogue, aucune référence client nécessaire. Directement transposable, un Abécédaire de l'asset tertiaire CVL, 26 lettres, M1 à M7, remplit la moitié du calendrier LinkedIn d'un coup. Angle territoires repris partout, exactement la posture CVL visée.</p>
+
+  <h4>Sofidy, groupe Tikehau</h4>
+  <p>Newsletter saisonnière Parlons futur, voix éditoriale signée par les dirigeants, format mixte analyses macro, focus sectoriels, actualité des fonds. Modèle adaptable en mensuel pour IRIS REP. Bulletins trimestriels harmonisés, mêmes rubriques, industrialisation qui permet de produire vite.</p>
+
+  <h4>Avelim, Nantes</h4>
+  <p>Mécanique LinkedIn artisanale mais redoutable, un Portrait de la Team toutes les deux semaines pendant 23 numéros. Bilan annuel chiffré sans citer de noms. À M0, format Portrait applicable à soi même par épisode, parcours, vision, méthode.</p>
+
+  <h4>Mata Capital, Niam, Theop, à observer</h4>
+  <p>Mata, storytelling de fondation soigné et triptyque de mots clés répétés, mais ton institutionnel à proscrire à zéro mandat. Niam, récit depuis 1998 sur tous les cycles, arme d'un pure player, à remplacer par un récit de construction année 1, année 2. Theop, démonstration d'expertise par références, à remplacer par une démonstration par méthodologie, les cinq Packs documentés.</p>
+
+  <div class="mentor"><span class="enc-lab">Conseil mentor</span>Imite la posture, pure player régional incarné, pas le format, annonces d'acquisitions et communication sur les fonds. Publier des acquisitions sans véhicule ni mandat rend illisible.</div>
+
+  <h3>Synthèse de l'audit, ce qu'IRIS REP reprend</h3>
+  <table>
+    <thead><tr><th>Mécanique</th><th>Source</th><th>Reprise M0 à M12</th></tr></thead>
+    <tbody>
+      <tr><td>Abécédaire bi mensuel</td><td>Foncières et Territoires</td><td>Oui, Abécédaire asset tertiaire CVL, 26 lettres, M1 à M7</td></tr>
+      <tr><td>Newsletter saisonnière éditorialisée</td><td>Sofidy</td><td>Oui, format mensuel allégé, signature Yannis</td></tr>
+      <tr><td>Portrait équipe ou fondateur</td><td>Avelim</td><td>Oui, série Mon parcours, ma méthode, 6 épisodes</td></tr>
+      <tr><td>Tables rondes prestigieuses</td><td>Aalto</td><td>Pas tout de suite, sponsor ARRISTO d'abord, table ronde M9 à M12</td></tr>
+      <tr><td>Récit de fondation chronologique</td><td>Niam, Mata</td><td>Oui, en filigrane sur 12 mois</td></tr>
+      <tr><td>Démonstration par méthodologie</td><td>Theop</td><td>Oui, les cinq Packs en pages dédiées et posts</td></tr>
+      <tr><td>Communication sur transactions</td><td>Aalto, Sofidy</td><td>Non, à proscrire jusqu'au premier mandat</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 2 -->
+<div class="chap">
+  <div class="num">Chapitre 2</div>
+  <h2>Stratégie éditoriale <em>12 mois</em></h2>
+  <p class="lead">À zéro track record, la seule chose qui crédibilise, c'est ce que tu sais et la façon dont tu l'écris. Le contenu IRIS REP n'est pas un outil marketing, c'est la preuve de l'expertise. Chaque post est un échantillon de mandat, chaque newsletter un livrable condensé.</p>
+
+  <h3>Triptyque IRIS REP</h3>
+  <p>Trois mots reviennent dans 80 pour cent des contenus, explicitement ou en filigrane.</p>
+  <div class="grid2">
+    <div class="card"><h4>Local</h4><p>Pure player CVL. On revendique l'ancrage Tours, Orléans, Blois, Bourges, Chartres. On ne fait pas semblant d'être en Île de France.</p></div>
+    <div class="card"><h4>Discipliné</h4><p>Méthodes documentées, frameworks ESG, processus d'audit reproductible. On outille, on n'improvise pas.</p></div>
+    <div class="card"><h4>Aligné</h4><p>Conseil sans conflit d'intérêts, asset advisor pur M0 à M12, property manager intégré M12 à M24, fund manager M36 et plus. Trajectoire annoncée, sans pivot opportuniste.</p></div>
+  </div>
+
+  <h3>Six piliers de contenu</h3>
+  <p>Tout post, toute newsletter, tout livre blanc s'inscrit dans au moins un pilier. Un sujet qui ne rentre dans aucun pilier est rejeté.</p>
+  <table>
+    <thead><tr><th>Pilier</th><th>Objet</th><th>Poids</th></tr></thead>
+    <tbody>
+      <tr><td>1. Marché tertiaire CVL</td><td>Analyse fine bureaux, locaux d'activité, commerces tertiaires. Pilier dominant.</td><td>40 pour cent</td></tr>
+      <tr><td>2. Décryptage de transactions</td><td>Transactions remarquables, baux notables, mouvements, sans citer vendeur ni acquéreur, juste l'adresse et l'analyse.</td><td>·</td></tr>
+      <tr><td>3. ESG et décret tertiaire</td><td>DEET, OPERAT, trajectoires 2030 2040 2050. Angle fédérateur le plus fort.</td><td>·</td></tr>
+      <tr><td>4. Profils d'acteurs et écosystème CVL</td><td>Portraits d'acteurs locaux, family offices, foncières familiales, CGP, promoteurs, sans cibler les concurrents.</td><td>·</td></tr>
+      <tr><td>5. Notes de conjoncture trimestrielles</td><td>Quatre notes par an, distillées en posts. Produit le plus d'effet expert.</td><td>·</td></tr>
+      <tr><td>6. Méthode IRIS REP</td><td>Format pédagogique, démonstration par méthodologie, proche de l'Abécédaire.</td><td>·</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Ton et format</h3>
+  <p>Direct, factuel, jamais condescendant, parfois contrariant sur les certitudes parisiennes transposées en région, toujours documenté. La phrase est courte, le verbe précis. L'auteur met en scène le marché, pas lui même. Le je arrive en M9 ou M12, pas avant. Formats privilégiés, texte LinkedIn natif 1 200 à 1 800 caractères, carrousel PDF 3 à 7 slides pour le pédagogique. Pas de vidéo selfie, pas de podcast M0 à M12.</p>
+  <div class="insight"><span class="enc-lab">Insight</span>Sur LinkedIn B2B France, les carrousels PDF performent en moyenne 1,8 fois mieux que les posts texte purs. Pour un profil prudent et deux heures par semaine, le carrousel est le format pivot, 30 minutes de production sur Canva, trois fois plus d'impressions qu'un texte simple.</div>
+</div>
+
+<!-- 3 -->
+<div class="chap">
+  <div class="num">Chapitre 3</div>
+  <h2>Plan de production <em>mois par mois</em></h2>
+  <p class="lead">Cadence cible, trois posts LinkedIn perso par semaine, un post page par semaine, une newsletter par mois, un livre blanc par trimestre, une note de conjoncture trimestrielle. Règle absolue, Yannis n'écrit jamais à zéro, Claude produit le brouillon argumenté à partir des sources publiques, Yannis valide, ajuste, signe.</p>
+
+  <table>
+    <thead><tr><th>Mois</th><th>LinkedIn perso</th><th>Page</th><th>Newsletter</th><th>Livre blanc</th></tr></thead>
+    <tbody>
+      <tr><td>M0 mai</td><td>12, lancement, Mon parcours, Abécédaire A à D</td><td>4</td><td>NL00 lancement</td><td>·</td></tr>
+      <tr><td>M1 juin</td><td>12, Abécédaire E à H</td><td>4</td><td>NL01 vue de cap</td><td>·</td></tr>
+      <tr><td>M2 juillet</td><td>12, Abécédaire I à L</td><td>4</td><td>NL02 note T2</td><td>LB T2, état des lieux et DEET</td></tr>
+      <tr><td>M3 août</td><td>9, Abécédaire M N O</td><td>3</td><td>NL03 léger</td><td>·</td></tr>
+      <tr><td>M4 septembre</td><td>12, Abécédaire P Q R, OPERAT</td><td>4</td><td>NL04 OPERAT</td><td>·</td></tr>
+      <tr><td>M5 octobre</td><td>12, Abécédaire S T U</td><td>4</td><td>NL05 note T3</td><td>LB T3, investissement et arbitrages</td></tr>
+      <tr><td>M6 novembre</td><td>12, Abécédaire V W, prépa SIMI</td><td>4</td><td>NL06 SIMI</td><td>·</td></tr>
+      <tr><td>M7 décembre</td><td>12, Abécédaire XYZ, couverture SIMI</td><td>4</td><td>NL07 bilan SIMI et an 1</td><td>·</td></tr>
+      <tr><td>M8 janvier</td><td>12, Cas d'école CVL</td><td>4</td><td>NL08 voeux 2027</td><td>LB T4, bilan 2026</td></tr>
+      <tr><td>M9 février</td><td>12, première prise de parole perso</td><td>4</td><td>NL09 compte à rebours DEET</td><td>·</td></tr>
+      <tr><td>M10 mars</td><td>12, prépa MIPIM</td><td>4</td><td>NL10 MIPIM</td><td>·</td></tr>
+      <tr><td>M11 avril</td><td>12, extraits LB T1 2027</td><td>4</td><td>NL11 note T1</td><td>LB T1 2027, signaux faibles</td></tr>
+      <tr><td>M12 mai</td><td>12, bilan année 1</td><td>4</td><td>NL12 vers brique 2</td><td>·</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Volumétrie 12 mois.</strong> 141 posts perso, 47 posts page, 13 newsletters NL00 à NL12, 4 livres blancs, 4 notes de conjoncture, 8 pages d'expertise, présence SIMI 2026 et MIPIM 2027.</p>
+  <div class="mentor"><span class="enc-lab">Conseil mentor</span>L'erreur classique, viser trop ambitieux en mois 1 et craquer en mois 4. Ce calendrier est dimensionné pour deux heures par semaine. Si tu décroches en août, ne rattrape pas, réduis. Mieux vaut 9 posts réguliers que 12 posts avec un trou de trois semaines qui détruit le rythme algorithmique.</div>
+</div>
+
+<!-- 4 -->
+<div class="chap">
+  <div class="num">Chapitre 4</div>
+  <h2>Outils et <em>automatisation</em></h2>
+  <p class="lead">Stack minimaliste. Un outil par fonction critique, pas plus. Trop d'outils tuent un solo augmenté.</p>
+  <table>
+    <thead><tr><th>Fonction</th><th>Outil</th><th>Coût mensuel</th></tr></thead>
+    <tbody>
+      <tr><td>Brouillons éditoriaux</td><td>Claude, projet IRIS REP Communication</td><td>0, inclus</td></tr>
+      <tr><td>Veille marché et presse</td><td>Google Alerts, Pappers</td><td>0</td></tr>
+      <tr><td>Design visuels et carrousels</td><td>Canva Pro</td><td>11,99 euros</td></tr>
+      <tr><td>Diffusion newsletter</td><td>Brevo, gratuit jusqu'à 300 emails par jour</td><td>0 à variable</td></tr>
+      <tr><td>Programmation LinkedIn</td><td>LinkedIn natif, Buffer si besoin à M4</td><td>0</td></tr>
+      <tr><td>Analytics</td><td>LinkedIn natif, Shield en option</td><td>0 à 8 euros</td></tr>
+      <tr><td>CRM et pipeline contenus</td><td>Dashboard IRIS H, Supabase</td><td>0</td></tr>
+    </tbody>
+  </table>
+  <p>Total stack, environ 12 à 20 euros par mois, soit 144 à 240 euros par an.</p>
+
+  <h3>Workflow LinkedIn hebdomadaire, moins de deux heures</h3>
+  <ol class="clean">
+    <li>Lundi 20h, 30 minutes. Choix des trois angles dans la matrice des six piliers, Claude produit trois brouillons texte natif et une structure de carrousel.</li>
+    <li>Lundi 20h30, 30 minutes. Assemblage carrousel Canva sur template, export PDF, sauvegarde Drive.</li>
+    <li>Mardi 8h, publication post texte perso et page. Jeudi 8h, carrousel. Samedi 21h, texte court ou question ouverte.</li>
+    <li>Dimanche 21h, 15 minutes, réponses aux commentaires, multiplie l'engagement par deux ou trois.</li>
+  </ol>
+
+  <h3>Table de pilotage des contenus</h3>
+  <div class="code">create table public.contenus_iris_rep (
+  id uuid primary key default gen_random_uuid(),
+  date_publication date not null,
+  type text not null,        -- post_linkedin_perso, post_page_iris, newsletter, livre_blanc, page_web, note_conjoncture
+  pilier int not null,       -- 1 a 6
+  titre text not null,
+  url text,
+  statut text default 'planifie',
+  caracteres int,
+  format text,
+  produit_par text default 'yannis_claude',
+  notes text,
+  created_at timestamp default now()
+);</div>
+  <div class="warning"><span class="enc-lab">Piège</span>Les fondateurs solo qui démarrent avec six outils SaaS abandonnent en mois 4. Reste à quatre outils, Claude, Canva, Brevo, LinkedIn natif, pendant les six premiers mois. Enrichir seulement à partir de M7 si la traction le justifie.</div>
+</div>
+
+<!-- 5 -->
+<div class="chap">
+  <div class="num">Chapitre 5</div>
+  <h2>Stratégie <em>LinkedIn</em> perso et page</h2>
+  <p class="lead">Canal numéro un, pas de débat. Les 3 000 abonnés actuels de Yannis sont une base d'amorçage solide, à condition que la première vague de contenus soit irréprochable.</p>
+
+  <h3>Compte personnel</h3>
+  <p>Positionnement, asset advisor tertiaire pure player Centre Val de Loire, gérant IRIS H, expert décret tertiaire et repositionnement d'actifs. Pas d'adjectif, juste la fonction et le périmètre. Bannière, carte CVL stylisée or et noir, six préfectures. Résumé About, cinq lignes, qui tu es, ce que tu fais, comment on te contacte.</p>
+
+  <h3>Cadence et créneaux</h3>
+  <table>
+    <thead><tr><th>Format</th><th>Fréquence</th><th>Performance attendue M3</th></tr></thead>
+    <tbody>
+      <tr><td>Texte natif 1 200 à 1 800 caractères</td><td>Mardi 8h</td><td>2 000 à 4 000 impressions, 30 à 60 réactions</td></tr>
+      <tr><td>Carrousel PDF 5 à 7 slides</td><td>Jeudi 8h</td><td>3 000 à 7 000 impressions, 60 à 150 réactions</td></tr>
+      <tr><td>Question ouverte ou sondage</td><td>Samedi 21h</td><td>1 500 à 3 000 impressions, 80 à 200 commentaires</td></tr>
+      <tr><td>Vidéo selfie</td><td>0, profil prudent</td><td>·</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Six piliers appliqués à LinkedIn, exemples de sujets</h3>
+  <div class="grid2">
+    <div class="card"><h4>Pilier 1, Marché tertiaire CVL</h4><p>Tours passe de la 15e à la 13e place malgré 14 pour cent de baisse en volume. 190 euros HT le mètre carré an dans le neuf à Tours contre 175 en seconde main, prime record.</p></div>
+    <div class="card"><h4>Pilier 2, Transactions</h4><p>Crédit Agricole prend 4 560 mètres carrés à Tours. Sopra Steria s'installe sur 3 700 mètres carrés. Renault Retail libère 25 pour cent du stock orléanais.</p></div>
+    <div class="card"><h4>Pilier 3, ESG et DEET</h4><p>Décret tertiaire 2030, quels propriétaires CVL sont en retard. OPERAT, les cinq erreurs qui coûtent cher. Modulation avant le 30 septembre 2027.</p></div>
+    <div class="card"><h4>Pilier 4, Écosystème</h4><p>Les vinicoles de la Loire et l'immobilier tertiaire. Cartographie des CGP indépendants CVL. Banques régionales et financement tertiaire.</p></div>
+    <div class="card"><h4>Pilier 5, Notes de conjoncture</h4><p>Note T2 marché CVL premier semestre. Note spéciale DEET, cartographie des 100 plus grands actifs tertiaires et leur trajectoire.</p></div>
+    <div class="card"><h4>Pilier 6, Méthode IRIS REP</h4><p>Audit tertiaire, les 12 points obligatoires en 2 jours. Acquisition, les 7 due diligence non négociables. Framework repositionnement en 4 étapes.</p></div>
+  </div>
+
+  <h3>Plan de connexion ciblée</h3>
+  <p>20 demandes par semaine, message court personnalisé. Sur 12 mois, environ 1 040 demandes, taux d'acceptation conservateur 40 pour cent, soit environ 400 connexions nouvelles ciblées.</p>
+  <table>
+    <thead><tr><th>Cible</th><th>Volume 12 mois</th></tr></thead>
+    <tbody>
+      <tr><td>CGP régionaux CVL, départements 37, 45, 41, 18, 28, 36</td><td>200 à 400</td></tr>
+      <tr><td>Décideurs SCPI, fund managers, asset managers</td><td>50 à 80</td></tr>
+      <tr><td>Family offices régionaux et foncières familiales</td><td>50 à 100</td></tr>
+      <tr><td>Décideurs banques régionales CVL</td><td>30 à 50</td></tr>
+      <tr><td>Notaires et avocats spécialisés</td><td>20 à 40</td></tr>
+      <tr><td>Journalistes spécialisés</td><td>10 à 15</td></tr>
+    </tbody>
+  </table>
+  <div class="mentor"><span class="enc-lab">Message type de connexion</span>Bonjour [Prénom], j'observe attentivement le marché tertiaire CVL pour notre activité d'asset advisor. Si vous publiez de l'actualité immobilière régionale, je serai ravi de la suivre. Au plaisir d'échanger. Yannis Benbaouali, IRIS REP.</div>
+
+  <h3>Page IRIS REP</h3>
+  <p>Positionnement corporate sobre, Asset Services tertiaire pure player CVL, Audit, Pilotage, Acquisition, Patrimonial, ESG. Une publication par semaine, mercredi 14h, dérivée du compte perso. Sert à crédibiliser le compte de Yannis et à indexer le SEO sur les mots clés cibles.</p>
+
+  <div class="mentor"><span class="enc-lab">Conseil mentor</span>Les quatre premières semaines sont les plus importantes. Si les 12 premiers posts sont ratés, tu brûles une partie de tes 3 000 abonnés qui ne te connaissent pas comme producteur de contenu. Mieux vaut 9 posts de qualité étalés sur quatre semaines que 12 posts médiocres.</div>
+</div>
+
+<!-- 6 -->
+<div class="chap">
+  <div class="num">Chapitre 6</div>
+  <h2>Newsletter et <em>emailing</em></h2>
+  <p class="lead">L'arme la plus stratégique. LinkedIn capte l'attention mais ne donne pas la propriété de la relation. La newsletter, oui. Un canal direct qui survit à toutes les mutations de l'algorithme.</p>
+
+  <h3>Construire la base, 200 contacts en 90 jours</h3>
+  <ol class="clean">
+    <li>Conversion LinkedIn vers newsletter, lien Brevo en commentaire de chaque post, 50 à 150 inscriptions sur 90 jours.</li>
+    <li>Conversion via livre blanc téléchargé contre email, 60 à 120 emails qualifiés.</li>
+    <li>Bascule manuelle des contacts existants du dashboard, mail unique d'opt in RGPD, 30 à 80 opt in.</li>
+  </ol>
+  <p>Cumul réaliste 90 jours, entre 140 et 350 abonnés. La cible 200 est conservatrice.</p>
+  <div class="warning"><span class="enc-lab">Piège</span>Ne jamais importer une liste sans opt in formel. Un signalement spam bloque le compte Brevo 30 jours minimum. Le mail d'invitation initial comporte un lien de désabonnement clair et la mention d'une relation professionnelle préexistante.</div>
+
+  <h3>Structure mensuelle, 1 200 mots maximum</h3>
+  <table>
+    <thead><tr><th>Rubrique</th><th>Longueur</th><th>Auteur</th></tr></thead>
+    <tbody>
+      <tr><td>Édito Yannis, trois phrases signées</td><td>50 à 80 mots</td><td>Yannis</td></tr>
+      <tr><td>L'analyse du mois, un angle, un chiffre clé</td><td>500 à 700 mots</td><td>Claude et Yannis</td></tr>
+      <tr><td>Trois transactions ou mouvements CVL</td><td>200 à 300 mots</td><td>Claude</td></tr>
+      <tr><td>Une méthode IRIS REP du mois</td><td>150 à 200 mots</td><td>Claude</td></tr>
+      <tr><td>Agenda et rappels, échéances DEET, salons</td><td>50 à 100 mots</td><td>Claude</td></tr>
+    </tbody>
+  </table>
+  <p><strong>KPI.</strong> Taux d'ouverture, cible 35 pour cent à M3, 40 à M6, 42 et plus à M12. Taux de clic, 4 pour cent à M3, 6 à M12. Désabonnement inférieur à 0,5 pour cent par envoi. Croissance nette au moins 10 pour cent par mois les six premiers mois.</p>
+</div>
+
+<!-- 7 -->
+<div class="chap">
+  <div class="num">Chapitre 7</div>
+  <h2>Livre blanc <em>trimestriel</em></h2>
+  <p class="lead">L'arme principale. Elle ne sert pas à engager, elle sert à trier. Ceux qui téléchargent un livre blanc IRIS REP ne sont pas des spectateurs LinkedIn, ce sont des prospects qualifiés.</p>
+  <p>Format, 16 pages A4, charte IRIS REP, 10 000 à 14 000 mots, distribution gratuite contre email via Brevo. Production en six étapes, sommaire, collecte des sources publiques, brouillon Claude, validation Yannis, mise en page Canva, diffusion multi canal. Temps Yannis, 5 à 6 heures cumulées par livre blanc.</p>
+  <table>
+    <thead><tr><th>Livre blanc</th><th>Publication</th><th>Sujet</th></tr></thead>
+    <tbody>
+      <tr><td>T2 2026</td><td>M2, juillet</td><td>Marché tertiaire CVL, état des lieux 2026 et trajectoires DEET 2030, le fondateur</td></tr>
+      <tr><td>T3 2026</td><td>M5, octobre</td><td>Investissement et arbitrages tertiaires en CVL, lectures de mi année</td></tr>
+      <tr><td>T4 2026</td><td>M8, janvier</td><td>Bilan tertiaire CVL 2026 et perspectives 2027, rituel annuel</td></tr>
+      <tr><td>T1 2027</td><td>M11, avril</td><td>Premier trimestre 2027, signaux faibles et opportunités</td></tr>
+    </tbody>
+  </table>
+  <p>Diffusion par livre blanc, teasing J moins 7, newsletter teaser J moins 3, publication J0 avec push LinkedIn perso et page, envoi à trois journalistes, bilan J plus 7 et J plus 30.</p>
+  <div class="mentor"><span class="enc-lab">Conseil mentor</span>Le livre blanc T2 est le plus stratégique. Donne lui 8 heures cumulées sur cinq semaines. Une fois le T2 posé à 16 pages impeccables, tu as le template, le coût des suivants tombe de 30 pour cent.</div>
+</div>
+
+<!-- 8 -->
+<div class="chap">
+  <div class="num">Chapitre 8</div>
+  <h2>Événements et <em>présence physique</em></h2>
+  <p class="lead">Règle des 12 mois, pas d'événement IRIS REP organisé en propre. Présence visiteur sur les grands rendez vous, sponsoring discret ARRISTO à Tours, organisation propre seulement à partir de M12 si la traction le justifie.</p>
+  <table>
+    <thead><tr><th>Mois</th><th>Événement</th><th>Format</th><th>Coût</th></tr></thead>
+    <tbody>
+      <tr><td>M2</td><td>Estivales CCI Touraine, apéros réseaux</td><td>Visiteur, posts LinkedIn</td><td>0</td></tr>
+      <tr><td>M4</td><td>Rentrée club d'affaires et ARRISTO Tours</td><td>Sponsoring discret</td><td>500 à 1 000 euros</td></tr>
+      <tr><td>M7</td><td>SIMI 2026, Paris, 9 au 11 décembre</td><td>Visiteur 3 jours, networking CGP et SCPI</td><td>200 à 400 euros</td></tr>
+      <tr><td>M10</td><td>MIPIM 2027, Cannes</td><td>Visiteur 2 à 3 jours</td><td>500 à 800 euros</td></tr>
+      <tr><td>M12</td><td>Premier petit déjeuner IRIS REP Tours, si traction</td><td>20 à 30 invités, intervention Yannis</td><td>200 à 500 euros</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Méthode SIMI 2026, le plus important.</strong> J moins 30, liste de 30 sociétés cibles depuis Pappers et le dashboard, demandes LinkedIn avec invitation café, one pager A4 imprimé en 50 exemplaires. Sur place, maximum trois conférences sur trois jours, le reste sur les stands et au cocktail. Objectif minimum, 25 cartes et 8 RDV de suivi planifiés en janvier.</p>
+  <div class="mentor"><span class="enc-lab">Conseil mentor</span>Le SIMI est un investissement de 200 euros qui peut produire 8 conversations qualifiées. Aucun autre canal ne donne ce ratio. Ne fais pas l'erreur du fondateur isolé qui ne parle à personne, ni celle de se laisser distraire par les plénières spectaculaires.</p></div>
+</div>
+
+<!-- 9 -->
+<div class="chap">
+  <div class="num">Chapitre 9</div>
+  <h2>Relations presse et <em>influence</em></h2>
+  <p class="lead">Stratégie sobre. Pas de tribune ambitieuse tant qu'aucun mandat AM n'est signé. Relation presse en mode sourçage, fournir chiffres, analyses, angles, devenir la source de qualité sur le marché tertiaire CVL.</p>
+  <table>
+    <thead><tr><th>Média</th><th>Périmètre</th><th>Approche</th></tr></thead>
+    <tbody>
+      <tr><td>Business Immo</td><td>Référence nationale immobilier d'entreprise</td><td>Connexion discrète, envoi du livre blanc T2 sans pitch</td></tr>
+      <tr><td>Le Journal du Tertiaire</td><td>Tertiaire et marchés régionaux</td><td>Bon angle pour les chiffres CVL</td></tr>
+      <tr><td>La Lettre Valloire</td><td>Lettre confidentielle économie CVL</td><td>Très influente, bâtir une vraie relation</td></tr>
+      <tr><td>Touraine Eco, CCI Touraine</td><td>Magazine trimestriel 40 000 lecteurs</td><td>Approche directe rédaction CCI</td></tr>
+      <tr><td>La Nouvelle République, La République du Centre</td><td>Quotidiens régionaux 37 et 45</td><td>Rubrique économique</td></tr>
+    </tbody>
+  </table>
+  <p>Plan, aucune approche M0 à M2, envoi du LB T2 à trois journalistes en M2, note exclusive OPERAT en M4, élargissement en M5, bilan annuel en M8, communiqué sobre en M9 à M12 si mandat signé.</p>
+  <div class="mentor"><span class="enc-lab">Conseil mentor</span>Jamais de communiqué pompeux, jamais d'exclusivité forcée, jamais de relance pressante. Tu envoies, tu attends. La relation presse se construit en 18 à 24 mois, pas en trois semaines.</div>
+</div>
+
+<!-- 10 -->
+<div class="chap">
+  <div class="num">Chapitre 10</div>
+  <h2>Refonte du site <em>irisrep.com</em></h2>
+  <p class="lead">Trois questions ouvertes à trancher, conserver Lovable ou migrer, qui exécute, calendrier exact, idéalement M2 ou M3 pour caler avec le livre blanc T2 hébergé en téléchargement.</p>
+  <table>
+    <thead><tr><th>Section</th><th>Objectif</th></tr></thead>
+    <tbody>
+      <tr><td>Accueil</td><td>Poser la promesse en cinq secondes, Asset Services tertiaire pure player CVL</td></tr>
+      <tr><td>Brokerage</td><td>Maintenir la visibilité de l'activité carte T</td></tr>
+      <tr><td>Asset Services</td><td>Coeur de la refonte, une page dédiée par Pack, Audit, Pilotage, Acquisition, Patrimonial, ESG</td></tr>
+      <tr><td>Développement</td><td>Promotion et montage, à minima, à étoffer après brique 4</td></tr>
+      <tr><td>Insights</td><td>Hub éditorial, tous les livres blancs et notes, indexation SEO long terme</td></tr>
+      <tr><td>Contact</td><td>Formulaire qualifié, entité, besoin, surface, échéance</td></tr>
+    </tbody>
+  </table>
+  <div class="mentor"><span class="enc-lab">Conseil mentor</span>Ne lance pas la refonte avant d'avoir publié trois ou quatre mois de contenu LinkedIn et deux newsletters. La section Insights a besoin de matière concrète pour ne pas être vide au lancement.</div>
+</div>
+
+<!-- 11 -->
+<div class="chap">
+  <div class="num">Chapitre 11</div>
+  <h2>KPI et <em>tableau de bord</em></h2>
+  <p class="lead">Sans mesure, le plan dérive. Ajout d'un onglet Communication au dashboard IRIS H, alimenté par deux nouvelles tables Supabase.</p>
+  <table>
+    <thead><tr><th>Famille</th><th>Indicateur</th><th>Cible M12</th></tr></thead>
+    <tbody>
+      <tr><td>Notoriété</td><td>Impressions LinkedIn cumulées</td><td>300 000 à 500 000</td></tr>
+      <tr><td>Notoriété</td><td>Abonnés newsletter</td><td>500 minimum</td></tr>
+      <tr><td>Notoriété</td><td>Mentions presse cumulées</td><td>5</td></tr>
+      <tr><td>Engagement</td><td>Taux d'engagement LinkedIn moyen</td><td>5 pour cent</td></tr>
+      <tr><td>Engagement</td><td>Téléchargements LB T1 2027</td><td>250</td></tr>
+      <tr><td>Commercial</td><td>Leads qualifiés cumulés</td><td>25</td></tr>
+      <tr><td>Commercial</td><td>RDV obtenus</td><td>12</td></tr>
+      <tr><td>Commercial</td><td>Mandats signés</td><td>1 minimum, idéal 2 à 3</td></tr>
+      <tr><td>Éditorial</td><td>Posts publiés sur prévus</td><td>90 pour cent et plus chaque mois</td></tr>
+    </tbody>
+  </table>
+  <div class="code">create table public.kpi_communication (
+  id uuid primary key default gen_random_uuid(),
+  mois date not null,
+  type_kpi text not null,   -- impressions_linkedin, abonnes_newsletter, taux_engagement, telechargements_lb, leads, rdv, mandats...
+  valeur numeric not null,
+  cible numeric,
+  notes text,
+  created_at timestamp default now(),
+  unique(mois, type_kpi)
+);
+
+create table public.leads_communication (
+  id uuid primary key default gen_random_uuid(),
+  date_premiere_interaction date not null,
+  source text not null,     -- linkedin_perso, linkedin_page, newsletter, livre_blanc, site, evenement, presse
+  nom text, prenom text, fonction text, societe text,
+  type_cible text,          -- family_office, fonciere_familiale, banque_regionale, public, cgp, autre
+  statut text default 'nouveau',
+  notes text,
+  created_at timestamp default now(),
+  updated_at timestamp default now()
+);</div>
+  <p>Onglet Communication du dashboard, quatre cartouches, Notoriété, Engagement, Commercial en funnel, Éditorial avec alerte retard. Développement estimé, une demi journée.</p>
+</div>
+
+<!-- 12 -->
+<div class="chap">
+  <div class="num">Chapitre 12</div>
+  <h2>Budget et <em>ressources</em></h2>
+  <p class="lead">Coût direct volontairement très bas. La ressource principale, c'est le temps Yannis et la capacité de production de Claude.</p>
+  <table>
+    <thead><tr><th>Poste</th><th>Coût annuel</th></tr></thead>
+    <tbody>
+      <tr><td>Canva Pro</td><td>144 euros</td></tr>
+      <tr><td>Brevo</td><td>0 à 240 euros</td></tr>
+      <tr><td>Shield Analytics, optionnel</td><td>0 à 96 euros</td></tr>
+      <tr><td>SIMI 2026</td><td>200 à 400 euros</td></tr>
+      <tr><td>MIPIM 2027</td><td>500 à 800 euros</td></tr>
+      <tr><td>Sponsoring ARRISTO, à arbitrer</td><td>500 à 1 000 euros</td></tr>
+      <tr><td>Photographie portrait pro</td><td>200 à 400 euros</td></tr>
+      <tr><td>Domaine et hébergement</td><td>50 à 100 euros</td></tr>
+    </tbody>
+  </table>
+  <p>Enveloppe minimale réaliste hors refonte site, environ 1 500 à 3 000 euros sur 12 mois. La contrainte 1 000 euros événements est respectée en priorisant le SIMI et en modérant le sponsoring ARRISTO la première année.</p>
+  <p><strong>Temps Yannis.</strong> Base deux heures par semaine, production posts 1h30, engagement 15 minutes, newsletter 15 minutes moyenne, livres blancs 24 heures sur l'année, événements 5 jours, veille 15 minutes. Environ 94 heures disponibles sur 47 semaines actives. Le plan est soutenable si Claude prend en charge la rédaction des brouillons en batch. Sans Claude, ce plan est infaisable en solo.</p>
+  <div class="mentor"><span class="enc-lab">Conseil mentor</span>Le piège du fondateur, externaliser dès M2 par peur de décrocher. Résiste six mois. À M6, bilan honnête, si tu maintiens 90 pour cent du plan, continue en interne. Si tu décroches sous 70 pour cent, externalise un poste précis, mise en page Canva ou notes de conjoncture brutes. Jamais l'écriture des posts perso, c'est l'âme du dispositif.</div>
+</div>
+
+<!-- 13 -->
+<div class="chap">
+  <div class="num">Chapitre 13</div>
+  <h2>Gestion du <em>risque réputationnel</em></h2>
+  <p class="lead">Pendant 12 mois, IRIS REP communique sans mandat AM signé. Période exposée, à gérer avec discipline. Trois risques.</p>
+
+  <h4>Risque 1, l'absence de références se reformule</h4>
+  <p>Formulation type sans bluff, IRIS REP Asset Services vient d'être lancé, l'offre est construite sur 12 mois avec des méthodologies documentées et publiques avant le premier mandat, le brokerage carte T existe depuis plus longtemps, la méthode AM vient d'expériences professionnelles antérieures de Yannis en fonds d'investissement immobiliers. Prouver le sérieux par les contenus publics avant de prouver par les mandats.</p>
+
+  <h4>Risque 2, commentaires négatifs sur LinkedIn</h4>
+  <table>
+    <thead><tr><th>Type</th><th>Protocole</th></tr></thead>
+    <tbody>
+      <tr><td>Critique technique professionnelle</td><td>Remerciement, reconnaissance, complément argumenté, double l'engagement</td></tr>
+      <tr><td>Commentaire ironique</td><td>Réponse calme et factuelle, jamais de surenchère, jamais du tac au tac</td></tr>
+      <tr><td>Insulte ou diffamation</td><td>Pas de réponse publique, capture, signalement LinkedIn si grave</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Risque 3, communication d'un premier mandat</h4>
+  <p>Clause de communication dans le mandat dès la négociation, confidentialité totale, anonymisée ou nominative. Jamais le jour de la signature, attendre 30 jours minimum, post court et factuel le 35e jour.</p>
+  <div class="mentor"><span class="enc-lab">Conseil mentor</span>L'absence de mandat à M12 n'est pas un échec si la base d'audience, la newsletter et les livres blancs sont en place. Le marché de l'asset management se construit sur des cycles de 3 à 5 ans. Si tu n'as pas signé à M12, tu prolonges le plan année 2 sans dramatiser.</div>
+</div>
+
+<!-- 14 -->
+<div class="chap">
+  <div class="num">Chapitre 14</div>
+  <h2>Checklist <em>30 jours</em> pour démarrer</h2>
+  <p class="lead">À imprimer et cocher. Quatre semaines, ordre strict. Si une semaine glisse, la suivante glisse d'autant.</p>
+
+  <h4>Semaine 1, fondations et stack</h4>
+  <ul class="clean">
+    <li>Activer ou vérifier Brevo, ne pas confondre avec ARRISTO, sauvegarder les credentials dans la table outils.</li>
+    <li>Souscrire Canva Pro.</li>
+    <li>Optimiser le profil LinkedIn perso, bannière carte CVL, headline factuel, About cinq lignes, séance photo à programmer.</li>
+    <li>Mettre à jour la page LinkedIn IRIS REP.</li>
+    <li>Créer les trois tables Supabase, contenus_iris_rep, kpi_communication, leads_communication.</li>
+    <li>Créer le dossier Drive CLAUDE IRIS_REP_COM 2026 avec sous dossiers.</li>
+    <li>Configurer cinq Google Alerts.</li>
+  </ul>
+
+  <h4>Semaine 2, templates et premiers contenus</h4>
+  <ul class="clean">
+    <li>Créer les templates Canva Carrousel et Livre blanc, et le template Brevo Newsletter.</li>
+    <li>Rédiger avec Claude les 12 premiers posts, semaines 1 à 4.</li>
+    <li>Préparer le carrousel Abécédaire lettre A.</li>
+    <li>Séance photo portrait pro à Tours.</li>
+  </ul>
+
+  <h4>Semaine 3, lancement de la production</h4>
+  <ul class="clean">
+    <li>Publier le premier post perso mardi 8h, le carrousel jeudi 8h, la question ouverte samedi 21h, le post page mercredi 14h.</li>
+    <li>Envoyer 20 demandes de connexion ciblées.</li>
+    <li>Préparer la liste des 200 à 400 contacts CVL à inviter.</li>
+    <li>Rédiger le sommaire détaillé du livre blanc T2 avec Claude.</li>
+  </ul>
+
+  <h4>Semaine 4, opt in et premier bilan</h4>
+  <ul class="clean">
+    <li>Envoyer le mail d'opt in aux contacts CVL existants.</li>
+    <li>Publier les posts de la semaine 4, envoyer 20 nouvelles connexions.</li>
+    <li>Première mise à jour de kpi_communication.</li>
+    <li>Programmer NL01, lancer la rédaction du livre blanc T2.</li>
+  </ul>
+
+  <table>
+    <thead><tr><th>Indicateur 30 jours</th><th>Cible</th></tr></thead>
+    <tbody>
+      <tr><td>Posts perso publiés</td><td>12</td></tr>
+      <tr><td>Posts page publiés</td><td>4</td></tr>
+      <tr><td>Abonnés newsletter</td><td>50 à 120</td></tr>
+      <tr><td>Impressions LinkedIn cumulées</td><td>5 000 à 15 000</td></tr>
+      <tr><td>Taux d'engagement moyen</td><td>2,5 pour cent et plus</td></tr>
+      <tr><td>Tables Supabase opérationnelles</td><td>3</td></tr>
+      <tr><td>Templates Canva et Brevo prêts</td><td>3</td></tr>
+    </tbody>
+  </table>
+
+  <div class="insight"><span class="enc-lab">Insight final</span>L'avantage absolu sur tous les concurrents, c'est le couple Yannis plus Claude. Toutes les SGP ont des équipes communication de 2 à 8 personnes. IRIS REP produit avec un agent qui livre des brouillons argumentés en 30 minutes, ce qui permet de tenir la cadence avec deux heures par semaine là où une équipe humaine équivalente aurait besoin de 30 à 50 heures. La voix éditoriale doit rester celle de Yannis, la production peut être déléguée massivement à Claude.</div>
+</div>
+
+<div class="foot">
+  IRIS Real Estate Partners, marque commerciale d'IRIS H, EURL au capital de 2 500 euros, SIREN 931 541 023, RCS Paris. 120 boulevard de Grenelle, 75015 Paris. Carte T CPI37012026000000013.<br>
+  Stratégie de communication brique 1, plan 12 mois. Fusion du plan tous canaux et de la stratégie LinkedIn. Version 2.0, juillet 2026. Réunir, Créer, Investir.
+</div>
+
+</div>
+</body>
+</html>

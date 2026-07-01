@@ -2677,9 +2677,26 @@ function renderStructHeader(){
     card('Objectif','<div style="font-size:13px;line-height:1.5;color:var(--navy)">'+s.objectif+'</div>')
     +card('KPI',kpiBody);
 }
+const BRIQUE1_DOCS=[
+  {t:'Top prospection',u:'brique1_iris_rep_top_prospection.html'},
+  {t:'Pr\u00e9sentation Groupe',u:'IRIS_GROUPE_PRESENTATION.html'},
+  {t:'Plaquette Conseil',u:'IRIS_REP_CONSEIL_IMMOBILIER_D_ENTREPRISE_PLAQUETTE.html'},
+  {t:'Strat\u00e9gie communication',u:'iris_rep_strategie_communication_brique1.html'},
+  {t:'Charte \u00e9ditoriale',u:'communication_iris_rep_charte_editoriale.html'},
+  {t:'Roadmap brique 1',u:'brique1_iris_rep_roadmap.html'},
+  {t:'Sch\u00e9ma investment management',u:'schema_investment_management_briques.html'},
+  {t:'Le Book v3',u:'le_book_iris_rep_v3.pdf'}
+];
+function briqueDocsBar(){
+  var btns=BRIQUE1_DOCS.map(function(d){
+    return '<a href="'+d.u+'" target="_blank" rel="noopener" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-family:var(--font);font-size:12px;font-weight:600;color:var(--navy);text-decoration:none;white-space:nowrap;transition:.15s" onmouseover="this.style.background=\'rgba(184,134,11,.12)\'" onmouseout="this.style.background=\'var(--card)\'">'+d.t+'</a>';
+  }).join('');
+  return '<div style="margin-bottom:14px"><div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:#b8860b;text-transform:uppercase;margin-bottom:8px">Documents brique 1</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+btns+'</div></div>';
+}
 function renderStructContent(){
   const el=document.getElementById('struct-content');
   const ph=t=>'<div style="display:flex;align-items:center;justify-content:center;height:calc(100vh - 320px);color:var(--dim);font-size:14px">'+t+'</div>';
+  const docsBar=(structSoc==='iris')?briqueDocsBar():'';
   let src=null;
   if(structDoc==='bp'||structDoc==='process'){
     src='business_plan.html?embed=1&mode='+structDoc+'&volet='+structSoc+'&v='+Date.now();
@@ -2687,12 +2704,12 @@ function renderStructContent(){
     if(structSoc==='iris')src='charte_graphique.html?v='+Date.now();
     else{el.innerHTML=ph('Charte graphique '+STRUCT_SOC[structSoc].nom+' \u00b7 \u00e0 venir');return;}
   }else if(structDoc==='template'){
-    el.innerHTML=ph('Template '+STRUCT_SOC[structSoc].nom+' \u00b7 \u00e0 venir');return;
+    el.innerHTML=docsBar+ph('Template '+STRUCT_SOC[structSoc].nom+' \u00b7 \u00e0 venir');return;
   }else if(structDoc==='dossier72'){
     if(structSoc==='arristo')src='assets/dossiers/UR03_72_rue_de_bourgogne.html?v='+Date.now();
     else{el.innerHTML=ph('Dossier 72 rue de Bourgogne \u00b7 r\u00e9serv\u00e9 Urban Rise et ARRISTO');return;}
   }
-  el.innerHTML='<iframe src="'+src+'" style="width:100%;height:calc(100vh - 300px);border:none;border-radius:12px;background:#faf6ed"></iframe>';
+  el.innerHTML=docsBar+'<iframe src="'+src+'" style="width:100%;height:calc(100vh - 300px);border:none;border-radius:12px;background:#faf6ed"></iframe>';
 }
 function renderStruct(){
   renderStructHeader();
