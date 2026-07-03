@@ -239,7 +239,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
     </div>
     <div class="sb-search">
       <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input id="global-search" placeholder="Rechercher..." oninput="globalSearch(this.value)" onfocus="this.parentElement.querySelector('#global-results')&&(document.getElementById('global-results').style.display='block')" onblur="setTimeout(()=>{const r=document.getElementById('global-results');if(r)r.style.display='none'},200)">
+      <input id="global-search" placeholder="Rechercher..." oninput="globalSearch(this.value)" onkeydown="if(event.key==='Enter'){var f=document.querySelector('#global-results .gr-item');if(f){event.preventDefault();f.click();}}" onfocus="this.parentElement.querySelector('#global-results')&&(document.getElementById('global-results').style.display='block')" onblur="setTimeout(()=>{const r=document.getElementById('global-results');if(r)r.style.display='none'},200)">
       <div id="global-results"></div>
     </div>
     <div class="sb-nav">
@@ -1280,13 +1280,43 @@ function globalSearch(q){
   const el=document.getElementById('global-results');
   if(!q||q.length<2){el.style.display='none';return}
   const ql=q.toLowerCase();
+  const qCode=ql.replace(/\s+/g,'');
   let results=[];
+  // Projets / deals en premier, avec correspondance directe sur le code (BYM05, bym 05, etc.)
+  (data.deals||[]).filter(d=>{
+    const code=(d.code||'').toLowerCase().replace(/\s+/g,'');
+    const hay=[d.code,d.nom,d.adresse,d.entite,d.type].filter(Boolean).join(' ').toLowerCase();
+    return (qCode&&code.includes(qCode))||hay.includes(ql);
+  }).sort((a,b)=>{
+    const ac=(a.code||'').toLowerCase().replace(/\s+/g,''),bc=(b.code||'').toLowerCase().replace(/\s+/g,'');
+    const aex=ac===qCode?0:1,bex=bc===qCode?0:1;
+    return aex-bex||ac.localeCompare(bc);
+  }).slice(0,6).forEach(d=>results.push({type:'projet',label:(d.code?d.code+' · ':'')+(d.nom||d.adresse||''),sub:d.entite||'',code:d.code,isDeal:true}));
   data.contacts.filter(c=>[c.prenom,c.nom,c.email,c.societe,c.metier,c.telephone].filter(Boolean).join(' ').toLowerCase().includes(ql)).slice(0,5).forEach(c=>results.push({type:'contact',label:`${c.prenom||''} ${c.nom||''}`.trim(),sub:c.email||c.societe||'',tab:'crm'}));
   data.taches_v2.filter(t=>[t.titre,t.description,t.entite,t.projet].filter(Boolean).join(' ').toLowerCase().includes(ql)).slice(0,5).forEach(t=>results.push({type:'tâche',label:t.titre,sub:t.entite||'',tab:'todo'}));
-  data.deals.filter(d=>[d.nom,d.entite,d.type].filter(Boolean).join(' ').toLowerCase().includes(ql)).slice(0,3).forEach(d=>results.push({type:'deal',label:d.nom,sub:d.entite||'',tab:'deals'}));
   if(!results.length){el.style.display='none';return}
   el.style.display='block';
-  el.innerHTML=results.map(r=>`<div class="gr-item" onclick="document.querySelector('.nav-item[onclick*=\\'${r.tab}\\']').click()"><span class="gr-type">${r.type}</span><strong>${r.label}</strong> <span style="color:var(--dim)">${r.sub}</span></div>`).join('');
+  el.innerHTML=results.map(r=>{
+    const action=r.isDeal?`goToDeal('${(r.code||'').replace(/'/g,'')}')`:`goToTab('${r.tab}')`;
+    return `<div class="gr-item" onclick="${action}"><span class="gr-type">${r.type}</span><strong>${r.label}</strong> <span style="color:var(--dim)">${r.sub}</span></div>`;
+  }).join('');
+}
+function goToTab(tab){
+  const b=document.querySelector('.nav-item[onclick*="'+tab+'"]');
+  if(b)switchTab(b,tab);
+  const gr=document.getElementById('global-results');if(gr)gr.style.display='none';
+  const gs=document.getElementById('global-search');if(gs)gs.value='';
+}
+function goToDeal(code){
+  const c=String(code||'').trim();
+  const deal=(data.deals||[]).find(d=>(d.code||'').toUpperCase()===c.toUpperCase());
+  const gs=document.getElementById('global-search');if(gs)gs.value='';
+  const gr=document.getElementById('global-results');if(gr)gr.style.display='none';
+  const dealsBtn=document.querySelector('.nav-item[onclick*="deals"]');
+  if(dealsBtn)switchTab(dealsBtn,'deals');
+  const isBym=(deal?deal.entite==='BYM':false)||/^bym/i.test(c);
+  if(isBym){setTimeout(()=>openChantierModal((deal&&deal.code)||c,(deal&&deal.nom)||c),80);}
+  else{const ds=document.getElementById('deals-search');if(ds){ds.value=(deal&&deal.code)||c;renderDeals();}}
 }
 
 // ════════════════════════════════════════
@@ -4075,9 +4105,6 @@ function closeSyntheseModal(){document.getElementById('synthese-modal').style.di
     <div style="display:flex;border-bottom:1px solid var(--border);background:var(--bg)">
       <button class="ch-tab active" onclick="switchChTab(this,'planning')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--navy);border-bottom:2px solid var(--blue)">📅 Planning</button>
       <button class="ch-tab" onclick="switchChTab(this,'budget')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">💶 Budget</button>
-      <button class="ch-tab" onclick="switchChTab(this,'questions')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">💬 Questions et notes</button>
-      <button class="ch-tab" onclick="switchChTab(this,'todo')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">✅ Todo chantier</button>
-      <button class="ch-tab" onclick="switchChTab(this,'process')" style="padding:12px 22px;font-family:var(--font);font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent">🔄 Process</button>
     </div>
     <!-- Content -->
     <div style="padding:24px 28px;min-height:400px" id="ch-content"></div>
