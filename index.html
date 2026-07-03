@@ -3631,6 +3631,17 @@ function renderChContent(){
       <div style="text-align:center;padding:3rem;color:var(--dim)"><div style="font-size:2rem;margin-bottom:8px">📅</div><div>Aucune consigne planifiée</div><div style="font-size:11px;margin-top:6px">Cliquez sur "+ Consigne" pour commencer</div></div>`;
       return;
     }
+    // Vue liste simple si aucune date renseignee
+    const _hasDates=chData.planning.some(p=>p.date_debut||p.date_fin);
+    if(!_hasDates){
+      el.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:13px;font-weight:600;color:var(--navy)">Planning des consignes <span style="font-size:11px;font-weight:400;color:var(--dim)">(${chData.planning.length} consigne${chData.planning.length>1?'s':''})</span></div>
+        <button onclick="addChPhase()" style="background:var(--blue);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Consigne</button>
+      </div>
+      ${chData.planning.map((p,i)=>`<div style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:${i%2?'#f8f9fc':'#fff'}"><span style="font-weight:700;color:var(--blue);font-size:13px;min-width:26px">${i+1}</span><div style="flex:1"><div style="font-weight:600;color:var(--navy);font-size:14px">${p.phase||''}</div>${p.notes?`<div style="font-size:12px;color:#3a3a3a;margin-top:4px;line-height:1.5">${p.notes}</div>`:''}</div></div>`).join('')}`;
+      return;
+    }
     // Construction de la plage de dates
     const dates=chData.planning.flatMap(p=>[p.date_debut,p.date_fin]).filter(Boolean).map(s=>new Date(s));
     const dMin=new Date(Math.min(...dates.map(d=>d.getTime())));
@@ -3690,25 +3701,30 @@ function renderChContent(){
   }
 
   else if(chCurrentTab==='budget'){
-    const totalPrevu=chData.budget.reduce((s,b)=>s+(b.montant_prevu||0),0);
-    const totalReel=chData.budget.reduce((s,b)=>s+(b.montant_reel||0),0);
-    const ecart=totalReel-totalPrevu;
+    const rows=chData.budget.filter(b=>b.poste!=='CA Devis');
+    const amt=b=>parseFloat(b.montant_prevu||b.montant_reel||0)||0;
+    const isRec=b=>b.sens==='recette';
+    const totDep=rows.filter(b=>!isRec(b)).reduce((s,b)=>s+amt(b),0);
+    const totRec=rows.filter(b=>isRec(b)).reduce((s,b)=>s+amt(b),0);
+    const solde=totRec-totDep;
     el.innerHTML=`
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
         <div style="font-size:13px;font-weight:600;color:var(--navy)">Budget chantier</div>
-        <button onclick="addChBudget()" style="background:var(--blue);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Poste</button>
+        <div style="display:flex;gap:8px">
+          <button onclick="addChBudget('depense')" style="background:var(--blue);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Dépense</button>
+          <button onclick="addChBudget('recette')" style="background:var(--green);border:none;border-radius:8px;padding:7px 14px;font-family:var(--font);font-size:11px;font-weight:600;color:#fff;cursor:pointer">+ Recette</button>
+        </div>
       </div>
       <div style="display:flex;gap:12px;margin-bottom:16px">
-        <div style="flex:1;background:var(--bg);border-radius:8px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--dim);margin-bottom:4px">Prévu</div><div style="font-size:18px;font-weight:700;color:var(--navy)">${fMt(totalPrevu)}</div></div>
-        <div style="flex:1;background:var(--bg);border-radius:8px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--dim);margin-bottom:4px">Réel</div><div style="font-size:18px;font-weight:700;color:var(--blue)">${fMt(totalReel)}</div></div>
-        <div style="flex:1;background:${ecart>0?'rgba(231,76,60,.08)':'rgba(65,201,142,.08)'};border-radius:8px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--dim);margin-bottom:4px">Écart</div><div style="font-size:18px;font-weight:700;color:${ecart>0?'var(--red)':'var(--green)'}">${ecart>0?'+':''}${fMt(ecart)}</div></div>
+        <div style="flex:1;background:rgba(231,76,60,.08);border-radius:8px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--dim);margin-bottom:4px">Total dépenses</div><div style="font-size:18px;font-weight:700;color:var(--red)">${fMt(totDep)}</div></div>
+        <div style="flex:1;background:rgba(65,201,142,.08);border-radius:8px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--dim);margin-bottom:4px">Total recettes</div><div style="font-size:18px;font-weight:700;color:var(--green)">${fMt(totRec)}</div></div>
+        <div style="flex:1;background:var(--bg);border-radius:8px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--dim);margin-bottom:4px">Solde</div><div style="font-size:18px;font-weight:700;color:${solde<0?'var(--red)':'var(--navy)'}">${solde>0?'+':''}${fMt(solde)}</div></div>
       </div>
-      ${chData.budget.length?`<table class="tbl"><thead><tr><th style="width:35%">Poste</th><th style="width:20%;text-align:right">Prévu</th><th style="width:20%;text-align:right">Réel</th><th style="width:15%;text-align:right">Écart</th><th style="width:10%">Notes</th></tr></thead><tbody>
-      ${chData.budget.map((b,i)=>{const e=(b.montant_reel||0)-(b.montant_prevu||0);return`<tr style="background:${i%2===0?'#fff':'#f8f9fc'}">
+      ${rows.length?`<table class="tbl"><thead><tr><th style="width:50%">Poste</th><th style="width:20%;text-align:right">Dépense</th><th style="width:20%;text-align:right">Recette</th><th style="width:10%">Notes</th></tr></thead><tbody>
+      ${rows.map((b,i)=>{const rec=isRec(b);return`<tr style="background:${i%2===0?'#fff':'#f8f9fc'}">
         <td style="font-weight:500;font-size:12px">${b.poste}</td>
-        <td style="text-align:right;font-size:12px;color:var(--dim)">${fMt(b.montant_prevu)}</td>
-        <td style="text-align:right;font-size:12px;font-weight:600;color:var(--blue)">${fMt(b.montant_reel)}</td>
-        <td style="text-align:right;font-size:11px;color:${e>0?'var(--red)':'var(--green)'};font-weight:600">${e!==0?(e>0?'+':'')+fMt(e):''}</td>
+        <td style="text-align:right;font-size:12px;font-weight:600;color:var(--red)">${rec?'':fMt(amt(b))}</td>
+        <td style="text-align:right;font-size:12px;font-weight:600;color:var(--green)">${rec?fMt(amt(b)):''}</td>
         <td style="font-size:10px;color:var(--dim)">${b.notes||''}</td>
       </tr>`}).join('')}
       </tbody></table>`:`<div style="text-align:center;padding:3rem;color:var(--dim)"><div style="font-size:2rem;margin-bottom:8px">💶</div><div>Aucun poste budgétaire</div></div>`}`;
@@ -3947,11 +3963,12 @@ async function addChPhase(){
   const rows=await r.json();if(rows&&rows[0]){chData.planning.push(rows[0]);renderChContent();showToast('Consigne ajoutée');}
 }
 
-async function addChBudget(){
-  const poste=prompt('Intitulé du poste (ex: Maçonnerie, Électricité...) :');if(!poste)return;
-  const prevu=parseFloat(prompt('Montant prévu (€) :')||'0');
+async function addChBudget(sens){
+  sens=sens==='recette'?'recette':'depense';
+  const poste=prompt('Intitulé du poste :');if(!poste)return;
+  const prevu=parseFloat(prompt('Montant (€) :')||'0');
   const cfg=getConfig();
-  const body={deal_code:chCurrentCode,poste,montant_prevu:prevu||0,montant_reel:0,ordre:(chData.budget.length+1)};
+  const body={deal_code:chCurrentCode,poste,montant_prevu:prevu||0,montant_reel:0,sens,ordre:(chData.budget.length+1)};
   const r=await fetch(`${cfg.url}/rest/v1/chantier_budget`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});
   const rows=await r.json();if(rows&&rows[0]){chData.budget.push(rows[0]);renderChContent();showToast('Poste ajouté');}
 }
