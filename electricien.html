@@ -154,11 +154,9 @@ let currentFiltre='all';
 let currentRecherche='';
 
 function getConfig(){
-  try{
-    const s=JSON.parse(localStorage.getItem(CFG_KEY));
-    if(s&&s.url&&s.key)return s;
-  }catch(e){}
-  return null;
+  // Cle anon publique en dur pour garantir l'affichage meme si le cache navigateur contient une ancienne cle.
+  const HARD={url:'https://kkznkuwoxoxvapejzytv.supabase.co',key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtrem5rdXdveG94dmFwZWp6eXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNTQxMTksImV4cCI6MjA4ODkzMDExOX0.Nb7N2FpKvm3NMzS6Nhx4qWoqHZW3-Es3JNPgHxkOWcE'};
+  return HARD;
 }
 
 async function chargerBible(){
