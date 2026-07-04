@@ -28,6 +28,12 @@ body{padding:0}
 .elec-toc-search:focus{border-color:var(--blue)}
 .elec-toc-group{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--navy);font-weight:800;margin:14px 0 8px;padding:12px 8px 0;border-top:1px solid var(--border)}
 .elec-toc-group:first-child{border-top:none;padding-top:2px}
+.elec-toc-group.clickable{cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none}
+.elec-toc-group.clickable:hover{color:var(--blue)}
+.elec-toc-chev{font-size:12px;transition:transform .25s;color:var(--dim)}
+.elec-toc-group.open .elec-toc-chev{transform:rotate(90deg)}
+.elec-toc-sub{overflow:hidden;max-height:0;transition:max-height .35s ease}
+.elec-toc-sub.open{max-height:3000px}
 .elec-toc-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:7px;font-size:12.5px;color:var(--text);cursor:pointer;transition:all .12s;text-decoration:none;line-height:1.35;margin-bottom:1px}
 .elec-toc-item:hover{background:var(--blue-bg);color:var(--navy)}
 .elec-toc-item.active{background:var(--navy);color:#fff;font-weight:600}
@@ -35,6 +41,13 @@ body{padding:0}
 .elec-toc-item.active .elec-toc-num{color:var(--blue2)}
 .elec-toc-cnt{font-size:10px;background:rgba(0,0,0,0.06);padding:2px 6px;border-radius:10px;color:var(--dim);font-weight:600;min-width:20px;text-align:center}
 .elec-toc-item.active .elec-toc-cnt{background:rgba(255,255,255,0.18);color:#fff}
+.elec-toc-proj{padding:10px 10px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;transition:.12s;margin-bottom:4px;border:1px solid var(--border);background:var(--bg)}
+.elec-toc-proj:hover{border-color:var(--blue);color:var(--navy)}
+.elec-toc-proj.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.elec-toc-proj .code{font-size:11px;font-weight:800;letter-spacing:.5px;color:var(--blue);display:block}
+.elec-toc-proj.active .code{color:var(--blue2)}
+.elec-toc-proj .addr{font-size:11px;font-weight:500;color:var(--dim);margin-top:2px}
+.elec-toc-proj.active .addr{color:rgba(255,255,255,.65)}
 
 /* CONTENU PRINCIPAL */
 .elec-main{padding:32px 40px 80px;max-width:100%;overflow-x:hidden}
@@ -100,10 +113,27 @@ body{padding:0}
 .elec-meta{display:flex;gap:14px;font-size:10.5px;color:var(--dim);margin-top:12px;letter-spacing:0.3px}
 .elec-meta-item strong{color:var(--text);font-weight:600}
 
+/* PROJETS */
+.elec-proj-head{margin-bottom:20px}
+.elec-proj-code{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--blue);text-transform:uppercase}
+.elec-proj-nom{font-size:24px;font-weight:800;color:var(--navy);letter-spacing:-.4px;margin-top:2px}
+.elec-proj-tabs{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:0}
+.elec-proj-tab{background:var(--card);border:1px solid var(--border);border-bottom:none;border-radius:9px 9px 0 0;padding:11px 20px;font-family:var(--font);font-size:13px;font-weight:700;color:var(--dim);cursor:pointer;transition:.12s;margin-bottom:-1px}
+.elec-proj-tab:hover{color:var(--navy)}
+.elec-proj-tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.elec-proj-panel{background:var(--card);border:1px solid var(--border);border-radius:0 14px 14px 14px;padding:28px 32px;min-height:280px}
+
+/* ACCUEIL PROJETS */
+.elec-accueil-lead{font-size:13.5px;color:var(--dim);margin-bottom:22px;line-height:1.6}
+.elec-proj-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.elec-proj-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 24px;cursor:pointer;transition:.15s}
+.elec-proj-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 8px 24px rgba(14,31,77,.08)}
+.elec-proj-card .c-code{font-size:13px;font-weight:800;letter-spacing:1.5px;color:var(--blue)}
+.elec-proj-card .c-nom{font-size:16px;font-weight:700;color:var(--navy);margin-top:6px;line-height:1.35}
+.elec-proj-card .c-tabs{margin-top:14px;font-size:11px;color:var(--dim);font-weight:600}
+
 /* LOADER */
 .elec-loader{text-align:center;padding:60px;color:var(--dim);font-size:13px}
-
-/* ERREUR CONFIG */
 .elec-err{background:#fdecea;border:1px solid #f5b7b1;color:#922b21;border-radius:10px;padding:18px;margin:20px}
 
 /* RESPONSIVE */
@@ -121,7 +151,7 @@ body{padding:0}
 <div class="elec-wrap" id="elec-wrap" style="display:none">
   <!-- SOMMAIRE -->
   <aside class="elec-toc">
-    <div class="elec-toc-title">Sommaire</div>
+    <div class="elec-toc-title">Électricité</div>
     <input class="elec-toc-search" id="elec-search" placeholder="Rechercher dans la bible..." oninput="filtrerRecherche()">
     <div id="elec-toc-body"></div>
   </aside>
@@ -133,9 +163,9 @@ body{padding:0}
       <div class="elec-sub">Base de connaissances · Yannis Benbaouali</div>
     </div>
 
-    <div class="elec-kpis" id="elec-kpis"></div>
+    <div class="elec-kpis" id="elec-kpis" style="display:none"></div>
 
-    <div class="elec-filters" id="elec-filters">
+    <div class="elec-filters" id="elec-filters" style="display:none">
       <button class="elec-fbtn on" data-statut="all" onclick="filtrerStatut('all',this)">Toutes</button>
       <button class="elec-fbtn" data-statut="brouillon" onclick="filtrerStatut('brouillon',this)">Brouillons</button>
       <button class="elec-fbtn" data-statut="validé" onclick="filtrerStatut('validé',this)">Validées</button>
@@ -150,25 +180,21 @@ body{padding:0}
 <div id="elec-error"></div>
 
 <script>
-const CFG_KEY='iris_h_cfg';
 let entries=[];
 let currentFiltre='all';
 let currentRecherche='';
+let mode='accueil';        // accueil | bible | projet
+let currentProjet=null;    // section_ordre du projet
+let currentTab=0;
+let sommaireOpen=false;
 
 function getConfig(){
-  // Cle anon publique en dur pour garantir l'affichage meme si le cache navigateur contient une ancienne cle.
   const HARD={url:'https://kkznkuwoxoxvapejzytv.supabase.co',key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtrem5rdXdveG94dmFwZWp6eXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNTQxMTksImV4cCI6MjA4ODkzMDExOX0.Nb7N2FpKvm3NMzS6Nhx4qWoqHZW3-Es3JNPgHxkOWcE'};
   return HARD;
 }
 
 async function chargerBible(){
   const cfg=getConfig();
-  if(!cfg){
-    document.getElementById('elec-loader').style.display='none';
-    document.getElementById('elec-error').innerHTML='<div class="elec-err">Configuration Supabase manquante. Ouvrir le dashboard principal pour la configurer.</div>';
-    return;
-  }
-
   try{
     const r=await fetch(cfg.url+'/rest/v1/electricien_bible?select=*&order=section_ordre.asc,sous_section_ordre.asc',{
       headers:{apikey:cfg.key,Authorization:'Bearer '+cfg.key}
@@ -177,84 +203,148 @@ async function chargerBible(){
     entries=await r.json();
     document.getElementById('elec-loader').style.display='none';
     document.getElementById('elec-wrap').style.display='grid';
-    renderTout();
+    renderTOC();
+    renderMain();
   }catch(e){
     document.getElementById('elec-loader').style.display='none';
     document.getElementById('elec-error').innerHTML='<div class="elec-err">Erreur de chargement : '+e.message+'</div>';
   }
 }
 
-function getSections(){
+/* ---------- DONNEES ---------- */
+function getBibleSections(){
   const map={};
-  entries.forEach(e=>{
-    if(!map[e.section_ordre])map[e.section_ordre]={
-      ordre:e.section_ordre,
-      nom:e.section_principale,
-      entries:[]
-    };
+  entries.filter(e=>e.section_ordre<100).forEach(e=>{
+    if(!map[e.section_ordre])map[e.section_ordre]={ordre:e.section_ordre,nom:e.section_principale,entries:[]};
     map[e.section_ordre].entries.push(e);
   });
   return Object.values(map).sort((a,b)=>a.ordre-b.ordre);
 }
-
-function filtrerEntries(allEntries){
-  return allEntries.filter(e=>{
-    if(currentFiltre==='brouillon'&&e.statut!=='brouillon')return false;
-    if(currentFiltre==='validé'&&e.statut!=='validé')return false;
-    if(currentFiltre==='enrichies'&&(!e.contenu_html||e.contenu_html.trim().length<20))return false;
-    if(currentRecherche){
-      const t=(e.titre+' '+e.section_principale+' '+(e.sous_section||'')+' '+(e.contenu_html||'')+' '+(e.tags||[]).join(' ')).toLowerCase();
-      if(!t.includes(currentRecherche.toLowerCase()))return false;
-    }
-    return true;
+function getProjets(){
+  const map={};
+  entries.filter(e=>e.section_ordre>=100).forEach(e=>{
+    if(!map[e.section_ordre])map[e.section_ordre]={ordre:e.section_ordre,nom:e.section_principale,tabs:[]};
+    map[e.section_ordre].tabs.push(e);
+  });
+  return Object.values(map).sort((a,b)=>a.ordre-b.ordre).map(p=>{
+    p.tabs.sort((a,b)=>(a.sous_section_ordre||0)-(b.sous_section_ordre||0));
+    return p;
   });
 }
-
-function renderTout(){
-  renderKpis();
-  renderTOC();
-  renderSections();
+function projetParts(nom){
+  const m=nom.match(/^(BYM\d+)\s*·?\s*(.*)$/);
+  return m?{code:m[1],addr:m[2]}:{code:'',addr:nom};
 }
 
-function renderKpis(){
-  const sectionsCount=getSections().length;
-  const totalEntries=entries.length;
-  const enrichies=entries.filter(e=>e.contenu_html&&e.contenu_html.trim().length>=20).length;
-  const validees=entries.filter(e=>e.statut==='validé').length;
-  document.getElementById('elec-kpis').innerHTML=`
-    <div class="elec-kpi"><div class="elec-kpi-lab">Sections</div><div class="elec-kpi-val">${sectionsCount}</div><div class="elec-kpi-sub">Thématiques couvertes</div></div>
-    <div class="elec-kpi"><div class="elec-kpi-lab">Fiches</div><div class="elec-kpi-val">${totalEntries}</div><div class="elec-kpi-sub">Entrées totales</div></div>
-    <div class="elec-kpi"><div class="elec-kpi-lab">Enrichies</div><div class="elec-kpi-val">${enrichies}</div><div class="elec-kpi-sub">${totalEntries>0?Math.round(enrichies/totalEntries*100):0}% du total</div></div>
-    <div class="elec-kpi"><div class="elec-kpi-lab">Validées</div><div class="elec-kpi-val">${validees}</div><div class="elec-kpi-sub">Connaissances confirmées</div></div>
-  `;
-}
-
+/* ---------- TOC ---------- */
 function renderTOC(){
-  const sections=getSections();
-  const filteredEntries=filtrerEntries(entries);
-  const visibleSectionIds=new Set(filteredEntries.map(e=>e.section_ordre));
-  let _h='';let _grp=null;
-  sections.forEach(s=>{
-    const isVisible=visibleSectionIds.has(s.ordre);
-    const nbEntries=filteredEntries.filter(e=>e.section_ordre===s.ordre).length;
-    if(!isVisible&&currentRecherche)return;
-    const _g=s.ordre>=100?'PROJETS':'BIBLE';
-    if(_g!==_grp){_grp=_g;_h+=`<div class="elec-toc-group">${_g}</div>`;}
-    _h+=`<a class="elec-toc-item${isVisible?'':' inactive'}" onclick="aller(${s.ordre})" style="${isVisible?'':'opacity:0.4'}">
-      <span style="display:flex;align-items:center;gap:8px;flex:1"><span class="elec-toc-num">${_g==='PROJETS'?'':String(s.ordre).padStart(2,'0')}</span><span>${escapeHtml(s.nom)}</span></span>
-      ${nbEntries>0?`<span class="elec-toc-cnt">${nbEntries}</span>`:''}
-    </a>`;
+  const projets=getProjets();
+  const bible=getBibleSections();
+  let h='';
+
+  // PROJETS (toujours visibles)
+  h+='<div class="elec-toc-group">Projets</div>';
+  projets.forEach(p=>{
+    const pp=projetParts(p.nom);
+    const act=(mode==='projet'&&currentProjet===p.ordre)?' active':'';
+    h+=`<div class="elec-toc-proj${act}" onclick="selectProjet(${p.ordre})">
+      <span class="code">${escapeHtml(pp.code)}</span>
+      <span class="addr">${escapeHtml(pp.addr)}</span></div>`;
   });
-  document.getElementById('elec-toc-body').innerHTML=_h;
+
+  // SOMMAIRE (bible, repliable)
+  h+=`<div class="elec-toc-group clickable${sommaireOpen?' open':''}" onclick="toggleSommaire()">
+    <span>Sommaire</span><span class="elec-toc-chev">▸</span></div>`;
+  h+=`<div class="elec-toc-sub${sommaireOpen?' open':''}" id="elec-toc-sub">`;
+  const fe=filtrerEntries(entries.filter(e=>e.section_ordre<100));
+  const vis=new Set(fe.map(e=>e.section_ordre));
+  bible.forEach(s=>{
+    const isVis=vis.has(s.ordre);
+    if(!isVis&&currentRecherche)return;
+    const nb=fe.filter(e=>e.section_ordre===s.ordre).length;
+    const act=(mode==='bible'&&window._activeSec===s.ordre)?' active':'';
+    h+=`<a class="elec-toc-item${act}" onclick="selectSection(${s.ordre})" style="${isVis?'':'opacity:.4'}">
+      <span style="display:flex;align-items:center;gap:8px;flex:1"><span class="elec-toc-num">${String(s.ordre).padStart(2,'0')}</span><span>${escapeHtml(s.nom)}</span></span>
+      ${nb>0?`<span class="elec-toc-cnt">${nb}</span>`:''}</a>`;
+  });
+  h+='</div>';
+
+  document.getElementById('elec-toc-body').innerHTML=h;
 }
 
-function renderSections(){
-  const sections=getSections();
-  const filteredEntries=filtrerEntries(entries);
+function toggleSommaire(){
+  sommaireOpen=!sommaireOpen;
+  if(sommaireOpen){mode='bible';renderMain();}
+  renderTOC();
+  if(sommaireOpen){
+    setTimeout(()=>{const el=document.getElementById('elec-toc-sub');if(el)el.scrollIntoView({behavior:'smooth',block:'nearest'});},80);
+  }
+}
+
+/* ---------- NAV ---------- */
+function selectProjet(ordre){
+  mode='projet';currentProjet=ordre;currentTab=0;
+  window._activeSec=null;
+  renderTOC();renderMain();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function selectSection(ordre){
+  mode='bible';sommaireOpen=true;window._activeSec=ordre;
+  renderMain();renderTOC();
+  setTimeout(()=>{const el=document.getElementById('section-'+ordre);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},60);
+}
+
+/* ---------- MAIN ---------- */
+function renderMain(){
+  const kpis=document.getElementById('elec-kpis');
+  const filters=document.getElementById('elec-filters');
+  if(mode==='bible'){kpis.style.display='grid';filters.style.display='flex';renderKpis();renderBible();}
+  else{kpis.style.display='none';filters.style.display='none';
+    if(mode==='projet')renderProjet();else renderAccueil();}
+}
+
+function renderAccueil(){
+  const projets=getProjets();
+  const cards=projets.map(p=>{
+    const pp=projetParts(p.nom);
+    const tabs=p.tabs.map(t=>escapeHtml(t.sous_section)).join(' · ');
+    return `<div class="elec-proj-card" onclick="selectProjet(${p.ordre})">
+      <div class="c-code">${escapeHtml(pp.code)}</div>
+      <div class="c-nom">${escapeHtml(pp.addr)}</div>
+      <div class="c-tabs">${tabs}</div></div>`;
+  }).join('');
+  document.getElementById('elec-sections').innerHTML=`
+    <div class="elec-accueil-lead">Sélectionne un projet ci dessous, ou ouvre le <b>Sommaire</b> à gauche pour la bible de connaissances.</div>
+    <div class="elec-proj-cards">${cards}</div>`;
+}
+
+function renderProjet(){
+  const p=getProjets().find(x=>x.ordre===currentProjet);
+  if(!p){renderAccueil();return;}
+  const pp=projetParts(p.nom);
+  if(currentTab>=p.tabs.length)currentTab=0;
+  const tabsBtns=p.tabs.map((t,i)=>`<button class="elec-proj-tab${i===currentTab?' on':''}" onclick="selectTab(${i})">${escapeHtml(t.sous_section)}</button>`).join('');
+  const t=p.tabs[currentTab];
+  const has=t&&t.contenu_html&&t.contenu_html.trim().length>0;
+  document.getElementById('elec-sections').innerHTML=`
+    <div class="elec-proj-head">
+      <div class="elec-proj-code">${escapeHtml(pp.code)}</div>
+      <div class="elec-proj-nom">${escapeHtml(pp.addr)}</div>
+    </div>
+    <div class="elec-proj-tabs">${tabsBtns}</div>
+    <div class="elec-proj-panel">
+      <div class="elec-section-content">${has?t.contenu_html:'<div class="elec-section-empty">Contenu à venir.</div>'}</div>
+    </div>`;
+}
+function selectTab(i){currentTab=i;renderProjet();}
+
+function renderBible(){
+  const sections=getBibleSections();
+  const fe=filtrerEntries(entries.filter(e=>e.section_ordre<100));
   const html=sections.map(s=>{
-    const sectionEntries=filteredEntries.filter(e=>e.section_ordre===s.ordre);
-    if(sectionEntries.length===0&&currentRecherche)return '';
-    return sectionEntries.map((e,idx)=>{
+    const se=fe.filter(e=>e.section_ordre===s.ordre);
+    if(se.length===0&&currentRecherche)return '';
+    return se.map((e,idx)=>{
       const isFirst=idx===0;
       const statutClass=e.statut==='validé'?'elec-statut-valide':'elec-statut-brouillon';
       const statutLabel=e.statut==='validé'?'Validé':'Brouillon';
@@ -270,7 +360,7 @@ function renderSections(){
           </div>
           <span class="elec-section-statut ${statutClass}">${statutLabel}</span>
         </div>
-        <div class="elec-section-content">${hasContent?e.contenu_html:`<div class="elec-section-empty">Section en attente d'enrichissement. Yannis va partager les documents de formation pour alimenter cette rubrique.</div>`}</div>
+        <div class="elec-section-content">${hasContent?e.contenu_html:`<div class="elec-section-empty">Section en attente d'enrichissement.</div>`}</div>
         ${e.notes_perso?`<div class="elec-notes-perso"><div class="elec-notes-lab">Notes perso</div>${escapeHtml(e.notes_perso)}</div>`:''}
         ${sources.length>0?`<div class="elec-sources"><div class="elec-sources-lab">Sources</div>${sources.map(src=>`<a class="elec-source-item" ${src.url?`href="${escapeAttr(src.url)}" target="_blank"`:''}>${escapeHtml(src.nom||src.title||'Source')}</a>`).join('')}</div>`:''}
         ${tags.length>0?`<div style="margin-top:10px">${tags.map(t=>`<span style="display:inline-block;background:var(--blue-bg);color:var(--navy);font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:4px;margin-right:4px">#${escapeHtml(t)}</span>`).join('')}</div>`:''}
@@ -284,38 +374,41 @@ function renderSections(){
   document.getElementById('elec-sections').innerHTML=html||`<div class="elec-section-empty" style="padding:60px">Aucun résultat pour ces filtres.</div>`;
 }
 
-function filtrerStatut(s,btn){
-  currentFiltre=s;
-  document.querySelectorAll('.elec-fbtn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  renderTOC();
-  renderSections();
+function renderKpis(){
+  const be=entries.filter(e=>e.section_ordre<100);
+  const sectionsCount=getBibleSections().length;
+  const totalEntries=be.length;
+  const enrichies=be.filter(e=>e.contenu_html&&e.contenu_html.trim().length>=20).length;
+  const validees=be.filter(e=>e.statut==='validé').length;
+  document.getElementById('elec-kpis').innerHTML=`
+    <div class="elec-kpi"><div class="elec-kpi-lab">Sections</div><div class="elec-kpi-val">${sectionsCount}</div><div class="elec-kpi-sub">Thématiques couvertes</div></div>
+    <div class="elec-kpi"><div class="elec-kpi-lab">Fiches</div><div class="elec-kpi-val">${totalEntries}</div><div class="elec-kpi-sub">Entrées bible</div></div>
+    <div class="elec-kpi"><div class="elec-kpi-lab">Enrichies</div><div class="elec-kpi-val">${enrichies}</div><div class="elec-kpi-sub">${totalEntries>0?Math.round(enrichies/totalEntries*100):0}% du total</div></div>
+    <div class="elec-kpi"><div class="elec-kpi-lab">Validées</div><div class="elec-kpi-val">${validees}</div><div class="elec-kpi-sub">Connaissances confirmées</div></div>`;
 }
 
+function filtrerEntries(all){
+  return all.filter(e=>{
+    if(currentFiltre==='brouillon'&&e.statut!=='brouillon')return false;
+    if(currentFiltre==='validé'&&e.statut!=='validé')return false;
+    if(currentFiltre==='enrichies'&&(!e.contenu_html||e.contenu_html.trim().length<20))return false;
+    if(currentRecherche){
+      const t=(e.titre+' '+e.section_principale+' '+(e.sous_section||'')+' '+(e.contenu_html||'')+' '+(e.tags||[]).join(' ')).toLowerCase();
+      if(!t.includes(currentRecherche.toLowerCase()))return false;
+    }
+    return true;
+  });
+}
+function filtrerStatut(s,btn){currentFiltre=s;document.querySelectorAll('.elec-fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderTOC();renderBible();}
 function filtrerRecherche(){
   currentRecherche=document.getElementById('elec-search').value.trim();
+  if(currentRecherche){mode='bible';sommaireOpen=true;renderMain();}
   renderTOC();
-  renderSections();
 }
 
-function aller(ordre){
-  const el=document.getElementById('section-'+ordre);
-  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-function escapeHtml(s){
-  if(s===null||s===undefined)return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function escapeHtml(s){if(s===null||s===undefined)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function escapeAttr(s){return escapeHtml(s)}
-
-function formatDate(d){
-  if(!d)return '';
-  try{
-    const dt=new Date(d);
-    return dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
-  }catch(e){return ''}
-}
+function formatDate(d){if(!d)return '';try{return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}catch(e){return ''}}
 
 chargerBible();
 </script>
