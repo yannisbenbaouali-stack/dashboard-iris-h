@@ -26,6 +26,8 @@ body{padding:0}
 .elec-toc-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:16px;padding-left:8px}
 .elec-toc-search{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:12px;outline:none;margin-bottom:14px;background:var(--bg);color:var(--text)}
 .elec-toc-search:focus{border-color:var(--blue)}
+.elec-toc-group{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--navy);font-weight:800;margin:14px 0 8px;padding:12px 8px 0;border-top:1px solid var(--border)}
+.elec-toc-group:first-child{border-top:none;padding-top:2px}
 .elec-toc-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:7px;font-size:12.5px;color:var(--text);cursor:pointer;transition:all .12s;text-decoration:none;line-height:1.35;margin-bottom:1px}
 .elec-toc-item:hover{background:var(--blue-bg);color:var(--navy)}
 .elec-toc-item.active{background:var(--navy);color:#fff;font-weight:600}
@@ -231,15 +233,19 @@ function renderTOC(){
   const sections=getSections();
   const filteredEntries=filtrerEntries(entries);
   const visibleSectionIds=new Set(filteredEntries.map(e=>e.section_ordre));
-  document.getElementById('elec-toc-body').innerHTML=sections.map(s=>{
+  let _h='';let _grp=null;
+  sections.forEach(s=>{
     const isVisible=visibleSectionIds.has(s.ordre);
     const nbEntries=filteredEntries.filter(e=>e.section_ordre===s.ordre).length;
-    if(!isVisible&&currentRecherche)return '';
-    return `<a class="elec-toc-item${isVisible?'':' inactive'}" onclick="aller(${s.ordre})" style="${isVisible?'':'opacity:0.4'}">
-      <span style="display:flex;align-items:center;gap:8px;flex:1"><span class="elec-toc-num">${String(s.ordre).padStart(2,'0')}</span><span>${escapeHtml(s.nom)}</span></span>
+    if(!isVisible&&currentRecherche)return;
+    const _g=s.ordre>=100?'PROJETS':'BIBLE';
+    if(_g!==_grp){_grp=_g;_h+=`<div class="elec-toc-group">${_g}</div>`;}
+    _h+=`<a class="elec-toc-item${isVisible?'':' inactive'}" onclick="aller(${s.ordre})" style="${isVisible?'':'opacity:0.4'}">
+      <span style="display:flex;align-items:center;gap:8px;flex:1"><span class="elec-toc-num">${_g==='PROJETS'?'':String(s.ordre).padStart(2,'0')}</span><span>${escapeHtml(s.nom)}</span></span>
       ${nbEntries>0?`<span class="elec-toc-cnt">${nbEntries}</span>`:''}
     </a>`;
-  }).join('');
+  });
+  document.getElementById('elec-toc-body').innerHTML=_h;
 }
 
 function renderSections(){
