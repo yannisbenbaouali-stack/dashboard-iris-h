@@ -245,7 +245,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
     <div class="sb-nav">
       <button class="nav-item" onclick="switchTab(this,'audit')"><span class="nav-dot"></span><span>Audit Drive</span><span class="nav-cnt" id="nav-audit-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'bourgogne')"><span class="nav-dot"></span><span>Bourgogne 72 / 78</span><span class="nav-cnt" id="nav-bourgogne-cnt">0</span></button>
-      <button class="nav-item" onclick="switchTab(this,'charte')"><span class="nav-dot"></span><span>Charte graphique</span></button>
       <button class="nav-item" style="display:none" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'deals')"><span class="nav-dot"></span><span>Dealflow Projets</span><span class="nav-cnt" id="nav-deals-cnt">0</span></button>
       <button class="nav-item" onclick="openIrisRepConseil(this)"><span class="nav-dot"></span><span>IRIS REP · Conseil</span></button>
@@ -470,18 +469,14 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 
       </div>
 
-      <!-- CHARTE GRAPHIQUE -->
-      <div class="tab" id="tab-charte">
-        <iframe src="charte_graphique.html?v=1" style="width:100%;height:calc(100vh - 160px);border:none;border-radius:12px;background:#faf6ed"></iframe>
-      </div>
-
       <!-- STRUCTURATION -->
       <div class="tab" id="tab-businessplan">
         <!-- Ligne 1 : societe -->
         <div class="filters" style="margin-bottom:10px">
           <button class="fbtn struct-soc-btn on" id="soc-btn-iris" onclick="selectStructSoc('iris',this)">IRIS REP</button>
           <button class="fbtn struct-soc-btn" id="soc-btn-bym" onclick="selectStructSoc('bym',this)">BYM Construction</button>
-          <button class="fbtn struct-soc-btn" id="soc-btn-arristo" onclick="selectStructSoc('arristo',this)">Urban Rise et ARRISTO</button>
+          <button class="fbtn struct-soc-btn" id="soc-btn-urbanrise" onclick="selectStructSoc('urbanrise',this)">Urban Rise</button>
+          <button class="fbtn struct-soc-btn" id="soc-btn-arristo" onclick="selectStructSoc('arristo',this)">ARRISTO</button>
         </div>
         <!-- En-tete societe : Objectif + KPI -->
         <div id="struct-soc-header" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px"></div>
@@ -490,6 +485,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
           <button class="fbtn struct-doc-btn on" id="doc-btn-bp" onclick="selectStructDoc('bp',this)">Business Plan</button>
           <button class="fbtn struct-doc-btn" id="doc-btn-process" onclick="selectStructDoc('process',this)">Process &amp; D&#233;cisions</button>
           <button class="fbtn struct-doc-btn" id="doc-btn-template" onclick="selectStructDoc('template',this)">Template</button>
+          <button class="fbtn struct-doc-btn" id="doc-btn-charte" onclick="selectStructDoc('charte',this)">Charte graphique</button>
           <button class="fbtn struct-doc-btn" id="doc-btn-72" onclick="selectStructDoc('dossier72',this)" style="display:none">72</button>
         </div>
         <!-- Contenu -->
@@ -2725,8 +2721,11 @@ function switchStruct(section,btn){
 const STRUCT_SOC={
   iris:{nom:'IRIS REP',objectif:'Lancer le métier asset management et devenir, brique par brique, le gestionnaire d\'actifs tertiaires de référence en Centre Val de Loire. Cinq briques séquentielles sur dix ans, de l\'advisory à la gestion de fonds, agrément AMF à M48, sur le modèle d\'écosystème intégré Aalto REIM.<div style="margin-top:12px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:11px"><span style="background:#fff; color:#1a1a1a; border:1px solid #1a1a1a;padding:3px 9px;border-radius:5px;white-space:nowrap">1 · Advisory</span><span style="color:#b8860b;font-weight:700">→</span><span style="background:#fff; color:#1a1a1a; border:1px solid #1a1a1a;padding:3px 9px;border-radius:5px;white-space:nowrap">2 · Property Management</span><span style="color:#b8860b;font-weight:700">→</span><span style="background:#fff; color:#1a1a1a; border:1px solid #1a1a1a;padding:3px 9px;border-radius:5px;white-space:nowrap">3 · Facility Management</span><span style="color:#b8860b;font-weight:700">→</span><span style="background:#fff; color:#1a1a1a; border:1px solid #1a1a1a;padding:3px 9px;border-radius:5px;white-space:nowrap">4 · Gestion de fonds AMF</span><span style="color:#b8860b;font-weight:700">→</span><span style="background:#fff; color:#1a1a1a; border:1px solid #1a1a1a;padding:3px 9px;border-radius:5px;white-space:nowrap">5 · Investisseur compte de tiers</span></div>',kpi:null},
   bym:{nom:'BYM Construction',objectif:"Structurer l'entreprise de r\u00e9novation et de construction sur \u00cele de France et Centre Val de Loire, industrialiser la production de chantiers et formaliser le partenariat capex avec IRIS REP Asset Services.",kpi:null},
-  arristo:{nom:'Urban Rise et ARRISTO',objectif:"D\u00e9velopper l'activit\u00e9 marchand de biens d'Urban Rise et animer le r\u00e9seau professionnel ARRISTO, en synergie avec les op\u00e9rations du groupe.",kpi:null}
+  urbanrise:{nom:'Urban Rise',objectif:"D\u00e9velopper l'activit\u00e9 marchand de biens et d\u00e9veloppement foncier promoteur, montages SCI Denormandie sur le Loiret, sortie VIR.",kpi:null},
+  arristo:{nom:'ARRISTO',objectif:"Animer le r\u00e9seau professionnel de l'immobilier ARRISTO en synergie avec les op\u00e9rations du groupe.",kpi:null}
 };
+const CHARTE_BRAND={iris:'iris_rep',bym:'bym',urbanrise:'urban_rise',arristo:'arristo'};
+const BP_VOLET={iris:'iris',bym:'bym',urbanrise:'arristo',arristo:'arristo'};
 let structSoc='iris', structDoc='bp', structInit=false;
 
 function selectStructSoc(soc,btn){
@@ -2735,7 +2734,7 @@ function selectStructSoc(soc,btn){
   if(btn)btn.classList.add('on');
   var b72=document.getElementById('doc-btn-72');
   if(b72){
-    if(soc==='arristo'){b72.style.display='';}
+    if(soc==='urbanrise'){b72.style.display='';}
     else{
       b72.style.display='none';
       if(structDoc==='dossier72'){
@@ -2785,14 +2784,13 @@ function renderStructContent(){
   const docsBar=(structSoc==='iris')?briqueDocsBar():'';
   let src=null;
   if(structDoc==='bp'||structDoc==='process'){
-    src='business_plan.html?embed=1&mode='+structDoc+'&volet='+structSoc+'&v='+Date.now();
+    src='business_plan.html?embed=1&mode='+structDoc+'&volet='+(BP_VOLET[structSoc]||structSoc)+'&v='+Date.now();
   }else if(structDoc==='charte'){
-    if(structSoc==='iris')src='charte_graphique.html?v='+Date.now();
-    else{el.innerHTML=ph('Charte graphique '+STRUCT_SOC[structSoc].nom+' \u00b7 \u00e0 venir');return;}
+    src='charte_graphique.html?brand='+(CHARTE_BRAND[structSoc]||'iris_rep')+'&v='+Date.now();
   }else if(structDoc==='template'){
     el.innerHTML=docsBar+ph('Template '+STRUCT_SOC[structSoc].nom+' \u00b7 \u00e0 venir');return;
   }else if(structDoc==='dossier72'){
-    if(structSoc==='arristo')src='assets/dossiers/UR03_72_rue_de_bourgogne.html?v='+Date.now();
+    if(structSoc==='urbanrise')src='assets/dossiers/UR03_72_rue_de_bourgogne.html?v='+Date.now();
     else{el.innerHTML=ph('Dossier 72 rue de Bourgogne \u00b7 r\u00e9serv\u00e9 Urban Rise et ARRISTO');return;}
   }
   el.innerHTML=docsBar+'<iframe src="'+src+'" style="width:100%;height:calc(100vh - 300px);border:none;border-radius:12px;background:#faf6ed"></iframe>';

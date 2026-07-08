@@ -705,7 +705,7 @@ const BRANDS = {
   }
 };
 
-const BRAND_ORDER = ['iris_rep','bym','urban_rise','arristo','rir','orleans_coloc'];
+const BRAND_ORDER = ['iris_rep','bym','urban_rise','arristo','rir'];
 
 // ============================================
 // RENDU
@@ -1284,7 +1284,14 @@ function buildTabs() {
   const panelsHtml = BRAND_ORDER.map(renderBrandPanel).join('') + renderSynthesisPanel();
   document.getElementById('panels').innerHTML = panelsHtml;
 
-  document.querySelector(`#panel-${BRAND_ORDER[0]}`).classList.add('on');
+  const _bp = new URLSearchParams(location.search).get('brand');
+  const _single = _bp && BRAND_ORDER.includes(_bp);
+  const _initial = _single ? _bp : BRAND_ORDER[0];
+  if (_single) document.getElementById('brandTabs').style.display = 'none';
+  document.querySelectorAll('.brand-tab').forEach(b => b.classList.remove('on'));
+  const _tb = document.querySelector(`.brand-tab[data-target="${_initial}"]`);
+  if (_tb) _tb.classList.add('on');
+  document.querySelector(`#panel-${_initial}`).classList.add('on');
 
   document.querySelectorAll('.brand-tab').forEach(btn => {
     btn.addEventListener('click', () => {
