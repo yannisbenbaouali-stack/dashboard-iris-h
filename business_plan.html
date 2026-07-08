@@ -440,7 +440,8 @@
     <div class="volet-tabs">
       <button class="volet-tab iris active" onclick="switchVolet('iris',this)"><span class="dot"></span>IRIS REP</button>
       <button class="volet-tab bym" onclick="switchVolet('bym',this)"><span class="dot"></span>BYM Construction</button>
-      <button class="volet-tab arristo" onclick="switchVolet('arristo',this)"><span class="dot"></span>Urban Rise et ARRISTO</button>
+      <button class="volet-tab arristo" onclick="switchVolet('urbanrise',this)"><span class="dot"></span>Urban Rise</button>
+      <button class="volet-tab arristo" onclick="switchVolet('arristo',this)"><span class="dot"></span>ARRISTO</button>
     </div>
 
     <!-- VOLET IRIS REP -->
@@ -492,11 +493,20 @@
     </div>
 
     <!-- VOLET URBAN RISE / ARRISTO -->
-    <div class="volet-section" id="volet-arristo">
-      <div class="docgroup-h">Urban Rise et ARRISTO, a cadrer</div>
+    <div class="volet-section" id="volet-urbanrise">
+      <div class="docgroup-h">Urban Rise, a cadrer</div>
       <div class="docgrid">
-        <button class="docbtn soon" onclick="alert('Premier livrable a produire avant tout autre document Urban Rise et ARRISTO. Demander a Claude une note de cadrage en 5 questions structurantes.')">Cadrage strategique prealable<span class="tag">a produire</span></button>
-        <button class="docbtn soon" onclick="alert('A demarrer apres cadrage du book Urban Rise et ARRISTO')">Book Urban Rise et ARRISTO<span class="tag">a produire</span></button>
+        <button class="docbtn soon" onclick="alert('Premier livrable a produire avant tout autre document Urban Rise. Demander a Claude une note de cadrage en 5 questions structurantes.')">Cadrage strategique prealable<span class="tag">a produire</span></button>
+        <button class="docbtn soon" onclick="alert('A demarrer apres cadrage du book Urban Rise')">Book Urban Rise<span class="tag">a produire</span></button>
+        <button class="docbtn soon" onclick="alert('Montage Denormandie sur les 4 communes du Loiret, SCI par projet, sortie VIR.')">Montage Denormandie Loiret<span class="tag">a produire</span></button>
+        <button class="docbtn soon" onclick="alert('Le prompt du plan de communication est dans la conversation Claude.')">Plan de communication<span class="tag">a produire</span></button>
+      </div>
+    </div>
+    <div class="volet-section" id="volet-arristo">
+      <div class="docgroup-h">ARRISTO, a cadrer</div>
+      <div class="docgrid">
+        <button class="docbtn soon" onclick="alert('Premier livrable a produire avant tout autre document ARRISTO. Demander a Claude une note de cadrage du reseau professionnel.')">Cadrage reseau prealable<span class="tag">a produire</span></button>
+        <button class="docbtn soon" onclick="alert('Charte et conditions d adhesion au reseau ARRISTO')">Charte reseau et adhesion<span class="tag">a produire</span></button>
         <button class="docbtn soon" onclick="alert('Le prompt du plan de communication est dans la conversation Claude.')">Plan de communication<span class="tag">a produire</span></button>
       </div>
     </div>
@@ -507,7 +517,8 @@
     <div class="volet-tabs" id="process-volet-tabs">
       <button class="volet-tab bym active" onclick="switchProcessVolet('BYM',this)"><span class="dot"></span>BYM Construction</button>
       <button class="volet-tab iris" onclick="switchProcessVolet('IRIS REP',this)"><span class="dot"></span>IRIS REP</button>
-      <button class="volet-tab arristo" onclick="switchProcessVolet('Urban Rise',this)"><span class="dot"></span>Urban Rise &amp; ARRISTO</button>
+      <button class="volet-tab arristo" onclick="switchProcessVolet('Urban Rise',this)"><span class="dot"></span>Urban Rise</button>
+      <button class="volet-tab arristo" onclick="switchProcessVolet('ARRISTO',this)"><span class="dot"></span>ARRISTO</button>
     </div>
     <div id="process-content">
       <div class="process-empty">Chargement du process&hellip;</div>
@@ -664,7 +675,7 @@ async function openDocById(id) {
   const volet = params.get('volet');
   if (mode === 'process') {
     switchMode('process');
-    const pmap = { iris: 'IRIS REP', bym: 'BYM', arristo: 'Urban Rise' };
+    const pmap = { iris: 'IRIS REP', bym: 'BYM', urbanrise: 'Urban Rise', arristo: 'ARRISTO' };
     if (volet && pmap[volet]) { currentProcessEntite = pmap[volet]; loadProcess(pmap[volet]); }
   } else if (mode === 'bp') {
     switchMode('bp');
