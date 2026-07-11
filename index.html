@@ -253,6 +253,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'electricite')"><span class="nav-dot"></span><span>Électricité</span><span class="nav-cnt" id="nav-electricite-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'pack')"><span class="nav-dot"></span><span>Pack chaudière</span></button>
       <button class="nav-item" onclick="switchTab(this,'finance')"><span class="nav-dot"></span><span>Finance</span></button>
+      <button class="nav-item" onclick="switchTab(this,'compta')"><span class="nav-dot"></span><span>Comptabilité</span><span class="nav-cnt" id="nav-compta-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
       <button class="nav-item" style="display:none" onclick="switchTab(this,'histoire')"><span class="nav-dot"></span><span>Histoire</span><span class="nav-cnt" id="nav-histoire-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'location')"><span class="nav-dot"></span><span>Location</span><span class="nav-cnt" id="nav-location-cnt">0</span></button>
       <button class="nav-item" style="display:none" onclick="switchTab(this,'memoire')"><span class="nav-dot"></span><span>Mémoire</span></button>
@@ -434,6 +435,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div class="kpis" id="fin-kpis"></div>
         <div class="fin-nav" id="fin-nav"></div>
         <div id="fin-sections"></div>
+      </div>
+
+      <!-- COMPTA -->
+      <div class="tab" id="tab-compta">
+        <div class="kpis" id="compta-kpis"></div>
+        <div id="compta-body"></div>
       </div>
 
       <!-- CRM -->
@@ -858,6 +865,7 @@ async function loadAll(){
   data.taches=taches;data.taches_v2=taches_v2;data.rec_suivi=rec_suivi;data.deals=deals;
   data.chantiers=chantiers;data.tresorerie=tresorerie;data.fragments=fragments;data.bible=bible;data.skills=skills;data.prospects=prospects;data.rapport_hebdo=rapport_hebdo;data.rapports_rediges=rapports_rediges;data.vilmar=vilmar;data.mandats=mandats;data.partenaires=partenaires;data.vitrines=vitrines;data.vitrines=vitrines;
   data.h_bible=h_bible;data.h_persos=h_persos;data.h_chap=h_chap;data.h_indices=h_indices;data.documents=documents;data.candidats=candidats;data.locColocs=locColocs;data.locChambres=locChambres;data.partColoc=partColoc;data.chantier_budget=chantier_budget;data.deal_interets=deal_interets;data.metiers=metiers;data.prospect_contacts=prospect_contacts;
+  try{data.factures=await supa('factures','order=created_at.desc')}catch(e){data.factures=[]}
   data.pcContactsById={};
   {const _pcCids=[...new Set((prospect_contacts||[]).map(pc=>pc.contact_id).filter(Boolean))];if(_pcCids.length){try{const _cs=await supa('contacts',`id=in.(${_pcCids.join(',')})&select=id,prenom,nom`);(_cs||[]).forEach(c=>{data.pcContactsById[c.id]=c;});}catch(e){}}}
   try{localStorage.setItem('iris_h_cache',JSON.stringify({data:{...data,contacts:[]},ts:Date.now()}))}catch(e){}
@@ -1312,7 +1320,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',bourgogne:'Bourgogne · 72 / 78 rue de Bourgogne, Orléans',deals:'PROJETS',prospects:'PROSPECTS',dettes:'Dettes croisées · CB / YB',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',pack:'Pack chaudière ENGIE · Procédure Junior',location:'Location · Candidats coloc Orléans',references:'Références et opportunités',suivichantier:'Suivi chantier'};
+  const titles={todo:'Todo',bourgogne:'Bourgogne · 72 / 78 rue de Bourgogne, Orléans',deals:'PROJETS',prospects:'PROSPECTS',dettes:'Dettes croisées · CB / YB',finance:'Finance',compta:'Comptabilité · audit et pièces',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',pack:'Pack chaudière ENGIE · Procédure Junior',location:'Location · Candidats coloc Orléans',references:'Références et opportunités',suivichantier:'Suivi chantier'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
@@ -1320,7 +1328,7 @@ function switchTab(btn,tab){
 }
 
 function renderCurrentTab(){
-  const m={todo:renderTodo,bourgogne:renderBourgogne,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,documents:renderDocuments,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct,charte:()=>{},location:renderLocation,references:renderReferences,suivichantier:renderSuiviChantier};
+  const m={todo:renderTodo,bourgogne:renderBourgogne,deals:renderDeals,prospects:renderProspects,finance:renderFinance,compta:renderCompta,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,documents:renderDocuments,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct,charte:()=>{},location:renderLocation,references:renderReferences,suivichantier:renderSuiviChantier};
   if(m[currentTab])m[currentTab]();
 }
 
@@ -2384,6 +2392,41 @@ async function saveProspectNote(){
 // ════════════════════════════════════════
 // FINANCE
 // ════════════════════════════════════════
+function renderCompta(){
+  const tr=data.tresorerie||[]; const fa=data.factures||[];
+  const num=v=>parseFloat(v)||0;
+  const tIn=tr.filter(r=>r.type==='entrant').reduce((a,r)=>a+num(r.montant),0);
+  const tOut=tr.filter(r=>r.type==='sortant').reduce((a,r)=>a+num(r.montant),0);
+  const net=tIn-tOut;
+  const sansJust=tr.filter(r=>!r.justificatif_drive_url);
+  const today=new Date().toISOString().slice(0,10);
+  const retard=fa.filter(f=>f.statut!=='paye' && f.date_echeance && f.date_echeance<today);
+  const nonRappr=tr.filter(r=>r.statut_rapprochement && r.statut_rapprochement!=='rapproche');
+  const nc=document.getElementById('nav-compta-cnt'); if(nc)nc.textContent=sansJust.length+retard.length;
+  document.getElementById('compta-kpis').innerHTML=`
+    <div class="kpi green"><div class="kpi-label">Entrant</div><div class="kpi-val">${fmt(tIn)}</div></div>
+    <div class="kpi red"><div class="kpi-label">Sortant</div><div class="kpi-val">${fmt(tOut)}</div></div>
+    <div class="kpi ${net>=0?'green':'red'}"><div class="kpi-label">Net</div><div class="kpi-val">${net>=0?'+':''}${fmt(Math.abs(net))}</div></div>
+    <div class="kpi ${sansJust.length?'red':''}"><div class="kpi-label">Sans justificatif</div><div class="kpi-val">${sansJust.length}</div></div>`;
+  const thS='font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;padding:6px 0;border-bottom:1px solid var(--border)';
+  const tdS='padding:8px 0;font-size:13px;border-bottom:1px solid var(--bg)';
+  const cats={};
+  tr.filter(r=>r.type==='sortant').forEach(r=>{const c=r.categorie||'Non catégorisé';cats[c]=(cats[c]||0)+num(r.montant)});
+  const catRows=Object.entries(cats).sort((a,b)=>b[1]-a[1]);
+  let html='';
+  html+=`<div class="tcard"><div class="tcard-hdr"><span class="tcard-title">Dépenses par catégorie</span></div>`;
+  html+= catRows.length?`<table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left;${thS}">Catégorie</th><th style="text-align:right;${thS}">Montant</th></tr></thead><tbody>${catRows.map(([c,m])=>`<tr><td style="${tdS}">${c}</td><td style="${tdS};text-align:right">${fmt(m)}</td></tr>`).join('')}</tbody></table>`:`<div style="color:var(--dim);font-size:13px;padding:8px 0">Aucune dépense enregistrée.</div>`;
+  html+=`</div>`;
+  html+=`<div class="tcard"><div class="tcard-hdr"><span class="tcard-title">Factures en retard</span><span class="pill" style="background:rgba(226,75,74,.2);color:#e74c3c">${retard.length}</span></div>`;
+  html+= retard.length?`<table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left;${thS}">Contrepartie</th><th style="text-align:left;${thS}">Entité</th><th style="text-align:left;${thS}">Échéance</th><th style="text-align:right;${thS}">TTC</th></tr></thead><tbody>${retard.map(f=>`<tr><td style="${tdS}">${f.contrepartie||f.numero||''}</td><td style="${tdS}">${f.entite||''}</td><td style="${tdS}">${f.date_echeance||''}</td><td style="${tdS};text-align:right">${fmt(num(f.montant_ttc))}</td></tr>`).join('')}</tbody></table>`:`<div style="color:var(--dim);font-size:13px;padding:8px 0">Aucune facture en retard.</div>`;
+  html+=`</div>`;
+  html+=`<div class="tcard"><div class="tcard-hdr"><span class="tcard-title">Flux sans justificatif</span><span class="pill" style="background:rgba(226,75,74,.2);color:#e74c3c">${sansJust.length}</span></div>`;
+  html+= sansJust.length?`<table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left;${thS}">Libellé</th><th style="text-align:left;${thS}">Entité</th><th style="text-align:left;${thS}">Date</th><th style="text-align:right;${thS}">Montant</th></tr></thead><tbody>${sansJust.slice(0,50).map(r=>`<tr><td style="${tdS}">${r.libelle||''}</td><td style="${tdS}">${r.entite||''}</td><td style="${tdS}">${r.date_operation||''}</td><td style="${tdS};text-align:right">${fmt(num(r.montant))}</td></tr>`).join('')}</tbody></table>`:`<div style="color:var(--dim);font-size:13px;padding:8px 0">Toutes les fiches ont un justificatif.</div>`;
+  html+=`</div>`;
+  html+=`<div class="tcard"><div class="tcard-hdr"><span class="tcard-title">Rapprochement bancaire</span></div><div style="font-size:13px;padding:8px 0">Non rapprochés ${nonRappr.length} sur ${tr.length} flux.</div></div>`;
+  document.getElementById('compta-body').innerHTML=html;
+}
+
 function renderFinance(){
   const entites=['BYM','Urban Rise','IRIS REP','RIR'];const labels={BYM:'BYM','Urban Rise':'Urban Rise','IRIS REP':'IRIS REP',RIR:'RIR'};
   let tIn=0,tOut=0;
