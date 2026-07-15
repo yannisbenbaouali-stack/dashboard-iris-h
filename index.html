@@ -246,9 +246,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'audit')"><span class="nav-dot"></span><span>Audit Drive</span><span class="nav-cnt" id="nav-audit-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'bourgogne')"><span class="nav-dot"></span><span>Bourgogne 72 / 78</span><span class="nav-cnt" id="nav-bourgogne-cnt">0</span></button>
       <button class="nav-item" style="display:none" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
-      <button class="nav-item" onclick="switchTab(this,'deals')"><span class="nav-dot"></span><span>Dealflow Projets</span><span class="nav-cnt" id="nav-deals-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'deals')"><span class="nav-dot"></span><span>Dealflow PROJETS</span><span class="nav-cnt" id="nav-deals-cnt">0</span></button>
       <button class="nav-item" onclick="openIrisRepConseil(this)"><span class="nav-dot"></span><span>IRIS REP · Conseil</span></button>
-      <button class="nav-item" onclick="switchTab(this,'prospects')"><span class="nav-dot"></span><span>Dealflow Prospects</span><span class="nav-cnt" id="nav-prospects-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'prospects')"><span class="nav-dot"></span><span>Dealflow PROSPECTS</span><span class="nav-cnt" id="nav-prospects-cnt">0</span></button>
       <button class="nav-item" style="display:none" onclick="switchTab(this,'documents')"><span class="nav-dot"></span><span>Documents</span><span class="nav-cnt" id="nav-documents-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'electricite')"><span class="nav-dot"></span><span>Électricité</span><span class="nav-cnt" id="nav-electricite-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'pack')"><span class="nav-dot"></span><span>Pack chaudière</span></button>
@@ -260,6 +260,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'outils')"><span class="nav-dot"></span><span>Outils</span></button>
       <button class="nav-item" onclick="switchTab(this,'references')"><span class="nav-dot"></span><span>Références et opportunités</span><span class="nav-cnt" id="nav-references-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'mandats')"><span class="nav-dot"></span><span>Registre Mandats</span><span class="nav-cnt" id="nav-mandats-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'suivichantier')"><span class="nav-dot"></span><span>Suivi chantier</span><span class="nav-cnt" id="nav-suivichantier-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'businessplan')"><span class="nav-dot"></span><span>Structuration</span></button>
       <button class="nav-item active" onclick="switchTab(this,'todo')"><span class="nav-dot"></span><span>Todo</span><span class="nav-cnt" id="nav-todo-cnt">0</span></button>
     </div>
@@ -403,6 +404,16 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div class="kpis" id="prospects-kpis"></div>
         <div style="margin-bottom:16px"><input id="prospects-search" placeholder="Rechercher (entreprise, contact, email, poste...)" oninput="renderProspects()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;width:100%;max-width:420px;background:var(--card);color:var(--text)"></div>
         <div id="prospects-body"></div>
+      </div>
+
+      <!-- SUIVI CHANTIER -->
+      <div class="tab" id="tab-suivichantier">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px">
+          <button onclick="scAddWeek(-1)" style="font-size:11px;padding:5px 10px;background:var(--card);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text)">Semaine précédente</button>
+          <button onclick="scAddWeek(1)" style="font-size:11px;padding:5px 10px;background:var(--card);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text)">Semaine suivante</button>
+          <span id="sc-status" style="font-size:11px;color:var(--dim)"></span>
+        </div>
+        <div id="suivichantier-body"></div>
       </div>
 
       <!-- DETTES CROISEES CB YB -->
@@ -1302,7 +1313,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',bourgogne:'Bourgogne · 72 / 78 rue de Bourgogne, Orléans',deals:'Dealflow Projets',prospects:'Dealflow Prospects',dettes:'Dettes croisées · CB / YB',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',pack:'Pack chaudière ENGIE · Procédure Junior',location:'Location · Candidats coloc Orléans',references:'Références et opportunités'};
+  const titles={todo:'Todo',bourgogne:'Bourgogne · 72 / 78 rue de Bourgogne, Orléans',deals:'Dealflow PROJETS',prospects:'Dealflow PROSPECTS',dettes:'Dettes croisées · CB / YB',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',pack:'Pack chaudière ENGIE · Procédure Junior',location:'Location · Candidats coloc Orléans',references:'Références et opportunités',suivichantier:'Suivi chantier · planning hebdomadaire'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
@@ -1310,7 +1321,7 @@ function switchTab(btn,tab){
 }
 
 function renderCurrentTab(){
-  const m={todo:renderTodo,bourgogne:renderBourgogne,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,documents:renderDocuments,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct,charte:()=>{},location:renderLocation,references:renderReferences};
+  const m={todo:renderTodo,bourgogne:renderBourgogne,deals:renderDeals,prospects:renderProspects,finance:renderFinance,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,documents:renderDocuments,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct,charte:()=>{},location:renderLocation,references:renderReferences,suivichantier:renderSuiviChantier};
   if(m[currentTab])m[currentTab]();
 }
 
@@ -1869,6 +1880,47 @@ function applySuffixLegendState(){
 }
 
 // ════════════════════════════════════════
+// SUIVI CHANTIER
+const SC_CHANTIERS=[{k:'BYM02',l:'72 rue de Bourgogne'},{k:'BYM08',l:'78 rue de Bourgogne'},{k:'SB_MAISON',l:'Saint-Barth Maison'},{k:'SB_LOFT',l:'Saint-Barth Loft'},{k:'NAZELLES',l:'Nazelles-Négron'}];
+let scFrom=-1,scTo=8,scRows={};
+function scMonday(d){const x=new Date(d);const g=(x.getDay()+6)%7;x.setDate(x.getDate()-g);x.setHours(12,0,0,0);return x;}
+function scIso(d){return d.toISOString().slice(0,10);}
+function scLabel(d){const e=new Date(d);e.setDate(e.getDate()+6);const f=x=>String(x.getDate()).padStart(2,'0')+'/'+String(x.getMonth()+1).padStart(2,'0');const t=new Date(d.getFullYear(),0,1);const w=Math.ceil((((d-t)/86400000)+t.getDay()+1)/7);return {w:'S'+w,d:f(d)+' au '+f(e)};}
+function scAddWeek(n){if(n<0)scFrom--;else scTo++;renderSuiviChantier();}
+async function scSave(ch,sem,el){
+  const v=el.innerText.trim();
+  if(!cfg)return;
+  document.getElementById('sc-status').textContent='Enregistrement...';
+  try{
+    await fetch(`${cfg.url}/rest/v1/suivi_chantier?on_conflict=chantier,semaine`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({chantier:ch,semaine:sem,contenu:v,updated_at:new Date().toISOString()})});
+    scRows[ch+'|'+sem]=v;
+    document.getElementById('sc-status').textContent='Enregistré '+new Date().toLocaleTimeString('fr-FR').slice(0,5);
+  }catch(e){document.getElementById('sc-status').textContent='Erreur enregistrement';}
+}
+async function renderSuiviChantier(){
+  const b=document.getElementById('suivichantier-body');if(!b)return;
+  if(cfg){try{
+    const r=await fetch(`${cfg.url}/rest/v1/suivi_chantier?select=chantier,semaine,contenu&limit=2000`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`}});
+    const j=await r.json();scRows={};(Array.isArray(j)?j:[]).forEach(x=>scRows[x.chantier+'|'+x.semaine]=x.contenu||'');
+  }catch(e){}}
+  const m0=scMonday(new Date());
+  let h='<div style="overflow:auto;border:1px solid var(--border);border-radius:10px;background:var(--card)"><table style="width:100%;border-collapse:collapse;font-size:12px;min-width:1000px">';
+  h+='<thead><tr style="background:var(--bg)"><th style="position:sticky;left:0;background:var(--bg);text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--dim);width:120px">Semaine</th>';
+  SC_CHANTIERS.forEach(c=>{h+=`<th style="text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);font-size:11px;color:var(--text)">${c.l}</th>`;});
+  h+='</tr></thead><tbody>';
+  let n=0;
+  for(let i=scFrom;i<=scTo;i++){
+    const d=new Date(m0);d.setDate(d.getDate()+i*7);const iso=scIso(d);const lb=scLabel(d);
+    const cur=i===0;
+    h+=`<tr${cur?' style="background:rgba(91,155,213,0.08)"':''}><td style="position:sticky;left:0;background:${cur?'#2b3a52':'var(--bg)'};padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top"><div style="font-weight:700">${lb.w}</div><div style="font-size:10px;color:var(--dim)">${lb.d}</div></td>`;
+    SC_CHANTIERS.forEach(c=>{const v=scRows[c.k+'|'+iso]||'';if(v)n++;h+=`<td contenteditable="true" onblur="scSave('${c.k}','${iso}',this)" style="padding:8px 10px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);vertical-align:top;min-width:180px;outline:none;white-space:pre-wrap">${v.replace(/</g,'&lt;')}</td>`;});
+    h+='</tr>';
+  }
+  h+='</tbody></table></div>';
+  b.innerHTML=h;
+  const el=document.getElementById('nav-suivichantier-cnt');if(el)el.textContent=n;
+}
+
 // DEALFLOW PROSPECTS
 // ════════════════════════════════════════
 let prospectsFilter='all';
