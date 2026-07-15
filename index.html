@@ -1893,15 +1893,71 @@ async function scSave(ch,sem,el){
   document.getElementById('sc-status').textContent='Enregistrement...';
   try{
     await fetch(`${cfg.url}/rest/v1/suivi_chantier?on_conflict=chantier,semaine`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({chantier:ch,semaine:sem,contenu:v,updated_at:new Date().toISOString()})});
-    scRows[ch+'|'+sem]=v;
+    const k=ch+'|'+sem;scRows[k]=scRows[k]||{t:'',m:[]};scRows[k].t=v;
     document.getElementById('sc-status').textContent='Enregistré '+new Date().toLocaleTimeString('fr-FR').slice(0,5);
   }catch(e){document.getElementById('sc-status').textContent='Erreur enregistrement';}
+}
+function scOpenMedia(ch,sem){
+  const o=scRows[ch+'|'+sem]||{t:'',m:[]};const lbl=(SC_CHANTIERS.find(x=>x.k===ch)||{}).l||ch;
+  let ov=document.getElementById('sc-ov');if(ov)ov.remove();
+  ov=document.createElement('div');ov.id='sc-ov';
+  ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px';
+  ov.onclick=e=>{if(e.target===ov)ov.remove();};
+  let g='';
+  (o.m||[]).forEach((m,i)=>{
+    g+= m.type==='video'
+      ? `<div style="position:relative"><video src="${m.url}" controls style="width:100%;border-radius:6px;background:#000"></video><span onclick="scDelMedia('${ch}','${sem}',${i})" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.6);color:#fff;border-radius:4px;padding:1px 5px;font-size:11px;cursor:pointer">✕</span></div>`
+      : `<div style="position:relative"><a href="${m.url}" target="_blank"><img src="${m.url}" style="width:100%;border-radius:6px;display:block"></a><span onclick="scDelMedia('${ch}','${sem}',${i})" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.6);color:#fff;border-radius:4px;padding:1px 5px;font-size:11px;cursor:pointer">✕</span></div>`;
+  });
+  if(!g)g='<div style="color:var(--dim);font-size:12px;grid-column:1/-1">Aucun média pour cette semaine.</div>';
+  ov.innerHTML=`<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;max-width:900px;width:100%;max-height:86vh;overflow:auto;padding:16px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div style="font-weight:700;font-size:13px;color:var(--text)">${lbl} · semaine du ${sem.split('-').reverse().join('/')}</div>
+      <span onclick="document.getElementById('sc-ov').remove()" style="cursor:pointer;color:var(--dim)">✕</span>
+    </div>
+    <input type="file" accept="image/*,video/*" multiple onchange="scUploadMedia('${ch}','${sem}',this.files)" style="font-size:11px;margin-bottom:12px;color:var(--text)">
+    <div id="sc-ov-status" style="font-size:11px;color:var(--dim);margin-bottom:8px"></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">${g}</div>
+  </div>`;
+  document.body.appendChild(ov);
+}
+async function scPutMedias(ch,sem,arr){
+  await fetch(`${cfg.url}/rest/v1/suivi_chantier?on_conflict=chantier,semaine`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({chantier:ch,semaine:sem,medias:arr,updated_at:new Date().toISOString()})});
+  const k=ch+'|'+sem;scRows[k]=scRows[k]||{t:'',m:[]};scRows[k].m=arr;
+}
+async function scUploadMedia(ch,sem,files){
+  if(!files||!files.length||!cfg)return;
+  const st=document.getElementById('sc-ov-status');
+  const o=scRows[ch+'|'+sem]||{t:'',m:[]};const arr=(o.m||[]).slice();
+  const list=Array.from(files);
+  for(let i=0;i<list.length;i++){
+    let f=list[i];const isVid=(f.type||'').startsWith('video');
+    if(st)st.textContent=`Upload ${i+1}/${list.length}...`;
+    if(!isVid){try{f=await refPrepImage(f);}catch(e){}}
+    const ct=f.type||'application/octet-stream';
+    const ext=(f.name.split('.').pop()||(isVid?'mp4':'jpg')).toLowerCase().replace(/[^a-z0-9]/g,'');
+    const path=`${ch}/${sem}/${Date.now()}-${i}.${ext}`;
+    try{
+      const up=await fetch(`${cfg.url}/storage/v1/object/suivi-chantier/${path}`,{method:'POST',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':ct,'x-upsert':'true'},body:f});
+      if(!up.ok)throw new Error('HTTP '+up.status);
+      arr.push({url:`${cfg.url}/storage/v1/object/public/suivi-chantier/${path}`,type:isVid?'video':'image',name:f.name,date:new Date().toISOString()});
+    }catch(e){if(st)st.textContent='Erreur upload '+f.name;}
+  }
+  await scPutMedias(ch,sem,arr);
+  scOpenMedia(ch,sem);renderSuiviChantier();
+}
+async function scDelMedia(ch,sem,i){
+  const o=scRows[ch+'|'+sem]||{t:'',m:[]};const arr=(o.m||[]).slice();const m=arr[i];if(!m)return;
+  arr.splice(i,1);
+  try{const p=m.url.split('/public/suivi-chantier/')[1];if(p)await fetch(`${cfg.url}/storage/v1/object/suivi-chantier/${p}`,{method:'DELETE',headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`}});}catch(e){}
+  await scPutMedias(ch,sem,arr);
+  scOpenMedia(ch,sem);renderSuiviChantier();
 }
 async function renderSuiviChantier(){
   const b=document.getElementById('suivichantier-body');if(!b)return;
   if(cfg){try{
-    const r=await fetch(`${cfg.url}/rest/v1/suivi_chantier?select=chantier,semaine,contenu&limit=2000`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`}});
-    const j=await r.json();scRows={};(Array.isArray(j)?j:[]).forEach(x=>scRows[x.chantier+'|'+x.semaine]=x.contenu||'');
+    const r=await fetch(`${cfg.url}/rest/v1/suivi_chantier?select=chantier,semaine,contenu,medias&limit=2000`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`}});
+    const j=await r.json();scRows={};(Array.isArray(j)?j:[]).forEach(x=>scRows[x.chantier+'|'+x.semaine]={t:x.contenu||'',m:Array.isArray(x.medias)?x.medias:[]});
   }catch(e){}}
   const m0=scMonday(new Date(SC_START+'T12:00:00'));const mNow=scMonday(new Date());const nWk=Math.round((mNow-m0)/604800000)+scTo;
   let h='<div style="overflow:auto;border:1px solid var(--border);border-radius:10px;background:var(--card)"><table style="width:100%;border-collapse:collapse;font-size:11px;min-width:1000px;line-height:1.25">';
@@ -1913,7 +1969,7 @@ async function renderSuiviChantier(){
     const d=new Date(m0);d.setDate(d.getDate()+i*7);const iso=scIso(d);const lb=scLabel(d);
     const cur=iso===scIso(mNow);
     h+=`<tr${cur?' style="background:rgba(91,155,213,0.08)"':''}><td style="position:sticky;left:0;background:${cur?'#2b3a52':'var(--bg)'};padding:3px 8px;border-bottom:1px solid var(--border);vertical-align:top;white-space:nowrap"><span style="font-weight:700;font-size:10px">${lb.w}</span> <span style="font-size:9px;color:var(--dim)">${lb.d}</span></td>`;
-    SC_CHANTIERS.forEach(c=>{const v=scRows[c.k+'|'+iso]||'';if(v)n++;h+=`<td contenteditable="true" onblur="scSave('${c.k}','${iso}',this)" style="padding:3px 8px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);vertical-align:top;min-width:160px;outline:none;white-space:pre-wrap;font-size:11px">${v.replace(/</g,'&lt;')}</td>`;});
+    SC_CHANTIERS.forEach(c=>{const o=scRows[c.k+'|'+iso]||{t:'',m:[]};const v=o.t||'';const nm=(o.m||[]).length;if(v)n++;h+=`<td style="padding:3px 8px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);vertical-align:top;min-width:160px;font-size:11px"><span contenteditable="true" onblur="scSave('${c.k}','${iso}',this)" style="outline:none;white-space:pre-wrap;display:inline">${v.replace(/</g,'&lt;')}</span><span onclick="scOpenMedia('${c.k}','${iso}')" title="Photos et vidéos" style="cursor:pointer;margin-left:5px;font-size:10px;opacity:${nm?1:.35};user-select:none">📷${nm?'<b style=\'font-size:9px\'>'+nm+'</b>':''}</span></td>`;});
     h+='</tr>';
   }
   h+='</tbody></table></div>';
