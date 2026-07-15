@@ -1312,7 +1312,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',bourgogne:'Bourgogne · 72 / 78 rue de Bourgogne, Orléans',deals:'PROJETS',prospects:'PROSPECTS',dettes:'Dettes croisées · CB / YB',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',pack:'Pack chaudière ENGIE · Procédure Junior',location:'Location · Candidats coloc Orléans',references:'Références et opportunités',suivichantier:'Suivi chantier · planning hebdomadaire'};
+  const titles={todo:'Todo',bourgogne:'Bourgogne · 72 / 78 rue de Bourgogne, Orléans',deals:'PROJETS',prospects:'PROSPECTS',dettes:'Dettes croisées · CB / YB',finance:'Finance',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',pack:'Pack chaudière ENGIE · Procédure Junior',location:'Location · Candidats coloc Orléans',references:'Références et opportunités',suivichantier:'Suivi chantier'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
