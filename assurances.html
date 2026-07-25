@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Assurances · IRIS H / BYM</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0e1f4d;--navy2:#162a5c;--navy3:#1d3570;
+  --blue:#5B9BD5;--blue2:#7AB3E0;--blue-bg:rgba(91,155,213,0.08);
+  --bg:#f4f6fa;--card:#fff;--border:#e2e6ef;
+  --text:#1a1d2b;--dim:#7a7f8e;--dim2:#b0b4c0;
+  --green:#2ecc71;--green-bg:#eafaf1;--red:#e74c3c;--red-bg:#fdecea;
+  --orange:#f39c12;--orange-bg:#fef5e7;
+  --font:'Nunito Sans',sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);padding:0 0 60px}
+.top{background:var(--navy);padding:18px 26px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.top h1{color:#fff;font-size:1.15rem;font-weight:700}
+.top h1 span{color:var(--blue);font-weight:400}
+.back{color:var(--dim2);font-size:12px;text-decoration:none;border:1px solid var(--navy3);padding:6px 12px;border-radius:6px}
+.back:hover{color:#fff;border-color:var(--blue)}
+.wrap{padding:22px 26px}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.fbtn{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-family:var(--font);font-size:11px;color:var(--dim);cursor:pointer}
+.fbtn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn{background:var(--blue);border:none;border-radius:6px;padding:7px 14px;font-family:var(--font);font-size:12px;font-weight:600;color:#fff;cursor:pointer}
+.btn:hover{background:var(--blue2)}
+.kpis{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;min-width:150px}
+.kpi-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
+.kpi-val{font-size:1.35rem;font-weight:700;margin-top:4px}
+.tcard{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.tcard-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.tcard-title{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--dim)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#eef1f7;text-align:left;padding:9px 10px;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);font-weight:700;white-space:nowrap}
+td{padding:7px 10px;border-top:1px solid var(--border);vertical-align:middle}
+tr:hover td{background:var(--blue-bg)}
+td[contenteditable]{outline:none;min-width:70px}
+td[contenteditable]:focus{background:#fffbe6;box-shadow:inset 0 0 0 2px var(--blue)}
+td.empty-cell:after{content:'—';color:var(--dim2)}
+.pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600}
+.p-iris{background:#fdf6e3;color:#a3822a}
+.p-bym{background:var(--blue-bg);color:#3d7ab0}
+.p-oblig{background:var(--red-bg);color:var(--red)}
+.p-opt{background:#f1f3f7;color:var(--dim)}
+select.st{border:1px solid var(--border);border-radius:5px;padding:3px 6px;font-family:var(--font);font-size:11px;background:var(--card);color:var(--text);outline:none}
+.del{border:none;background:none;color:var(--dim2);cursor:pointer;font-size:14px}
+.del:hover{color:var(--red)}
+.note{font-size:11px;color:var(--dim);margin-top:12px;line-height:1.7}
+#toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;font-size:12px;opacity:0;transition:.2s;pointer-events:none}
+#toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="top">
+  <a class="back" href="index.html">← Dashboard</a>
+  <h1>Assurances <span>· IRIS H / BYM Construction</span></h1>
+</div>
+
+<div class="wrap">
+  <div class="kpis" id="kpis"></div>
+
+  <div class="bar">
+    <button class="fbtn on" data-e="all" onclick="setF(this,'all')">Toutes</button>
+    <button class="fbtn" data-e="IRIS H" onclick="setF(this,'IRIS H')">IRIS H</button>
+    <button class="fbtn" data-e="BYM" onclick="setF(this,'BYM')">BYM</button>
+    <button class="btn" style="margin-left:auto" onclick="addRow()">+ Ligne</button>
+  </div>
+
+  <div class="tcard">
+    <div class="tcard-hdr"><span class="tcard-title" id="cnt"></span></div>
+    <div id="body"><div style="padding:30px;text-align:center;color:var(--dim);font-size:12px">Chargement...</div></div>
+  </div>
+
+  <div class="note">
+    Cliquer une cellule pour éditer, sortir du champ enregistre.<br>
+    Obligatoire : décennale, RC pro et exploitation BYM, flotte auto. Les autres sont à arbitrer.
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SUPA_URL='https://kkznkuwoxoxvapejzytv.supabase.co';
+const SUPA_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtrem5rdXdveG94dmFwZWp6eXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNTQxMTksImV4cCI6MjA4ODkzMDExOX0.Nb7N2FpKvm3NMzS6Nhx4qWoqHZW3-Es3JNPgHxkOWcE';
+const H={'apikey':SUPA_ANON,'Authorization':'Bearer '+SUPA_ANON,'Content-Type':'application/json'};
+let rows=[],fE='all';
+
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1600)}
+function esc(s){return(s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function num(v){if(v==null||v==='')return'';return Number(v).toLocaleString('fr-FR')}
+
+async function load(){
+  try{
+    const r=await fetch(SUPA_URL+'/rest/v1/assurances?order=entite.asc,type_assurance.asc&limit=500',{headers:H});
+    rows=await r.json();
+  }catch(e){rows=[]}
+  render();
+}
+
+function setF(btn,e){fE=e;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');render()}
+
+function render(){
+  const src=fE==='all'?rows:rows.filter(r=>r.entite===fE);
+  const total=src.reduce((s,r)=>s+(Number(r.prime_annuelle)||0),0);
+  const souscrites=src.filter(r=>r.statut==='souscrit').length;
+  const manquantes=src.filter(r=>r.obligatoire&&r.statut!=='souscrit').length;
+
+  document.getElementById('kpis').innerHTML=`
+    <div class="kpi"><div class="kpi-label">Prime annuelle</div><div class="kpi-val">${num(total)||0} €</div></div>
+    <div class="kpi"><div class="kpi-label">Souscrites</div><div class="kpi-val" style="color:var(--green)">${souscrites} / ${src.length}</div></div>
+    <div class="kpi"><div class="kpi-label">Obligatoires manquantes</div><div class="kpi-val" style="color:${manquantes?'var(--red)':'var(--green)'}">${manquantes}</div></div>`;
+
+  document.getElementById('cnt').textContent=src.length+' lignes';
+
+  const eB=e=>`<span class="pill ${e==='BYM'?'p-bym':'p-iris'}">${esc(e||'')}</span>`;
+  const statuts=['a_comparer','devis_recu','en_negociation','souscrit','ecarte'];
+  const sLab={a_comparer:'À comparer',devis_recu:'Devis reçu',en_negociation:'Négociation',souscrit:'Souscrit',ecarte:'Écarté'};
+  const ed=(r,f,v,fmt)=>`<td contenteditable class="${v?'':'empty-cell'}" data-id="${r.id}" data-f="${f}" onblur="save(this)">${fmt?fmt(v):esc(v)}</td>`;
+
+  document.getElementById('body').innerHTML=`<table><thead><tr>
+    <th>Entité</th><th>Type</th><th></th><th>Assureur</th><th>Garanties</th>
+    <th>Plafond €</th><th>Franchise €</th><th>Prime an €</th><th>Échéance</th><th>Statut</th><th>Commentaire</th><th></th>
+  </tr></thead><tbody>
+  ${src.map(r=>`<tr>
+    <td>${eB(r.entite)}</td>
+    ${ed(r,'type_assurance',r.type_assurance)}
+    <td><span class="pill ${r.obligatoire?'p-oblig':'p-opt'}" style="cursor:pointer" onclick="tog('${r.id}')">${r.obligatoire?'Obligatoire':'Optionnel'}</span></td>
+    ${ed(r,'assureur',r.assureur)}
+    ${ed(r,'garanties',r.garanties)}
+    ${ed(r,'plafond',r.plafond,num)}
+    ${ed(r,'franchise',r.franchise,num)}
+    ${ed(r,'prime_annuelle',r.prime_annuelle,num)}
+    ${ed(r,'echeance',r.echeance)}
+    <td><select class="st" onchange="setSt('${r.id}',this.value)">${statuts.map(s=>`<option value="${s}"${r.statut===s?' selected':''}>${sLab[s]}</option>`).join('')}</select></td>
+    ${ed(r,'commentaire',r.commentaire)}
+    <td><button class="del" onclick="del('${r.id}')">✕</button></td>
+  </tr>`).join('')}
+  </tbody></table>`;
+}
+
+async function patch(id,body){
+  await fetch(SUPA_URL+'/rest/v1/assurances?id=eq.'+id,{method:'PATCH',headers:{...H,'Prefer':'return=minimal'},body:JSON.stringify({...body,updated_at:new Date().toISOString()})});
+  const r=rows.find(x=>x.id===id);if(r)Object.assign(r,body);
+}
+
+async function save(td){
+  const id=td.dataset.id,f=td.dataset.f;
+  let v=td.textContent.trim();
+  if(['plafond','franchise','prime_annuelle'].includes(f)){v=v.replace(/[^\d.,-]/g,'').replace(/\s/g,'').replace(',','.');v=v===''?null:Number(v)}
+  else if(f==='echeance'){v=v===''?null:v}
+  else v=v===''?null:v;
+  const r=rows.find(x=>x.id===id);
+  if(r&&String(r[f]??'')===String(v??''))return;
+  await patch(id,{[f]:v});
+  toast('Enregistré');
+  render();
+}
+
+async function tog(id){const r=rows.find(x=>x.id===id);if(!r)return;await patch(id,{obligatoire:!r.obligatoire});render()}
+async function setSt(id,v){await patch(id,{statut:v});toast('Statut mis à jour');render()}
+
+async function del(id){
+  if(!confirm('Supprimer cette ligne ?'))return;
+  await fetch(SUPA_URL+'/rest/v1/assurances?id=eq.'+id,{method:'DELETE',headers:H});
+  rows=rows.filter(x=>x.id!==id);render();toast('Supprimé');
+}
+
+async function addRow(){
+  const ent=fE==='all'?'IRIS H':fE;
+  const r=await fetch(SUPA_URL+'/rest/v1/assurances',{method:'POST',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify({entite:ent,type_assurance:'Nouvelle ligne',statut:'a_comparer'})});
+  const d=await r.json();
+  if(d&&d[0])rows.push(d[0]);
+  render();
+}
+
+load();
+</script>
+</body>
+</html>
