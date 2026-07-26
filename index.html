@@ -2441,12 +2441,44 @@ function renderFinance(){
     <div class="kpi ${net>=0?'green':'red'}"><div class="kpi-label">Tréso nette</div><div class="kpi-val">${net>=0?'+':''}${fmt(Math.abs(net))}</div></div>
     <div class="kpi"><div class="kpi-label">Budget moyen</div><div class="kpi-val">${avgPct}%</div><div class="kpi-sub">${ch.length} chantier${ch.length>1?'s':''}</div></div>`;
 
-  const sections=['budget','treso','synth','vilmar'];const sLabels={budget:'Budget Chantiers',treso:'Trésorerie',synth:'Synthèse',vilmar:'Vilmar'};
+  const sections=['comptable','budget','treso','synth','vilmar'];const sLabels={comptable:'Comptable',budget:'Budget Chantiers',treso:'Trésorerie',synth:'Synthèse',vilmar:'Vilmar'};
   document.getElementById('fin-nav').innerHTML=sections.map((s,i)=>`<button class="fin-nav-btn${i===0?' active':''}" onclick="document.querySelectorAll('.fin-section').forEach(x=>x.classList.remove('active'));document.getElementById('fin-${s}').classList.add('active');document.querySelectorAll('.fin-nav-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${sLabels[s]}</button>`).join('');
 
   const eBadge=e=>{const m={BYM:'p-bym','Urban Rise':'p-ur','IRIS REP':'p-iris',RIR:'p-rir'};const l={BYM:'BYM','Urban Rise':'Urban Rise','IRIS REP':'IRIS REP',RIR:'RIR'};return`<span class="pill ${m[e]||''}">${l[e]||e}</span>`};
 
-  let html=`<div class="fin-section active" id="fin-budget"></div>`;
+  const cardS='background:var(--card,#fff);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px';
+  const hS='font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:8px';
+  const liS='font-size:13px;padding:4px 0;border-bottom:1px solid var(--bg)';
+  let html=`<div class="fin-section active" id="fin-comptable">
+    <div style="${cardS}"><div style="${hS}">BYM Construction</div>
+      <div style="${liS}">TVA, déclaration mensuelle au réel. CA 2026 estimé sous un million.</div>
+      <div style="${liS}">IS, comptes et liasse fiscale, échéance mai 2027.</div>
+      <div style="${liS}">Logiciel de vente et facturation, à définir par le comptable.</div>
+    </div>
+    <div style="${cardS}"><div style="${hS}">IRIS H, holding, dirigeant TNS</div>
+      <div style="${liS}">Entité juridique unique. IRIS REP est une marque. Activités maîtrise d'œuvre, agent immobilier, conseil, marchand de biens en analytique.</div>
+      <div style="${liS}">TVA réel mensuel, déclaration et paiement.</div>
+      <div style="${liS}">Retard à rattraper, comptes, liasse et TVA des exercices 2024 et 2025.</div>
+      <div style="${liS}">Marchand de biens, vigilance TVA sur marge.</div>
+    </div>
+    <div style="${cardS}"><div style="${hS}">Pièces à transmettre au comptable, IRIS H</div>
+      <div style="${liS}">Factures émises et reçues.</div>
+      <div style="${liS}">Relevés bancaires Qonto IRIS H.</div>
+      <div style="${liS}">Statuts d'IRIS H.</div>
+      <div style="${liS}">Numéro fiscal reçu par courrier, à retrouver.</div>
+      <div style="${liS}">Accès fiscal par mandat de délégation sur impots.gouv, sans partage d'identifiants.</div>
+      <div style="${liS}">Tickets, factures et notes de frais photographiés, triés par date, via ingestion.</div>
+    </div>
+    <div style="${cardS}"><div style="${hS}">Échéancier</div>
+      <div style="${liS}">Priorité, IRIS H 2024 et 2025, comptes, liasse et TVA.</div>
+      <div style="${liS}">BYM, TVA mensuelle en continu.</div>
+      <div style="${liS}">BYM, IS et liasse, mai 2027.</div>
+    </div>
+    <div style="${cardS}"><div style="${hS}">Audit bancaire</div>
+      <div style="${liS}">Compte Qonto. Connecter le connecteur Qonto pour l'audit des transactions et le tableau de bord IRIS H.</div>
+    </div>
+  </div>
+  <div class="fin-section" id="fin-budget"></div>`;
 
   html+=`<div class="fin-section" id="fin-treso"><div class="tcard"><div class="treso-row" style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px"><span></span><span>Entrant</span><span>Sortant</span><span>Net</span></div>`;
   entites.forEach(e=>{const rows=data.tresorerie.filter(t=>t.entite===e);const ein=rows.filter(r=>r.type==='entrant').reduce((a,r)=>a+r.montant,0);const eout=rows.filter(r=>r.type==='sortant').reduce((a,r)=>a+r.montant,0);const n=ein-eout;html+=`<div class="treso-row"><span class="treso-entite">${labels[e]}</span><span class="treso-in">+${fmt(ein)||'0€'}</span><span class="treso-out">${fmt(eout)||'0€'}</span><span class="treso-net" style="color:${n>=0?'var(--green)':'var(--red)'}">${n>=0?'+':''}${fmt(Math.abs(n))}</span></div>`});
