@@ -439,6 +439,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 
       <!-- COMPTA -->
       <div class="tab" id="tab-compta">
+        <div class="fin-nav" id="compta-nav"></div>
         <div class="kpis" id="compta-kpis"></div>
         <div id="compta-body"></div>
       </div>
@@ -2392,8 +2393,21 @@ async function saveProspectNote(){
 // ════════════════════════════════════════
 // FINANCE
 // ════════════════════════════════════════
+let comptaEnt='GLOBAL';
+function setComptaEnt(e){comptaEnt=e;renderCompta();}
+function comptaMatch(v){
+  if(comptaEnt==='GLOBAL')return true;
+  const s=(v||'').toString().toLowerCase();
+  if(comptaEnt==='IRIS H')return s.includes('iris h')||s==='irish';
+  if(comptaEnt==='BYM')return s.includes('bym');
+  if(comptaEnt==='GC')return s.includes('carrez')||s==='gc';
+  return true;
+}
 function renderCompta(){
-  const tr=data.tresorerie||[]; const fa=data.factures||[];
+  const ents=[['GLOBAL','GLOBAL'],['IRIS H','IRIS H'],['BYM','BYM CONSTRUCTION'],['GC','GALERIE CARREZ']];
+  const cn=document.getElementById('compta-nav');
+  if(cn)cn.innerHTML=ents.map(([k,l])=>`<button class="fin-nav-btn${comptaEnt===k?' active':''}" onclick="setComptaEnt('${k}')">${l}</button>`).join('');
+  const tr=(data.tresorerie||[]).filter(r=>comptaMatch(r.entite)); const fa=(data.factures||[]).filter(f=>comptaMatch(f.entite));
   const num=v=>parseFloat(v)||0;
   const tIn=tr.filter(r=>r.type==='entrant').reduce((a,r)=>a+num(r.montant),0);
   const tOut=tr.filter(r=>r.type==='sortant').reduce((a,r)=>a+num(r.montant),0);
