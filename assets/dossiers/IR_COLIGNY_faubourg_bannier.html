@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projet Coligny · 122 124 rue du Faubourg Bannier · Orléans</title>
+<style>
+  :root{
+    --bg:#f5f3f0;--card:#ffffff;--border:#e0ddd8;--dark:#1a1a1a;--gold:#b8860b;
+    --text:#3a3a3a;--dim:#8a857d;--line:#c0bdb8;--green:#2d8a4e;--red:#c33b3b;--amber:#d6a01b;
+    --navy:#1a2740;--font:'Avenir Next','Avenir','Helvetica Neue',sans-serif;--mono:'SF Mono',Menlo,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:var(--bg);font-family:var(--font);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.5}
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 30px 90px}
+  .kick{color:var(--gold);font-weight:700;font-size:11px;letter-spacing:.34em;text-transform:uppercase}
+  h1{color:var(--dark);font-size:30px;font-weight:700;letter-spacing:-.01em;margin:6px 0 4px}
+  .sub{color:var(--dim);font-size:14px;max-width:900px}
+  .metarow{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .chip{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--navy)}
+  .chip b{color:var(--gold)}
+  nav.anchor{position:sticky;top:0;z-index:20;background:rgba(245,243,240,.94);backdrop-filter:blur(6px);display:flex;flex-wrap:wrap;gap:6px;padding:12px 0;margin:18px 0 6px;border-bottom:1px solid var(--border)}
+  nav.anchor a{font-size:12px;font-weight:600;color:var(--navy);text-decoration:none;padding:6px 11px;border-radius:7px;border:1px solid transparent}
+  nav.anchor a:hover{background:rgba(184,134,11,.12);border-color:var(--border)}
+  section{margin-top:34px;scroll-margin-top:64px}
+  h2{font-size:17px;font-weight:700;color:var(--dark);display:flex;align-items:center;gap:9px;margin-bottom:6px}
+  h2 .n{font-family:var(--mono);font-size:12px;color:var(--gold);font-weight:700}
+  h3.sh{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:2px 0 10px}
+  .lead{font-size:14px;color:var(--text);max-width:900px;margin-bottom:14px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr}}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+  th{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);font-weight:700;background:#faf8f4}
+  td b{color:var(--navy)}
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.02em}
+  .t-encours{background:rgba(214,160,27,.15);color:#8a6a00}
+  .t-fait{background:rgba(45,138,78,.15);color:var(--green)}
+  .t-attente{background:rgba(138,133,125,.16);color:var(--dim)}
+  .t-risque{background:rgba(195,59,59,.14);color:var(--red)}
+  .phase{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+  .phase:last-child{border-bottom:none}
+  .phase .idx{flex:none;width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+  .phase.done .idx{background:var(--green)}
+  .phase.now .idx{background:var(--gold)}
+  .phase .body{flex:1}
+  .phase .body .h{font-weight:700;color:var(--dark);font-size:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .phase .body .d{font-size:13px;color:var(--text);margin-top:3px}
+  .phase .body .who{font-size:11.5px;color:var(--dim);margin-top:5px}
+  ul.steps{list-style:none}
+  ul.steps li{padding:9px 0 9px 30px;border-bottom:1px solid var(--border);position:relative;font-size:13px}
+  ul.steps li:last-child{border:none}
+  ul.steps li:before{content:'';position:absolute;left:4px;top:12px;width:13px;height:13px;border:2px solid var(--line);border-radius:4px}
+  ul.steps li.ok:before{background:var(--green);border-color:var(--green)}
+  ul.steps li b{color:var(--navy)}
+  ul.steps li .owner{font-size:11px;color:var(--gold);font-weight:700;margin-left:6px}
+  .q{padding:11px 0;border-bottom:1px solid var(--border);font-size:13px}
+  .q:last-child{border:none}
+  .q .lbl{font-weight:700;color:var(--dark)}
+  .q .own{font-size:11px;color:var(--dim);margin-top:3px}
+  .dl{display:grid;grid-template-columns:minmax(190px,240px) 1fr;gap:0}
+  .dl>div{padding:9px 12px;border-bottom:1px solid var(--border);font-size:13px}
+  .dl .k{background:#faf8f4;font-weight:700;color:var(--navy)}
+  .conf{border:1.5px solid var(--red);border-radius:12px;overflow:hidden}
+  .conf .head{background:rgba(195,59,59,.08);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .conf .head .l{font-weight:700;color:var(--red);font-size:14px}
+  .conf .head .warn{font-size:11.5px;color:var(--dim)}
+  .conf button{background:var(--red);color:#fff;border:none;border-radius:8px;padding:8px 15px;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer}
+  .conf .inner{display:none;padding:18px 20px;border-top:1px solid var(--border)}
+  .conf.open .inner{display:block}
+  .money{font-variant-numeric:tabular-nums;font-weight:700;color:var(--navy)}
+  .note{font-size:12px;color:var(--dim);font-style:italic;margin-top:8px}
+  .foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--border);font-size:11.5px;color:var(--dim)}
+  /* GANTT NOIR ET BLANC */
+  .gantt{background:#fff;border:1px solid #111;border-radius:6px;padding:16px 16px 10px;overflow-x:auto}
+  .gantt .g-title{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#111;margin-bottom:12px}
+  .g-grid{min-width:820px}
+  .g-months{display:grid;grid-template-columns:220px repeat(10,1fr);border-bottom:1.5px solid #111}
+  .g-months div{font-size:10.5px;font-weight:700;color:#111;text-align:center;padding:4px 0;border-left:1px solid #ddd}
+  .g-months div:first-child{border-left:none;text-align:left}
+  .g-row{display:grid;grid-template-columns:220px 1fr;align-items:center;border-bottom:1px solid #eee}
+  .g-row .g-lbl{font-size:11.5px;color:#111;padding:8px 8px 8px 0;font-weight:600}
+  .g-track{position:relative;height:22px;background:repeating-linear-gradient(90deg,transparent,transparent calc(10% - 1px),#e6e6e6 calc(10% - 1px),#e6e6e6 10%)}
+  .g-bar{position:absolute;top:5px;height:12px;border-radius:2px}
+  .g-bar.solid{background:#111}
+  .g-bar.hatch{background:#fff;border:1px solid #111;background-image:repeating-linear-gradient(45deg,#111,#111 1px,#fff 1px,#fff 4px)}
+  .g-bar.open{background:#fff;border:1px dashed #444}
+  .g-mile{position:absolute;top:2px;width:12px;height:12px;background:#111;transform:rotate(45deg)}
+  .g-mile.hollow{background:#fff;border:1.5px solid #111}
+  .g-legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-size:10.5px;color:#111}
+  .g-legend span{display:inline-flex;align-items:center;gap:6px}
+  .lg-sq{width:16px;height:9px;display:inline-block}
+  .lg-sq.solid{background:#111}
+  .lg-sq.hatch{background-image:repeating-linear-gradient(45deg,#111,#111 1px,#fff 1px,#fff 4px);border:1px solid #111}
+  .lg-di{width:10px;height:10px;background:#111;transform:rotate(45deg);display:inline-block}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kick">Projet · Mandat exclusif IRIS REP · GC_V_01_01</div>
+  <h1>Coligny · Faubourg Bannier</h1>
+  <div class="sub">122 124 rue du Faubourg Bannier, 45000 Orléans · Transformation de trois plateaux de bureaux R+3, R+4, R+5 en résidence étudiante, surélévation R+6 à l'étude · Acquéreur Nexity, vendeur Norma Capital</div>
+  <div class="metarow">
+    <div class="chip">Programme <b>52 lots</b></div>
+    <div class="chip">Ratio SHAB/SDP <b>0,85</b></div>
+    <div class="chip">Levier clé <b>Déficit foncier</b></div>
+    <div class="chip">Offre Norma <b>3 août 2026</b></div>
+    <div class="chip">Dépôt PC <b>1er novembre 2026</b></div>
+    <div class="chip">Acte cible <b>mai 2027</b></div>
+    <div class="chip">Maj <b>2026-07-26</b></div>
+  </div>
+
+  <nav class="anchor">
+    <a href="#synthese">Synthèse</a>
+    <a href="#roles">Rôles</a>
+    <a href="#base">Base d'infos</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#planning">Planning</a>
+    <a href="#echeancier">Échéancier</a>
+    <a href="#questions">Questions</a>
+    <a href="#taches">Tâches</a>
+    <a href="#nego">Négociation</a>
+  </nav>
+
+  <section id="synthese">
+    <h2><span class="n">01</span> Synthèse du projet</h2>
+    <div class="lead">Immeuble tertiaire de trois plateaux de bureaux détenus par la SCPI Vendôme Régions (Norma Capital), en copropriété. IRIS REP porte le mandat exclusif de vente. Nexity se positionne pour transformer les plateaux en résidence étudiante, aujourd'hui 52 lots, studios d'environ 25 m² SHAB, surface optimisable. IRIS H intervient en conseil et en maîtrise d'œuvre, pilote la négociation entre vendeur et acquéreur et le montage technique et fiscal. Le levier de réussite principal est le déficit foncier généré par les travaux.</div>
+    <div class="grid3">
+      <div class="card">
+        <div class="kick" style="letter-spacing:.2em">Double casquette IRIS H</div>
+        <p style="font-size:13px;margin-top:8px">Agent immobilier, titulaire du mandat exclusif de vente. Maître d'œuvre de la transformation. Position pivot entre Norma Capital et Nexity.</p>
+      </div>
+      <div class="card">
+        <div class="kick" style="letter-spacing:.2em">Rôle travaux BYM</div>
+        <p style="font-size:13px;margin-top:8px">BYM Construction se positionne responsable travaux ou contractant général. Périmètre à arbitrer selon le montage retenu.</p>
+      </div>
+      <div class="card">
+        <div class="kick" style="letter-spacing:.2em">Conditions de réalisation</div>
+        <p style="font-size:13px;margin-top:8px">Accord copropriété, autorisation d'urbanisme sur le changement de destination, dépôt de PC et commercialisation anticipée. PC et convocation d'AG mis en condition suspensive par Nexity.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="roles">
+    <h2><span class="n">02</span> Rôles des intervenants</h2>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table>
+        <thead><tr><th>Intervenant</th><th>Rôle</th><th>Contact</th><th>Statut</th></tr></thead>
+        <tbody>
+          <tr><td><b>IRIS H</b> · Yannis Benbaouali</td><td>Maître d'œuvre et agent immobilier. Mandat exclusif de vente, pilotage négociation et montage.</td><td>yb@irisrep.com · 06 82 27 91 90</td><td><span class="tag t-encours">Pilote</span></td></tr>
+          <tr><td><b>BYM Construction</b></td><td>Responsable travaux ou contractant général de la transformation. Périmètre à définir.</td><td>jp@bymconstruction.fr</td><td><span class="tag t-attente">À cadrer</span></td></tr>
+          <tr><td><b>Nexity</b></td><td>Promoteur acquéreur. Porte le projet de résidence étudiante et le plan de 52 lots.</td><td>Interlocuteur projet Nexity</td><td><span class="tag t-encours">Offre en révision</span></td></tr>
+          <tr><td><b>Norma Capital</b><br><span style="font-size:11px;color:var(--dim)">SC SCPI Vendôme Régions · NCAP Régions</span></td><td>Vendeur. SIREN 811 849 231. Quote part sur le périmètre du mandat env. 52,4 %.</td><td>Ursula Majer · ursula.majer@normacapital.fr</td><td><span class="tag t-encours">En négociation</span></td></tr>
+          <tr><td><b>Velibor Klepic</b></td><td>Conseiller au sein d'IRIS H sur l'opération.</td><td>Conseil interne</td><td><span class="tag t-fait">Actif</span></td></tr>
+          <tr><td><b>Guillaume Sébire</b></td><td>Expert comptable, structuration financière et montage.</td><td>Conseil financier</td><td><span class="tag t-fait">Actif</span></td></tr>
+          <tr><td><b>Cabinet Rivière</b></td><td>Confirmation fiscale sur la possibilité de défiscaliser en changement de destination. Rescrit fiscal à obtenir.</td><td>Fiscaliste</td><td><span class="tag t-encours">Confirmation attendue</span></td></tr>
+          <tr><td><b>Architecte</b></td><td>Optimisation des premiers plans Nexity, amélioration du ratio SHAB/SDP.</td><td>À nommer</td><td><span class="tag t-encours">Sollicité</span></td></tr>
+          <tr><td><b>Économiste</b></td><td>Chiffrage de l'intégralité des travaux, après signature de la promesse.</td><td>À missionner</td><td><span class="tag t-attente">À venir</span></td></tr>
+          <tr><td><b>Foncia Loiret</b> · Antoine Croix</td><td>Syndic de copropriété. AGE changement de destination, division par lots, passage des fluides.</td><td>antoine.croix@foncia.com · 02 38 24 26 28</td><td><span class="tag t-attente">À solliciter</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Répartition confidentielle. Tous les intervenants ne reçoivent pas le même niveau d'information. Voir zone négociation.</p>
+  </section>
+
+  <section id="base">
+    <h2><span class="n">03</span> Base d'infos</h2>
+    <div class="lead">Base vivante du projet. Enrichie, ajustée et corrigée au fil de l'avancement. Source de vérité des données Coligny.</div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3 class="sh">Programme et surfaces</h3>
+        <div class="dl">
+          <div class="k">Nombre de lots</div><div>52 lots, plafond actuel du plan Nexity</div>
+          <div class="k">Typologie</div><div>Studios d'environ 25 m² SHAB, surface optimisable</div>
+          <div class="k">Ratio SHAB/SDP</div><div>0,85, architecte sollicité pour optimiser</div>
+          <div class="k">Surfaces de service</div><div>À obtenir de Nexity, imposées en résidence étudiante</div>
+          <div class="k">Niveaux</div><div>R+3, R+4, R+5, surélévation R+6 à l'étude</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="sh">Leviers fiscaux</h3>
+        <div class="dl">
+          <div class="k">Levier principal</div><div>Déficit foncier réalisé sur les travaux</div>
+          <div class="k">Confirmation fiscale</div><div>Cabinet Rivière, défiscalisation en changement de destination, en attente</div>
+          <div class="k">TVA</div><div>10 %, rénovation, pas du neuf, donc pas 20 %</div>
+          <div class="k">MaPrimeRénov</div><div>Sur les lots d'isolation et d'ITE</div>
+          <div class="k">Sécurisation</div><div>Rescrit fiscal à obtenir après signature de la promesse</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:14px">
+      <div class="card">
+        <h3 class="sh">Économie Nexity, coûts annoncés</h3>
+        <div class="dl">
+          <div class="k">Travaux</div><div><span class="money">1 900 000 euros HT</span></div>
+          <div class="k">Architecte</div><div><span class="money">160 000 euros</span></div>
+          <div class="k">Bureau d'études et MOE</div><div><span class="money">200 000 euros</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="sh">Conditions Nexity</h3>
+        <div class="dl">
+          <div class="k">Indemnité d'immobilisation</div><div>5 %</div>
+          <div class="k">Condition suspensive</div><div>50 % des lots pré-commercialisés</div>
+          <div class="k">Engagement</div><div>Pré-commercialiser 20 % des lots dans les deux mois suivant le dépôt du PC</div>
+          <div class="k">Suspensives calendaires</div><div>Convocation d'AG et obtention du PC</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:14px">
+      <div class="card">
+        <h3 class="sh">Données mandat et immeuble</h3>
+        <div class="dl">
+          <div class="k">Adresse</div><div>122 124 rue du Faubourg Bannier, 45000 Orléans</div>
+          <div class="k">Cadastre</div><div>AR 713, 47 a 72 ca</div>
+          <div class="k">Prix de présentation</div><div><span class="money">2 484 000 euros</span> hors honoraires, hors droits, plus 5,5 % HT honoraires acquéreur</div>
+          <div class="k">Loyer en place</div><div><span class="money">76 124,59 euros</span> HT HC</div>
+          <div class="k">Taxe foncière 2025</div><div><span class="money">45 754 euros</span></div>
+          <div class="k">Budget copropriété 2026</div><div><span class="money">80 000 euros</span></div>
+          <div class="k">Quote part vendeur</div><div>47,50 % sur les trois plateaux, env. 52,4 % sur le périmètre du mandat, sur 10 000 tantièmes</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="sh">Éléments à obtenir de Nexity</h3>
+        <ul class="steps">
+          <li>Surfaces de service imposées en résidence étudiante</li>
+          <li>Notice technique Nexity</li>
+          <li>Premiers plans réalisés par leur architecte interne</li>
+        </ul>
+        <p class="note">Nécessaires à la poursuite de l'étude et à l'optimisation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <h2><span class="n">04</span> Roadmap</h2>
+    <div class="lead">Séquence macro, de l'optimisation du prix à la livraison.</div>
+    <div class="card">
+      <div class="phase now"><div class="idx">0</div><div class="body"><div class="h">Optimisation et accord sur le prix <span class="tag t-encours">En cours</span></div><div class="d">Optimisation de l'offre suite aux premiers envois, puis offre indicative réadressée au vendeur. Objectif, offre contresignée ou contre-offre validée et contresignée.</div><div class="who">Pilote IRIS H · Nexity · Norma</div></div></div>
+      <div class="phase"><div class="idx">1</div><div class="body"><div class="h">Promesse unilatérale de vente</div><div class="d">Rédaction dès l'accord sur le prix, puis signature. Point de départ des conditions.</div><div class="who">IRIS H · notaires · Nexity · Norma</div></div></div>
+      <div class="phase"><div class="idx">2</div><div class="body"><div class="h">Sécurisation fiscale et technique</div><div class="d">Rescrit fiscal par un fiscaliste, chiffrage complet des travaux par un économiste.</div><div class="who">Fiscaliste · économiste · MOE IRIS H</div></div></div>
+      <div class="phase"><div class="idx">3</div><div class="body"><div class="h">AGE de copropriété</div><div class="d">Sous autorisation du vendeur, changement de destination, division par lots, passage des fluides.</div><div class="who">IRIS H · Foncia Loiret · copropriété</div></div></div>
+      <div class="phase"><div class="idx">4</div><div class="body"><div class="h">Dépôt du permis de construire</div><div class="d">Dépôt une fois les conditions réunies. La pré-commercialisation démarre au dépôt, sans attendre la purge.</div><div class="who">Nexity · MOE IRIS H · urbanisme Orléans</div></div></div>
+      <div class="phase"><div class="idx">5</div><div class="body"><div class="h">Pré-commercialisation</div><div class="d">20 % des lots dans les deux mois suivant le dépôt du PC. Condition suspensive à 50 %.</div><div class="who">Nexity</div></div></div>
+      <div class="phase"><div class="idx">6</div><div class="body"><div class="h">Acte et travaux</div><div class="d">Purge des recours des tiers, retrait administratif, acte de vente, puis chantier de transformation.</div><div class="who">IRIS H · notaires · BYM</div></div></div>
+    </div>
+  </section>
+
+  <section id="planning">
+    <h2><span class="n">05</span> Planning et rétroplanning</h2>
+    <div class="lead">Ordre imposé par Nexity, jalonné jusqu'à l'acte de vente. Offre au vendeur le 3 août au plus tard, dépôt du PC le 1er novembre au plus tard, acte envisageable en mai 2027. Compter un mois de purge des recours des tiers et un mois de retrait administratif avant l'acte.</div>
+
+    <div class="gantt">
+      <div class="g-title">Schéma de planning · Coligny</div>
+      <div class="g-grid">
+        <div class="g-months">
+          <div>Étape</div>
+          <div>Aoû 26</div><div>Sep 26</div><div>Oct 26</div><div>Nov 26</div><div>Déc 26</div>
+          <div>Jan 27</div><div>Fév 27</div><div>Mar 27</div><div>Avr 27</div><div>Mai 27</div>
+        </div>
+        <div class="g-row"><div class="g-lbl">Optimisation du prix de l'offre</div><div class="g-track"><div class="g-bar solid" style="left:0;width:6%"></div><div class="g-mile" title="Offre au vendeur le 3 août" style="left:3%"></div></div></div>
+        <div class="g-row"><div class="g-lbl">Accord prix, offre contresignée</div><div class="g-track"><div class="g-bar hatch" style="left:3%;width:12%"></div></div></div>
+        <div class="g-row"><div class="g-lbl">Rédaction promesse unilatérale</div><div class="g-track"><div class="g-bar solid" style="left:13%;width:9%"></div><div class="g-mile hollow" title="Signature promesse" style="left:21%"></div></div></div>
+        <div class="g-row"><div class="g-lbl">Rescrit fiscal</div><div class="g-track"><div class="g-bar hatch" style="left:22%;width:8%"></div></div></div>
+        <div class="g-row"><div class="g-lbl">Chiffrage travaux, économiste</div><div class="g-track"><div class="g-bar hatch" style="left:22%;width:8%"></div></div></div>
+        <div class="g-row"><div class="g-lbl">AGE, destination, lots, fluides</div><div class="g-track"><div class="g-bar hatch" style="left:23%;width:7%"></div></div></div>
+        <div class="g-row"><div class="g-lbl">Dépôt du permis de construire</div><div class="g-track"><div class="g-mile" title="Dépôt PC le 1er novembre" style="left:30%"></div></div></div>
+        <div class="g-row"><div class="g-lbl">Pré-commercialisation 20 %</div><div class="g-track"><div class="g-bar solid" style="left:30%;width:20%"></div></div></div>
+        <div class="g-row"><div class="g-lbl">Instruction PC</div><div class="g-track"><div class="g-bar open" style="left:30%;width:50%"></div></div></div>
+        <div class="g-row"><div class="g-lbl">Purge recours tiers, retrait admin</div><div class="g-track"><div class="g-bar hatch" style="left:70%;width:20%"></div></div></div>
+        <div class="g-row"><div class="g-lbl">Acte de vente</div><div class="g-track"><div class="g-mile" title="Acte mai 2027" style="left:92%"></div></div></div>
+      </div>
+      <div class="g-legend">
+        <span><span class="lg-sq solid"></span> Action ferme</span>
+        <span><span class="lg-sq hatch"></span> Étude ou instruction conditionnée</span>
+        <span><span class="lg-di"></span> Jalon</span>
+      </div>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden;margin-top:16px">
+      <table>
+        <thead><tr><th>Ordre</th><th>Étape</th><th>Échéance</th><th>Responsable</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Optimiser le prix de l'offre suite aux premiers envois</td><td>En cours</td><td>IRIS H</td></tr>
+          <tr><td>2</td><td>Offre indicative optimisée réadressée au vendeur</td><td><b>3 août 2026</b> au plus tard</td><td>IRIS H · Nexity</td></tr>
+          <tr><td>3</td><td>Offre contresignée ou contre-offre validée et contresignée</td><td>Août 2026</td><td>Norma · Nexity</td></tr>
+          <tr><td>4</td><td>Rédaction puis signature de la promesse unilatérale de vente</td><td>Août à septembre 2026</td><td>IRIS H · notaires</td></tr>
+          <tr><td>5</td><td>Rescrit fiscal confirmant les enjeux fiscaux</td><td>Après signature promesse</td><td>Fiscaliste</td></tr>
+          <tr><td>6</td><td>Missionnement économiste, chiffrage intégral des travaux</td><td>Après signature promesse</td><td>Économiste</td></tr>
+          <tr><td>7</td><td>AGE, changement de destination, division par lots, passage des fluides, sous autorisation vendeur</td><td>Après signature promesse</td><td>IRIS H · Foncia</td></tr>
+          <tr><td>8</td><td>Dépôt du permis de construire</td><td><b>1er novembre 2026</b> au plus tard</td><td>Nexity · MOE IRIS H</td></tr>
+          <tr><td>9</td><td>Pré-commercialisation, 20 % dans les deux mois suivant le dépôt du PC</td><td>Novembre à décembre 2026</td><td>Nexity</td></tr>
+          <tr><td>10</td><td>Purge des recours des tiers puis retrait administratif</td><td>Deux mois avant l'acte</td><td>Notaires</td></tr>
+          <tr><td>11</td><td>Acte de vente</td><td><b>Mai 2027</b></td><td>IRIS H · notaires</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">La pré-commercialisation démarre dès le dépôt du PC, même non purgé.</p>
+  </section>
+
+  <section id="echeancier">
+    <h2><span class="n">06</span> Échéancier immédiat</h2>
+    <div class="grid3">
+      <div class="card"><div class="kick" style="letter-spacing:.2em;color:var(--red)">3 août 2026</div><p style="font-size:13px;margin-top:8px">Nouvelle offre optimisée soumise au vendeur Norma Capital.</p></div>
+      <div class="card"><div class="kick" style="letter-spacing:.2em;color:var(--amber)">Cette semaine</div><p style="font-size:13px;margin-top:8px">CR à Nexity, point d'avancement à Norma, récap interne à Velibor, sollicitation des éléments techniques Nexity.</p></div>
+      <div class="card"><div class="kick" style="letter-spacing:.2em;color:var(--navy)">1er novembre 2026</div><p style="font-size:13px;margin-top:8px">Dépôt du permis de construire au plus tard, déclencheur de la pré-commercialisation.</p></div>
+    </div>
+  </section>
+
+  <section id="questions">
+    <h2><span class="n">07</span> Questions ouvertes</h2>
+    <div class="card">
+      <div class="q"><div class="lbl">Le cabinet Rivière confirme t il la défiscalisation par déficit foncier en changement de destination ?</div><div class="own">Confirmation fiscale attendue, préalable au rescrit</div></div>
+      <div class="q"><div class="lbl">Rôle exact de BYM, responsable travaux ou contractant général ?</div><div class="own">Arbitrage IRIS H selon le montage</div></div>
+      <div class="q"><div class="lbl">Jusqu'où optimiser le ratio SHAB/SDP au delà de 0,85 et la surface des studios ?</div><div class="own">Architecte sollicité</div></div>
+      <div class="q"><div class="lbl">Quelles surfaces de service la résidence étudiante impose t elle ?</div><div class="own">À obtenir de Nexity</div></div>
+      <div class="q"><div class="lbl">La copropriété validera t elle en AGE changement de destination, division et fluides ?</div><div class="own">À préparer avec Foncia</div></div>
+      <div class="q"><div class="lbl">La surélévation R+6 est elle réalisable techniquement et réglementairement ?</div><div class="own">Étude de faisabilité</div></div>
+      <div class="q"><div class="lbl">Quel prix d'équilibre scelle l'accord Norma Nexity ?</div><div class="own">Négociation, voir zone confidentielle</div></div>
+    </div>
+  </section>
+
+  <section id="taches">
+    <h2><span class="n">08</span> Tâches, étape par étape</h2>
+    <div class="card">
+      <ul class="steps">
+        <li>Produire le compte rendu de réunion pour Nexity et solliciter surfaces de service, notice technique et premiers plans <span class="owner">IRIS H</span></li>
+        <li>Envoyer le point d'avancement au vendeur Norma Capital <span class="owner">IRIS H</span></li>
+        <li>Envoyer le récap interne à Velibor <span class="owner">IRIS H</span></li>
+        <li>Soumettre la nouvelle offre optimisée au vendeur avant le 3 août <span class="owner">IRIS H</span></li>
+        <li>Obtenir la confirmation fiscale du cabinet Rivière <span class="owner">IRIS H · Rivière</span></li>
+        <li>Rédiger le protocole d'accord et de confidentialité, étapes, objectifs, rôles de chaque partie <span class="owner">IRIS H</span></li>
+        <li>Arbitrer le rôle de BYM <span class="owner">IRIS H · BYM</span></li>
+        <li>Préparer la promesse unilatérale de vente dès l'accord prix <span class="owner">IRIS H · notaires</span></li>
+        <li>Missionner fiscaliste, économiste et architecte au bon jalon <span class="owner">IRIS H</span></li>
+        <li>Préparer avec Foncia l'AGE changement de destination, division, fluides <span class="owner">IRIS H · Foncia</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="nego">
+    <h2><span class="n">09</span> Stratégie de négociation</h2>
+    <div class="conf" id="confBox">
+      <div class="head">
+        <div>
+          <div class="l">Zone confidentielle</div>
+          <div class="warn">Ne pas diffuser aux interlocuteurs. Réservé pilotage IRIS H.</div>
+        </div>
+        <button onclick="var b=document.getElementById('confBox');b.classList.toggle('open');this.textContent=b.classList.contains('open')?'Masquer':'Afficher';">Afficher</button>
+      </div>
+      <div class="inner">
+        <table>
+          <thead><tr><th>Étape</th><th>Montant</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td>Prix de présentation du mandat</td><td class="money">2 484 000 euros</td><td><span class="tag t-attente">Hors honoraires, hors droits</span></td></tr>
+            <tr><td>Offre initiale Nexity au vendeur</td><td class="money">1 200 000 euros HT</td><td><span class="tag t-risque">Refusée par Norma</span></td></tr>
+            <tr><td>Deuxième offre Nexity, estimation interne</td><td class="money">1 600 000 euros</td><td><span class="tag t-encours">En optimisation</span></td></tr>
+            <tr><td>Contre proposition à demander à Norma</td><td class="money">1 700 000 euros</td><td><span class="tag t-encours">Pour caler le match</span></td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:13px;margin-top:14px">Après la première réunion, Nexity est ouvert à réhausser son offre, des pistes d'optimisation et d'ajustement de prix ayant été identifiées. La cible interne est une offre Nexity autour de 1 600 000 euros, sur laquelle le vendeur sera invité à se positionner à 1 700 000 euros afin de sceller l'accord dans une zone d'atterrissage réaliste. L'économie du projet repose sur le déficit foncier, une TVA à 10 %, MaPrimeRénov, face à 1 900 000 euros de travaux, 160 000 euros d'architecte et 200 000 euros de bureau d'études et maîtrise d'œuvre.</p>
+        <p class="note">Le montant estimé de Nexity et la cible 1 700 000 ne sont pas communiqués aux parties. Au vendeur, dynamique haussière et invitation à contre proposer. À Nexity, la position vendeur n'est pas dévoilée.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">Projet Coligny · IRIS H · mandat IRIS REP GC_V_01_01 · 122 124 rue du Faubourg Bannier, 45000 Orléans · Page cockpit interne, données confidentielles</div>
+
+</div>
+</body>
+</html>

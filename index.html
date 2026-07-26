@@ -505,6 +505,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
           <button class="fbtn struct-doc-btn" id="doc-btn-template" onclick="selectStructDoc('template',this)">Template</button>
           <button class="fbtn struct-doc-btn" id="doc-btn-charte" onclick="selectStructDoc('charte',this)">Charte graphique</button>
           <button class="fbtn struct-doc-btn" id="doc-btn-72" onclick="selectStructDoc('dossier72',this)" style="display:none">72</button>
+          <button class="fbtn struct-doc-btn" id="doc-btn-coligny" onclick="selectStructDoc('coligny',this)">Coligny</button>
         </div>
         <!-- Contenu -->
         <div id="struct-content"></div>
@@ -2947,6 +2948,18 @@ function selectStructSoc(soc,btn){
       }
     }
   }
+  var bcol=document.getElementById('doc-btn-coligny');
+  if(bcol){
+    if(soc==='iris'){bcol.style.display='';}
+    else{
+      bcol.style.display='none';
+      if(structDoc==='coligny'){
+        structDoc='bp';
+        document.querySelectorAll('.struct-doc-btn').forEach(x=>x.classList.remove('on'));
+        var bp2=document.getElementById('doc-btn-bp'); if(bp2)bp2.classList.add('on');
+      }
+    }
+  }
   renderStructHeader();
   renderStructContent();
 }
@@ -2995,6 +3008,9 @@ function renderStructContent(){
   }else if(structDoc==='dossier72'){
     if(structSoc==='urbanrise')src='assets/dossiers/UR03_72_rue_de_bourgogne.html?v='+Date.now();
     else{el.innerHTML=ph('Dossier 72 rue de Bourgogne \u00b7 r\u00e9serv\u00e9 Urban Rise et ARRISTO');return;}
+  }else if(structDoc==='coligny'){
+    if(structSoc==='iris')src='assets/dossiers/IR_COLIGNY_faubourg_bannier.html?v='+Date.now();
+    else{el.innerHTML=ph('Projet Coligny \u00b7 r\u00e9serv\u00e9 IRIS REP');return;}
   }
   el.innerHTML=docsBar+'<iframe src="'+src+'" style="width:100%;height:calc(100vh - 300px);border:none;border-radius:12px;background:#faf6ed"></iframe>';
 }
