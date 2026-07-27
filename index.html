@@ -1616,7 +1616,7 @@ function dealMandatLinks(s){if(!s)return'';return s.toString().split(',').map(fu
 let dealsFilter='all',dealsSortCol='etape',dealsSortDir='asc',dealsSuffixFilter='',dealsProfilFilter='';
 let dealsNature='all';
 const DEAL_NATURES=[{k:'conseil',l:'Conseil immo entreprise'},{k:'asset_manager',l:'Asset Manager'},{k:'promoteur',l:'Promoteur'},{k:'agence',l:'Agence immobilière'}];
-function filterDeals(btn,v){document.querySelectorAll('.deals-fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');dealsFilter=v;dealsNature='all';renderDeals()}
+function filterDeals(btn,v){document.querySelectorAll('.deals-fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');dealsFilter=v;dealsNature='all';dealsSortCol='code';dealsSortDir='asc';renderDeals()}
 function filterDealsNature(btn,v){dealsNature=(dealsNature===v)?'all':v;renderDeals()}
 function filterDealsBySuffix(sfx){dealsSuffixFilter=(dealsSuffixFilter===sfx)?'':sfx;renderDeals();document.querySelectorAll('.suffix-cell').forEach(el=>{el.classList.toggle('on',el.dataset.sfx===dealsSuffixFilter)})}
 function filterDealsByProfil(prf){dealsProfilFilter=(dealsProfilFilter===prf)?'':prf;renderDeals();document.querySelectorAll('.profil-cell').forEach(el=>{el.classList.toggle('on',el.dataset.prf===dealsProfilFilter)})}
@@ -1857,7 +1857,15 @@ function renderDeals(){
   const q=(document.getElementById('deals-search')?.value||'').toLowerCase().trim();
   if(q)deals=deals.filter(d=>['code','nom','adresse','commentaire','type','etape','entite','client_nom','client_prenom'].map(k=>d[k]||'').join(' ').toLowerCase().includes(q));
   const dir=dealsSortDir==='asc'?1:-1;
-  deals.sort((a,b)=>{let va,vb;if(dealsSortCol==='etape'){va=ETAPE_ORDER[a.etape]??99;vb=ETAPE_ORDER[b.etape]??99}else if(['montant','ca_ht','ca_previ','resultat_previ'].includes(dealsSortCol)){va=a[dealsSortCol]||0;vb=b[dealsSortCol]||0}else{va=(a[dealsSortCol]||'').toString().toLowerCase();vb=(b[dealsSortCol]||'').toString().toLowerCase()}return va<vb?-1*dir:va>vb?1*dir:0});
+  deals.sort((a,b)=>{
+    if(dealsSortCol==='code'){
+      const ent=x=>(x.entite||'').toString().toLowerCase();
+      const num=x=>{const m=(x.code||'').match(/(\d+)/);return m?parseInt(m[1],10):99999};
+      if(ent(a)!==ent(b))return ent(a)<ent(b)?-1*dir:1*dir;
+      const na=num(a),nb=num(b);if(na!==nb)return (na-nb)*dir;
+      const ca=(a.code||''),cb=(b.code||'');return ca<cb?-1*dir:ca>cb?1*dir:0;
+    }
+    let va,vb;if(dealsSortCol==='etape'){va=ETAPE_ORDER[a.etape]??99;vb=ETAPE_ORDER[b.etape]??99}else if(['montant','ca_ht','ca_previ','resultat_previ'].includes(dealsSortCol)){va=a[dealsSortCol]||0;vb=b[dealsSortCol]||0}else{va=(a[dealsSortCol]||'').toString().toLowerCase();vb=(b[dealsSortCol]||'').toString().toLowerCase()}return va<vb?-1*dir:va>vb?1*dir:0});
   const actifs=deals.filter(d=>!['cloture','dead'].includes(d.etape));
   const vol=actifs.reduce((a,d)=>a+(d.montant||0),0);
   const totalCA=deals.reduce((s,d)=>s+(d.ca_previ||0),0);
