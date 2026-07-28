@@ -247,6 +247,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'bourgogne')"><span class="nav-dot"></span><span>Bourgogne 72 / 78</span><span class="nav-cnt" id="nav-bourgogne-cnt">0</span></button>
       <button class="nav-item" style="display:none" onclick="switchTab(this,'crm')"><span class="nav-dot"></span><span>CRM</span><span class="nav-cnt" id="nav-crm-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'deals')"><span class="nav-dot"></span><span>PROJETS</span><span class="nav-cnt" id="nav-deals-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'arristo')"><span class="nav-dot"></span><span>ARRISTO · Événements</span><span class="nav-cnt" id="nav-arristo-cnt">0</span></button>
       <button class="nav-item" onclick="openIrisRepConseil(this)"><span class="nav-dot"></span><span>IRIS REP · Conseil</span></button>
       <button class="nav-item" onclick="switchTab(this,'prospects')"><span class="nav-dot"></span><span>PROSPECTS</span><span class="nav-cnt" id="nav-prospects-cnt">0</span></button>
       <button class="nav-item" style="display:none" onclick="switchTab(this,'documents')"><span class="nav-dot"></span><span>Documents</span><span class="nav-cnt" id="nav-documents-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
@@ -623,6 +624,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <div class="tab" id="tab-pack">
         <iframe id="pack-frame" src="pack.html?v=1" style="width:100%;height:calc(100vh - 100px);border:none;border-radius:12px;background:var(--bg)"></iframe>
       </div>
+      <div class="tab" id="tab-arristo"></div>
       <div class="tab" id="tab-references"></div>
 
     </div>
@@ -630,6 +632,14 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 </div>
 
 <!-- MODALE DETAIL TACHE -->
+<div class="modal-overlay" id="arr-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal-box" style="max-width:520px">
+    <div class="modal-title" id="arr-modal-title"></div>
+    <div class="modal-sub" id="arr-modal-sub"></div>
+    <div id="arr-modal-body" style="font-size:13px;line-height:1.9;color:var(--text)"></div>
+    <div class="modal-actions"><button class="modal-btn modal-btn-cancel" onclick="document.getElementById('arr-modal').classList.remove('open')">Fermer</button></div>
+  </div>
+</div>
 <div class="modal-overlay" id="task-modal" onclick="if(event.target===this)closeTaskModal()">
   <div class="modal-box">
     <div class="modal-title" id="modal-task-title"></div>
@@ -1322,7 +1332,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',bourgogne:'Bourgogne · 72 / 78 rue de Bourgogne, Orléans',deals:'PROJETS',prospects:'PROSPECTS',dettes:'Dettes croisées · CB / YB',finance:'Finance',compta:'Comptabilité · audit et pièces',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',pack:'Pack chaudière ENGIE · Procédure Junior',location:'Location · Candidats coloc Orléans',references:'Références et opportunités',suivichantier:'Suivi chantier'};
+  const titles={todo:'Todo',bourgogne:'Bourgogne · 72 / 78 rue de Bourgogne, Orléans',deals:'PROJETS',prospects:'PROSPECTS',dettes:'Dettes croisées · CB / YB',finance:'Finance',compta:'Comptabilité · audit et pièces',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',pack:'Pack chaudière ENGIE · Procédure Junior',location:'Location · Candidats coloc Orléans',references:'Références et opportunités',suivichantier:'Suivi chantier',arristo:'ARRISTO · Événements & réseau'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
@@ -1330,7 +1340,7 @@ function switchTab(btn,tab){
 }
 
 function renderCurrentTab(){
-  const m={todo:renderTodo,bourgogne:renderBourgogne,deals:renderDeals,prospects:renderProspects,finance:renderFinance,compta:renderCompta,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,documents:renderDocuments,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct,charte:()=>{},location:renderLocation,references:renderReferences,suivichantier:renderSuiviChantier};
+  const m={todo:renderTodo,bourgogne:renderBourgogne,deals:renderDeals,prospects:renderProspects,finance:renderFinance,compta:renderCompta,crm:renderCRM,memoire:renderMemoire,outils:renderOutils,mandats:renderMandats,documents:renderDocuments,audit:renderAudit,histoire:renderHistoire,businessplan:renderStruct,charte:()=>{},location:renderLocation,references:renderReferences,suivichantier:renderSuiviChantier,arristo:renderArristo};
   if(m[currentTab])m[currentTab]();
 }
 
@@ -1348,6 +1358,258 @@ function updateTopbar(){
 // ════════════════════════════════════════
 // GLOBAL SEARCH
 // ════════════════════════════════════════
+
+// ════════════════════════════════════════
+// ARRISTO · Événements & réseau
+// ════════════════════════════════════════
+let arristoSubV='overview';
+let arristoData={events:[],contacts:[],parts:[],loaded:false};
+let arrF={ville:'all',segment:'all',emailonly:false,q:''};
+
+async function loadArristo(){
+  if(!cfg)return;
+  const hdr={'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json'};
+  try{
+    const [ev,ct,pa]=await Promise.all([
+      fetch(`${cfg.url}/rest/v1/arristo_evenements?order=date_event.asc`,{headers:hdr}),
+      fetch(`${cfg.url}/rest/v1/contacts?arristo=eq.true&select=id,prenom,nom,email,email_perso,telephone,societe,poste,metier,localisation,linkedin,arristo_ville,arristo_segment,score_lead&limit=1000`,{headers:hdr}),
+      fetch(`${cfg.url}/rest/v1/arristo_participations?select=evenement_id,statut,present&limit=5000`,{headers:hdr})
+    ]);
+    arristoData.events=ev.ok?await ev.json():[];
+    arristoData.contacts=ct.ok?await ct.json():[];
+    arristoData.parts=pa.ok?await pa.json():[];
+  }catch(e){}
+  arristoData.loaded=true;
+}
+function arrEsc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function arrHasMail(x){return x.email&&/@.+\./.test(x.email);}
+
+async function renderArristo(){
+  const el=document.getElementById('tab-arristo');
+  if(!el)return;
+  if(!arristoData.loaded){el.innerHTML='<div class="empty"><div class="empty-text" style="color:var(--dim)">Chargement ARRISTO…</div></div>';await loadArristo();}
+  const nc=document.getElementById('nav-arristo-cnt');if(nc)nc.textContent=arristoData.contacts.length;
+  const subs=[['overview',"Vue d'ensemble"],['tours','Afterwork Tours · 23/09'],['paris','Afterwork Paris · 24/09'],['contacts','Base contacts'],['pratiques','Bonnes pratiques']];
+  const toggle=`<div class="memo-toggle" style="flex-wrap:wrap">${subs.map(s=>`<button class="memo-toggle-btn${arristoSubV===s[0]?' active':''}" onclick="arristoSub('${s[0]}')">${s[1]}</button>`).join('')}</div>`;
+  let body='';
+  if(arristoSubV==='overview')body=arrOverview();
+  else if(arristoSubV==='contacts')body=arrContacts();
+  else if(arristoSubV==='pratiques')body=arrPratiques();
+  else body=arrEvent(arristoSubV);
+  el.innerHTML=toggle+body;
+}
+function arristoSub(v){arristoSubV=v;renderArristo();}
+
+function arrOverview(){
+  const c=arristoData.contacts;
+  const nTotal=c.length, nParis=c.filter(x=>x.arristo_ville==='Paris').length, nTours=c.filter(x=>x.arristo_ville==='Tours').length;
+  const nEmail=c.filter(arrHasMail).length;
+  const seg=(s,v)=>c.filter(x=>x.arristo_segment===s&&(!v||x.arristo_ville===v)).length;
+  const evRows=arristoData.events.map(e=>{
+    const d=e.date_event?new Date(e.date_event+'T00:00:00'):null;
+    const df=d?d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}):'—';
+    const sub=e.ville==='Tours'?'tours':(e.ville==='Paris'?'paris':'overview');
+    return `<tr onclick="arristoSub('${sub}')" style="cursor:pointer"><td class="td-name">${arrEsc(e.titre)}</td><td><span class="pill p-arristo">${arrEsc(e.nature)}</span></td><td>${arrEsc(e.ville)}</td><td style="text-transform:capitalize">${df}</td><td>${e.lieu?arrEsc(e.lieu):'<span style=\"color:var(--dim)\">lieu à définir</span>'}</td><td><span class="pill p-att">${arrEsc(e.statut)}</span></td></tr>`;
+  }).join('');
+  return `
+  <div class="tcard" style="border-left:4px solid #C9A227">
+    <div class="tcard-title" style="font-size:15px">ARRISTO · réseau professionnel immobilier</div>
+    <div style="font-size:13px;color:var(--text);line-height:1.8;margin-top:8px">
+    Réseau d'animation du groupe IRIS H. Vocation : réunir investisseurs, promoteurs et conseils autour des opérations IRIS REP, BYM et Urban Rise, créer du sourcing et du référencement business. Cible prioritaire des afterworks de rentrée, dans l'ordre : investisseurs, fonds et asset managers, puis promoteurs, puis avocats, notaires et géomètres.
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-label">Événements planifiés</div><div class="kpi-val">${arristoData.events.length}</div><div class="kpi-sub">Afterworks de rentrée</div></div>
+    <div class="kpi green"><div class="kpi-label">Pool ARRISTO</div><div class="kpi-val">${nTotal}</div><div class="kpi-sub">${nEmail} avec email exploitable</div></div>
+    <div class="kpi"><div class="kpi-label">Pôle Paris</div><div class="kpi-val">${nParis}</div><div class="kpi-sub">Île de France</div></div>
+    <div class="kpi orange"><div class="kpi-label">Pôle Tours</div><div class="kpi-val">${nTours}</div><div class="kpi-sub">Val de Loire · à enrichir</div></div>
+  </div>
+  <div class="tcard">
+    <div class="tcard-hdr"><div class="tcard-title">Événements</div></div>
+    <table class="tbl"><thead><tr><th>Événement</th><th>Nature</th><th>Ville</th><th>Date</th><th>Lieu</th><th>Statut</th></tr></thead><tbody>${evRows}</tbody></table>
+  </div>
+  <div class="tcard">
+    <div class="tcard-title">Segments cibles du pool</div>
+    <table class="tbl" style="margin-top:8px"><thead><tr><th>Priorité</th><th>Segment</th><th>Total</th><th>Paris</th><th>Tours</th></tr></thead><tbody>
+      <tr><td>1</td><td class="td-name">Investisseurs & fonds</td><td>${seg('Investisseurs & fonds')}</td><td>${seg('Investisseurs & fonds','Paris')}</td><td>${seg('Investisseurs & fonds','Tours')}</td></tr>
+      <tr><td>2</td><td class="td-name">Promoteurs</td><td>${seg('Promoteurs')}</td><td>${seg('Promoteurs','Paris')}</td><td>${seg('Promoteurs','Tours')}</td></tr>
+      <tr><td>3</td><td class="td-name">Avocats · notaires · géomètres</td><td>${seg('Avocats · notaires · géomètres')}</td><td>${seg('Avocats · notaires · géomètres','Paris')}</td><td>${seg('Avocats · notaires · géomètres','Tours')}</td></tr>
+    </tbody></table>
+    <div style="font-size:11px;color:var(--dim);margin-top:8px">Pool constitué automatiquement depuis la base contacts (colonnes arristo, arristo_ville, arristo_segment). Affinable dans l'onglet Base contacts.</div>
+  </div>`;
+}
+
+function arrRetro(dateStr){
+  const base=new Date(dateStr+'T00:00:00');
+  const steps=[
+    [-45,'Save the date',"Email pôle + création de l'événement LinkedIn"],
+    [-30,'Invitation officielle','Email personnalisé par segment + visuel carton + post LinkedIn'],
+    [-21,'Ouverture inscriptions','Lien RSVP + relance WhatsApp contacts chauds'],
+    [-14,'Relance 1','Email non-ouvreurs + rappel LinkedIn'],
+    [-7,'Relance 2 + confirmation','Email confirmés (logistique) + WhatsApp'],
+    [-2,'Rappel final',"Email + WhatsApp, liste d'accueil figée"],
+    [0,'Jour J','Accueil, badges, kakémonos BYM + IRIS REP, collecte contacts'],
+    [2,'Remerciements','Email de remerciement + photos, qualification des présents'],
+    [7,'Compte rendu','Mise à jour track record, no-shows, prochaines relances']
+  ];
+  return steps.map(s=>{
+    const d=new Date(base); d.setDate(d.getDate()+s[0]);
+    const df=d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
+    const jlabel=s[0]===0?'Jour J':(s[0]<0?'J'+s[0]:'J+'+s[0]);
+    return `<tr><td style="white-space:nowrap"><b>${jlabel}</b></td><td style="white-space:nowrap">${df}</td><td class="td-name">${s[1]}</td><td>${s[2]}</td></tr>`;
+  }).join('');
+}
+
+function arrEvent(sub){
+  const ville=sub==='tours'?'Tours':'Paris';
+  const e=arristoData.events.find(x=>x.ville===ville)||{};
+  const c=arristoData.contacts.filter(x=>x.arristo_ville===ville);
+  const nEmail=c.filter(arrHasMail).length;
+  const df=e.date_event?new Date(e.date_event+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'—';
+  const emails=[['Save the date','J-45'],['Invitation investisseurs','J-30'],['Invitation promoteurs','J-30'],['Invitation avocats · notaires · géomètres','J-30'],['Relance 1 non-ouvreurs','J-14'],['Relance 2 + logistique','J-7'],['Rappel final','J-2'],['Remerciement','J+2']];
+  const emailRows=emails.map(x=>`<tr><td class="td-name">${x[0]}</td><td>${x[1]}</td><td><span class="pill p-att">à créer</span></td></tr>`).join('');
+  const visuels=[["Carton d'invitation",'Story 1080×1920 + email 1200×628'],['Kakémono sponsor BYM Construction','85×200 cm'],['Kakémono sponsor IRIS REP','85×200 cm'],['Bannière LinkedIn événement','1584×396']];
+  const visRows=visuels.map(x=>`<tr><td class="td-name">${x[0]}</td><td>${x[1]}</td><td><span class="pill p-att">Canva · à produire</span></td></tr>`).join('');
+  const canaux=[['Email','Séquence 8 emails segmentés','Gmail + Brevo'],['LinkedIn','Événement LinkedIn + 3 posts + invitations','Page ARRISTO'],['WhatsApp','Relances contacts chauds + rappel J-2','Diffusion manuelle']];
+  const canRows=canaux.map(x=>`<tr><td class="td-name">${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td><span class="pill p-att">à préparer</span></td></tr>`).join('');
+  return `
+  <div class="tcard" style="border-left:4px solid ${ville==='Tours'?'var(--orange)':'var(--blue)'}">
+    <div class="tcard-title" style="font-size:15px">${arrEsc(e.titre||('Afterwork ARRISTO '+ville))}</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px">
+      <div><div class="kpi-label">Date</div><div style="font-size:13px;font-weight:600;text-transform:capitalize">${df}</div></div>
+      <div><div class="kpi-label">Lieu</div><div style="font-size:13px;font-weight:600">${e.lieu?arrEsc(e.lieu):'<span style=\"color:var(--red)\">à définir</span>'}</div></div>
+      <div><div class="kpi-label">Horaire</div><div style="font-size:13px;font-weight:600">${e.heure?arrEsc(e.heure):'<span style=\"color:var(--red)\">à définir</span>'}</div></div>
+      <div><div class="kpi-label">Sponsors</div><div style="font-size:13px;font-weight:600">BYM · IRIS REP</div></div>
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="kpi green"><div class="kpi-label">Cible ${ville}</div><div class="kpi-val">${c.length}</div><div class="kpi-sub">${nEmail} avec email</div></div>
+    <div class="kpi"><div class="kpi-label">Investisseurs & fonds</div><div class="kpi-val">${c.filter(x=>x.arristo_segment==='Investisseurs & fonds').length}</div></div>
+    <div class="kpi"><div class="kpi-label">Promoteurs</div><div class="kpi-val">${c.filter(x=>x.arristo_segment==='Promoteurs').length}</div></div>
+    <div class="kpi"><div class="kpi-label">Avocats · notaires · géo.</div><div class="kpi-val">${c.filter(x=>x.arristo_segment==='Avocats · notaires · géomètres').length}</div></div>
+  </div>
+  <div class="tcard"><div class="tcard-title">Rétroplanning</div>
+    <table class="tbl" style="margin-top:8px"><thead><tr><th>Jalon</th><th>Date</th><th>Action</th><th>Canaux</th></tr></thead><tbody>${e.date_event?arrRetro(e.date_event):'<tr><td colspan=4>Date manquante</td></tr>'}</tbody></table>
+  </div>
+  <div class="tcard"><div class="tcard-title">Plan de communication multicanal</div>
+    <table class="tbl" style="margin-top:8px"><thead><tr><th>Canal</th><th>Dispositif</th><th>Outil</th><th>Statut</th></tr></thead><tbody>${canRows}</tbody></table>
+  </div>
+  <div class="tcard"><div class="tcard-title">Séquence emails</div>
+    <table class="tbl" style="margin-top:8px"><thead><tr><th>Email</th><th>Timing</th><th>Statut</th></tr></thead><tbody>${emailRows}</tbody></table>
+    <div style="font-size:11px;color:var(--dim);margin-top:8px">Chaque email créé en brouillon Gmail, prêt à partir via Brevo ou envoi direct. Contenus à valider avant production.</div>
+  </div>
+  <div class="tcard"><div class="tcard-title">Visuels à produire</div>
+    <table class="tbl" style="margin-top:8px"><thead><tr><th>Visuel</th><th>Format</th><th>Statut</th></tr></thead><tbody>${visRows}</tbody></table>
+  </div>`;
+}
+
+function arrContacts(){
+  let c=arristoData.contacts.slice();
+  if(arrF.ville!=='all')c=c.filter(x=>x.arristo_ville===arrF.ville);
+  if(arrF.segment!=='all')c=c.filter(x=>x.arristo_segment===arrF.segment);
+  if(arrF.emailonly)c=c.filter(arrHasMail);
+  if(arrF.q){const q=arrF.q.toLowerCase();c=c.filter(x=>[x.prenom,x.nom,x.societe,x.poste,x.metier,x.email,x.localisation].filter(Boolean).join(' ').toLowerCase().includes(q));}
+  c.sort((a,b)=>(b.score_lead||0)-(a.score_lead||0)||String(a.nom||'').localeCompare(String(b.nom||'')));
+  const segPill=s=>{const m={'Investisseurs & fonds':'p-iris','Promoteurs':'p-ur','Avocats · notaires · géomètres':'p-gc'};return s?`<span class="pill ${m[s]||'p-med'}">${arrEsc(s)}</span>`:'';};
+  const vPill=v=>v?`<span class="pill ${v==='Paris'?'p-med':'p-high'}">${v}</span>`:'';
+  const rows=c.map(x=>{
+    const mail=arrHasMail(x)?`<a class="td-link" href="mailto:${arrEsc(x.email)}">${arrEsc(x.email)}</a>`:'<span style="color:var(--dim)">—</span>';
+    const li=x.linkedin?` <a class="td-link" href="${arrEsc(x.linkedin)}" target="_blank" rel="noopener">in</a>`:'';
+    return `<tr><td class="td-name" style="cursor:pointer" onclick="openArrContact('${x.id}')">${arrEsc(((x.prenom||'')+' '+(x.nom||'')).trim())}${li}</td><td>${arrEsc(x.societe||'')}</td><td>${arrEsc(x.poste||x.metier||'')}</td><td>${segPill(x.arristo_segment)}</td><td>${vPill(x.arristo_ville)}</td><td>${mail}</td><td>${arrEsc(x.telephone||'')}</td></tr>`;
+  }).join('');
+  const sel=(id,val,opts)=>`<select class="top-btn" onchange="arrSet('${id}',this.value)">${opts.map(o=>`<option value="${o[0]}"${val===o[0]?' selected':''}>${o[1]}</option>`).join('')}</select>`;
+  return `
+  <div class="tcard">
+    <div class="tcard-hdr" style="flex-wrap:wrap;gap:8px">
+      <div class="tcard-title">Base contacts ARRISTO · ${c.length} affichés</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        ${sel('ville',arrF.ville,[['all','Toutes villes'],['Paris','Paris'],['Tours','Tours']])}
+        ${sel('segment',arrF.segment,[['all','Tous segments'],['Investisseurs & fonds','Investisseurs'],['Promoteurs','Promoteurs'],['Avocats · notaires · géomètres','Avocats·notaires·géo.']])}
+        <button class="top-btn${arrF.emailonly?' accent':''}" onclick="arrF.emailonly=!arrF.emailonly;renderArristo()">Email valide</button>
+        <input class="top-btn" style="min-width:150px" placeholder="Rechercher…" value="${arrEsc(arrF.q)}" oninput="arrF.q=this.value;clearTimeout(window._arrQ);window._arrQ=setTimeout(renderArristo,250)">
+      </div>
+    </div>
+    <table class="tbl"><thead><tr><th>Nom</th><th>Société</th><th>Poste</th><th>Segment</th><th>Ville</th><th>Email</th><th>Téléphone</th></tr></thead><tbody>${rows||'<tr><td colspan=7><div class="empty"><div class="empty-text">Aucun contact</div></div></td></tr>'}</tbody></table>
+  </div>`;
+}
+function arrSet(k,v){arrF[k]=v;renderArristo();}
+function openArrContact(id){
+  const x=arristoData.contacts.find(y=>y.id===id);if(!x)return;
+  document.getElementById('arr-modal-title').textContent=((x.prenom||'')+' '+(x.nom||'')).trim();
+  document.getElementById('arr-modal-sub').textContent=[x.poste,x.societe].filter(Boolean).join(' · ');
+  const row=(l,v)=>v?`<div><span style="color:var(--dim)">${l} :</span> ${v}</div>`:'';
+  document.getElementById('arr-modal-body').innerHTML=
+    row('Segment',arrEsc(x.arristo_segment))+row('Ville ARRISTO',arrEsc(x.arristo_ville))+row('Métier',arrEsc(x.metier))+row('Localisation',arrEsc(x.localisation))+
+    row('Email',arrHasMail(x)?`<a class="td-link" href="mailto:${arrEsc(x.email)}">${arrEsc(x.email)}</a>`:'')+
+    row('Email perso',arrEsc(x.email_perso))+row('Téléphone',arrEsc(x.telephone))+
+    row('LinkedIn',x.linkedin?`<a class="td-link" href="${arrEsc(x.linkedin)}" target="_blank" rel="noopener">Profil</a>`:'')+
+    row('Score lead',x.score_lead);
+  document.getElementById('arr-modal').classList.add('open');
+}
+
+function arrPratiques(){
+  return `
+  <div class="tcard" style="border-left:4px solid #C9A227">
+    <div class="tcard-title" style="font-size:15px">Bonnes pratiques · pilotage des événements ARRISTO</div>
+    <div style="font-size:12px;color:var(--dim);margin-top:4px">Recommandations pour perdre le moins d'information possible et bâtir le meilleur track record du réseau.</div>
+  </div>
+
+  <div class="tcard">
+    <div class="tcard-title">1. Emailing : Brevo ou envoi par Claude</div>
+    <div style="font-size:13px;line-height:1.85;color:var(--text)">
+    <p style="margin-bottom:10px">Séparer deux usages. Claude sert à concevoir : rédiger les objets, écrire les variantes par segment, personnaliser au nom et à la société, produire les relances. Claude ne doit pas servir de routeur d'envoi en masse. Un envoi de plusieurs centaines de messages depuis Gmail brûle la réputation du domaine, tombe en spam et ne remonte aucune statistique.</p>
+    <p style="margin-bottom:10px">Brevo reste le bon outil pour l'envoi segmenté : domaine authentifié SPF, DKIM et DMARC, gestion des désinscriptions conforme au RGPD, suivi ouverture et clic, programmation. Le schéma optimal est donc hybride : Claude écrit et personnalise, Brevo route et mesure, puis renvoie les événements ouverture et clic dans la base.</p>
+    <p style="margin-bottom:0">Exception pour le haut du panier. Les investisseurs et fonds prioritaires méritent un email individuel, envoyé depuis Gmail via un brouillon rédigé par Claude, avec une accroche réellement personnalisée. Un afterwork se remplit d'abord par la relation directe, pas par le mass mailing.</p>
+    </div>
+  </div>
+
+  <div class="tcard">
+    <div class="tcard-title">2. Gestion de la base et track record</div>
+    <div style="font-size:13px;line-height:1.85;color:var(--text)">
+    <p style="margin-bottom:10px">La base contacts reste la source unique. Le pool ARRISTO est marqué par trois colonnes déjà en place : arristo, arristo_ville, arristo_segment. Seuls les contacts marqués partent en invitation, ce qui évite d'arroser toute la base et de dégrader la délivrabilité.</p>
+    <p style="margin-bottom:10px">Le suivi par personne et par événement vit dans la table arristo_participations : statut (à inviter, invité, relancé, inscrit, présent, no-show, décliné), canal, dates d'invitation et de réponse, présence réelle. C'est ce qui construit le track record : qui a été invité, qui est venu, qui a décliné, combien de fois. Un contact venu deux fois sans jamais rien signer n'a pas la même valeur qu'un premier venu qui apporte un deal.</p>
+    <p style="margin-bottom:0">Après chaque soirée, trois gestes pour ne rien perdre : marquer les présents depuis la feuille d'émargement ou le scan des badges, réinjecter les nouveaux contacts rencontrés avec arristo à vrai, noter en une ligne l'échange utile dans le contact. L'information non écrite le soir même est perdue à 80 pour cent le lendemain.</p>
+    </div>
+  </div>
+
+  <div class="tcard">
+    <div class="tcard-title">3. Segmentation et personnalisation</div>
+    <div style="font-size:13px;line-height:1.85;color:var(--text)">
+    <p style="margin-bottom:0">Un message par segment, pas un message pour tous. L'investisseur vient pour le flux d'opportunités et le réseau de capital. Le promoteur vient pour le foncier et les partenaires travaux. L'avocat, le notaire et le géomètre viennent pour la prescription et la visibilité. Trois angles d'accroche distincts, un seul événement. Les tableaux de cible par segment sont déjà calculés dans chaque fiche événement.</p>
+    </div>
+  </div>
+
+  <div class="tcard">
+    <div class="tcard-title">4. LinkedIn : événement et process d'invitation</div>
+    <div style="font-size:13px;line-height:1.85;color:var(--text)">
+    <p style="margin-bottom:10px">Créer un événement LinkedIn par soirée depuis la page ARRISTO, pas depuis un profil personnel, pour capitaliser sur la marque. Renseigner date, lieu, visuel bannière et description courte. LinkedIn permet d'inviter directement ses relations et de suivre les intéressés.</p>
+    <p style="margin-bottom:0">Process en trois temps : à J-30 publication de l'événement et première vague d'invitations aux relations ciblées Tours et Paris, à J-15 un post de rappel avec le programme, à J-2 un dernier post et un message aux inscrits. Chaque personne ayant cliqué intéressé est ajoutée au pool et suivie dans la table participations.</p>
+    </div>
+  </div>
+
+  <div class="tcard">
+    <div class="tcard-title">5. WhatsApp et relation directe</div>
+    <div style="font-size:13px;line-height:1.85;color:var(--text)">
+    <p style="margin-bottom:0">WhatsApp pour les contacts chauds uniquement, en direct, jamais en diffusion anonyme. Deux moments clés : la relance des indécis à J-14 et le rappel de confirmation à J-2. Un message court, nominatif, qui rappelle le lieu et l'heure. C'est le canal qui transforme un inscrit en présent.</p>
+    </div>
+  </div>
+
+  <div class="tcard">
+    <div class="tcard-title">6. Mesure et amélioration continue</div>
+    <div style="font-size:13px;line-height:1.85;color:var(--text)">
+    <p style="margin-bottom:10px">Quatre indicateurs à suivre par événement : taux d'ouverture email, taux d'inscription sur invités, taux de présence sur inscrits, nombre de contacts nouveaux collectés. Un objectif de présence réaliste sur un premier afterwork se situe entre 30 et 40 pour cent des inscrits.</p>
+    <p style="margin-bottom:0">Comparer Tours et Paris d'une édition à l'autre pour ajuster le format, l'horaire et le lieu. Ce qui n'est pas mesuré ne s'améliore pas.</p>
+    </div>
+  </div>
+
+  <div class="tcard" style="border-left:4px solid var(--orange)">
+    <div class="tcard-title">7. Point d'attention : base Tours à enrichir</div>
+    <div style="font-size:13px;line-height:1.85;color:var(--text)">
+    <p style="margin-bottom:0">Le pôle Tours compte aujourd'hui très peu de contacts qualifiés face à Paris. Avant la soirée du 23 septembre, prévoir une phase d'enrichissement ciblée sur les investisseurs, promoteurs et notaires de Tours et d'Orléans, via LinkedIn, les chambres et les partenaires Galerie Carrez. Sans cela, la soirée Tours manquera de densité.</p>
+    </div>
+  </div>`;
+}
+
 function globalSearch(q){
   const el=document.getElementById('global-results');
   if(!q||q.length<2){el.style.display='none';return}
