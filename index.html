@@ -2443,11 +2443,28 @@ function renderCompta(){
   html+=`<div class="tcard"><div class="tcard-hdr"><span class="tcard-title">Factures en retard</span><span class="pill" style="background:rgba(226,75,74,.2);color:#e74c3c">${retard.length}</span></div>`;
   html+= retard.length?`<table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left;${thS}">Contrepartie</th><th style="text-align:left;${thS}">Entité</th><th style="text-align:left;${thS}">Échéance</th><th style="text-align:right;${thS}">TTC</th></tr></thead><tbody>${retard.map(f=>`<tr><td style="${tdS}">${f.contrepartie||f.numero||''}</td><td style="${tdS}">${f.entite||''}</td><td style="${tdS}">${f.date_echeance||''}</td><td style="${tdS};text-align:right">${fmt(num(f.montant_ttc))}</td></tr>`).join('')}</tbody></table>`:`<div style="color:var(--dim);font-size:13px;padding:8px 0">Aucune facture en retard.</div>`;
   html+=`</div>`;
-  html+=`<div class="tcard"><div class="tcard-hdr"><span class="tcard-title">Flux sans justificatif</span><span class="pill" style="background:rgba(226,75,74,.2);color:#e74c3c">${sansJust.length}</span></div>`;
-  html+= sansJust.length?`<table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left;${thS}">Libellé</th><th style="text-align:left;${thS}">Entité</th><th style="text-align:left;${thS}">Date</th><th style="text-align:right;${thS}">Montant</th></tr></thead><tbody>${sansJust.slice(0,50).map(r=>`<tr><td style="${tdS}">${r.libelle||''}</td><td style="${tdS}">${r.entite||''}</td><td style="${tdS}">${r.date_operation||''}</td><td style="${tdS};text-align:right">${fmt(num(r.montant))}</td></tr>`).join('')}</tbody></table>`:`<div style="color:var(--dim);font-size:13px;padding:8px 0">Toutes les fiches ont un justificatif.</div>`;
-  html+=`</div>`;
+  window._sj=sansJust;
+  {const yrs=[...new Set(sansJust.map(r=>(r.date_operation||'').slice(0,4)).filter(Boolean))].sort().reverse();
+   const cts=[...new Set(sansJust.map(r=>r.categorie||'Inconnue'))].sort();
+   const selS='padding:4px 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--card,#fff);margin:0 8px 4px 0';
+   html+=`<div class="tcard"><div class="tcard-hdr"><span class="tcard-title">Flux sans justificatif</span><span class="pill" style="background:rgba(226,75,74,.2);color:#e74c3c" id="sj-count">${sansJust.length}</span></div>`;
+   html+=`<div style="margin:8px 0"><select id="sj-annee" style="${selS}" onchange="renderSJ()"><option value="*">Toutes années</option>${yrs.map(y=>`<option value="${y}">${y}</option>`).join('')}</select><select id="sj-type" style="${selS}" onchange="renderSJ()"><option value="*">Recettes et dépenses</option><option value="entrant">Recettes</option><option value="sortant">Dépenses</option></select><select id="sj-cat" style="${selS}" onchange="renderSJ()"><option value="*">Toutes catégories</option>${cts.map(c=>`<option value="${c}">${c}</option>`).join('')}</select></div><div id="compta-sj-body"></div></div>`;}
   html+=`<div class="tcard"><div class="tcard-hdr"><span class="tcard-title">Rapprochement bancaire</span></div><div style="font-size:13px;padding:8px 0">Non rapprochés ${nonRappr.length} sur ${tr.length} flux.</div></div>`;
   document.getElementById('compta-body').innerHTML=html;
+  if(window.renderSJ)renderSJ();
+}
+
+function renderSJ(){
+  const arr=window._sj||[];
+  const g=id=>{const e=document.getElementById(id);return e?e.value:'*';};
+  const y=g('sj-annee'),t=g('sj-type'),c=g('sj-cat');
+  const rows=arr.filter(r=>{const ry=(r.date_operation||'').slice(0,4);const rc=r.categorie||'Inconnue';return (y==='*'||ry===y)&&(t==='*'||r.type===t)&&(c==='*'||rc===c);});
+  const cnt=document.getElementById('sj-count');if(cnt)cnt.textContent=rows.length;
+  const tot=rows.reduce((a,r)=>a+(parseFloat(r.montant)||0),0);
+  const thS='font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;padding:6px 0;border-bottom:1px solid var(--border)';
+  const tdS='padding:8px 0;font-size:13px;border-bottom:1px solid var(--bg)';
+  const b=document.getElementById('compta-sj-body');if(!b)return;
+  b.innerHTML= rows.length?`<table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left;${thS}">Libellé</th><th style="text-align:left;${thS}">Type</th><th style="text-align:left;${thS}">Catégorie</th><th style="text-align:left;${thS}">Date</th><th style="text-align:right;${thS}">Montant</th></tr></thead><tbody>${rows.slice(0,300).map(r=>`<tr><td style="${tdS}">${r.libelle||''}</td><td style="${tdS}">${r.type==='entrant'?'Recette':'Dépense'}</td><td style="${tdS}">${r.categorie||'Inconnue'}</td><td style="${tdS}">${r.date_operation||''}</td><td style="${tdS};text-align:right">${fmt(parseFloat(r.montant)||0)}</td></tr>`).join('')}</tbody></table><div style="font-size:12px;color:var(--dim);padding:8px 0">Total ${fmt(tot)} sur ${rows.length} flux, 300 affichés au plus.</div>`:`<div style="color:var(--dim);font-size:13px;padding:8px 0">Aucun flux pour ce filtre.</div>`;
 }
 
 function renderFinance(){
