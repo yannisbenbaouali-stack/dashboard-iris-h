@@ -23,7 +23,6 @@
     --person-bg: #fafaf8;
     --person-border: #d8d5d0;
     --blue: #4682b4;
-    --green: #2e8b57;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,30 +33,27 @@
     min-height: 100vh; overflow-x: auto;
   }
 
-  .header { text-align: center; padding: 40px 20px 10px; }
+  .header { text-align: center; padding: 36px 20px 8px; }
   .header h1 { font-size: 28px; font-weight: 700; color: var(--dark); letter-spacing: -0.5px; }
   .header p { font-size: 14px; color: var(--text-light); margin-top: 6px; }
 
   .legend {
     display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
-    padding: 16px 20px 30px; font-size: 13px; color: var(--text-light);
+    padding: 16px 20px 26px; font-size: 13px; color: var(--text-light);
   }
   .legend-item { display: flex; align-items: center; gap: 6px; }
   .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
-  .legend-dot.active { background:#fff; border:1px solid #1a1a1a; }
-  .legend-dot.pending { background: transparent; border: 2px dashed var(--pending-border); }
   .legend-dot.person { background: var(--person-bg); border: 1.5px solid var(--person-border); }
-  .legend-line { width: 20px; height: 2px; }
-  .legend-line.blue { background: var(--blue); border-top: 2px dashed var(--blue); background: transparent; }
+  .legend-dot.active { background: var(--dark-card); border: 1px solid var(--dark); }
+  .legend-dot.pending { background: transparent; border: 2px dashed var(--pending-border); }
 
-  .chart-wrapper { display: flex; justify-content: center; padding: 0 20px 40px; overflow-x: auto; }
+  .chart-wrapper { display: flex; justify-content: center; padding: 0 20px 20px; overflow-x: auto; }
   .chart { position: relative; margin: 0 auto; }
 
   .lines-svg { position: absolute; top: 0; left: 0; pointer-events: none; }
   .lines-svg line { stroke: var(--line); stroke-width: 1.5; }
   .lines-svg line.dashed { stroke-dasharray: 6 4; stroke: var(--pending-border); }
   .lines-svg line.solid-orange { stroke: var(--pending-border); stroke-width: 2; }
-  .lines-svg line.blue-dashed { stroke-dasharray: 6 4; stroke: var(--blue); }
 
   .node { position: absolute; transform: translateX(-50%); opacity: 0; animation: fadeIn 0.5s ease forwards; }
   @keyframes fadeIn { to { opacity: 1; } }
@@ -72,14 +68,29 @@
   .card.dark .entity-name { color: #fff; }
   .card.dark .entity-type, .card.dark .entity-capital, .card.dark .entity-activity { color: #bbb; }
   .card.pending { border: 2px dashed var(--pending-border); background: var(--pending-bg); }
-  .card.person { background: var(--person-bg); border-color: var(--person-border); min-width: 150px; }
+  .card.person {
+    background: var(--person-bg); border-color: var(--person-border);
+    min-width: 168px; padding: 14px 18px 12px;
+  }
 
-  .entity-name { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .avatar {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: #fff; border: 1.5px solid var(--person-border);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 8px;
+  }
+  .avatar svg { width: 24px; height: 24px; color: var(--text-light); }
+  .person-role { font-size: 11px; color: var(--accent); font-weight: 600; margin-top: 3px; letter-spacing: 0.2px; }
+  .person-mission { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+
+  .card-logo { display: block; margin: 0 auto 10px; }
+  .card-logo.iris { height: 26px; }
+  .card-logo.bym { height: 34px; }
+
+  .entity-name { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
   .entity-type { font-size: 12px; color: var(--text-light); }
   .entity-capital { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
   .entity-activity { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
-
-  .person-svg { width: 18px; height: 18px; color: var(--text-light); }
 
   .pct-label { position: absolute; font-size: 11px; font-weight: 600; pointer-events: none; white-space: nowrap; }
   .pct-label.grey { color: var(--text-light); }
@@ -87,13 +98,37 @@
 
   .cartes { display: flex; gap: 4px; justify-content: center; margin-top: 6px; }
   .carte-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: rgba(184, 134, 11, 0.1); color: var(--accent); }
+
+  .roles { max-width: 1000px; margin: 0 auto 50px; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 820px) { .roles { grid-template-columns: 1fr; } }
+
+  .role-card {
+    background: #fff; border: 1px solid var(--card-border); border-radius: 14px;
+    padding: 26px 28px 24px; box-shadow: var(--shadow);
+  }
+  .role-head { display: flex; align-items: center; gap: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--card-border); margin-bottom: 16px; }
+  .role-head img { height: 30px; }
+  .role-head .role-title { font-size: 16px; font-weight: 700; color: var(--dark); }
+  .role-head .role-sub { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+  .role-card h4 { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 8px; }
+  .role-card p { font-size: 13px; line-height: 1.6; color: var(--text); margin-bottom: 14px; }
+  .role-card ul { list-style: none; }
+  .role-card li { font-size: 12.5px; color: var(--text-light); line-height: 1.5; padding-left: 16px; position: relative; margin: 5px 0; }
+  .role-card li::before { content: ''; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); opacity: 0.6; }
+  .role-foot { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--card-border); font-size: 11.5px; color: var(--text-muted); font-style: italic; }
 </style>
 </head>
 <body>
 
 <div class="header">
   <h1>BYM Construction</h1>
-  <p>Structure capitalistique (holdings uniquement)</p>
+  <p>Associés, structure capitalistique et répartition des rôles</p>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot person"></div><span>Personne physique</span></div>
+  <div class="legend-item"><div class="legend-dot active"></div><span>Holding</span></div>
+  <div class="legend-item"><div class="legend-dot pending"></div><span>Société d'exploitation</span></div>
 </div>
 
 <div class="chart-wrapper">
@@ -102,22 +137,69 @@
   </div>
 </div>
 
+<div class="roles">
+  <div class="role-card">
+    <div class="role-head">
+      <img src="assets/logos/iris_rep/2_couleur_fond_transparent.png" alt="IRIS">
+      <div>
+        <div class="role-title">IRIS H</div>
+        <div class="role-sub">SASU · holding animatrice du groupe</div>
+      </div>
+    </div>
+    <h4>Rôle dans le binôme</h4>
+    <p>IRIS H apporte les opérations et pilote tout ce qui précède et entoure le chantier. Elle sécurise le foncier, monte le financement, conçoit le projet et vend le résultat. Elle ne pose pas d'ouvrage.</p>
+    <h4>Périmètre</h4>
+    <ul>
+      <li>Sourcing et acquisition, marchand de biens</li>
+      <li>Conseil en immobilier d'entreprise, brokerage, mandats</li>
+      <li>Maîtrise d'oeuvre, conception, dossiers d'urbanisme</li>
+      <li>Montage financier, relation bancaire, investisseurs</li>
+      <li>Juridique, comptable, administratif, assurances</li>
+      <li>Commercialisation à la sortie, vente ou location</li>
+    </ul>
+    <div class="role-foot">Détient 33 % de BYM Construction, associé fondateur.</div>
+  </div>
+
+  <div class="role-card">
+    <div class="role-head">
+      <img src="assets/logos/bym/2_couleur_fond_transparent.png" alt="BYM Construction">
+      <div>
+        <div class="role-title">BYM Construction</div>
+        <div class="role-sub">SAS · entreprise de rénovation tous corps d'état</div>
+      </div>
+    </div>
+    <h4>Rôle dans le binôme</h4>
+    <p>BYM exécute. Elle chiffre, achète, produit et livre les travaux sur les opérations du groupe comme sur ses clients propres. Elle porte la main d'oeuvre, le matériel et la responsabilité technique.</p>
+    <h4>Périmètre</h4>
+    <ul>
+      <li>Chiffrage et devis tous corps d'état</li>
+      <li>Gros oeuvre, second oeuvre, plomberie, électricité</li>
+      <li>Achats fournitures, location de matériel</li>
+      <li>Encadrement des équipes et des sous traitants</li>
+      <li>Planning, suivi de chantier, sécurité</li>
+      <li>Réception des travaux, garanties, SAV</li>
+    </ul>
+    <div class="role-foot">Détenue à 33 / 34 / 33 par IRIS H, GARV HOLDING et BAGUETI JR H.</div>
+  </div>
+</div>
+
 <script>
-const PERSON_ICON = `<svg class="person-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0112 0v1"/></svg>`;
+const PERSON_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0112 0v1" transform="translate(2 0)"/></svg>`;
 
 const CHART_W = 1000;
+const CHART_H = 620;
 const chart = document.getElementById('chart');
 const svg = document.getElementById('linesSvg');
 
 chart.style.width = CHART_W + 'px';
-chart.style.height = '380px';
+chart.style.height = CHART_H + 'px';
 svg.setAttribute('width', CHART_W);
-svg.setAttribute('height', 380);
+svg.setAttribute('height', CHART_H);
 
 const nodePos = {};
 
 function makeNode(id, opts) {
-  const { x, y, delay, name, forme, capital, activity, dark, pending, person, subtitle, cartes } = opts;
+  const { x, y, delay, name, forme, capital, activity, dark, pending, person, role, mission, cartes, logo, logoCls } = opts;
   nodePos[id] = { cx: x, top: y };
 
   const node = document.createElement('div');
@@ -130,30 +212,46 @@ function makeNode(id, opts) {
   let cls = 'card';
   if (dark) cls += ' dark';
   if (pending) cls += ' pending';
+  if (person) cls += ' person';
 
   let h = `<div class="${cls}">`;
-  h += `<div class="entity-name">${name}</div>`;
-  if (forme) h += `<div class="entity-type">${forme}</div>`;
-  if (capital) h += `<div class="entity-capital">Capital : ${capital}</div>`;
-  if (activity) h += `<div class="entity-activity">${activity}</div>`;
-  if (cartes && cartes.length) h += `<div class="cartes">${cartes.map(c => `<span class="carte-badge">${c}</span>`).join('')}</div>`;
+  if (person) {
+    h += `<div class="avatar">${PERSON_ICON}</div>`;
+    h += `<div class="entity-name">${name}</div>`;
+    if (role) h += `<div class="person-role">${role}</div>`;
+    if (mission) h += `<div class="person-mission">${mission}</div>`;
+  } else {
+    if (logo) h += `<img class="card-logo ${logoCls || ''}" src="${logo}" alt="${name}">`;
+    h += `<div class="entity-name">${name}</div>`;
+    if (forme) h += `<div class="entity-type">${forme}</div>`;
+    if (capital) h += `<div class="entity-capital">Capital : ${capital}</div>`;
+    if (activity) h += `<div class="entity-activity">${activity}</div>`;
+    if (cartes && cartes.length) h += `<div class="cartes">${cartes.map(c => `<span class="carte-badge">${c}</span>`).join('')}</div>`;
+  }
   h += '</div>';
 
   node.innerHTML = h;
   chart.appendChild(node);
 }
 
-const col1 = 200;
+const col1 = 180;
 const col2 = CHART_W / 2;
-const col3 = 800;
+const col3 = 820;
+
+const Y = { persons: 0, holdings: 190, bym: 420 };
+
+// Personnes physiques
+makeNode('junior', { x: col1, y: Y.persons, delay: 0.05, name: 'Junior Bageti', person: true, role: 'Associé gérant', mission: 'Exécution chantier, équipes' });
+makeNode('vilmar', { x: col2, y: Y.persons, delay: 0.1, name: 'Vilmar Filho', person: true, role: 'Associé gérant', mission: 'Technique, qualification métier' });
+makeNode('yannis', { x: col3, y: Y.persons, delay: 0.15, name: 'Yannis Benbaouali', person: true, role: 'Associé', mission: 'Opérations, montage, gestion' });
 
 // Holdings
-makeNode('jbh', { x: col1, y: 0, delay: 0.1, name: 'BAGUETI JR H', forme: 'EURL', capital: '100 €', activity: 'Holding active', dark: true });
-makeNode('vfh', { x: col2, y: 0, delay: 0.15, name: 'GARV HOLDING', forme: 'EURL', capital: '100 €', activity: 'Holding active', dark: true });
-makeNode('irisH', { x: col3, y: 0, delay: 0.2, name: 'IRIS H', forme: 'SASU', capital: '2 500 €', activity: 'Holding active', dark: true, cartes: ['Carte T', 'Carte G'] });
+makeNode('jbh', { x: col1, y: Y.holdings, delay: 0.3, name: 'BAGUETI JR H', forme: 'EURL', capital: '100 €', activity: 'Holding active', dark: true });
+makeNode('vfh', { x: col2, y: Y.holdings, delay: 0.35, name: 'GARV HOLDING', forme: 'EURL', capital: '100 €', activity: 'Holding active', dark: true });
+makeNode('irisH', { x: col3, y: Y.holdings, delay: 0.4, name: 'IRIS H', forme: 'SASU', capital: '2 500 €', activity: 'Holding animatrice', dark: true, cartes: ['Carte T', 'Carte G'], logo: 'assets/logos/iris_rep/6_blanc_fond_transparent.png', logoCls: 'iris' });
 
 // BYM
-makeNode('bym', { x: col2, y: 230, delay: 0.4, name: 'BYM Construction', forme: 'SAS', capital: '1 500 €', activity: 'Rénovation', pending: true });
+makeNode('bym', { x: col2, y: Y.bym, delay: 0.55, name: 'BYM Construction', forme: 'SAS', capital: '1 500 €', activity: 'Rénovation tous corps d\'état', pending: true, logo: 'assets/logos/bym/2_couleur_fond_transparent.png', logoCls: 'bym' });
 
 function drawLine(x1, y1, x2, y2, cls) {
   const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -184,6 +282,12 @@ function drawPctOnLine(text, from, to, ratio, offsetX, colorCls) {
 }
 
 setTimeout(() => {
+  [['junior','jbh'],['vilmar','vfh'],['yannis','irisH']].forEach(([p, h]) => {
+    const f = botC(p), t = topC(h);
+    drawLine(f.x, f.y, t.x, t.y, '');
+    drawPctOnLine('100 %', f, t, 0.5, 22, 'grey');
+  });
+
   const bT = topC('bym');
 
   const jB = botC('jbh');
