@@ -1363,21 +1363,23 @@ function updateTopbar(){
 // ARRISTO · Événements & réseau
 // ════════════════════════════════════════
 let arristoSubV='overview';
-let arristoData={events:[],contacts:[],parts:[],loaded:false};
+let arristoData={events:[],contacts:[],parts:[],retro:[],loaded:false};
 let arrF={ville:'all',segment:'all',emailonly:false,q:''};
 
 async function loadArristo(){
   if(!cfg)return;
   const hdr={'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json'};
   try{
-    const [ev,ct,pa]=await Promise.all([
+    const [ev,ct,pa,rp]=await Promise.all([
       fetch(`${cfg.url}/rest/v1/arristo_evenements?order=date_event.asc`,{headers:hdr}),
       fetch(`${cfg.url}/rest/v1/contacts?arristo=eq.true&select=id,prenom,nom,email,email_perso,telephone,societe,poste,metier,localisation,linkedin,arristo_ville,arristo_segment,score_lead&limit=1000`,{headers:hdr}),
-      fetch(`${cfg.url}/rest/v1/arristo_participations?select=evenement_id,statut,present&limit=5000`,{headers:hdr})
+      fetch(`${cfg.url}/rest/v1/arristo_participations?select=evenement_id,statut,present&limit=5000`,{headers:hdr}),
+      fetch(`${cfg.url}/rest/v1/arristo_retroplanning?select=*&limit=500`,{headers:hdr})
     ]);
     arristoData.events=ev.ok?await ev.json():[];
     arristoData.contacts=ct.ok?await ct.json():[];
     arristoData.parts=pa.ok?await pa.json():[];
+    arristoData.retro=rp.ok?await rp.json():[];
   }catch(e){}
   arristoData.loaded=true;
 }
@@ -1439,24 +1441,53 @@ function arrOverview(){
   </div>`;
 }
 
-function arrRetro(dateStr){
+const ARR_STEPS=[
+  [-45,'Save the date',"Annonce + création de l'événement LinkedIn",'Save the date','Email + LinkedIn','std'],
+  [-30,'Invitation','Invitation personnalisée segment investisseurs','Invitation investisseurs','Email','inv_inv'],
+  [-30,'Invitation','Invitation personnalisée segment promoteurs','Invitation promoteurs','Email','inv_promo'],
+  [-30,'Invitation','Invitation personnalisée avocats, notaires, géomètres','Invitation avocats, notaires, géomètres','Email','inv_avo'],
+  [-30,'Carton','Carton visuel + post LinkedIn de lancement',null,'LinkedIn','carton'],
+  [-21,'Inscriptions','Lien RSVP + relance WhatsApp contacts chauds',null,'WhatsApp','rsvp'],
+  [-14,'Relance 1','Relance non ouvreurs + rappel LinkedIn','Relance 1 non ouvreurs','Email + LinkedIn','rel1'],
+  [-7,'Relance 2','Confirmation des inscrits et logistique','Relance 2 + logistique','Email + WhatsApp','rel2'],
+  [-2,'Rappel final',"Liste d'accueil figée",'Rappel final','Email + WhatsApp','rappel'],
+  [0,'Jour J','Accueil, badges, collecte des contacts',null,'Terrain','jourj'],
+  [2,'Remerciements','Remerciement, photos, qualification des présents','Remerciement','Email + LinkedIn','merci'],
+  [7,'Compte rendu','Track record, no shows, prochaines relances',null,'Interne','cr']
+];
+function arrRetroRow(ville,cle){return arristoData.retro.find(x=>x.ville===ville&&x.cle===cle)||{};}
+function arrBox(ville,cle,col,on,dis){
+  if(dis)return '<td style="text-align:center;color:var(--dim)">·</td>';
+  return `<td style="text-align:center"><input type="checkbox" ${on?'checked':''} onchange="arrChk('${ville}','${cle}','${col}',this)" style="cursor:pointer;width:15px;height:15px;accent-color:#C9A227"></td>`;
+}
+async function arrChk(ville,cle,col,el){
+  const val=el.checked;
+  let r=arristoData.retro.find(x=>x.ville===ville&&x.cle===cle);
+  if(!r){r={ville,cle,redige:false,visuel:false,envoye:false,fait:false};arristoData.retro.push(r);}
+  r[col]=val;
+  if(!cfg)return;
+  try{
+    await fetch(`${cfg.url}/rest/v1/arristo_retroplanning?on_conflict=ville,cle`,{
+      method:'POST',
+      headers:{'apikey':cfg.key,'Authorization':`Bearer ${authTok||cfg.key}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},
+      body:JSON.stringify({ville,cle,redige:!!r.redige,visuel:!!r.visuel,envoye:!!r.envoye,fait:!!r.fait,updated_at:new Date().toISOString()})
+    });
+  }catch(e){el.checked=!val;r[col]=!val;}
+}
+function arrRetro(dateStr,ville){
   const base=new Date(dateStr+'T00:00:00');
-  const steps=[
-    [-45,'Save the date',"Email pôle + création de l'événement LinkedIn"],
-    [-30,'Invitation officielle','Email personnalisé par segment + visuel carton + post LinkedIn'],
-    [-21,'Ouverture inscriptions','Lien RSVP + relance WhatsApp contacts chauds'],
-    [-14,'Relance 1','Email non-ouvreurs + rappel LinkedIn'],
-    [-7,'Relance 2 + confirmation','Email confirmés (logistique) + WhatsApp'],
-    [-2,'Rappel final',"Email + WhatsApp, liste d'accueil figée"],
-    [0,'Jour J','Accueil, badges, kakémonos BYM + IRIS REP, collecte contacts'],
-    [2,'Remerciements','Email de remerciement + photos, qualification des présents'],
-    [7,'Compte rendu','Mise à jour track record, no-shows, prochaines relances']
-  ];
-  return steps.map(s=>{
+  return ARR_STEPS.map(s=>{
     const d=new Date(base); d.setDate(d.getDate()+s[0]);
     const df=d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
     const jlabel=s[0]===0?'Jour J':(s[0]<0?'J'+s[0]:'J+'+s[0]);
-    return `<tr><td style="white-space:nowrap"><b>${jlabel}</b></td><td style="white-space:nowrap">${df}</td><td class="td-name">${s[1]}</td><td>${s[2]}</td></tr>`;
+    const cle=s[5], r=arrRetroRow(ville,cle), hasMail=!!s[3];
+    const mail=hasMail?`${arrEsc(s[3])}`:'<span style="color:var(--dim)">—</span>';
+    return `<tr><td style="white-space:nowrap"><b>${jlabel}</b></td><td style="white-space:nowrap">${df}</td><td class="td-name">${s[1]}</td><td>${s[2]}</td><td>${mail}</td><td style="white-space:nowrap">${s[4]}</td>`
+      +arrBox(ville,cle,'redige',r.redige,!hasMail)
+      +arrBox(ville,cle,'visuel',r.visuel,false)
+      +arrBox(ville,cle,'envoye',r.envoye,!hasMail)
+      +arrBox(ville,cle,'fait',r.fait,false)
+      +`</tr>`;
   }).join('');
 }
 
@@ -1466,10 +1497,8 @@ function arrEvent(sub){
   const c=arristoData.contacts.filter(x=>x.arristo_ville===ville);
   const nEmail=c.filter(arrHasMail).length;
   const df=e.date_event?new Date(e.date_event+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'—';
-  const emails=[['Save the date','J-45'],['Invitation investisseurs','J-30'],['Invitation promoteurs','J-30'],['Invitation avocats · notaires · géomètres','J-30'],['Relance 1 non-ouvreurs','J-14'],['Relance 2 + logistique','J-7'],['Rappel final','J-2'],['Remerciement','J+2']];
-  const emailRows=emails.map(x=>`<tr><td class="td-name">${x[0]}</td><td>${x[1]}</td><td><span class="pill p-att">à créer</span></td></tr>`).join('');
-  const visuels=[["Carton d'invitation",'Story 1080×1920 + email 1200×628'],['Kakémono sponsor BYM Construction','85×200 cm'],['Kakémono sponsor IRIS REP','85×200 cm'],['Bannière LinkedIn événement','1584×396']];
-  const visRows=visuels.map(x=>`<tr><td class="td-name">${x[0]}</td><td>${x[1]}</td><td><span class="pill p-att">Canva · à produire</span></td></tr>`).join('');
+  const visuels=[["Carton d'invitation",'Story 1080×1920','https://www.canva.com/create/instagram-stories/'],['Visuel email','1200×628','https://www.canva.com/create/banners/'],['Bannière LinkedIn événement','1584×396','https://www.canva.com/create/linkedin-banners/'],['Badges et signalétique accueil','A6 et A3','https://www.canva.com/create/posters/']];
+  const visRows=visuels.map(x=>`<tr><td class="td-name">${x[0]}</td><td>${x[1]}</td><td><a class="td-link" href="${x[2]}" target="_blank" rel="noopener">Ouvrir Canva</a></td></tr>`).join('');
   const canaux=[['Email','Séquence 8 emails segmentés','Gmail + Brevo'],['LinkedIn','Événement LinkedIn + 3 posts + invitations','Page ARRISTO'],['WhatsApp','Relances contacts chauds + rappel J-2','Diffusion manuelle']];
   const canRows=canaux.map(x=>`<tr><td class="td-name">${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td><span class="pill p-att">à préparer</span></td></tr>`).join('');
   return `
@@ -1488,15 +1517,12 @@ function arrEvent(sub){
     <div class="kpi"><div class="kpi-label">Promoteurs</div><div class="kpi-val">${c.filter(x=>x.arristo_segment==='Promoteurs').length}</div></div>
     <div class="kpi"><div class="kpi-label">Avocats · notaires · géo.</div><div class="kpi-val">${c.filter(x=>x.arristo_segment==='Avocats · notaires · géomètres').length}</div></div>
   </div>
-  <div class="tcard"><div class="tcard-title">Rétroplanning</div>
-    <table class="tbl" style="margin-top:8px"><thead><tr><th>Jalon</th><th>Date</th><th>Action</th><th>Canaux</th></tr></thead><tbody>${e.date_event?arrRetro(e.date_event):'<tr><td colspan=4>Date manquante</td></tr>'}</tbody></table>
+  <div class="tcard"><div class="tcard-title">Rétroplanning et séquence emails</div>
+    <table class="tbl" style="margin-top:8px"><thead><tr><th>Jalon</th><th>Date</th><th>Étape</th><th>Action</th><th>Email</th><th>Canaux</th><th style="text-align:center">Rédigé</th><th style="text-align:center">Visuel</th><th style="text-align:center">Envoyé</th><th style="text-align:center">Fait</th></tr></thead><tbody>${e.date_event?arrRetro(e.date_event,ville):'<tr><td colspan=10>Date manquante</td></tr>'}</tbody></table>
+    <div style="font-size:11px;color:var(--dim);margin-top:8px">Chaque email est créé en brouillon Gmail avant envoi via Brevo. Les cases sont enregistrées automatiquement.</div>
   </div>
   <div class="tcard"><div class="tcard-title">Plan de communication multicanal</div>
     <table class="tbl" style="margin-top:8px"><thead><tr><th>Canal</th><th>Dispositif</th><th>Outil</th><th>Statut</th></tr></thead><tbody>${canRows}</tbody></table>
-  </div>
-  <div class="tcard"><div class="tcard-title">Séquence emails</div>
-    <table class="tbl" style="margin-top:8px"><thead><tr><th>Email</th><th>Timing</th><th>Statut</th></tr></thead><tbody>${emailRows}</tbody></table>
-    <div style="font-size:11px;color:var(--dim);margin-top:8px">Chaque email créé en brouillon Gmail, prêt à partir via Brevo ou envoi direct. Contenus à valider avant production.</div>
   </div>
   <div class="tcard"><div class="tcard-title">Visuels à produire</div>
     <table class="tbl" style="margin-top:8px"><thead><tr><th>Visuel</th><th>Format</th><th>Statut</th></tr></thead><tbody>${visRows}</tbody></table>
