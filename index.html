@@ -1497,7 +1497,7 @@ function arrEvent(sub){
   const c=arristoData.contacts.filter(x=>x.arristo_ville===ville);
   const nEmail=c.filter(arrHasMail).length;
   const df=e.date_event?new Date(e.date_event+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'—';
-  const visuels=[["Carton d'invitation",'Story 1080×1920','https://www.canva.com/create/instagram-stories/'],['Visuel email','1200×628','https://www.canva.com/create/banners/'],['Bannière LinkedIn événement','1584×396','https://www.canva.com/create/linkedin-banners/'],['Badges et signalétique accueil','A6 et A3','https://www.canva.com/create/posters/']];
+  const visuels=[["Carton d'invitation",'Story 1080×1920','https://www.canva.com/create/instagram-stories/'],['Visuel email','1200×628','https://www.canva.com/create/banners/'],['Bannière LinkedIn événement','1776×444','https://www.canva.com/create/linkedin-banners/'],['Badges et signalétique accueil','A6 et A3','https://www.canva.com/create/posters/']];
   const visRows=visuels.map(x=>`<tr><td class="td-name">${x[0]}</td><td>${x[1]}</td><td><a class="td-link" href="${x[2]}" target="_blank" rel="noopener">Ouvrir Canva</a></td></tr>`).join('');
   const canaux=[['Email','Séquence 8 emails segmentés','Gmail + Brevo'],['LinkedIn','Événement LinkedIn + 3 posts + invitations','Page ARRISTO'],['WhatsApp','Relances contacts chauds + rappel J-2','Diffusion manuelle']];
   const canRows=canaux.map(x=>`<tr><td class="td-name">${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td><span class="pill p-att">à préparer</span></td></tr>`).join('');
@@ -1633,6 +1633,20 @@ function arrPratiques(){
     <div style="font-size:13px;line-height:1.85;color:var(--text)">
     <p style="margin-bottom:0">Le pôle Tours compte aujourd'hui très peu de contacts qualifiés face à Paris. Avant la soirée du 23 septembre, prévoir une phase d'enrichissement ciblée sur les investisseurs, promoteurs et notaires de Tours et d'Orléans, via LinkedIn, les chambres et les partenaires Galerie Carrez. Sans cela, la soirée Tours manquera de densité.</p>
     </div>
+  </div>
+
+  <div class="tcard">
+    <div class="tcard-title">8. Formats des visuels par plateforme</div>
+    <div style="font-size:12px;color:var(--dim);margin-top:4px;margin-bottom:8px">Dimensions de référence pour produire les visuels ARRISTO. Exporter en JPG ou PNG.</div>
+    <table class="tbl"><thead><tr><th>Plateforme</th><th>Usage</th><th>Dimensions</th><th>Détail</th></tr></thead><tbody>
+      <tr><td class="td-name">LinkedIn · événement</td><td>Bannière 4:1</td><td>1776 × 444 px</td><td>Texte centré, JPG ou PNG</td></tr>
+      <tr><td class="td-name">Instagram</td><td>Portrait 4:5 · recommandé</td><td>1080 × 1350 px</td><td>Couverture maximale du fil</td></tr>
+      <tr><td class="td-name">Instagram</td><td>Carré 1:1</td><td>1080 × 1080 px</td><td>Format polyvalent</td></tr>
+      <tr><td class="td-name">Instagram</td><td>Paysage</td><td>1080 × 566 px</td><td>Visuel horizontal</td></tr>
+      <tr><td class="td-name">Facebook</td><td>Portrait 4:5</td><td>1200 × 1500 px</td><td>Post au fil</td></tr>
+      <tr><td class="td-name">Facebook</td><td>Carré 1:1</td><td>1200 × 1200 px</td><td>Post polyvalent</td></tr>
+      <tr><td class="td-name">Facebook</td><td>Aperçu de lien</td><td>1200 × 630 px</td><td>Partage d'URL</td></tr>
+    </tbody></table>
   </div>`;
 }
 
