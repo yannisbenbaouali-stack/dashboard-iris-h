@@ -249,7 +249,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
       <button class="nav-item" onclick="switchTab(this,'deals')"><span class="nav-dot"></span><span>PROJETS</span><span class="nav-cnt" id="nav-deals-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'arristo')"><span class="nav-dot"></span><span>ARRISTO · Événements</span><span class="nav-cnt" id="nav-arristo-cnt">0</span></button>
       <button class="nav-item" onclick="openIrisRepConseil(this)"><span class="nav-dot"></span><span>IRIS REP · Conseil</span></button>
-      <button class="nav-item" onclick="switchTab(this,'prospects')"><span class="nav-dot"></span><span>PROSPECTS</span><span class="nav-cnt" id="nav-prospects-cnt">0</span></button>
+      <button class="nav-item" onclick="switchTab(this,'prospects')"><span class="nav-dot"></span><span>PROSPECT</span><span class="nav-cnt" id="nav-prospects-cnt">0</span></button>
       <button class="nav-item" style="display:none" onclick="switchTab(this,'documents')"><span class="nav-dot"></span><span>Documents</span><span class="nav-cnt" id="nav-documents-cnt" style="background:rgba(226,75,74,0.2);color:#e74c3c">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'electricite')"><span class="nav-dot"></span><span>Électricité</span><span class="nav-cnt" id="nav-electricite-cnt">0</span></button>
       <button class="nav-item" onclick="switchTab(this,'pack')"><span class="nav-dot"></span><span>Pack chaudière</span></button>
@@ -401,7 +401,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
         <div id="deals-body"></div>
       </div>
 
-      <!-- PROSPECTS -->
+      <!-- PROSPECT -->
       <div class="tab" id="tab-prospects">
         <div class="kpis" id="prospects-kpis"></div>
         <div style="margin-bottom:16px"><input id="prospects-search" placeholder="Rechercher (entreprise, contact, email, poste...)" oninput="renderProspects()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;width:100%;max-width:420px;background:var(--card);color:var(--text)"></div>
@@ -1332,7 +1332,7 @@ function switchTab(btn,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   currentTab=tab;
-  const titles={todo:'Todo',bourgogne:'Bourgogne · 72 / 78 rue de Bourgogne, Orléans',deals:'PROJETS',prospects:'PROSPECTS',dettes:'Dettes croisées · CB / YB',finance:'Finance',compta:'Comptabilité · audit et pièces',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',pack:'Pack chaudière ENGIE · Procédure Junior',location:'Location · Candidats coloc Orléans',references:'Références et opportunités',suivichantier:'Suivi chantier',arristo:'ARRISTO · Événements & réseau'};
+  const titles={todo:'Todo',bourgogne:'Bourgogne · 72 / 78 rue de Bourgogne, Orléans',deals:'PROJETS',prospects:'PROSPECT',dettes:'Dettes croisées · CB / YB',finance:'Finance',compta:'Comptabilité · audit et pièces',crm:'CRM',memoire:'Mémoire IA',organigramme:'Organigramme',charte:'Charte graphique',businessplan:'Structuration',outils:'Outils',mandats:'Registre Mandats · IRIS REP',documents:'Documents · Protocole anti perte',audit:'Audit Drive',electricite:'Bible de l\'électricien',pack:'Pack chaudière ENGIE · Procédure Junior',location:'Location · Candidats coloc Orléans',references:'Références et opportunités',suivichantier:'Suivi chantier',arristo:'ARRISTO · Événements & réseau'};
   document.getElementById('topbar-title').textContent=titles[tab]||tab;
   renderCurrentTab();
   updateTopbar();
@@ -2297,7 +2297,7 @@ async function renderSuiviChantier(){
   const el=document.getElementById('nav-suivichantier-cnt');if(el)el.textContent=n;
 }
 
-// DEALFLOW PROSPECTS
+// DEALFLOW PROSPECT
 // ════════════════════════════════════════
 let prospectsFilter='all';
 let prospectsCat='all';
